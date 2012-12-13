@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Login</title>
+    <meta name="description" content="Kid Pins">
+    <meta name="keywords" content="Kid Pins, keywords, here">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <link rel="stylesheet" href="public/stylesheets/normalize.css">
+    <link rel="stylesheet" href="public/stylesheets/main.css">
+    <!-- script src="public/javascripts/vendor/modernizr-2.6.2.min.js"></script -->
+  </head>
+  
+  <!-- apply .theme_one class to body when in this view -->
+  <body class="theme_one">
+    <!--[if lt IE 7]>
+        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+    
+    <div class="header_wrapper">
+      <div class="header">
+        <a href="index.html" class="logo ir">Back to home</a>
+        <ul class="nav_main">
+          <li>
+            <a href="recent_pins.html">Recent Pins</a>
+          </li>
+          <li>
+            <a href="board_landing.html">Boards</a>
+          </li>
+          <li>
+            <a href="articles.html">Articles</a>
+          </li>
+        </ul>
+        <ul class="nav_login">
+          <li>
+            <a href="login.html" class="login marker">Log In</a>
+          </li>
+          <li>
+            <a href="signup.html" class="signup">Sign Up</a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    
+    <div class="wrapper profile">
+            
+        <div class="content board board_wide">
+          <form method="post" id="new_session" class="form narrow" action="/sessions">
+            <h1>Login to Your Account</h1>
+            <div class="field">
+              <input type="text" placeholder="User name" name="user[username]" id="user_username">
+            </div>
+            <div class="field">
+              <input type="password" placeholder="Password" name="user[password]" id="user_password">
+            </div>
+            <div class="submit">
+              <input type="submit" value="Log in" name="commit" class="btn tertiary_action">
+            </div>
+            <div class="buttons">
+              <a href="#">forgot password?</a>
+              <p><a href="signup.html">Don't have an account? Sign up</a></p>
+            </div>
+          </form>
+        </div>
+        
+        <div class="clearfix"></div>
+        
+    </div>
+    
+    <div class="footer_wrapper">
+      <div class="footer">
+        <ul class="nav_footer">
+          <li>
+            KidPins &copy; 2012. All rights reserved.
+          </li>
+          <li>
+            <a href="about.html">About KidPins</a>
+          </li>
+          <li>
+            <a href="legal.html">Legal</a>
+          </li>
+          <li>
+            <a href="privacy.html">Privacy</a>
+          </li>
+          <li>
+            <a href="contact.html">Contact Us</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="public/javascripts/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+    <script src="public/javascripts/plugins.js"></script>
+    <script src="public/javascripts/main.js"></script>
+    <script src="public/javascripts/jquery.masonry.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#pins').masonry({
+         columnWidth: 56,
+         itemSelector: '.pin'
+        }).imagesLoaded(function() {
+         $('#pins').masonry('reload');
+        });
+      });
+    </script>
+  </body>
+
+</html>
