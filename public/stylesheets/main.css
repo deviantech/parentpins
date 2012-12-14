@@ -21,7 +21,7 @@ textarea {
 body {
     font-size: 1em;
     line-height: 1.4;
-    background:#fff;
+    background:transparent url(../images/patterns/bgnoise_light.png) 0 0 repeat;
 }
 body.theme_one {
   background:transparent url(../images/patterns/debut_medium.png) 0 0 repeat;
@@ -104,7 +104,9 @@ p {
 }
 a {
   color:#1D58AA;
+  color:#E55799;
 }
+a:hover {text-decoration:none;}
 
 
 /* buttons */
@@ -114,7 +116,8 @@ a {
   text-decoration:none;
   text-align:center;
   position:relative;
-  padding:6px 12px;
+  padding:9px 12px 6px 12px;
+  text-shadow:0 -1px 0 rgba(0,0,0,0.4);
   font-size:14px;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
@@ -133,8 +136,8 @@ a {
 }
 
 .btn.action {
-  background-color: #3d6bff;
-  border: 1px solid #325ee9;
+  background-color: #2FE72D;
+  border: 1px solid #06BE04;
   color:#fff;
   text-shadow:0 -1px 0 rgba(0,0,0,0.7);
   padding:5px 10px 5px 26px;
@@ -192,6 +195,9 @@ a {
   padding:5px 10px 5px 26px;
   font-size:13px;
 }
+.btn.sec_action:hover {
+  background-color:#f8f8f8;
+}
 
 .btn.load_more_button {
   padding-left:10px;
@@ -206,6 +212,47 @@ a {
   position:relative;
   font-weight:bold;
 }
+.btn.btn_facebook {
+  background-color:#3c5a97;
+  border:1px solid #3c5a97;
+  position:relative;
+  font-weight:bold;
+  margin:0 auto;
+  color:#fff;
+  font-size:18px;
+  display:block;
+  width:240px;
+  background-image:url(../images/ui/icn_facebook.png);
+  background-size:30px 45px;
+  background-repeat:no-repeat;
+  background-position:5px 0;
+  position:relative;
+}
+.btn.btn_facebook:after {
+  content:"KidPins is more fun with friends!";
+  position:absolute;
+  bottom:-24px;
+  left:32px;
+  color:#454545;
+  font-size:15px;
+  font-weight:normal;
+  font-style:italic;
+  font-family:times,georgia,serif;
+  background:transparent;
+}
+.btn.btn_facebook:before {
+  content:"";
+  position:absolute;
+  bottom:-18px;
+  left:18px;
+  color:#454545;
+  font-size:13px;
+  font-weight:normal;
+  font-style:italic;
+  height:18px;
+  width:18px;
+  background:transparent url(../images/ui/glyphicons-halflings-black.png) -290px -90px no-repeat;
+}
 
 .loader_icon {
   display:block;
@@ -218,10 +265,11 @@ a {
   display:block;
   position:absolute;
   padding:20px 20px;
-  top:10px;
-  left:40px;
+  top:0;
+  left:70px;
   text-align:center;
   text-decoration:none;
+  color:#E55799;
 }
 .ir.logo {
   text-indent:0;
@@ -233,7 +281,7 @@ a {
   display:block;
   text-decoration:none;
   font-size:15px;
-  padding:35px 30px;
+  padding:20px 30px;
 }
 .header li a:hover {
   background-color:#e5579a;
@@ -264,7 +312,7 @@ a {
 
 .nav_main {
   float:left;
-  margin:0px 0 0 295px;
+  margin:0px 0 0 335px;
   padding:0;
 }
 .nav_main li {
@@ -296,12 +344,49 @@ a {
   border-left:1px solid #eee;
   border-right:1px solid #eee;
 }
+.nav_login .profile_link {
+  border:none;
+  text-align:center;
+  position:relative;
+}
+.nav_login .profile_link ul {
+  display:none;
+  background:#fff;
+  position:absolute;
+  top:58px;
+  left:0;
+  margin:0;
+  padding:0;
+  z-index:3;
+  border:1px solid #ccc;
+  width:158px;
+  -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 3px rgba(0, 0, 0, 0.05);
+}
+.nav_login .profile_link:hover ul {
+  display:block;
+}
+.nav_login .profile_link ul li {
+  display:block;
+  float:none;
+}
+.nav_login .profile_link ul li a {
+  display:block;
+  float:none;
+  padding:6px 10px;
+  text-align:left;
+  font-size:13px;
+}
+.nav_login .profile_link .settings {
+  border-top:1px solid #eee;
+}
 
 /* profile info section */
 
 .info h2 {
   font-size:24px;
-  color:#5D6163;
+  color:#444;
   font-weight:normal;
   font-family:georgia,times,serif;
   text-align:center;
@@ -430,14 +515,22 @@ a {
 
 
 .content h1 {
-  color:#5D6163;
+  color:#444;
   font-family:georgia,times,serif;
   font-size:32px;
   font-weight:normal;
   margin:0 40px 10px 50px;
   padding: 0 0 0 10px;
-  border-bottom:1px dashed #E4E4E4;
+  border-bottom:1px dashed #C2C2C2;
 }
+
+.empty_pins {
+  margin:20px 65px;
+}
+.empty_pins p {
+  font-size:14px;
+}
+
 .about_content {
   margin:20px 40px;
 }
@@ -465,16 +558,10 @@ a {
   margin:10px 0 14px 6px;
   list-style:none;
   border:1px solid #fff;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
   padding:0;
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-  -moz-border-radius: 6px 6px 0 0;
-  -webkit-border-radius: 6px 6px 0 0;
-  border-radius: 6px 6px 0 0;
 }
 .timeline li:before {
   content:"";
@@ -508,6 +595,7 @@ a {
   height:70px;
   position:absolute;
   top:-90px;
+  z-index:2;
   -webkit-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
   -moz-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
   -ms-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
@@ -532,6 +620,9 @@ a {
 .like_button:before {
   background-position: -286px 0;
 }
+.edit_button:before {
+  background-position: 0 -71px;
+}
 .repin_button {
   margin-right:10px;
 }
@@ -541,16 +632,74 @@ a {
 .comment_button {
   margin-top:10px;
 }
+.gift_price {
+  background:#f9f9f9;
+  padding:5px 10px;
+  width:145px;
+  color:#333;
+  text-shadow:0 1px 0 rgba(255,255,255,1);
+  z-index:1;
+  position:absolute;
+  top:14px;
+  left:-50px;
+  text-align:center;
+  font-weight:normal;
+  font-size:16px;
+  -moz-transform:rotate(-45deg);
+  -webkit-transform:rotate(-45deg);
+  -o-transform:rotate(-45deg);
+  -ms-transform:rotate(-45deg);
+}
 .pin_image {
   display:block;
   margin:0 auto;
-  max-width:192px;
-  -moz-border-radius: 6px 6px 0 0;
-  -webkit-border-radius: 6px 6px 0 0;
-  border-radius: 6px 6px 0 0;
+  width:192px;
+  height:auto;
 }
 .pin .description {
   margin:10px 10px 5px 10px;
+}
+.pin .description strong {
+  color:#E5579A;
+  position:relative;
+}
+.pin .description a:hover strong {
+  text-decoration:none;
+}
+.pin .description strong:hover:before {
+  content:"";
+  position:absolute;
+  bottom:20px;
+  left:-5px;
+  display:block;
+  background:#000;
+  color:#fff;
+  text-align:center;
+  font-size:13px;
+  line-height:17px;
+  padding:4px 10px;
+  width:160px;
+}
+.pin .description strong:hover:after {
+  content:"";
+  position:absolute;
+  bottom:14px;
+  left:10px;
+  display:block;
+  width:0;
+  height:0;
+  border-top:10px solid #000;
+  border-right:10px solid transparent;
+  border-left:10px solid transparent;
+}
+.pin .description .article:hover:before {
+  content:"Pinned from a blog, top 10 list, writer, etc.";
+}
+.pin .description .gift:hover:before {
+  content:"Pinned from an online store, KidPin Store, or just a cool product for sale.";
+}
+.pin .description .idea:hover:before {
+  content:"Just generally a cool idea for kids.";
 }
 .pin .description a {
   text-decoration:none;
@@ -602,7 +751,7 @@ a {
 .comment .details {
    color:#8C7E7E;
  }
-.attribution .details a {
+.pin .attribution .details a {
   font-weight:700;
   color:#8C7E7E;
   text-decoration:none;
@@ -678,6 +827,9 @@ a {
 
 .wrapper.boards {
   width:1000px;
+}
+.wrapper.general .content {
+  width:1020px;
 }
 ul.boards li {
   float:left;
@@ -804,6 +956,8 @@ form .field {
 form .field p {
   color:#333;
   font-size:13px;
+  margin:0 0 4px 0;
+  padding:0;
 }
 .form .field input, .form .field textarea {
   display:block;
@@ -819,14 +973,24 @@ form .field p {
   font-size: 16px;
   font-weight: normal;
   padding: 8px 10px;
+  resize:none;
 }
-input[placeholder], [placeholder], *[placeholder] {
+input[placeholder], textarea[placeholder], [placeholder], *[placeholder] {
   color:#898989 !important;
 }
-input:focus[placeholder], [placeholder], *[placeholder] {
+input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placeholder] {
   color:#222 !important;
 }
 .content form h1 {
+  color:#333;
+  font-size:22px;
+  font-weight:normal;
+  margin:0 0 15px;
+  padding:0 0 10px 0;
+  text-align:center;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+}
+.content form h2 {
   color:#333;
   font-size:22px;
   font-weight:normal;
@@ -864,8 +1028,25 @@ input:focus[placeholder], [placeholder], *[placeholder] {
   background:transparent url(../images/ui/signup_note.png) 0 0 no-repeat;
   height:210px;
   width:235px;
-  top:0;
-  left:-280px;
+  top:45px;
+  left:-260px;
+}
+.form.edit_pin {
+  margin:0;
+  position:absolute;
+}
+.form.edit_pin:after {
+  content:"";
+  display:block;
+  position:absolute;
+  background:transparent url(../images/ui/pin_preview_note.png) 0 0 no-repeat;
+  height:210px;
+  width:235px;
+  top:45px;
+  right:-260px;
+}
+.profile .content #pins.edit_preview_pin {
+  margin-left:540px !important;
 }
 
 .cat_select {
@@ -909,6 +1090,40 @@ input:focus[placeholder], [placeholder], *[placeholder] {
   color:#0088CC !important;
 }
 
+/* flash messaging */
+
+#flash {
+  margin:-20px 0 20px 0;
+}
+.flashmsg {
+  position:relative;
+  width:auto;
+  background:blue;
+  text-align:center;
+  font-size:16px;
+  padding:10px 0;
+  text-shadow:0 1px 0 rgba(255,255,255,0.7);
+}
+.flashmsg .close {
+  position:absolute;
+  right:20px;
+  top:5px;
+  padding:5px;
+}
+.flashmsg .close:hover {
+  cursor:pointer;
+}
+.flashmsg.success {
+  background:#97E8B4;
+}
+.flashmsg.error {
+  background:#FF7A90;
+}
+.flashmsg.alert {
+  background:#9BD5EB;
+}
+
+
 /* footer styles */
 
 .nav_footer {
@@ -923,7 +1138,7 @@ input:focus[placeholder], [placeholder], *[placeholder] {
 .nav_footer a {
   padding:10px;
   text-decoration:none;
-  color:#000;
+  color:#E55799;
 }
 .nav_footer a:hover {
   text-decoration:underline;
@@ -954,10 +1169,12 @@ input:focus[placeholder], [placeholder], *[placeholder] {
   position:relative;
   width:270px;
   background:transparent url(../images/patterns/debut_light.png) 0 0 repeat;
-  border:1px solid #DADADA;
-  -moz-border-radius: 10px 0 0 10px;
-  -webkit-border-radius: 10px 0 0 10px;
-  border-radius: 10px 0 0 10px;
+  -moz-border-radius: 12px 0 0 12px;
+  -webkit-border-radius: 12px 0 0 12px;
+  border-radius: 12px 0 0 12px;
+  -webkit-box-shadow: 0 1px 3px rgba(34, 25, 25, 0.3);
+  -moz-box-shadow: 0 1px 3px rgba(34, 25, 25, 0.3);
+  box-shadow: 0 1px 3px rgba(34, 25, 25, 0.3);
 }
 .content {
   float:left;

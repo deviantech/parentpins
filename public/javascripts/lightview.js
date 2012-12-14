@@ -39,7 +39,7 @@ Lightview.Skins = {
     },
     continuous: false,
     controls: {
-      close: 'relative',
+      close: 'top',
       slider: {
         items: 5
       },
@@ -79,21 +79,21 @@ Lightview.Skins = {
     mousewheel: true,
     overlay: {
       close: true,
-      background: '#202020',
-      opacity: .85
+      background: '#000000',
+      opacity: .15
     },
     padding: 10,
     position: {
-      at: 'center',
+      at: 'top',
       offset: { x: 0, y: 0 }
     },
-    preload: true,
+    preload: false,
     radius: {
       size: 0,
       position: 'background'
     },
     shadow: {
-      blur: 3,
+      blur: 10,
       color: '#000',
       opacity: .15
     },
@@ -176,18 +176,18 @@ Lightview.Skins = {
       color: '#000',
       opacity: .25
     },
-    radius: { size: 5 },
-    background: '#141414',
+    radius: { size: 6 },
+    background: { color: '#ffffff', opacity: 0.0 },
     shadow: {
       blur: 5,
-      opacity: .08
+      opacity: .05
     },
     overlay: {
-      background: '#2b2b2b',
-      opacity: .85
+      background: '#000000',
+      opacity: .2
     },
     spinner: {
-      color: '#777'
+      color: '#E55799'
     }
   },
 
