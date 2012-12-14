@@ -523,7 +523,29 @@ a:hover {text-decoration:none;}
   padding: 0 0 0 10px;
   border-bottom:1px dashed #C2C2C2;
 }
-
+.content h2 {
+  color:#444;
+  font-family:arial,trebuchet,helvetica,sans-serif;
+  font-size:20px;
+  font-weight:bold;
+  margin:0;
+  padding: 10px 0 0 0;
+}
+.content h3 {
+  color:#444;
+  font-family:arial,trebuchet,helvetica,sans-serif;
+  font-size:16px;
+  font-weight:bold;
+  margin:0;
+  padding: 10px 0 0 0;
+}
+.help_list li {
+  padding:0 0 10px 0;
+}
+.help_list em {
+  font-size:12px;
+  display:block;
+}
 .empty_pins {
   margin:20px 65px;
 }
