@@ -19,8 +19,8 @@
     <!-- script src="public/javascripts/vendor/modernizr-2.6.2.min.js"></script -->
   </head>
   
-  <!-- apply .recent_pins class to body when in this view -->
-  <body class="recent_pins">
+  <!-- apply .full_width class to body when content should span the full browser width -->
+  <body class="full_width">
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
@@ -38,6 +38,9 @@
           <li>
             <a href="articles.html">Articles</a>
           </li>
+          <li>
+            <a href="stores.html">Kid Stores</a>
+          </li>
         </ul>
         <ul class="nav_login">
           <li>
@@ -53,7 +56,7 @@
     
     <div class="wrapper">
             
-        <div class="content board board_wide">
+        <div class="content board">
           <h1>Recently Pinned Kid Articles, Ideas, &amp; Gifts</h1>
           <select class="cat_select">
             <option>All Pins</option>
@@ -411,7 +414,7 @@
     <script>
       $(document).ready(function() {
         $('#pins').masonry({
-         columnWidth: 56,
+         columnWidth: 50,
          itemSelector: '.pin'
         }).imagesLoaded(function() {
          $('#pins').masonry('reload');

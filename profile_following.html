@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Profile - Specific user board</title>
+    <title>Profile - Following</title>
     <meta name="description" content="Kid Pins">
     <meta name="keywords" content="Kid Pins, keywords, here">
     <meta name="viewport" content="width=device-width">
@@ -30,9 +30,6 @@
         <ul class="nav_main">
           <li>
             <a href="recent_pins.html">Recent Pins</a>
-          </li>
-          <li>
-            <a href="profile_likes.html" class="likes">14 Likes</a>
           </li>
           <li>
             <a href="board_landing.html">Boards</a>
@@ -71,26 +68,43 @@
               <a href="profile_recent.html" class="recent">1,568 Pins</a>
             </li>
             <li>
-              <a href="profile_boards.html" class="boards active">6 Boards</a>
+              <a href="profile_likes.html" class="likes">14 Likes</a>
+            </li>
+            <li>
+              <a href="profile_boards.html" class="boards">6 Boards</a>
             </li>
             <li>
               <a href="profile_followers.html" class="followers">116 Followers</a>
             </li>
             <li>
-              <a href="profile_following.html" class="following"> 87 Following</a>
+              <a href="profile_following.html" class="following active"> 87 Following</a>
             </li>
           </ul>
           <p class="kid_count">Has 3 kids</p>
         </div>
         
-        <div class="content">
-          <h1><span>User Name's Board:</span> Kid Activities I Love</h1>
-          <select class="cat_select">
-            <option>All Pins</option>
-            <option>Articles</option>
-            <option>Gifts</option>
-            <option>Ideas</option>
-          </select>
+        <div class="content follow_list">
+          <h1><span>User Name's</span> Following 87</h1>
+          <div class="followers_list">
+            <ul class="users">
+              <li>
+                <a href="#" class="btn action follow_in_list">un-follow</a>
+                <a href="#" class="user"><img src="public/images/temp/avatar_50.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
+              </li>
+              <li>
+                <a href="#" class="btn action follow_in_list">un-follow</a>
+                <a href="#" class="user"><img src="public/images/temp/avatar_50.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
+              </li>
+              <li>
+                <a href="#" class="btn action follow_in_list">un-follow</a>
+                <a href="#" class="user"><img src="public/images/temp/avatar_50.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
+              </li>
+              <li>
+                <a href="#" class="btn action follow_in_list">un-follow</a>
+                <a href="#" class="user"><img src="public/images/temp/avatar_50.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
+              </li>
+            </ul>
+          </div>
           <ul class="timeline" id="pins">
             <!-- Image max-widths should be 320px maintianing aspect ratio with flexible height -->
             <!-- timeline center dot alignments need work to match masonry configuration -->
@@ -138,37 +152,37 @@
                 <a href="#" class="btn sec_action like_button">Like</a>
                 <a href="#" class="btn sec_action comment_button">Comment</a>
               </div>
-              <a href="specific_pin.html" class="image_link">
-                <img src="public/images/temp/art.jpg" class="pin_image">
-              </a>
-              <p class="description"><a href="specific_pin.html">title of the pinned item goes here</a></p>
-              <div class="stats">
-                <span class="like_count">2 likes</span>
-                <span class="comment_count">3 comments</span>
-                <span class="repins_count">4 repins</span>
-              </div>
-              <div class="attribution">
-                <a class="image_link" title="User Name" href="/path_to_user_profile">
-                  <img alt="Profile picture of User Name" src="public/images/temp/avatar_30.jpg"/>
+                <a href="specific_pin.html" class="image_link">
+                  <img src="public/images/temp/art.jpg" class="pin_image">
                 </a>
-                <p class="details">
-                  <a href="/path_to_user_profile">User Name 1</a>
-                  via
-                  <a href="/path_to_user_profile">Stacy of KSW</a>
-                  onto
-                  <a href="/path_to/user_board">Name of user's board</a>
-                </p>
-              </div>
-              <div class="comment">
-                <a class="image_link" title="User Name" href="/path_to_user_profile">
-                  <img alt="Profile picture of User Name" src="public/images/temp/avatar_30.jpg"/>
-                </a>
-                <p class="details">
-                  <a href="/path_to_user_profile">User Name 1</a>
-                  user comment goes here
-                </p>
-              </div>
-            </li>
+                <p class="description"><a href="specific_pin.html">title of the pinned item goes here</a></p>
+                <div class="stats">
+                  <span class="like_count">2 likes</span>
+                  <span class="comment_count">3 comments</span>
+                  <span class="repins_count">4 repins</span>
+                </div>
+                <div class="attribution">
+                  <a class="image_link" title="User Name" href="/path_to_user_profile">
+                    <img alt="Profile picture of User Name" src="public/images/temp/avatar_30.jpg"/>
+                  </a>
+                  <p class="details">
+                    <a href="/path_to_user_profile">User Name 1</a>
+                    via
+                    <a href="/path_to_user_profile">Stacy of KSW</a>
+                    onto
+                    <a href="/path_to/user_board">Name of user's board</a>
+                  </p>
+                </div>
+                <div class="comment">
+                  <a class="image_link" title="User Name" href="/path_to_user_profile">
+                    <img alt="Profile picture of User Name" src="public/images/temp/avatar_30.jpg"/>
+                  </a>
+                  <p class="details">
+                    <a href="/path_to_user_profile">User Name 1</a>
+                    user comment goes here
+                  </p>
+                </div>
+              </li>
             <li class="left pin">
               <div class="actions">
                 <a href="/pin/pin_id/repin/" class="btn sec_action repin_button">Repin</a>
@@ -247,6 +261,7 @@
                 </div>
               </li>
           </ul>
+          
         </div>
         
         <div class="clearfix"></div>

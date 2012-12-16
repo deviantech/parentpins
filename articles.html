@@ -20,7 +20,7 @@
   </head>
   
   <!-- apply .recent_pins class to body when in this view -->
-  <body class="recent_pins">
+  <body class="full_width">
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
@@ -37,6 +37,9 @@
           </li>
           <li>
             <a href="articles.html" class="marker">Articles</a>
+          </li>
+          <li>
+            <a href="stores.html">Kid Stores</a>
           </li>
         </ul>
         <ul class="nav_login">
@@ -251,7 +254,7 @@
     <script>
       $(document).ready(function() {
         $('#pins').masonry({
-         columnWidth: 56,
+         columnWidth: 50,
          itemSelector: '.pin'
         }).imagesLoaded(function() {
          $('#pins').masonry('reload');

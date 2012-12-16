@@ -19,7 +19,7 @@
     <!-- script src="public/javascripts/vendor/modernizr-2.6.2.min.js"></script -->
   </head>
   
-  <body>
+  <body class="full_width">
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
@@ -36,6 +36,9 @@
           </li>
           <li>
             <a href="articles.html">Articles</a>
+          </li>
+          <li>
+            <a href="stores.html">Kid Stores</a>
           </li>
         </ul>
         <ul class="nav_login">
@@ -54,7 +57,7 @@
     <div class="wrapper board">
             
         <div class="content board board_wide">
-          <h1>Board - Kids Diet Recipes</h1>
+          <h1><a href="profile_boards.html" class="user"><img src="public/images/temp/avatar_30.jpg"> User Name's </a> Board: Kids Diet Recipes</h1>
           <select class="cat_select">
             <option>All Pins</option>
             <option>Articles</option>
@@ -209,6 +212,7 @@
               </div>
             </li>
           </ul>
+          <div class="clearfix"></div>
           <a href="#" class="btn action load_more_button tertiary_action">Load More</a>
           <br/>
           <img src="public/images/ui/loader.gif" alt="loading icon" class="loader_icon"/>
@@ -248,7 +252,7 @@
     <script>
       $(document).ready(function() {
         $('#pins').masonry({
-         columnWidth: 56,
+         columnWidth: 50,
          itemSelector: '.pin'
         }).imagesLoaded(function() {
          $('#pins').masonry('reload');
