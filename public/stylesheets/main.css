@@ -1346,7 +1346,124 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 }
 
 
+/* pin overlay */
 
+.pinly {
+  position:absolute;
+  top:30%;
+  left:10px;
+  width:500px;
+  padding:10px;
+  margin:0;
+  background:#fff;
+  border-right:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+  -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+  box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.pinly .attribute {
+  padding:10px 0;
+  border-bottom:1px dashed #ddd;
+  margin:0 0 10px 0;
+  position:relative;
+  min-height:50px;
+}
+.pinly .attribute .avatar_link {
+  position:absolute;
+  display:block;
+  top:5px;
+  left:3px;
+  height:50px;
+  width:50px;
+}
+.pinly .attribute_info {
+  margin:0 10px 0 65px;
+}
+.pinly .attribute_info a {
+  text-decoration:none;
+  font-size:17px;
+  line-height:20px;
+}
+.pinly .attribute_info a:hover {
+  color:#222;
+}
+.pinly .attribute_info p {
+  padding:0;
+  margin:0;
+  color:#999;
+  font-size:12px;
+}
+.pinly .attribute_info span {
+  padding:0;
+  margin:0;
+  color:#000;
+  font-size:18px;
+  font-weight:bold;
+}
+.pinly .attribute_info .time {
+  font-style:italic;
+  color:#bbb;
+}
+.pinly h2 {
+  color:#222;
+  font-size:18px;
+  margin:0;
+  padding:0;
+}
+.pinly h2 a {
+  color:#222;
+  text-decoration:none;
+}
+.pinly h2 a:hover {
+  color:#E55799;
+}
+.pinly .image_link {
+  display:block;
+  overflow:hidden;
+  width:500px;
+  background:#eee;
+}
+.pinly .image_link img {
+  display:block;
+  margin:0 auto;
+}
+.pinly .stats {
+  color:#999;
+  font-size:12px;
+  margin:0;
+  padding:0 0 10px 0;
+}
+.pinly .stats span {
+  padding:0 10px 0 0;
+}
+.pinly .detail {
+  position:relative;
+}
+.pinly .detail .actions {
+  display:none;
+  padding:10px 10px 20px 30px;
+  position:absolute;
+  top:80px;
+  left:500px;
+  width:100px;
+  background:#fff;
+  border-right:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+  -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+  box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+}
+.pinly .detail:hover .actions {
+  display:block;
+}
+.pinly .detail .actions a {
+  margin-top:15px !important;
+}
 
 /* layout grid */
 
@@ -1404,7 +1521,6 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   padding:0 25px;
   font-size:13px;
 }
-
 
 
 
