@@ -13,32 +13,7 @@
     <meta name="viewport" content="width=device-width">
     
     <%= stylesheet_link_tag    "application", :media => "all" %>
-    <%= csrf_meta_tags %>
-    
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="public/javascripts/vendor/jquery-1.8.2.min.js"><\/script>')</script>
-    <script src="public/javascripts/plugins.js"></script>
-    <script>
-  		$(document).ready(function() {
-  		  $('.pinly_toggle').click(function(){
-  			//get collapse content selector
-  			var collapse_content_selector = $(this).attr('href');					
-
-  			//make the collapse content to be shown or hide
-  			var toggle_switch = $(this);
-  			$(collapse_content_selector).toggle(function(){
-  			  if($(this).css('display')=='none'){
-                                  //change the button label to be 'Show'
-  				toggle_switch.html('Show');
-  			  }else{
-                                  //change the button label to be 'Hide'
-  				toggle_switch.html('Hide');
-  			  }
-  			});
-  		  });
-
-  		});	
-  	</script>
+    <%= csrf_meta_tags %>    
   </head>
   
   <body class="<%= body_class %>">
@@ -47,6 +22,7 @@
     <![endif]-->
     
     <%= render 'shared/navigation' %>
+    <%= render 'shared/flash', :locals => {:flash => flash} %>
     <%= yield %>
 
     <%= javascript_include_tag "footer" %>

@@ -16,12 +16,35 @@
       </li>
     </ul>
     <ul class="nav_login">
+      <% if logged_in? %>
+      <li class="profile_link">
+        <a href="profile_recent.html" >Hi, User Name</a>
+        <ul>
+          <li>
+            <a href="profile_boards.html">Boards</a>
+          </li>
+          <li>
+            <a href="profile_recent.html">Pins</a>
+          </li>
+          <li>
+            <a href="profile_likes.html">Likes</a>
+          </li>
+          <li>
+            <a href="profile_settings.html" class="settings">Settings</a>
+          </li>
+          <li>
+            <a href="#" class="logout">Log out</a>
+          </li>
+        </ul>
+      </li>
+      <% else %>
       <li>
         <%= nav_link 'Log In', '/login.html', :class => "login" %>
       </li>
       <li>
         <%= nav_link 'Sign Up', '/signup.html', :class => "signup" %>
       </li>
+      <% end %>
     </ul>
     <div class="clearfix"></div>
   </div>
