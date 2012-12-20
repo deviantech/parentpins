@@ -133,8 +133,10 @@ a {
     background-repeat: no-repeat;
     background-position: 5px 0;
     position: relative;
+    &:hover {
+      background-color:#658AD9;}
     &:after {
-      content: "KidPins is more fun with friends!";
+      content: "ParentPins is more fun with friends!";
       position: absolute;
       bottom: -24px;
       left: 32px;
@@ -168,7 +170,7 @@ a {
   position: absolute;
   padding: 20px 20px;
   top: 0;
-  left: 30px;
+  left: 10px;
   text-align: center;
   text-decoration: none;
   color: #E55799; }
@@ -176,13 +178,41 @@ a {
 .ir.logo {
   text-indent: 0; }
 
+.search {
+  width:180px;
+  float:left;
+  overflow:hidden;
+  padding:14px 10px 0 10px;
+  input {
+    display: block;
+    width: 116px;
+    float:left;
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #D2D2D2;
+    -moz-border-radius: 4px 0 0 4px;
+    -webkit-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+    -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.13) inset;
+    -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.13) inset;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.13) inset;
+    font-size: 16px;
+    font-weight: normal;
+    padding: 8px 10px;
+    resize: none; }
+  .search_button {
+    float:left; 
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0; 
+    padding:9px; } }
+
 .header li {
   list-style: none;
   a {
     display: block;
     text-decoration: none;
     font-size: 15px;
-    padding: 20px 30px;
+    padding: 20px 25px;
     font-weight: 400;
     &:hover {
       background-color: #e5579a;
@@ -220,7 +250,7 @@ a {
 
 .nav_main {
   float: left;
-  margin: 0 0 0 255px;
+  margin: 0 0 0 135px;
   padding: 0;
   li {
     float: left; }
@@ -248,6 +278,7 @@ a {
     border: none;
     text-align: center;
     position: relative;
+    width:161px;
     ul {
       display: none;
       background: #fff;
@@ -257,11 +288,10 @@ a {
       margin: 0;
       padding: 0;
       z-index: 3;
-      border: 1px solid #ccc;
-      width: 158px;
-      -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.05);
-      -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.05);
-      box-shadow: 0 4px 3px rgba(0, 0, 0, 0.05); }
+      width: 160px;
+      -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5); }
     &:hover ul {
       display: block; }
     ul li {
@@ -270,11 +300,57 @@ a {
       a {
         display: block;
         float: none;
+        color:#E55799;
+        text-shadow:none;
         padding: 6px 10px;
         text-align: left;
-        font-size: 13px; } }
+        font-size: 13px; 
+        &:hover {
+          color:#fff; } } }
     .settings {
       border-top: 1px solid #eee; } } }
+
+/* sub header cover photo */
+
+.sub_header_wrapper {
+  background: none repeat scroll 0 0 #000000;
+  border-top: 1px dashed #444444;
+  margin-top: -21px;
+  width: 100%;
+  height:160px;
+  overflow:hidden;
+  position:relative;
+  .sub_header {
+    height:160px;
+    width:1020px;
+    margin:0 auto;
+    position:relative;
+    &:before {
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      height:160px;
+      width:1020px;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agb2Zmc2V0PSIwLjIiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyNTUsIDI1NSwgMCkiLz48c3RvcCBvZmZzZXQ9IjAuOSIgc3RvcC1jb2xvcj0iYmxhY2siLz48L3JhZGlhbEdyYWRpZW50PjxyZWN0IHg9IjAlIiB5PSIwJSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iYmxhY2siIC8+PHJlY3QgeD0iLTAuNzQ5NyUiIHk9Ii0yNDEuOTYwMyUiIHdpZHRoPSIxMDEuNDk5NSUiIGhlaWdodD0iNTgzLjkyMDYlIiBmaWxsPSJ1cmwoI2cpIiAvPjwvc3ZnPg==);
+      background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 496, color-stop(20%, rgba(255, 255, 255, 0)), color-stop(90%, black));
+      background-image: -webkit-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
+      background-image: -moz-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
+      background-image: -ms-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
+      background-image: -o-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
+      background-image: radial-gradient(farthest-corner circle at center center, rgba(255, 255, 255, 0) 20%, black 90%); } 
+    button {
+      display:none;
+      color:#fff;
+      text-shadow:0 -1px 0 #000;
+      position:absolute;
+      top:30px;
+      left:18px; } 
+    &:hover button {
+      display:block; } }
+  .cover_photo {
+    margin:0;
+    display:block; } }
 
 /* profile info section */
 
@@ -315,6 +391,8 @@ a {
     -webkit-box-shadow: 0 3px 5px #F1F1F1;
     -moz-box-shadow: 0 3px 5px #F1F1F1;
     box-shadow: 0 3px 5px #F1F1F1;
+    &:hover {
+      border:4px solid #fff; }
     img {
       -moz-border-radius: 100px;
       -webkit-border-radius: 100px;
@@ -358,7 +436,7 @@ a {
   .recent:after {
     background-position: -235px -1583px; }
   .likes:after {
-    background-position: -284px -958px; }
+    background-position: -92px -47px; }
   .boards:after {
     background-position: -380px -1487px; }
   .followers:after {
@@ -514,7 +592,7 @@ a {
   background-position: -118px -118px; }
 
 .like_button:before {
-  background-position: -286px 0; }
+  background-position: -93px 1px; }
 
 .edit_button:before {
   background-position: 0 -71px; }
@@ -590,9 +668,9 @@ a {
     .article:hover:before {
       content: "Pinned from a blog, top 10 list, writer, etc."; }
     .gift:hover:before {
-      content: "Pinned from an online store, KidPin Store, or just a cool product for sale."; }
+      content: "Pinned from an online store, ParentPin Store, or just a cool product for sale."; }
     .idea:hover:before {
-      content: "Just generally a cool idea for kids."; }
+      content: "Just generally a cool idea for Parents."; }
     a {
       text-decoration: none;
       color: #222;
@@ -986,7 +1064,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 .followers_list {
   width: 200px;
   float: left;
-  margin: 0 0 0 60px; }
+  margin: 20px 0 0 60px; }
 
 .follow_list .users {
   margin: 0;
@@ -1044,7 +1122,13 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   ul.boards li {
     margin: 15px 15px 10px 15px; }
   .content #pins {
-    margin-left: 50px !important; } }
+    margin-left: 50px !important; } 
+  .content h1 {
+    color:#fff;
+    text-shadow:0 1px 0 #000;
+    border-bottom:none; }
+  .wrapper {
+    margin-top:-75px; } }
 
 .full_width {
   .wrapper {

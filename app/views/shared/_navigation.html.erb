@@ -3,7 +3,7 @@
     <a href="/" class="logo ir">ParentPins</a>
     <ul class="nav_main">
       <li>
-        <%= nav_link 'Recent Pins', '/recent_pins.html' %>
+        <%= nav_link 'Trending Pins', '/recent_pins.html' %>
       </li>
       <li>
         <%= nav_link 'Boards', '/board_landing.html' %>
@@ -15,6 +15,10 @@
         <%= nav_link 'Stores', '/stores.html' %>
       </li>
     </ul>
+    <form class="search">
+      <input type="text" placeholder="Search..."/>
+      <button class="btn search_button primary">Go</button>
+    </form>
     <ul class="nav_login">
       <% if logged_in? %>
       <li class="profile_link">

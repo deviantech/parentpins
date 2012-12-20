@@ -19,6 +19,8 @@ module ApplicationHelper
       'theme_one'
     when 'modal_edit_pin', 'modal_signup_2'
       'modal'
+    when 'profile_likes', 'profile_recent', 'profile_boards', 'profile_followers', 'profile_following', 'profile_recent_empty', 'profile_specific_board'
+      'profile'
     else
       ''
     end
