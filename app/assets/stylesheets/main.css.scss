@@ -97,7 +97,8 @@ a {
     background-color: #E55799;
     border: 1px solid #E55799;
     position: relative;
-    font-weight: bold; }
+    font-weight: bold;
+    color:#fff; }
   &.sec_action {
     background-color: #F8F8F8;
     border: 1px solid #bbb;
@@ -274,6 +275,17 @@ a {
   .signup {
     border-left: 1px solid #545454;
     border-right: 1px solid #545454; }
+  .add {
+    background-color: #e5579a;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#7DE07C', endColorstr = '#20A41E');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#7DE07C', endColorstr = '#20A41E')";
+    background-image: -moz-linear-gradient(top, #7DE07C, #20A41E);
+    background-image: -ms-linear-gradient(top, #7DE07C, #20A41E);
+    background-image: -o-linear-gradient(top, #7DE07C, #20A41E);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#7DE07C), to(#20A41E));
+    background-image: -webkit-linear-gradient(top, #7DE07C, #20A41E);
+    background-image: linear-gradient(top, #7DE07C, #20A41E); 
+    border-right:1px solid #000; }
   .profile_link {
     border: none;
     text-align: center;
@@ -283,7 +295,7 @@ a {
       display: none;
       background: #fff;
       position: absolute;
-      top: 58px;
+      top: 61px;
       left: 0;
       margin: 0;
       padding: 0;
@@ -1018,7 +1030,11 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 
 .form {
   &.narrow {
-    margin: 60px auto; }
+    margin: 60px auto; 
+    h1 {
+      color:#000 !important;
+      text-shadow:0 1px 0 #fff !important;
+      border-bottom: 1px dashed #C2C2C2 !important; } }
   &.signup:after {
     content: "";
     display: block;
@@ -1396,7 +1412,8 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 .header_wrapper {
   background:url("/assets/patterns/black_linen_v2.png") repeat scroll 0 0 transparent;
   margin: 0 0 20px;
-  border-bottom: 1px dashed #D7D7D7; }
+  border-bottom: 1px dashed #D7D7D7;
+  min-width:1020px; }
 
 .header {
   margin: 0 auto;
@@ -1433,7 +1450,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 .footer_wrapper {
   background: #F8F8F8;
   overflow: hidden;
-  min-height: 300px;
+  min-height: 100px;
   margin: 40px 0 0 0;
   border-top: 1px dashed #D7D7D7; }
 

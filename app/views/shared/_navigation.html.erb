@@ -21,6 +21,9 @@
     </form>
     <ul class="nav_login">
       <% if logged_in? %>
+      <li class="add_pins">
+        <%= nav_link '+ Add', '/add.html', :class => "add" %>
+      </li>
       <li class="profile_link">
         <a href="profile_recent.html" >Hi, User Name</a>
         <ul>
