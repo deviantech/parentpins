@@ -26,7 +26,8 @@ gem 'jquery-rails'
 # gem 'jbuilder'
 
 gem 'capistrano'
-gem 'debugger'
+gem 'ruby-debug', :platform => :ruby_18
+gem 'debugger', :platform => :ruby_19
 
 
 gem 'devise'
