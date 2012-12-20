@@ -1,11 +1,11 @@
 <div class="wrapper general">
         
     <div class="content">
-      <h1>Interesting Pins Just for Kids... and Parents</h1>
+      <h1>Interesting Pins Just for Parents</h1>
       
       <h2>Overview</h2>
-      <p>This is a purely front end build out of all the pages, modals, and states needed to create KidPins core site. Includes html, css, and javascript. Will later convert to Ruby on Rails using Haml/Sass.</p>
-      <p>This site is basically Pinterest for parents interested in great finds for to help their children. KidPins uses the concept of 4 buckets of Pins; Article, Gift, Idea and General Pin types. KidPins also has a very small taxonomy applied which creates top level categories to be used in search and general board browsing.</p>
+      <p>This is a purely front end build out of all the pages, modals, and states needed to create ParentPins core site. Includes html, css, and javascript. Will later convert to Ruby on Rails using Haml/Sass.</p>
+      <p>This site is basically Pinterest for parents interested in great finds for to help their children. ParentPins uses the concept of 4 buckets of Pins; Article, Gift, Idea and General Pin types. ParentPins also has a very small taxonomy applied which creates top level categories to be used in search and general board browsing.</p>
       <p>Will be monetized through the use of <a href="http://www.skimlinks.com/" title="link out to html5 boilerplate site">skimlinks.com</a> API product feed in order to supply an onsite store with products.</p>
       
       <h2>Site Map</h2>
@@ -79,19 +79,7 @@
           <em>Only page to show the logged user nav with drop down links.</em>
         </li>
         <li>
-          <button href="#pinly_article" class="pinly_toggle btn primary">Show Article pin overlay</button>
-          <em>Pops up above this button</em>
-          <em>Will need to think about how to center this in the browser</em>
-        </li>
-        
-        <li>
-          <button href="#pinly_gift" class="pinly_toggle btn primary">Show Gift pin overlay</button>
-          <em>Pops up above this button</em>
-          <em>Will need to think about how to center this in the browser</em>
-        </li>
-        
-        <li>
-          <button href="#pinly_idea" class="pinly_toggle btn primary">Show Idea pin overlay</button>
+          <button href="#pinly_overlay_1" class="pinly_toggle btn primary">Show Article pin overlay</button>
           <em>Pops up above this button</em>
           <em>Will need to think about how to center this in the browser</em>
         </li>
@@ -142,16 +130,20 @@
     
 </div>
 
-<div class="pinly article" id="pinly_article" style="display:none;">
-  <div class="attribute">
+<div class="pinly_overlay" id="pinly_overlay_1" style="display:none;">
+  <div class="pinly article" id="pinly_article">
+    <!-- pin_type can be Article, Gift or Idea -->
+    <div class="pin_type">Article</div>
+    <div class="attribute">
     <a href="#" class="avatar_link"><img src="/assets/temp/avatar_50.jpg"></a>
     <div class="attribute_info">
-      <p><span>Article</span>: <a href="#">User Name</a> via <a href="#">Other user's Board Name Here for length</a></p>
-      <p class="time">about 1 hour ago</p>
+      <p><a href="#">User Name</a> via <a href="#">Other user Name</a></p>
+      <p class="time">about 1 hour ago from <a href="#">board name</a></p>
     </div>
   </div>
-  <div class="detail">
+    <div class="detail">
     <h2><a href="#">Title of the Article pin goes here</a></h2>
+    <p><a href="#">http://some_site_domain.com/item/path/url/here.html</a></p>
     <div class="stats">
       <span class="like_count">2 likes</span>
       <span class="comment_count">3 comments</span>
@@ -163,62 +155,11 @@
       <a class="btn sec_action comment_button" href="#">Comment</a>
     </div>
     <a href="#" class="image_link"><img src="/assets/temp/art_large.jpg"></a>
-    <p><a href="#">http://some_site_domain.com/item/path/url/here.html</a></p>
-    <p>This site is basically Pinterest for parents interested in great finds for to help their children. KidPins uses the concept of 4 buckets of Pins; Article, Gift, Idea and General Pin types. KidPins also has a very small taxonomy applied which creates top level categories to be used in search and general board browsing.</p>
+    <p>This site is basically Pinterest for parents interested in great finds for to help their children. ParentPins uses the concept of 4 buckets of Pins; Article, Gift, Idea and General Pin types. ParentPins also has a very small taxonomy applied which creates top level categories to be used in search and general board browsing.</p>
+    <p>Originally posted by <a href="#">User Name</a> 
+      <a href="#" class="btn action follow">follow</a>
+    </p>
   </div>
-  <div class="clearfix"></div>
-</div>
-
-<div class="pinly article" id="pinly_gift" style="display:none;">
-  <div class="attribute">
-    <a href="#" class="avatar_link"><img src="/assets/temp/avatar_50.jpg"></a>
-    <div class="attribute_info">
-      <p><span>Gift</span>: <a href="#">User Name</a> via <a href="#">Other user's Board Name Here for length</a></p>
-      <p class="time">about 1 hour ago</p>
-    </div>
+    <div class="clearfix"></div>
   </div>
-  <div class="detail">
-    <h2><a href="#">Title of the Gift pin goes here</a></h2>
-    <div class="stats">
-      <span class="like_count">2 likes</span>
-      <span class="comment_count">3 comments</span>
-      <span class="repins_count">4 repins</span>
-    </div>
-    <div class="actions">
-      <a class="btn sec_action repin_button" href="/pin/pin_id/repin/">Repin</a>
-      <a class="btn sec_action like_button" href="#">Like</a>
-      <a class="btn sec_action comment_button" href="#">Comment</a>
-    </div>
-    <a href="#" class="image_link"><img src="/assets/temp/art_3.jpg"></a>
-    <p><a href="#">http://some_site_domain.com/item/path/url/here.html</a></p>
-    <p>This site is basically Pinterest for parents interested in great finds for to help their children. KidPins uses the concept of 4 buckets of Pins; Article, Gift, Idea and General Pin types. KidPins also has a very small taxonomy applied which creates top level categories to be used in search and general board browsing.</p>
-  </div>
-  <div class="clearfix"></div>
-</div>
-
-<div class="pinly article" id="pinly_idea" style="display:none;">
-  <div class="attribute">
-    <a href="#" class="avatar_link"><img src="/assets/temp/avatar_50.jpg"></a>
-    <div class="attribute_info">
-      <p><span>Idea</span>: <a href="#">User Name</a> via <a href="#">Other user's Board Name Here for length</a></p>
-      <p class="time">about 1 hour ago</p>
-    </div>
-  </div>
-  <div class="detail">
-    <h2><a href="#">Title of the Idea pin goes here</a></h2>
-    <div class="stats">
-      <span class="like_count">2 likes</span>
-      <span class="comment_count">3 comments</span>
-      <span class="repins_count">4 repins</span>
-    </div>
-    <div class="actions">
-      <a class="btn sec_action repin_button" href="/pin/pin_id/repin/">Repin</a>
-      <a class="btn sec_action like_button" href="#">Like</a>
-      <a class="btn sec_action comment_button" href="#">Comment</a>
-    </div>
-    <a href="#" class="image_link"><img src="/assets/temp/art_2.jpg"></a>
-    <p><a href="#">http://some_site_domain.com/item/path/url/here.html</a></p>
-    <p>This site is basically Pinterest for parents interested in great finds for to help their children. KidPins uses the concept of 4 buckets of Pins; Article, Gift, Idea and General Pin types. KidPins also has a very small taxonomy applied which creates top level categories to be used in search and general board browsing.</p>
-  </div>
-  <div class="clearfix"></div>
 </div>

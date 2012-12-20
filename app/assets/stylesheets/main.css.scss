@@ -215,8 +215,8 @@ a {
   li {
     float: left; }
   a {
-    color: #000;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 1); } }
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0,0,0, 0.8); } }
 
 .nav_login {
   float: right;
@@ -225,15 +225,15 @@ a {
   li {
     float: left; }
   a {
-    color: #000;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
-    border-left: 1px solid #eee;
-    border-right: 1px solid #eee; }
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0,0,0, 0.8);
+    border-left: 1px solid #545454;
+    border-right: 1px solid #545454; }
   .login {
-    border-right: 1px solid #f9f9f9; }
+    border-right: 1px solid #000; }
   .signup {
-    border-left: 1px solid #eee;
-    border-right: 1px solid #eee; }
+    border-left: 1px solid #545454;
+    border-right: 1px solid #545454; }
   .profile_link {
     border: none;
     text-align: center;
@@ -1125,23 +1125,43 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 
 /* pin overlay */
 
+.pinly_overlay {
+  background: rgba(255,255,255,0.9);
+  display: block;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  overflow-y:scroll;
+}
+
 .pinly {
-  position: absolute;
-  top: 30%;
-  left: 10px;
+  position: static;
   width: 500px;
   padding: 10px;
-  margin: 0;
+  margin: 20px auto;
   background: #fff;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
-  -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
-  -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
-  box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+  -webkit-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+  -moz-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+  box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
   -webkit-transition: all 0.4s ease-in-out;
   -moz-transition: all 0.4s ease-in-out;
   -o-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
+  .pin_type {
+    background: none repeat scroll 0 0 #656565;
+    color: #FFFFFF;
+    display: block;
+    float: right;
+    font-size: 12px;
+    padding: 4px 8px;
+    position: relative; }
+  .btn.action {
+    position:relative;
+    float:none; }
   .attribute {
     padding: 10px 0;
     border-bottom: 1px dashed #ddd;
@@ -1176,7 +1196,9 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       font-weight: bold; }
     .time {
       font-style: italic;
-      color: #bbb; } }
+      a {
+        font-style:normal;
+        font-size: 12px; } } }
   h2 {
     color: #222;
     font-size: 18px;
@@ -1187,11 +1209,14 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       text-decoration: none;
       &:hover {
         color: #E55799; } } }
+  p {
+    margin:0 0 8px 0; }
   .image_link {
     display: block;
     overflow: hidden;
     width: 500px;
     background: #eee;
+    margin:0 0 10px 0;
     img {
       display: block;
       margin: 0 auto; } }
@@ -1205,27 +1230,19 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   .detail {
     position: relative;
     .actions {
-      display: none;
       padding: 10px 10px 20px 30px;
       position: absolute;
       top: 80px;
-      left: 500px;
+      left: 520px;
       width: 100px;
-      background: #fff;
-      border-right: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-      -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
-      -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
-      box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38); }
-    &:hover .actions {
-      display: block; }
+      background: transparent; }
     .actions a {
       margin-top: 15px !important; } } }
 
 /* layout grid */
 
 .header_wrapper {
-  background: #F8F8F8;
+  background:url("/assets/patterns/black_linen_v2.png") repeat scroll 0 0 transparent;
   margin: 0 0 20px;
   border-bottom: 1px dashed #D7D7D7; }
 
