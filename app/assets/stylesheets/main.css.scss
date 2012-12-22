@@ -83,7 +83,7 @@ a {
     padding: 5px 10px 5px 10px;
     position: absolute;
     top: 14px;
-    right: -40px;
+    right: 0;
     font-size: 13px;
     display: inline-block;
     z-index: 1; }
@@ -367,8 +367,19 @@ a {
 /* profile info section */
 
 .info {
+  float: left;
+  position: relative;
+  width: 195px;
+  padding: 0 0 30px 0;
+  background: transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
+  -moz-border-radius: 12px 0 0 12px;
+  -webkit-border-radius: 12px 0 0 12px;
+  border-radius: 12px 0 0 12px;
+  -webkit-box-shadow: 0 2px 3px rgba(34, 25, 25, 0.3);
+  -moz-box-shadow: 0 2px 3px rgba(34, 25, 25, 0.3);
+  box-shadow: 0 2px 3px rgba(34, 25, 25, 0.3);
   h2 {
-    font-size: 24px;
+    font-size: 22px;
     color: #444;
     font-weight: normal;
     font-family: georgia,times,serif;
@@ -391,6 +402,25 @@ a {
       height: 30px;
       width: 40px;
       background: transparent url(/assets/ui/glyphicons_gray.png) -135px -192px repeat; } }
+  .bio {
+    font-family: "times new roman", times, georgia, serif;
+      font-size: 18px;
+      font-style: italic;
+      margin: 10px 0 0;
+      position: relative;
+      padding-top:10px;
+      border-top:1px dotted #B4B4B4;
+      color:#585858;
+    &:before {
+      content:"''";
+      font-size:18px;
+      font-weight:bold;
+      color:#888; }
+    &:after {
+      content:"''";
+      font-size:18px;
+      font-weight:bold;
+      color:#888; } }
   .avatar {
     border: 4px solid #cd2479;
     display: block;
@@ -445,6 +475,8 @@ a {
       left: 6px;
       height: 30px;
       width: 30px; } }
+  .activity:after {
+    background-position: -93px -143px; }
   .recent:after {
     background-position: -235px -1583px; }
   .likes:after {
@@ -830,6 +862,8 @@ ul.boards {
     margin: 15px 15px 10px 15px; } }
 
 .board {
+  .holder {
+    min-height:360px; }
   h3, h4 {
     overflow: hidden;
     padding: 5px 15px 0;
@@ -849,17 +883,16 @@ ul.boards {
       overflow: hidden;
       padding-bottom: 0;
       text-shadow: 0 1px 0 #FFFFFF;
-      text-decoration: none; } }
+      text-decoration: none;
+    &:hover {
+      color: #000;
+      text-decoration: underline; } } }
   h4 a {
     color: #8C7E7E;
     font-size: 11px;
     line-height: 18px;
     font-weight: bold;
-    text-decoration: none; }
-  h3 a:hover {
-    color: #000;
-    text-decoration: underline; }
-  h4 a {
+    text-decoration: none;
     &:hover {
       color: #b6457a;
       text-decoration: underline; }
@@ -867,7 +900,11 @@ ul.boards {
       height: 18px;
       margin-right: 5px;
       vertical-align: bottom;
-      width: 18px; } } }
+      width: 18px; } } 
+  .description {
+    margin:10px 0;
+    p {
+      padding:0 10px; } } }
 
 .link {
   position: absolute;
@@ -936,12 +973,15 @@ ul.boards {
 .thumbs {
   display: block;
   width: 224px;
+  overflow:hidden;
   img {
     float: left;
     opacity: 1;
     height: 55px;
     width: 55px;
     margin: 0 1px 0 0; } }
+    
+
 
 .content.board_wide {
   width: 900px !important;
@@ -1078,7 +1118,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   font-size: 12px; }
 
 .followers_list {
-  width: 200px;
+  width: 240px;
   float: left;
   margin: 20px 0 0 60px; }
 
@@ -1153,8 +1193,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   .content {
     width: 100% !important;
     h1 {
-      margin: 0 50px 10px;
-      min-width: 1020px;
+      margin: 0 0 10px;
       .user {
         text-align: left;
         text-decoration: none;
@@ -1425,37 +1464,61 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   margin: 0 auto;
   width: 1020px; }
 
-.info {
-  float: left;
-  position: relative;
-  width: 195px;
-  padding: 0 0 30px 0;
-  background: transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
-  -moz-border-radius: 12px 0 0 12px;
-  -webkit-border-radius: 12px 0 0 12px;
-  border-radius: 12px 0 0 12px;
-  -webkit-box-shadow: 0 2px 3px rgba(34, 25, 25, 0.3);
-  -moz-box-shadow: 0 2px 3px rgba(34, 25, 25, 0.3);
-  box-shadow: 0 2px 3px rgba(34, 25, 25, 0.3); }
-
 .content {
-  float: left;
-  position: relative;
-  width: 820px;
-  margin: 0; }
+float: left;
+position: relative;
+width: 820px;
+margin: 0; }
 
 .board .timeline {
-  background: none; }
+background: none; }
 
 .footer_wrapper {
-  background: #F8F8F8;
-  overflow: hidden;
-  min-height: 100px;
-  margin: 40px 0 0 0;
-  border-top: 1px dashed #D7D7D7; }
+background: #F8F8F8;
+overflow: hidden;
+min-height: 100px;
+margin: 40px 0 0 0;
+border-top: 1px dashed #D7D7D7; }
 
 .footer {
-  margin: 20px auto;
-  width: 970px;
-  padding: 0 25px;
-  font-size: 13px; }
+margin: 20px auto;
+width: 970px;
+padding: 0 25px;
+font-size: 13px; }
+
+
+#scroll_to_top a {
+  display: block;
+  display: none;
+  z-index: 999;
+  position: fixed;
+  bottom:0;
+  right: 15px;
+  width: 50px;
+  -moz-border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  line-height: 16px;
+  padding: 10px 10px 20px 10px;
+  background-color: rgba(255,255,255,0.7);
+  -webkit-box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+  -moz-box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+  box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+  font-size: 14px;
+  text-align: center;
+  color: #000;
+  text-shadow:0 -1px 0 rgba(0,0,0,0.7);
+  text-decoration:none;
+  &:hover {
+    background:#fff;
+    &:before {
+      content:"";
+      height:0;
+      width:0;
+      top:-15px;
+      left:25px;
+      background:transparent;
+      position:absolute;
+      border-bottom:10px solid #000;
+      border-left:10px solid transparent;
+      border-right:10px solid transparent; } } }

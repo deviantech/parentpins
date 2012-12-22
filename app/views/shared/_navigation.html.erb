@@ -1,4 +1,4 @@
-<div class="header_wrapper">
+<div class="header_wrapper" id="header_wrapper">
   <div class="header">
     <a href="/" class="logo ir">ParentPins</a>
     <ul class="nav_main">
@@ -20,7 +20,7 @@
       <button class="btn search_button primary">Go</button>
     </form>
     <ul class="nav_login">
-      <% if logged_in? %>
+      <% if !logged_in? %>
       <li class="add_pins">
         <%= nav_link '+ Add', '/add.html', :class => "add" %>
       </li>

@@ -12,13 +12,16 @@
     <h2>User Name</h2>
     <ul class="nav_profile">
       <li>
-        <a href="profile_activity.html" class="activity">Activity</a>
+        <a href="profile_activity.html" class="activity active">Activity</a>
       </li>
       <li>
         <a href="profile_recent.html" class="recent">1,568 Pins</a>
       </li>
       <li>
-        <a href="profile_boards.html" class="boards active">6 Boards</a>
+        <a href="profile_likes.html" class="likes">14 Likes</a>
+      </li>
+      <li>
+        <a href="profile_boards.html" class="boards">6 Boards</a>
       </li>
       <li>
         <a href="profile_followers.html" class="followers">116 Followers</a>
@@ -32,7 +35,7 @@
   </div>
 
   <div class="content">
-    <h1><span>User Name's Board:</span> Kid Activities I Love</h1>
+    <h1><span>A few pins you might like</span>Suggested Pins</h1>
     <select class="cat_select">
       <option>All Pins</option>
       <option>Articles</option>
@@ -40,7 +43,7 @@
       <option>Ideas</option>
     </select>
     <ul class="timeline" id="pins">
-      <!-- Image max-widths should be 320px maintianing aspect ratio with flexible height -->
+      <!-- Image max-widths should be 192px maintianing aspect ratio with flexible height -->
       <!-- timeline center dot alignments need work to match masonry configuration -->
       <li class="left pin">
         <div class="actions">
@@ -51,7 +54,9 @@
         <a href="specific_pin.html" class="image_link">
           <img src="/assets/temp/art_2.jpg" class="pin_image">
         </a>
-        <p class="description"><a href="specific_pin.html">title of the pinned item goes here</a></p>
+        <p class="description">
+          <a href="specific_pin.html">title of the pinned item goes here</a>
+        </p>
         <div class="stats">
           <span class="like_count">2 likes</span>
           <span class="comment_count">3 comments</span>
