@@ -188,7 +188,7 @@ a {
     display: block;
     width: 116px;
     float:left;
-    background: none repeat scroll 0 0 white;
+    background: #EBEBEB;
     border: 1px solid #D2D2D2;
     -moz-border-radius: 4px 0 0 4px;
     -webkit-border-radius: 4px 0 0 4px;
@@ -199,7 +199,9 @@ a {
     font-size: 16px;
     font-weight: normal;
     padding: 8px 10px;
-    resize: none; }
+    resize: none;
+    &:focus {
+      background:#fff; } }
   .search_button {
     float:left; 
     -moz-border-radius: 0 4px 4px 0;
@@ -286,7 +288,14 @@ a {
     background-image: -webkit-linear-gradient(top, #7DE07C, #20A41E);
     background-image: linear-gradient(top, #7DE07C, #20A41E); 
     border-right:1px solid #000; }
-  .profile_link {
+  .add_pins {
+    border: none;
+    text-align: center;
+    position: relative;
+    width:70px !important;
+    a {
+      padding:20px 0; } }
+  .profile_link, .add_pins {
     border: none;
     text-align: center;
     position: relative;
@@ -649,6 +658,11 @@ a {
     background-position: -238px -119px; }
   margin-top: 10px; }
 
+.controls a {
+  position: absolute;
+  right: 45px;
+  top: -50px; }
+
 .gift_price {
   background: #f9f9f9;
   padding: 5px 10px;
@@ -675,6 +689,17 @@ a {
   margin: 0 auto;
   width: 192px;
   height: auto; }
+
+.pin_image_holder {
+  height:100px;
+  width:192px;
+  background:#eee;
+  text-align:center;
+  padding:80px 0 0 0;
+  color:#bbb;
+  font-weight:bold;
+  font-size:16px;
+}
 
 .pin {
   .description {
@@ -1006,11 +1031,14 @@ ul.boards {
 
 form .field {
   padding: 10px 10px 15px;
-  p {
+  p, label {
     color: #333;
     font-size: 13px;
     margin: 0 0 4px 0;
-    padding: 0; } }
+    padding: 0; }
+  label {
+    clear:both;
+    display:block; } }
 
 .form .field {
   input, textarea {
@@ -1053,11 +1081,6 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     text-align: center;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8); } }
 
-.form .submit .btn {
-  color: #FFF;
-  display: block;
-  margin: 0 auto 20px auto;
-  font-size: 18px; }
 
 .buttons {
   clear: both;
@@ -1071,6 +1094,13 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 .form {
   &.narrow {
     margin: 60px auto; 
+    h1 {
+      color:#000 !important;
+      text-shadow:0 1px 0 #fff !important;
+      border-bottom: 1px dashed #C2C2C2 !important; } }
+  &.wide {
+    margin: 60px auto; 
+    width:620px;
     h1 {
       color:#000 !important;
       text-shadow:0 1px 0 #fff !important;
@@ -1095,10 +1125,19 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       height: 210px;
       width: 235px;
       top: 45px;
-      right: -260px; } } }
+      right: -260px; } } 
+  .submit {
+    border-top: 1px dashed #c2c2c2;
+    padding-top:10px;
+    .btn {
+      color: #FFF;
+      display: block;
+      margin: 0 auto 20px auto;
+      font-size: 18px; } } }
 
 .profile .content #pins.edit_preview_pin {
-  margin-left: 540px !important; }
+  margin-left: 570px !important;
+  min-height:820px; }
 
 .cat_select {
   position: absolute;
@@ -1108,6 +1147,10 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   font-size: 13px;
   option {
     display: block; } }
+    
+.modal_select {
+  padding: 4px 10px;
+  font-size: 13px; }
 
 .cat_main {
   padding: 10px 0 0 0;
@@ -1238,7 +1281,9 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     margin:0;
     padding:0 0 5px 0; }
   select {
-    float:right; }
+    float:right;
+    padding: 4px 10px;
+    font-size: 13px; }
   .selected_cat {
     float:left;
     display:inline-block;
@@ -1251,6 +1296,13 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     -webkit-border-radius: 4px;
     border-radius: 4px;
     font-size:12px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    a {
+      text-decoration:none;
+      &:hover {
+        color:#000; } }
     span {
       background:#C2C0AE;
       display:inline-block;
@@ -1261,6 +1313,10 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       border-radius: 10px;
       margin:0 0 0 4px;
       color:#fff;
+      -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.25) inset;
+      -moz-box-shadow: 0 0 3px rgba(0,0,0,0.25) inset;
+      box-shadow: 0 0 3px rgba(0,0,0,0.25) inset;
+      font-weight:bold;
       &:hover {
         background:#000;
         cursor:pointer; } } } }

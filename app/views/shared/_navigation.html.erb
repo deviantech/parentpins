@@ -11,9 +11,6 @@
       <li>
         <%= nav_link 'Articles', '/articles.html' %>
       </li>
-      <li>
-        <%= nav_link 'Stores', '/stores.html' %>
-      </li>
     </ul>
     <form class="search">
       <input type="text" placeholder="Search..."/>
@@ -22,13 +19,21 @@
     <ul class="nav_login">
       <% if !logged_in? %>
       <li class="add_pins">
-        <%= nav_link '+ Add', '/add.html', :class => "add" %>
+        <%= nav_link '+ Add', 'add_pin', :class => "add" %>
+        <ul>
+          <li>
+            <a href="add_pin">+ Pin</a>
+          </li>
+          <li>
+            <a href="add_board">+ Board</a>
+          </li>
+        </ul>
       </li>
       <li class="profile_link">
         <a href="profile_recent.html" >Hi, User Name</a>
         <ul>
           <li>
-            <a href="profile_boards.html">Boards</a>
+            <a href="profile_activity.html">Activity</a>
           </li>
           <li>
             <a href="profile_recent.html">Pins</a>
@@ -37,7 +42,10 @@
             <a href="profile_likes.html">Likes</a>
           </li>
           <li>
-            <a href="profile_settings.html" class="settings">Settings</a>
+            <a href="profile_boards.html">Boards</a>
+          </li>
+          <li>
+            <a href="profile_settings.html" class="settings">Edit Profile / Settings</a>
           </li>
           <li>
             <a href="#" class="logout">Log out</a>

@@ -13,7 +13,7 @@ module ApplicationHelper
   
   def body_class
     case params[:action]
-    when 'recent_pins', 'articles', 'board', 'board_landing'
+    when 'recent_pins', 'articles', 'board', 'board_landing', 'category_board'
       'full_width'
     when 'about', 'login', 'signup'
       'theme_one'
