@@ -1,0 +1,91 @@
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+/* Styles */
+}
+
+/* Smartphones (landscape) ----------- */
+@media only screen 
+and (min-width : 321px) {
+/* Styles */
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 320px) {
+/* Styles */
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
+  body {font-size:1.2em;}
+  .header_wrapper {width:100% !important;min-width:0;}
+  .header {width:766px !important;min-width:0;}
+  .logo {left:0;}
+  .header li a {padding:20px 10px;}
+  .search {width:190px;padding-right:0;}
+  .search input {width:120px;}
+  .nav_login .add_pins {width:60px !important;}
+  .nav_login .profile_link, .nav_login .add_pins {width:140px;}
+  .nav_login .profile_link ul, .nav_login .add_pins ul {width:140px;}
+  .nav_login .profile_link ul li a, .nav_login .add_pins ul li a {font-size:16px;}
+  .sub_header_wrapper .sub_header:before {width:830px;}
+  .wrapper {width:760px !important;}
+  .content {width:560px;}
+  .content.board_wide {width:760px !important;}
+  .wrapper.general .content {width:740px;padding:0 10px;}
+  .cat_select {position:relative;margin:0 0 0 10px;right:0;top:0;}
+  .profile .cat_select {position:absolute;right:5px;top:10px;}
+  .cat_filter {padding:20px 0px 0 40px;}
+  .cat_filter p {padding:0 0 25px;}
+  ul.boards {margin:10px 0;}
+  ul.boards li {margin:15px 10px 10px 0;}
+  .profile ul.boards li {margin:15px 10px 10px 0;}
+  .form.signup:after{left:-232px;}
+  .content h1 {margin:0 0 10px 30px;}
+  .profile .content #pins {margin-left:30px !important;}
+  .nav_profile a {font-size:16px;padding:14px 10px 18px 48px;}
+  .followers_list {margin: 20px 0 0 30px;width: 240px;}
+  .profile .follow_list #pins {margin-left:280px !important;width:260px;}
+  .follow_list .users li:hover .follow_in_list {display:none;}
+  .profile .content #pins.edit_preview_pin {margin-left:500px !important;}
+  .form.edit_pin:after {right:-220px;}
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape) {
+/* Styles */
+}
+
+/* iPads (portrait) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+/* Styles */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 1224px) {
+/* Styles */
+}
+
+/* Large screens ----------- */
+@media only screen 
+and (min-width : 1824px) {
+/* Styles */
+}
+
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+/* Styles */
+}

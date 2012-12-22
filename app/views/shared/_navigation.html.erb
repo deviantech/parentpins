@@ -3,7 +3,7 @@
     <a href="/" class="logo ir">ParentPins</a>
     <ul class="nav_main">
       <li>
-        <%= nav_link 'Trending Pins', '/recent_pins.html' %>
+        <%= nav_link 'Trending', '/recent_pins.html' %>
       </li>
       <li>
         <%= nav_link 'Boards', '/board_landing.html' %>
@@ -17,7 +17,7 @@
       <button class="btn search_button primary">Go</button>
     </form>
     <ul class="nav_login">
-      <% if logged_in? %>
+      <% if !logged_in? %>
       <li class="add_pins">
         <%= nav_link '+ Add', 'add_pin', :class => "add" %>
         <ul>
