@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Kidpins::Application.load_tasks
+ParentPins::Application.load_tasks

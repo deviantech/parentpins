@@ -1,4 +1,4 @@
-Kidpins::Application.routes.draw do
+ParentPins::Application.routes.draw do
   devise_for :users
 
   # The priority is based upon order of creation:
