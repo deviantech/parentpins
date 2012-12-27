@@ -17,48 +17,48 @@
       <button class="btn search_button primary">Go</button>
     </form>
     <ul class="nav_login">
-      <% if !logged_in? %>
-      <li class="add_pins">
-        <%= nav_link '+ Add', 'add_pin', :class => "add" %>
-        <ul>
-          <li>
-            <a href="add_pin">+ Pin</a>
-          </li>
-          <li>
-            <a href="add_board">+ Board</a>
-          </li>
-        </ul>
-      </li>
-      <li class="profile_link">
-        <a href="profile_recent.html" >Hi, User Name</a>
-        <ul>
-          <li>
-            <a href="profile_activity.html">Activity</a>
-          </li>
-          <li>
-            <a href="profile_recent.html">Pins</a>
-          </li>
-          <li>
-            <a href="profile_likes.html">Likes</a>
-          </li>
-          <li>
-            <a href="profile_boards.html">Boards</a>
-          </li>
-          <li>
-            <a href="profile_settings.html" class="settings">Edit Profile / Settings</a>
-          </li>
-          <li>
-            <a href="#" class="logout">Log out</a>
-          </li>
-        </ul>
-      </li>
+      <% if user_signed_in? %>
+        <li class="add_pins">
+          <%= nav_link '+ Add', 'add_pin', :class => "add" %>
+          <ul>
+            <li>
+              <a href="add_pin">+ Pin</a>
+            </li>
+            <li>
+              <a href="add_board">+ Board</a>
+            </li>
+          </ul>
+        </li>
+        <li class="profile_link">
+          <a href="profile_recent.html" >Hi, User Name</a>
+          <ul>
+            <li>
+              <a href="profile_activity.html">Activity</a>
+            </li>
+            <li>
+              <a href="profile_recent.html">Pins</a>
+            </li>
+            <li>
+              <a href="profile_likes.html">Likes</a>
+            </li>
+            <li>
+              <a href="profile_boards.html">Boards</a>
+            </li>
+            <li>
+              <a href="profile_settings.html" class="settings">Edit Profile / Settings</a>
+            </li>
+            <li>
+              <a href="#" class="logout">Log out</a>
+            </li>
+          </ul>
+        </li>
       <% else %>
-      <li>
-        <%= nav_link 'Log In', '/login.html', :class => "login" %>
-      </li>
-      <li>
-        <%= nav_link 'Sign Up', '/signup.html', :class => "signup" %>
-      </li>
+        <li>
+          <%= nav_link 'Log In', '/login.html', :class => "login" %>
+        </li>
+        <li>
+          <%= nav_link 'Sign Up', '/signup.html', :class => "signup" %>
+        </li>
       <% end %>
     </ul>
     <div class="clearfix"></div>

@@ -30,5 +30,8 @@ gem 'ruby-debug', :platform => :ruby_18
 gem 'debugger', :platform => :ruby_19
 
 
-gem 'devise'
 gem 'haml'
+
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
