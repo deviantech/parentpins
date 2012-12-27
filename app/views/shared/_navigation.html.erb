@@ -30,7 +30,7 @@
           </ul>
         </li>
         <li class="profile_link">
-          <a href="profile_recent.html" >Hi, User Name</a>
+          <a href="profile_recent.html">Hi, <%= current_user.username.titleize %></a>
           <ul>
             <li>
               <a href="profile_activity.html">Activity</a>
@@ -48,16 +48,16 @@
               <a href="profile_settings.html" class="settings">Edit Profile / Settings</a>
             </li>
             <li>
-              <a href="#" class="logout">Log out</a>
+              <%= link_to('Logout', destroy_user_session_path, :method => :delete, :class => 'logout') %>
             </li>
           </ul>
         </li>
       <% else %>
         <li>
-          <%= nav_link 'Log In', '/login.html', :class => "login" %>
+          <%= nav_link 'Log In', new_user_session_path, :class => "login" %>
         </li>
         <li>
-          <%= nav_link 'Sign Up', '/signup.html', :class => "signup" %>
+          <%= nav_link 'Sign Up', new_user_registration_path, :class => "signup" %>
         </li>
       <% end %>
     </ul>
