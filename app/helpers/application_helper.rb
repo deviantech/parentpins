@@ -1,4 +1,14 @@
 module ApplicationHelper
+
+  def error_messages_for(resource)
+    return '' if resource.errors.empty?
+    
+    content_tag('ul', :class => 'errors') do
+      resource.errors.full_messages.collect do |msg|
+        content_tag('li', msg, :class => 'errorLineItem')
+      end
+    end
+  end    
   
   def nav_link(text, target, opts = {})
     opts[:class] ||= ''

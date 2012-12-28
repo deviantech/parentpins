@@ -1,0 +1,39 @@
+<!-- use this view for edit board as well -->
+
+<div class="wrapper profile">
+
+  <div class="content board board_wide">
+    <%= form_for(@board, :html => {:class => 'form narrow edit_board'}) do |f| %>
+      <h1><%= @board.new_record? ? 'Add' : 'Edit' %> Your Board</h1>
+
+      <%= error_messages_for @board %>
+
+      <div class="field">
+        <%= f.label :name, 'Board Name' %>
+        <%= f.text_field :name, :placeholder => "Be Specific & Creative!" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :category_id, "Select a Category" %>
+        <%= f.select :category_id, Category.all.collect{|c| [c.name, c.id]} %>
+      </div>
+
+      <div class="field">
+        <%= f.label :age_group_id, "Select an Age Group" %>
+        <%= f.select :age_group_id, AgeGroup.all.collect{|c| [c.name, c.id]} %>
+      </div>
+
+      <div class="field">
+        <%= f.label :description, 'Description...' %>
+        <%= f.text_area :description, :placeholder => "Explain what types of Pins you'll be collecting on this Board" %>
+      </div>
+      <div class="submit">
+        <%= f.submit 'Save Board', :class => 'btn tertiary_action' %>
+      </div>
+    <% end %>
+    
+  </div>
+
+  <div class="clearfix"></div>
+
+</div>
