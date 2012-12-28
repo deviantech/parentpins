@@ -22,7 +22,11 @@ ParentPins::Application.routes.draw do
       get 'likes'
       get 'boards'
       get 'followers'
-      get 'following'      
+      get 'following'
+    end
+    
+    collection do
+      get 'boards/:board_id' => 'profiles#board'
     end
   end
 

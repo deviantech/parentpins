@@ -5,9 +5,31 @@ class ProfilesController < ApplicationController
     redirect_to :action => 'boards'
   end
   
+  def activity
+  end
+  
+  def pins
+  end
+  
+  def likes
+  end
+  
+  def followers
+  end
+  
+  def following
+  end
+  
   def boards
     @boards = @profile.boards
   end
+  
+  def board
+    unless @board = @profile.boards.find_by_id(params[:id])
+      redirect_to :action => 'show', :notice => "Unable to find the specified board"
+    end
+  end
+    
   
   protected
   

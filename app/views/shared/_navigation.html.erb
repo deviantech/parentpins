@@ -32,21 +32,11 @@
         <li class="profile_link">
           <a href="profile_recent.html">Hi, <%= current_user.username.titleize %></a>
           <ul>
-            <li>
-              <a href="profile_activity.html">Activity</a>
-            </li>
-            <li>
-              <a href="profile_recent.html">Pins</a>
-            </li>
-            <li>
-              <a href="profile_likes.html">Likes</a>
-            </li>
-            <li>
-              <a href="profile_boards.html">Boards</a>
-            </li>
-            <li>
-              <a href="profile_settings.html" class="settings">Edit Profile / Settings</a>
-            </li>
+            <li><%= link_to 'Activity', activity_profile_path(current_user) %></li>
+            <li><%= link_to 'Pins', pins_profile_path(current_user) %></li>
+            <li><%= link_to 'Likes', likes_profile_path(current_user) %></li>
+            <li><%= link_to 'Boards', boards_profile_path(current_user) %></li>
+            <li><%= link_to 'Edit Profiles / Settings', edit_profile_path(current_user) %></li>
             <li>
               <%= link_to('Logout', destroy_user_session_path, :method => :delete, :class => 'logout') %>
             </li>
