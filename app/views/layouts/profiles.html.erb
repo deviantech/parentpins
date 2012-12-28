@@ -1,0 +1,45 @@
+<% content_for :content do %>
+  <%= render 'shared/profile_header' %>
+  <div class="wrapper profile">
+
+      <div class="info">
+        <!-- Following button interaction -->
+        <!--if not following -->
+          <a href="#" class="btn action follow">follow</a>
+        <!--if following 
+          <a href="#" class="btn action unfollow">following</a> -->
+        <a href="<%= profile_path(@profile) %>" class="avatar"><img src="/assets/temp/avatar.jpg"></a>
+        <h2><%= @profile.name %></h2>
+        <ul class="nav_profile">
+          <li>
+            <a href="<%= activity_profile_path(@profile) %>" class="activity">Activity</a>
+          </li>
+          <li>
+            <a href="<%= pins_profile_path(@profile) %>" class="recent">1,568 Pins</a>
+          </li>
+          <li>
+            <a href="<%= likes_profile_path(@profile) %>" class="likes">14 Likes</a>
+          </li>
+          <li>
+            <a href="<%= boards_profile_path(@profile) %>" class="boards active">6 Boards</a>
+          </li>
+            <li>
+              <a href="<%= followers_profile_path(@profile) %>" class="followers">116 Followers</a>
+            </li>
+            <li>
+              <a href="<%= following_profile_path(@profile) %>" class="following"> 87 Following</a>
+            </li>
+        </ul>
+        <p class="kid_count">Has 3 kids</p>
+        <p class="bio">I love my kid and I love this site. Great place to find out about parenting tips, great toys, education and more.</p>
+      </div>
+
+      <div class="content">
+        <%= yield %>
+      </div>
+      
+      <div class="clearfix"></div>
+    </div>
+<% end %>
+
+<%= render :template => 'layouts/application' %>

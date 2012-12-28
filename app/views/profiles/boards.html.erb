@@ -1,0 +1,5 @@
+<h1><span><%= @profile.name %>'s</span> Boards List</h1>
+
+<ul class="boards">
+  <%= render :partial => '/boards/board', :collection => @boards %>
+</ul>

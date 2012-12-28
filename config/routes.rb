@@ -14,6 +14,17 @@ ParentPins::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   resources :boards
+  
+  resources :profiles do
+    member do
+      get 'activity'
+      get 'pins'
+      get 'likes'
+      get 'boards'
+      get 'followers'
+      get 'following'      
+    end
+  end
 
   # Sample resource route with options:
   #   resources :products do
