@@ -3,7 +3,6 @@ class BoardsController < ApplicationController
 
   def index
     # TODO: implement some sort of trending logic
-    flash.now[:error] = "Testing flash"
     @boards = Board.limit(20)
   end
   
@@ -27,10 +26,21 @@ class BoardsController < ApplicationController
   
   def edit
     @board = current_user.boards.find(params[:id])
+    render :action => 'new'
   end
   
   def update
     @board = current_user.boards.find(params[:id])
+    if @board.update_attributes(params[:board])
+      redirect_to @board, :notice => 'Saved changes to board'
+    else
+      flash.now[:error] = "Unable to save board"
+      render :action => 'new'
+    end
+  end
+  
+  def destroy
+    # TODO - implement me
   end
   
 end

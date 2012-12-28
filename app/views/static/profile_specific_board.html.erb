@@ -40,7 +40,7 @@
       <option>Ideas</option>
     </select>
     <div class="controls">
-      <a class="btn sec_action edit_button" href="add_board">Edit</a>
+      <%= link_to 'Edit', edit_board_path(@board), :class => "btn sec_action edit_button" %>
     </div>
     <ul class="timeline" id="pins">
       <!-- Image max-widths should be 320px maintianing aspect ratio with flexible height -->

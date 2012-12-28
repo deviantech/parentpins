@@ -6,6 +6,6 @@ class Board < ActiveRecord::Base
   attr_protected :id
   
   validates_presence_of :user, :category, :age_group
-  validates_length_of :name, :minimum => 1
+  validates_length_of :name, :minimum => 2
   validates_uniqueness_of :name, :scope => :user_id
 end
