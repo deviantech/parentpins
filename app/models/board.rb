@@ -2,6 +2,7 @@ class Board < ActiveRecord::Base
   belongs_to :user
   belongs_to :category
   belongs_to :age_group
+  has_many :pins, :dependent => :destroy
   
   attr_protected :id
   

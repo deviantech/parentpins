@@ -9,6 +9,7 @@
 AgeGroup.create(:name => 'Group One')
 AgeGroup.create(:name => 'Group Two')
 AgeGroup.create(:name => 'Group Three')
+
 Category.create(:name => 'Category One')
 Category.create(:name => 'Category Two')
 Category.create(:name => 'Category Three')

@@ -23,11 +23,8 @@ ParentPins::Application.routes.draw do
       get 'boards'
       get 'followers'
       get 'following'
-    end
-    
-    collection do
-      get 'boards/:board_id' => 'profiles#board'
-    end
+      get 'boards/:board_id' => 'profiles#board', :as => 'board'
+    end    
   end
 
   # Sample resource route with options:
