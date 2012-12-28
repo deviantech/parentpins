@@ -2,7 +2,9 @@ class BoardsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
 
   def index
-    @boards
+    # TODO: implement some sort of trending logic
+    flash.now[:error] = "Testing flash"
+    @boards = Board.limit(20)
   end
   
   def show

@@ -1,0 +1,24 @@
+<div class="wrapper">
+        
+    <div class="content">
+      <h1>Trending Boards</h1>
+      <select class="cat_select">
+        <option>All boards</option>
+        <%= options_for_select Category.all.collect{|c| [c.name, c.id]} %>
+      </select>
+      
+      <ul class="boards">
+        <%= render @boards %>
+      </ul>
+      
+      <div class="clearfix"></div>
+      
+      <!-- thinking we show load more button after 20 boards. load time will be effected by this choice. -->
+      <a href="#" class="btn action load_more_button tertiary_action">Load More</a>
+      
+      <img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>
+    </div>
+    
+    <div class="clearfix"></div>
+    
+</div>

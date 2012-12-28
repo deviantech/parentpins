@@ -1,0 +1,16 @@
+<li class="board">
+  <h3><%= link_to board.name, board %></h3>
+  <h4><a href="profile_recent.html"><img src="/assets/temp/avatar_50.jpg"> <%= board.user.name %></a></h4>
+  <div class="holder">
+    <%= link_to '', board, :class => 'link' %>
+    <div class="cover">
+      <img src="/assets/temp/board_image_1.jpg" class="board_image">
+    </div>
+    <div class="thumbs">
+      <img src="/assets/temp/board_thumb_1.jpg" class="board_image">
+    </div>
+    <div class="description">
+      <p><%= board.description.blank? ? 'No description provided' : board.description %></p>
+    </div>
+  </div>
+</li>

@@ -9,4 +9,8 @@ class User < ActiveRecord::Base
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid
   
   has_many :boards
+  
+  def name
+    username.to_s.titleize
+  end
 end
