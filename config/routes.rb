@@ -14,12 +14,12 @@ ParentPins::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   resources :boards
-  resources :pins
+  resources :pins, :except => [:show]
 
   # Pretty URLs for pin subtypes
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
-  match '/gifts' => 'pins#index',     :kind => 'gift',      :as => 'gifts'
-  match '/ideas' => 'pins#index',     :kind => 'idea',      :as => 'ideas'
+  match '/gifts'    => 'pins#index',  :kind => 'gift',      :as => 'gifts'
+  match '/ideas'    => 'pins#index',  :kind => 'idea',      :as => 'ideas'
   
   resources :profiles do
     member do

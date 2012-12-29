@@ -19,7 +19,7 @@ module ApplicationHelper
     case params[:controller]
     when 'profiles' then 'profile'
     when 'pins'
-      params[:action] == 'new' ? nil : 'full_width'
+      params[:action] == 'index' ? 'full_width' : nil
     else
       case params[:action]
       when 'recent_pins', 'articles', 'board', 'board_landing', 'category_board'

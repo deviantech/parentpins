@@ -9,11 +9,18 @@ class Pin < ActiveRecord::Base
   belongs_to :category
   belongs_to :age_group
   
-  validates_presence_of :user, :board, :category, :age_group, :url
+  validates_presence_of :user, :name, :board, :category, :age_group
   validates_inclusion_of :kind, :in => VALID_TYPES
   validates_length_of :description, :maximum => 255, :allow_blank => true
+  validate :url_format
   
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
+  
+  protected
+  
+  def url_format
+    errors.add(:url, "doesn't look like a valid link") unless url.to_s.match(/\Ahttps?:\/\//)
+  end
 end
