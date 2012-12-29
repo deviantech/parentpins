@@ -1,5 +1,7 @@
 class ProfilesController < ApplicationController
   before_filter :get_profile
+  before_filter :authenticate_user!, :only => [:edit, :update]
+  before_filter :get_profile_owner, :only => [:edit, :update]
   
   def show
     redirect_to :action => 'boards'
@@ -31,7 +33,12 @@ class ProfilesController < ApplicationController
       redirect_to :action => 'show', :notice => "Unable to find the specified board"
     end
   end
-    
+  
+  def edit
+  end
+  
+  def update
+  end
   
   protected
   
@@ -47,5 +54,11 @@ class ProfilesController < ApplicationController
       :followers  => 0,
       :following   => 12
     }
+  end
+  
+  def get_profile_owner
+    unless @profile == current_user
+      redirect_to(profile_path(@profile), :notice => "You don't own this profile") and return
+    end
   end
 end

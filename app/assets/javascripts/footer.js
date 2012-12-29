@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require plugins
-//= require jquery.masonry
 //= require spinners.min.js
+//= require jquery.masonry
+//= require jquery.infinite-ajax-scroll
 //= require application
