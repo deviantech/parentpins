@@ -4,7 +4,8 @@ class PinsController < ApplicationController
   def index
     # TODO: implement some sort of trending logic
     # TODO: include user or else cache username
-    @pins = Pin.limit(20)
+    @kind = params[:kind].pluralize.titleize if Pin::VALID_TYPES.include?(params[:kind])
+    @pins = Pin.by_kind(@kind).limit(20)
   end
   
 end

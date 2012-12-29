@@ -1,7 +1,7 @@
 <div class="wrapper">
 
-  <div class="content board">
-    <h1>Trending Parenting Articles, Ideas, Gifts, &amp; More</h1>
+  <div class="content board board_wide">
+    <h1><% if @kind %>Recently Pinned <%= @kind %><% else %>Trending Parenting Articles, Ideas, Gifts, &amp; More<% end %></h1>
     <select class="cat_select">
       <option>All Pins</option>
       <option>Articles</option>
