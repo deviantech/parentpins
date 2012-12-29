@@ -14,6 +14,7 @@ ParentPins::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   resources :boards
+  resources :pins
   
   resources :profiles do
     member do

@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   
   has_many :boards, :dependent => :destroy
   has_many :pins, :dependent => :destroy
+  has_many :pins_via_me, :class_name => 'Pin', :foreign_key => 'via_id'
   
   def name
     username.to_s.titleize
