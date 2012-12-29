@@ -737,11 +737,11 @@ a {
         border-top: 10px solid #000;
         border-right: 10px solid transparent;
         border-left: 10px solid transparent; } }
-    .article:hover:before {
+    .kind.article:hover:before {
       content: "Pinned from a blog, top 10 list, writer, etc."; }
-    .gift:hover:before {
+    .kind.gift:hover:before {
       content: "Pinned from an online store, ParentPin Store, or just a cool product for sale."; }
-    .idea:hover:before {
+    .kind.idea:hover:before {
       content: "Just generally a cool idea for Parents."; }
     a {
       text-decoration: none;
