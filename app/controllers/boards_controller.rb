@@ -3,7 +3,8 @@ class BoardsController < ApplicationController
 
   def index
     # TODO: implement some sort of trending logic
-    @boards = Board.limit(20)
+    @category = Category.find_by_id(params[:category]) unless params[:category].blank?
+    @boards = Board.in_category(@category).limit(20)
   end
   
   def show

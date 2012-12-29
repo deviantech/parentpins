@@ -1,10 +1,9 @@
 <div class="wrapper">
         
     <div class="content">
-      <h1>Trending Boards</h1>
-      <select class="cat_select">
-        <option>All boards</option>
-        <%= options_for_select Category.all.collect{|c| [c.name, c.id]} %>
+      <h1>Trending Boards<% if @category %> :: <%= @category.name %><% end %></h1>
+      <select class="cat_select" data-base-url="/boards" data-filter-name="category">
+        <%= options_for_select [['All Boards', '']] + Category.all.collect{|c| [c.name, c.id]}, @category.try(:id) %>
       </select>
       
       <ul class="boards">

@@ -9,4 +9,8 @@ class Board < ActiveRecord::Base
   validates_presence_of :user, :category, :age_group
   validates_length_of :name, :minimum => 2
   validates_uniqueness_of :name, :scope => :user_id
+  
+  scope :in_category, lambda {|cat|
+    cat.blank? ? where('1=1') : where({:category_id => cat.id})
+  }
 end
