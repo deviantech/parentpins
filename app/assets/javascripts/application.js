@@ -25,7 +25,27 @@ $(document).ready(function() {
   }).imagesLoaded(function() {
    $('#pins').masonry('reload');
   });
+  
+  // Implement category selects
+  $('.cat_select').each(function(idx, select){
+    select = $(select);
+    select.on('change', function() {
+      var url = select.data('baseUrl');
+      if (!url) {
+        alert('category_select not yet implemented');
+        return;
+      }
+      if (select.val().length) {
+        url += url.indexOf('?') == -1 ? '?' : '&';
+        url += select.data('filterName') + '=' + select.val();
+      }
+      window.location = url;
+    });
+  });
 });
+
+
+
 
 $(function () { // run this code on page load (AKA DOM load)
   

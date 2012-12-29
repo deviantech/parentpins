@@ -1,12 +1,9 @@
 <div class="wrapper">
 
   <div class="content board board_wide">
-    <h1><% if @kind %>Recently Pinned <%= @kind %><% else %>Trending Parenting Articles, Ideas, Gifts, &amp; More<% end %></h1>
-    <select class="cat_select">
-      <option>All Pins</option>
-      <option>Articles</option>
-      <option>Gifts</option>
-      <option>Ideas</option>
+    <h1><% if @kind %>Recently Pinned <%= @kind.pluralize.titleize %><% else %>Trending Parenting Articles, Ideas, Gifts, &amp; More<% end %></h1>
+    <select class="cat_select" data-base-url="/pins" data-filter-name="kind">
+      <%= options_for_select [['All Pins', '']] + Pin::VALID_TYPES.collect{|t| [t.pluralize.titleize, t]}, @kind %>
     </select>
     <ul class="timeline" id="pins">
       <!-- Image max-widths should be 320px maintianing aspect ratio with flexible height -->
