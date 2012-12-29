@@ -9,7 +9,8 @@ class ProfilesController < ApplicationController
   end
   
   def pins
-    @pins = @profile.pins
+    # TODO: add better logic for picking popular vs new pins
+    @pins = @profile_counters[:pins].zero? ? Pin.limit(20) : @profile.pins
   end
   
   def likes
@@ -43,7 +44,7 @@ class ProfilesController < ApplicationController
       :pins       => @profile.pins.count,
       :boards     => @profile.boards.count,
       :likes      => 3,
-      :followers  => 6,
+      :followers  => 0,
       :following   => 12
     }
   end
