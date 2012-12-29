@@ -1,16 +1,18 @@
 <li class="pin <%= pin.kind %>">
-  <div class="actions">
-    <a href="/pin/pin_id/repin/" class="btn sec_action repin_button">Repin</a>
-    <a href="#" class="btn sec_action like_button">Like</a>
-    <a href="#" class="btn sec_action comment_button">Comment</a>
-  </div>
+  <% unless pin.new_record? %>
+    <div class="actions">
+      <a href="/pin/pin_id/repin/" class="btn sec_action repin_button">Repin</a>
+      <a href="#" class="btn sec_action like_button">Like</a>
+      <a href="#" class="btn sec_action comment_button">Comment</a>
+    </div>
+  <% end %>
   <% if pin.price %>
     <div class="gift_price"><%= number_to_currency pin.price %></div>
   <% end %>
   <a href="specific_pin.html" class="image_link">
     <img src="/assets/temp/art_2.jpg" class="pin_image">
   </a>
-  <p class="description"><a href="specific_pin.html"><strong class="<%= pin.kind %>"><%= pin.kind.titleize %>:</strong> <%= pin.name %></a></p>
+  <p class="description"><a href="specific_pin.html"><strong class="<%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>
   <div class="stats">
     <span class="like_count">2 likes</span>
     <span class="comment_count">3 comments</span>
@@ -26,11 +28,13 @@
         via
         <%= link_to pin.via.name, profile_path(pin.via) %>
       <% end %>
-      onto
-      <%= link_to pin.board.name, board_path(pin.board) %>
+      <% if pin.board %>
+        onto
+        <%= link_to pin.board.name, board_path(pin.board) %>
+      <% end %>
     </p>
   </div>
-  <% if user_signed_in? %>
+  <% if user_signed_in? && !pin.new_record? %>
     <div class="comment">
       <a class="image_link" title="<%= current_user.name %>" href="<%= profile_path(current_user) %>">
         <img alt="<%= current_user.name %>'s avatar" src="/assets/temp/avatar_30.jpg"/>

@@ -1138,7 +1138,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       margin: 0 auto 20px auto;
       font-size: 18px; } } }
 
-.profile .content #pins.edit_preview_pin {
+.profile .content #pin-preview.edit_preview_pin {
   margin-left: 570px !important;
   min-height:820px; }
 
@@ -1618,6 +1618,6 @@ font-size: 13px; }
       border-left:10px solid transparent;
       border-right:10px solid transparent; } } }
       
-#board_description {
+textarea {
   height: 50px;
 }

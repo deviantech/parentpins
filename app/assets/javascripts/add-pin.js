@@ -1,0 +1,1 @@
+// This script is only included on the add-pin page to live-update the pin contents

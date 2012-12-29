@@ -18,7 +18,8 @@ module ApplicationHelper
   def body_class
     case params[:controller]
     when 'profiles' then 'profile'
-    when 'pins' then 'full_width'
+    when 'pins'
+      params[:action] == 'new' ? nil : 'full_width'
     else
       case params[:action]
       when 'recent_pins', 'articles', 'board', 'board_landing', 'category_board'

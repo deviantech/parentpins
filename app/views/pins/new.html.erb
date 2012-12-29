@@ -1,0 +1,73 @@
+<% content_for :footer_js do %>
+  <%= javascript_include_tag "add-pin" %>
+<% end %>
+
+<!-- use this view for edit pin as well -->
+<div class="wrapper profile">
+
+  <div class="content board board_wide">
+    <%= form_for(@pin, :html => {:class => 'form narrow edit_pin'}) do |f| %>
+      <h1><%= @pin.new_record? ? 'Add' : 'Edit' %> Your Pin</h1>
+      
+      <%= error_messages_for @pin %>
+
+      <div class="field">
+        <%= f.label :name, 'Pin Title' %>
+        <%= f.text_field :name %>
+      </div>
+
+      <div class="field">
+        <%= f.label :kind, 'Type of Pin' %>
+        <%= f.select :kind, Pin::VALID_TYPES.collect{|t| [t.titleize, t]} %>
+      </div>
+
+      <div class="field">
+        <%= f.label :category_id, 'Select a Category' %>
+        <%= f.select :category_id, Category.all.collect{|t| [t.name, t.id]} %>
+      </div>
+      
+      <div class="field">
+        put image uploader here.
+      </div>
+
+      <div class="field">
+        <%= f.label :board_id, 'Pin to Which Board?' %>
+        <%= f.select :board_id, current_user.boards.collect{|t| [t.name, t]} %>
+      </div>
+
+      <div class="field">
+        <%= f.label :age_group_id, 'Select an Age Group' %>
+        <%= f.select :category_id, AgeGroup.all.collect{|t| [t.name, t.id]} %>
+      </div>
+
+      <div class="field">
+        <%= f.label :description, 'Description...' %>
+        <%= f.text_area :description, :placeholder => "First few sentences please, this Pin will link to the full article" %>        
+      </div>
+      
+      <div class="field">
+        <%= f.label :price, 'Price' %>
+        <%= f.text_field :price, :placeholder => "$0.00" %>
+      </div>
+
+      <div class="submit">
+        <%= f.submit 'Save Pin', :class => 'btn tertiary_action' %>
+      </div>
+      
+      <% unless @pin.new_record? %>
+        <div class="buttons">
+          <a href="#l">Delete this Pin</a>
+        </div>
+      <% end %>
+    <% end %>
+    
+    
+    <ul class="timeline edit_preview_pin" id="pin-preview">
+      <%= render :partial => 'pins/pin', :object => @pin %>
+    </ul>
+
+  </div>
+
+  <div class="clearfix"></div>
+
+</div>
