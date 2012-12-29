@@ -9,6 +9,7 @@ class ProfilesController < ApplicationController
   end
   
   def pins
+    @pins = @profile.pins
   end
   
   def likes
@@ -35,7 +36,15 @@ class ProfilesController < ApplicationController
   
   def get_profile
     unless @profile = User.find_by_id(params[:id])
-      redirect_to root_path, :notice => "Unable to find the specified profile"
+      redirect_to(root_path, :notice => "Unable to find the specified profile") and return
     end
+    
+    @profile_counters = {
+      :pins       => @profile.pins.count,
+      :boards     => @profile.boards.count,
+      :likes      => 3,
+      :followers  => 6,
+      :following   => 12
+    }
   end
 end
