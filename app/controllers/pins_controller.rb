@@ -1,5 +1,6 @@
 class PinsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index]
+  before_filter :find_pin, :only => [:edit, :update, :destroy]
     
   def index
     # TODO: implement some sort of trending logic
@@ -26,12 +27,10 @@ class PinsController < ApplicationController
   end
   
   def edit
-    @pin = current_user.pins.find(params[:id])
     render :action => 'new'
   end
   
   def update
-    @pin = current_user.pins.find(params[:id])
     if @pin.update_attributes(params[:pin])
       redirect_to @pin.board, :notice => 'Saved changes to pin'
     else
@@ -41,7 +40,14 @@ class PinsController < ApplicationController
   end
   
   def destroy
-    # TODO - implement me
+    redirect_to @pin.board, :notice => 'Removed Pin'
+    @pin.destroy
+  end
+  
+  protected
+  
+  def find_pin
+    @pin = current_user.pins.find(params[:id])
   end
   
 end

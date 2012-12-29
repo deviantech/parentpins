@@ -1,5 +1,6 @@
 class BoardsController < ApplicationController
   before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :find_board, :only => [:edit, :update, :destroy]
 
   def index
     # TODO: implement some sort of trending logic
@@ -27,12 +28,10 @@ class BoardsController < ApplicationController
   end
   
   def edit
-    @board = current_user.boards.find(params[:id])
     render :action => 'new'
   end
   
   def update
-    @board = current_user.boards.find(params[:id])
     if @board.update_attributes(params[:board])
       redirect_to @board, :notice => 'Saved changes to board'
     else
@@ -42,7 +41,14 @@ class BoardsController < ApplicationController
   end
   
   def destroy
-    # TODO - implement me
+    @board.destroy
+    redirect_to boards_profile_path(current_user, :notice => 'Removed Board'
+  end
+  
+  protected
+  
+  def find_board
+    @board = current_user.boards.find(params[:id])
   end
   
 end
