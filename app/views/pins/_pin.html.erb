@@ -10,18 +10,16 @@
     <div class="gift_price"><%= number_to_currency pin.price %></div>
   <% end %>
   <a href="specific_pin.html" class="image_link">
-    <img src="/assets/temp/art_2.jpg" class="pin_image">
+    <%= image_tag pin.image.v320.url, :class => 'pin_image', :alt => 'Pin image' %>
   </a>
   <p class="description"><a href="specific_pin.html"><strong class="kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>
   <div class="stats">
-    <span class="like_count">2 likes</span>
-    <span class="comment_count">3 comments</span>
-    <span class="repins_count">4 repins</span>
+    <span class="like_count"><%= pluralize pin.like_count, 'like', 'likes' %></span>
+    <span class="comment_count"><%= pluralize pin.comment_count, 'comment', 'comments' %></span>
+    <span class="repins_count"><%= pluralize pin.repin_count, 'repin', 'repins' %></span>
   </div>
   <div class="attribution">
-    <a class="image_link" title="User Name" href="/path_to_user_profile">
-      <img alt="Profile picture of User Name" src="/assets/temp/avatar_30.jpg"/>
-    </a>
+    <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name %>
     <p class="details">
       <%= link_to pin.user.name, profile_path(pin.user) %>
       <% if pin.via %>
@@ -36,9 +34,7 @@
   </div>
   <% if user_signed_in? && !pin.new_record? %>
     <div class="comment">
-      <a class="image_link" title="<%= current_user.name %>" href="<%= profile_path(current_user) %>">
-        <img alt="<%= current_user.name %>'s avatar" src="/assets/temp/avatar_30.jpg"/>
-      </a>
+      <%= link_to image_tag(current_user.avatar.v30.url, :alt => "#{current_user.name}'s avatar"), profile_path(current_user), :title => current_user.name %>
       <form method="POST" action="/pin/pin_id/comment/">
         <input class="pin_comment_replies" type="hidden" name="replies">
         <textarea class="add_comment" placeholder="Add a comment..." maxlength="1000"></textarea>

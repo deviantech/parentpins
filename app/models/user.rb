@@ -5,8 +5,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :omniauthable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  mount_uploader :avatar, AvatarUploader
+  
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar
   
   has_many :boards, :dependent => :destroy
   has_many :pins, :dependent => :destroy

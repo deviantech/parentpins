@@ -1,6 +1,11 @@
 <li class="board">
   <h3><%= link_to board.name, board %></h3>
-  <h4><a href="profile_recent.html"><img src="/assets/temp/avatar_50.jpg"> <%= board.user.name %></a></h4>
+  <h4>
+    <a href="profile_recent.html">
+      <%= image_tag @board.user.avatar.v50.url, :alt => "#{@board.user.name}'s avatar" %>
+      <%= board.user.name %>
+    </a>
+  </h4>
   <div class="holder">
     <%= link_to '', board, :class => 'link' %>
     <div class="cover">

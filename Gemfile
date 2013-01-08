@@ -35,3 +35,8 @@ gem 'haml'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
+
+# Used for carrerwave uploads
+gem 'carrierwave'
+gem 'mime-types'
+gem 'mini_magick'

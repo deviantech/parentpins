@@ -6,8 +6,6 @@
       <%= options_for_select [['All Pins', '']] + Pin::VALID_TYPES.collect{|t| [t.pluralize.titleize, t]}, @kind %>
     </select>
     <ul class="timeline" id="pins">
-      <!-- Image max-widths should be 320px maintianing aspect ratio with flexible height -->
-      <!-- timeline center dot alignments need work to match masonry configuration -->
       <%= render @pins %>
     </ul>
     <a href="#" class="btn action load_more_button tertiary_action">Load More</a>

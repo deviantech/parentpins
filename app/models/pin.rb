@@ -1,7 +1,9 @@
 class Pin < ActiveRecord::Base
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id
+  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image
 
   VALID_TYPES = %w(gift article idea)
+
+  mount_uploader :image, PinImageUploader
 
   belongs_to :user
   belongs_to :via
@@ -17,6 +19,11 @@ class Pin < ActiveRecord::Base
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
+  
+  # TODO: IMPLEMENT THESE
+  def like_count; 2; end
+  def repin_count; 5; end
+  def comment_count; 3; end
   
   protected
   
