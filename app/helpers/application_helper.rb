@@ -16,6 +16,7 @@ module ApplicationHelper
   def nav_link(text, target, opts = {})
     opts[:class] ||= ''
     opts[:class]  += ' marker' if current_page?(target)
+    opts[:class]  += ' marker' if opts[:also_accept] && current_page?(opts[:also_accept])
     link_to(text, target, opts)
   end
   

@@ -71,7 +71,7 @@ ParentPins::Application.routes.draw do
   #   end
 
 
-  root :to => 'static#index'
+  root :to => 'pins#index'
   match ':action' => 'static#'
 
   # See how all your routes lay out with "rake routes"

@@ -1,15 +1,15 @@
 <li class="pin">
   <% unless pin.new_record? %>
-    <%= render 'actions', :pin => pin %>
+    <%= render 'pins/actions', :pin => pin %>
   <% end %>
   <% if pin.price %>
     <div class="gift_price"><%= number_to_currency pin.price %></div>
   <% end %>
-  <a href="specific_pin.html" class="image_link">
+  <%= link_to pin, :class => 'image_link' do %>
     <%= image_tag pin.image.v320.url, :class => 'pin_image', :alt => 'Pin image' %>
-  </a>
-  <p class="description"><a href="specific_pin.html"><strong class="kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>
-  <%= render 'stats', :pin => pin %>
+  <% end %>
+  <p class="description"><a href="<%= url_for(pin) %>"><strong class="kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>
+  <%= render 'pins/stats', :pin => pin %>
   <div class="attribution">
     <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name %>
     <p class="details">
@@ -26,12 +26,11 @@
   </div>
   <% if user_signed_in? && !pin.new_record? %>
     <div class="comment">
-      <%= link_to image_tag(current_user.avatar.v30.url, :alt => "#{current_user.name}'s avatar"), profile_path(current_user), :title => current_user.name %>
-      <form method="POST" action="/pin/pin_id/comment/">
-        <input class="pin_comment_replies" type="hidden" name="replies">
-        <textarea class="add_comment" placeholder="Add a comment..." maxlength="1000"></textarea>
-        <button class="Button WhiteButton Button11 grid_comment_button" type="button" style="display: inline-block;">Comment</button>
-      </form>
+      <%= form_for Comment.new, :url => add_comment_pin_path(pin) do |f| %>
+        <%= link_to image_tag(current_user.avatar.v30.url, :alt => "#{current_user.name}'s avatar"), profile_path(current_user), :title => current_user.name %>
+        <%= f.text_area :body, :placeholder => 'Add a comment...', :maxlength => 10000 %>
+        <%= f.submit 'Comment', :class => "Button WhiteButton Button11 grid_comment_button", :style => 'display: inline-block' %>
+      <% end %>
     </div>
   <% end %>
 </li>

@@ -16,8 +16,8 @@
     <div class="detail">
     <h2><%= link_to @pin.name, @pin.url %></h2>
     <p><%= link_to @pin.url, @pin.url %></p>
-    <%= render 'stats', :pin => @pin %>
-    <%= render 'actions', :pin => @pin %>
+    <%= render 'pins/stats', :pin => @pin %>
+    <%= render 'pins/actions', :pin => @pin %>
     <%= link_to @pin.url, :class => 'image_link' do %>
       <% if @pin.price %>
         <div class="price"><%= number_to_currency @pin.price %></div>
@@ -39,7 +39,7 @@
         <div class="comment_form">
           <%= form_for @comment, :url => add_comment_pin_path(@pin) do |f| %>
             <%= avatar_link(current_user) %>
-            <%= f.text_area :body, :placeholder => 'Enter your comment...' %>
+            <%= f.text_area :body, :placeholder => 'Enter your comment...', :maxlength => 10000 %>
             <%= f.submit 'Comment', :class => "btn sec_action comment_button" %>
           <% end %>
         </div>
