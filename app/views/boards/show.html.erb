@@ -16,9 +16,7 @@
       <option>Ideas</option>
     </select>
 
-    <ul class="timeline" id="pins">
-      <%= render :partial => 'pins/pin', :collection => @pins %>
-    </ul>
+    <%= render 'pin/pins' %>
 
     <div class="clearfix"></div>
     <a href="http://localhost:3000/boards/1" class="btn action load_more_button tertiary_action js-pagination" id="loadMoreBtn">View More</a>

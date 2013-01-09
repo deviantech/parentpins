@@ -1,0 +1,7 @@
+<% if @pins.blank? %>
+  <div class="empty-pins">No pins to show.</div>
+<% else %>
+  <ul class="timeline" id="pins">
+    <%= render @pins %>
+  </ul>
+<% end %>

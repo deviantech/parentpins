@@ -8,6 +8,9 @@ class ProfilesController < ApplicationController
   end
   
   def activity
+    # TODO: add pagination
+    @pin_style = :narrow  # TODO: ugly to have this toggle in the controller...
+    @pins = @profile.pins.limit(20)
   end
   
   def pins
@@ -16,12 +19,20 @@ class ProfilesController < ApplicationController
   end
   
   def likes
+    @pins = Pin.where(:id => @profile.likes).limit(20)
+    # TODO: add pagination
   end
   
   def followers
+    @followers = [] # TODO: implement followers
+    @pins = Pin.pinned_by(@followers).limit(20)
+    # TODO: add pagination
   end
   
   def following
+    @following = [] # TODO: implement following
+    @pins = Pin.pinned_by(@following).limit(20)
+    # TODO: add pagination
   end
   
   def boards
@@ -32,7 +43,10 @@ class ProfilesController < ApplicationController
     unless @board = @profile.boards.find_by_id(params[:id])
       redirect_to :action => 'show', :notice => "Unable to find the specified board"
     end
+    @pins = @board.pins.limit(20) # TODO: add pagination
   end
+  
+  
   
   def edit
   end

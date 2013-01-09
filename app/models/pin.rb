@@ -22,7 +22,10 @@ class Pin < ActiveRecord::Base
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
-  
+  scope :pinned_by, lambda {|uids|
+    where({:user_id => uids})
+  }
+
   # TODO: IMPLEMENT THESE
   def like_count; 2; end
   def repin_count; 5; end

@@ -21,4 +21,9 @@ class User < ActiveRecord::Base
   def name
     username.to_s.titleize
   end
+  
+
+  # TODO: implement this
+  def likes; pins.map(&:id); end
+  
 end
