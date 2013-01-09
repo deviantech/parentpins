@@ -16,6 +16,8 @@ class Pin < ActiveRecord::Base
   validates_length_of :description, :maximum => 255, :allow_blank => true
   validate :url_format
   
+  after_save :check_board_cover
+  
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
