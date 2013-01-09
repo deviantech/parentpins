@@ -26,7 +26,7 @@
           </ul>
         </li>
         <li class="profile_link">
-          <a href="profile_recent.html">Hi, <%= current_user.username.titleize %></a>
+          <%= link_to "Hi, #{current_user.username.titleize}", pins_profile_path(current_user) %>
           <ul>
             <li><%= link_to 'Activity', activity_profile_path(current_user) %></li>
             <li><%= link_to 'Pins', pins_profile_path(current_user) %></li>

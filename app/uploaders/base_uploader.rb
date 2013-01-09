@@ -9,6 +9,8 @@ class BaseUploader < CarrierWave::Uploader::Base
 
   include CarrierWave::MimeTypes
   process :set_content_type
+  process :fix_exif_rotation
+  process :strip
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   include Sprockets::Helpers::RailsHelper
@@ -23,7 +25,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    SecureRandom.hex(12) + File.extname(original_filename)
+    SecureRandom.hex(12) + (original_filename.blank? ? '' : File.extname(original_filename))
   end
   
   # Override the directory where uploaded files will be stored.
@@ -36,6 +38,26 @@ class BaseUploader < CarrierWave::Uploader::Base
   def default_url
     # For Rails 3.1+ asset pipeline compatibility:
     asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
+  end
+  
+  
+  
+  # Rotates the image based on the EXIF Orientation
+  def fix_exif_rotation
+    manipulate! do |img|
+      img.auto_orient!
+      img = yield(img) if block_given?
+      img
+    end
+  end
+
+  # Strips out all embedded information from the image
+  def strip
+    manipulate! do |img|
+      img.strip!
+      img = yield(img) if block_given?
+      img
+    end
   end
   
 end

@@ -12,66 +12,13 @@
       <h3>Top Level Pages</h3>
       <ul class="help_list">
         <li>
-          <a href="<%= pins_path %>">Recent Pins</a>
-        </li>
-        <li>
-          <a href="<%= boards_path %>">Boards landing</a>
-        </li>
-        <li>
-          <a href="board.html">Board</a>
-          <em>Stand alone board - not in a user profile. Shown when a link is clicked anywhere but from inside a users profilea.</em>
-        </li>
-        <li>
-          <a href="articles.html">Articles landing</a>
-        </li>
-        <li>
-          <a href="login.html">Log In</a>
-        </li>
-        <li>
           <a href="signup.html">Sign Up</a>
           <em>Click on the "create account" button to view _modal_signup_2.erb modal. within that modal, click on "skip this" to go to pofile</em>
-        </li>
-      </ul>
-      <h3>Secondary Pages</h3>
-      <ul class="help_list">
-        <li>
-          <a href="profile_recent_empty.html">Profile - Recent Pins - First Login</a>
-          <em>Shows User in state after they first sign up and have not taken an action.</em>
-          <em>Hover any pin and click "edit" to view this modal.</em>
-        </li>
-        <li>
-          <a href="profile_recent.html">Profile - Recent Pins</a>
-          <em>Shows a logged in user who has pinned items</em>
-        </li>
-        <li>
-          <a href="profile_recent.html">Profile - Likes</a>
-          <em>Shows a list of items user has liked.</em>
-        </li>
-        <li>
-          <a href="profile_boards.html">Profile - User Boards</a>
-        </li>
-        <li>
-          <a href="profile_specific_board.html">Profile - User Specific Board</a>
-          <em>shown when a user clicks on the other users board from within their profile. all other boards use /board.html layout.</em>
-        </li>
-        <li>
-          <a href="profile_followers.html">Profile - Followers</a>
-          <em>shows users who are following the logged in user</em>
-        </li>
-        <li>
-          <a href="profile_following.html">Profile - Following</a>
-          <em>shows users the logged is following</em>
         </li>
       </ul>
       
       <h3>Where to find other things</h3>
       <ul class="help_list">
-        <li>
-          <a href="add_pin">Add / Edit pin form</a>
-        </li>
-        <li>
-          <%= link_to 'Add / Edit board form', new_board_path %>
-        </li>
         <li>
           <button href="#pinly_overlay_1" class="pinly_toggle btn primary">Show Article pin overlay</button>
           <em>Hand built pin overlay</em>
@@ -81,20 +28,6 @@
         
       <h3>Images Sizes</h3>
       <ul class="help_list">
-        <li>
-          <strong>Pinned Image</strong>
-          <em>Used in the following sizes:</em>
-          <em>1. maximum width:500px, height: flexible (used on pin specific page)</em>
-          <em>2. 192 wide x flex height (used on pin boards)</em>
-          <em>3. 55 x 55 (used on board thumbnails)</em>
-        </li>
-        <li>
-          <strong>Avatars</strong>
-          <em>Used in the following sizes:</em>
-          <em>120 x 120 (main avatar on profile)</em>
-          <em>50 x 50 (when following or followers)</em>
-          <em>18 x 18 (board listing thumbnails)</em>
-        </li>
         <li>
           <strong>Cover Photos</strong>
           <em>Reduce to only 1 size:</em>

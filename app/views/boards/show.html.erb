@@ -4,7 +4,11 @@
     <h1>
       <a href="<%= boards_profile_path(@board.user) %>" class="user"><%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %><%= @board.user.name %>'s</a> Board: <%= @board.name %>
     </h1>
-
+    
+    <% unless @board.description.blank? %>
+      <div class="board_description"><%= @board.description %></div>
+    <% end %>
+    
     <select class="cat_select">
       <option>All Pins</option>
       <option>Articles</option>
