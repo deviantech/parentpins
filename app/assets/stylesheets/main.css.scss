@@ -1621,3 +1621,14 @@ font-size: 13px; }
 textarea {
   height: 50px;
 }
+
+.ajax-loader {
+ position: fixed;
+ top: 20%;
+ left: 47%;
+ background-color: rgba(255,255,255,0.7);
+ -webkit-box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+ -moz-box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+ box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+ padding: 25px;
+}

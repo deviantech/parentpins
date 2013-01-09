@@ -6,6 +6,8 @@ $(document).ready(function() {
 
   $('.ajax').click(function(e) {
     var url = $(this).attr('href');
+    
+    $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn();
     url = url + (url.match(/\?/) ? '&' : '?') + 'via_ajax=true';
     $ajax.load(url);
     e.preventDefault();
