@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def avatar_link(user)
+    link_to image_tag(user.avatar.v50.url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar_link'
+  end
+
   def error_messages_for(resource)
     return '' if resource.errors.empty?
     

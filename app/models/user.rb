@@ -11,9 +11,12 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar
   
-  has_many :boards, :dependent => :destroy
-  has_many :pins, :dependent => :destroy
-  has_many :pins_via_me, :class_name => 'Pin', :foreign_key => 'via_id'
+  has_many :boards,       :dependent => :destroy
+  has_many :pins,         :dependent => :destroy
+  has_many :pins_via_me,                            :class_name => 'Pin',   :foreign_key => 'via_id'
+  has_many :pins_originally_from_me,                :class_name => 'Pin',   :foreign_key => 'originally_from_id'
+  has_many :comments,     :dependent => :destroy
+  
   
   def name
     username.to_s.titleize

@@ -2,7 +2,7 @@
   <div class="pinly <%= @pin.kind %>">
     <div class="pin_type"><%= @pin.kind.to_s.titleize %></div>
     <div class="attribute">
-      <%= link_to image_tag(@pin.user.avatar.v50.url, :alt => "#{@pin.user.name}'s avatar"), profile_path(@pin.user), :class => 'avatar_link' %>
+      <%= avatar_link(@pin.user) %>
       <div class="attribute_info">
         <p>
           <%= link_to @pin.user.name, profile_path(@pin.user) %>
@@ -34,28 +34,14 @@
     <% end %>
     
     <div class="comments" id="pinly_comment">
-      <div class="comment">
-        <a href="#" class="avatar_link"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"></a>
-        <div class="user_info">
-          <a href="#">User Name</a>
-          <p>User comment here for length</p>
-        </div>
-      </div>
-      <div class="comment">
-        <a href="#" class="avatar_link"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"></a>
-        <div class="user_info">
-          <a href="#">User Name</a>
-          <p>User comment here for length</p>
-        </div>
-      </div>
-      
+      <%= render @pin.comments %>
       <% if user_signed_in?%>
         <div class="comment_form">
-          <form>
-            <%= link_to image_tag(current_user.avatar.v50.url, :alt => "#{current_user.name}'s avatar"), profile_path(current_user), :class => 'avatar_link' %>
-            <textarea placeholder="Enter your comment..."></textarea>
-            <button type="button" class="btn sec_action comment_button">Comment</button>
-          </form>
+          <%= form_for @comment, :url => add_comment_pin_path(@pin) do |f| %>
+            <%= avatar_link(current_user) %>
+            <%= f.text_area :body, :placeholder => 'Enter your comment...' %>
+            <%= f.submit 'Comment', :class => "btn sec_action comment_button" %>
+          <% end %>
         </div>
       <% end %>
     </div>

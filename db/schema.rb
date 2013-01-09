@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130109010046) do
+ActiveRecord::Schema.define(:version => 20130109013956) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -40,6 +40,17 @@ ActiveRecord::Schema.define(:version => 20130109010046) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "comments", :force => true do |t|
+    t.text     "body"
+    t.integer  "user_id"
+    t.integer  "pin_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "comments", ["pin_id"], :name => "index_comments_on_pin_id"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
   create_table "pins", :force => true do |t|
     t.string   "name"
     t.string   "kind"
@@ -50,11 +61,12 @@ ActiveRecord::Schema.define(:version => 20130109010046) do
     t.integer  "category_id"
     t.integer  "age_group_id"
     t.integer  "via_id"
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
     t.string   "description"
     t.string   "image"
     t.integer  "original_poster_id"
+    t.integer  "comments_count",                                    :default => 0
   end
 
   add_index "pins", ["age_group_id"], :name => "index_pins_on_age_group_id"
