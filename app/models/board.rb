@@ -26,7 +26,10 @@ class Board < ActiveRecord::Base
   end
   
   def update_cover_before_pin_removed(pin)
-    next_pin = pins.where(['id <> ?', pin.try(:id)]).first
-    update_attribute :cover, next_pin ? next_pin.image.v320 : nil
+    if next_pin = pins.where(['id <> ?', pin.try(:id)]).first
+      update_attribute :cover, next_pin.image.v320
+    else
+      update_attribute :remove_cover, true
+    end
   end
 end

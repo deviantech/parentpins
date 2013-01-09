@@ -1,12 +1,13 @@
 class Pin < ActiveRecord::Base
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image
+  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image, :via_id, :original_poster_id
 
   VALID_TYPES = %w(gift article idea)
 
   mount_uploader :image, PinImageUploader
 
   belongs_to :user
-  belongs_to :via
+  belongs_to :via,              :class_name => 'User'
+  belongs_to :original_poster,  :class_name => 'User'
   belongs_to :board
   belongs_to :category
   belongs_to :age_group
@@ -16,8 +17,6 @@ class Pin < ActiveRecord::Base
   validates_length_of :description, :maximum => 255, :allow_blank => true
   validate :url_format
   
-  after_save :check_board_cover
-  
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
@@ -26,7 +25,7 @@ class Pin < ActiveRecord::Base
   def like_count; 2; end
   def repin_count; 5; end
   def comment_count; 3; end
-  
+    
   protected
   
   def url_format
