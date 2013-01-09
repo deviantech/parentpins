@@ -1,16 +1,23 @@
 class ProfilesController < ApplicationController
   before_filter :get_profile
-  before_filter :authenticate_user!, :only => [:edit, :update]
-  before_filter :get_profile_owner, :only => [:edit, :update]
+  before_filter :authenticate_user!,  :only => [:edit, :update, :activity]
+  before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   
   def show
     redirect_to :action => 'boards'
   end
   
   def activity
+    if params[:add] && to_add = Category.find_by_id(params[:add])
+      current_user.add_interested_categories(to_add)
+    end
+    
+    if params[:remove] && to_remove = Category.find_by_id(params[:remove])
+      current_user.remove_interested_categories(to_remove)
+    end
+    
+    @pins = Pin.in_categories(current_user.interested_categories).limit(20)
     # TODO: add pagination
-    @pin_style = :narrow  # TODO: ugly to have this toggle in the controller...
-    @pins = @profile.pins.limit(20)
   end
   
   def pins

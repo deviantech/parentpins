@@ -4,10 +4,11 @@ class PinsController < ApplicationController
   before_filter :find_any_pin, :only => [:show, :add_comment]
     
   def index
-    # TODO: implement some sort of trending logic
+    # TODO: implement some sort of trending logic if kind/category aren't provided
     # TODO: include user or else cache username
     @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
-    @pins = Pin.by_kind(@kind).limit(20)
+    @category = Category.find_by_id(params[:category_id]) unless params[:category_id].blank?
+    @pins = Pin.by_kind(@kind).in_categories(@category).limit(20)
   end
   
   def new

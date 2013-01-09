@@ -139,6 +139,9 @@ GEM
     rbx-require-relative (0.0.9)
     rdoc (3.12)
       json (~> 1.4)
+    redis (3.0.2)
+    redis-namespace (1.2.1)
+      redis (~> 3.0.0)
     ruby-debug (0.10.4)
       columnize (>= 0.1)
       ruby-debug-base (~> 0.10.4.0)
@@ -184,6 +187,8 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   rails (= 3.2.9)
+  redis
+  redis-namespace
   ruby-debug
   sass-rails (~> 3.2.3)
   uglifier (>= 1.0.3)

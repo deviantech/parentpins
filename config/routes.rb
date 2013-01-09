@@ -24,6 +24,9 @@ ParentPins::Application.routes.draw do
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
   match '/gifts'    => 'pins#index',  :kind => 'gift',      :as => 'gifts'
   match '/ideas'    => 'pins#index',  :kind => 'idea',      :as => 'ideas'
+
+  match '/pins/category/:category_id' => 'pins#index',  :as => 'pins_category'
+
   
   resources :profiles do
     member do
@@ -72,7 +75,10 @@ ParentPins::Application.routes.draw do
 
 
   root :to => 'pins#index'
-  match ':action' => 'static#'
+  
+  match '/about' => 'static#about'
+  match '/legal' => 'static#legal'
+  match '/privacy' => 'static#privacy'
 
   # See how all your routes lay out with "rake routes"
 end
