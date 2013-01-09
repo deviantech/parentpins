@@ -5,9 +5,9 @@
     <select class="cat_select" data-base-url="/pins" data-filter-name="kind">
       <%= options_for_select [['All Pins', '']] + Pin::VALID_TYPES.collect{|t| [t.pluralize.titleize, t]}, @kind %>
     </select>
-    <ul class="timeline" id="pins">
-      <%= render @pins %>
-    </ul>
+
+    <%= render 'pins/pins' %>
+
     <a href="#" class="btn action load_more_button tertiary_action">Load More</a>
     <br/>
     <img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>
