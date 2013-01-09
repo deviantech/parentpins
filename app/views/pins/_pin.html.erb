@@ -5,7 +5,7 @@
   <% if pin.price %>
     <div class="gift_price"><%= number_to_currency pin.price %></div>
   <% end %>
-  <%= link_to pin, :class => 'image_link' do %>
+  <%= link_to pin, :class => 'ajax image_link' do %>
     <%= image_tag pin.image.v320.url, :class => 'pin_image', :alt => 'Pin image' %>
   <% end %>
   <p class="description"><a href="<%= url_for(pin) %>"><strong class="kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>

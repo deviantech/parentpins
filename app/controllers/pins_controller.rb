@@ -28,6 +28,7 @@ class PinsController < ApplicationController
   end
   
   def show
+    render :layout => !params[:via_ajax]
   end
     
   def edit

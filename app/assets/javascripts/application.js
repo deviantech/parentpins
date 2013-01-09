@@ -1,23 +1,32 @@
-$(document).ready(function() {
-  $('.pinly_toggle').click(function(){
-    //get collapse content selector
-    var collapse_content_selector = $(this).attr('href');					
 
-    //make the collapse content to be shown or hide
-    var toggle_switch = $(this);
-    $(collapse_content_selector).toggle(function(){
-      if($(this).css('display')=='none'){
-        //change the button label to be 'Show'
-        toggle_switch.html('Show');
-      }else{
-        //change the button label to be 'Hide'
-        toggle_switch.html('Hide');
-      }
-    });
+
+$(document).ready(function() {  
+  // Handle ajax/modals
+  $ajax = $('<div id="ajax-modal-target"></div>').appendTo($('body'));
+
+  $('.ajax').click(function(e) {
+    var url = $(this).attr('href');
+    url = url + (url.match(/\?/) ? '&' : '?') + 'via_ajax=true';
+    $ajax.load(url);
+    e.preventDefault();
   });
-});	
 
-$(document).ready(function() {
+  function closeModal() {
+    $('#ajax-modal-target:visible').fadeOut(function() {
+      $(this).empty().show();
+    });
+  }
+    
+  $('#pinly_overlay').click(function(e) {
+    closeModal();
+  });
+  
+  $(document).keyup(function(e) {   // Escape key
+    if (e.keyCode == 27) { closeModal(); }
+  });
+
+  
+  // Masonry layout a la pinterest
   $('#pins').masonry({
      columnWidth: 50,
      itemSelector: '.pin'
@@ -25,6 +34,7 @@ $(document).ready(function() {
      $('#pins').masonry('reload');
   });
   
+  // Infinite scrolling
   $.ias({
     container: '#pins',
     item: '.pin',
