@@ -3,7 +3,7 @@
     <div class="content">
       <h1>Trending Boards<% if @category %> :: <%= @category.name %><% end %></h1>
       <select class="cat_select" data-base-url="/boards" data-filter-name="category">
-        <%= options_for_select [['All Boards', '']] + Category.all.collect{|c| [c.name, c.id]}, @category.try(:id) %>
+        <%= options_for_select [['All Boards', '']] + select_options(Category.all), @category.try(:id) %>
       </select>
       
       <ul class="boards">

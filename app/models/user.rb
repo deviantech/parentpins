@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   mount_uploader :cover_image,  CoverImageUploader
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_categories, :kids, :bio
   
   has_many :boards,       :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -18,19 +18,24 @@ class User < ActiveRecord::Base
   has_many :comments,     :dependent => :destroy
   
   has_many :feedbacks
+  
+  validates_numericality_of :kids, :allow_blank => true
+
+  def interested_categories=(ids)
+    Rails.redis.del(interested_category_set_name)
+    add_interested_categories(ids)
+  end
 
   def interested_categories
     Category.where(:id => Rails.redis.smembers(interested_category_set_name))
   end
   
   def add_interested_categories(cats)
-    ids = Array(cats).map(&:id)
-    Rails.redis.sadd(interested_category_set_name, *ids)
+    Rails.redis.sadd(interested_category_set_name, cleaned_ids(cats))
   end
   
   def remove_interested_categories(cats)
-    ids = Array(cats).map(&:id)
-    Rails.redis.srem(interested_category_set_name, *ids)
+    Rails.redis.srem(interested_category_set_name, cleaned_ids(cats))
   end
   
   def name
@@ -40,12 +45,18 @@ class User < ActiveRecord::Base
 
   # TODO: implement this
   def likes; pins.map(&:id); end
+  def followers; User.all.map(&:id); end
+  def following; User.all.map(&:id); end
   
   
   protected
   
   def interested_category_set_name
     "u:#{self.id}:categories"
+  end
+  
+  def cleaned_ids(cats)
+    Array(cats).select{|c| !c.blank?}.map{ |cat| cat.respond_to?(:id) ? cat.id : cat }.uniq
   end
   
 end

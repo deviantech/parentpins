@@ -18,8 +18,12 @@
           <li><%= profile_nav_link :followers %></li>
           <li><%= profile_nav_link :following %></li>
         </ul>
-        <p class="kid_count">Has 3 kids</p>
-        <p class="bio">I love my kid and I love this site. Great place to find out about parenting tips, great toys, education and more.</p>
+
+        <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
+
+        <% unless @profile.bio.blank? %>
+          <p class="bio"><%= @profile.bio %></p>
+        <% end %>
       </div>
 
       <div class="content">

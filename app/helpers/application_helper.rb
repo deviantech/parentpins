@@ -1,5 +1,11 @@
 module ApplicationHelper
 
+  def select_options(collection)
+    collection.collect do |item|
+      item.respond_to?(:name) ? [item.name, item.id] : [item.titleize, item]
+    end
+  end
+
   def avatar_link(user)
     link_to image_tag(user.avatar.v50.url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar_link'
   end

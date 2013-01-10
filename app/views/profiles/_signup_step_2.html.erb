@@ -1,46 +1,25 @@
 <div class="pinly_overlay">
-  
-      <form method="post" id="new_session" class="form narrow signup" action="/sessions">
-        <h1>Last Step, Personalize Your ParentPin Experience</h1>
-        <div class="field">
-          <p>Select at least one Kid Interest</p>
-          <select class="modal_select">
-            <option>All boards</option>
-            <option class="sub_main">Category One</option>
-            <option class="sub_cat">Sub Category One</option>
-            <option class="sub_cat">Sub Category Two</option>
-            <option class="sub_cat">Sub Category Three</option>
-            <option class="sub_cat">Sub Category Four</option>
-            <option class="sub_main">Category Two</option>
-            <option class="sub_cat">Sub Category One</option>
-            <option class="sub_cat">Sub Category Two</option>
-            <option class="sub_cat">Sub Category Three</option>
-            <option class="sub_cat">Sub Category Four</option>
-            <option class="sub_main">Category Three</option>
-            <option class="sub_main">Category Four</option>
-            <option class="sub_cat">Sub Category One</option>
-            <option class="sub_cat">Sub Category Two</option>
-            <option class="sub_main">Category Five</option>
-            <option class="sub_cat">Sub Category One</option>
-            <option class="sub_cat">Sub Category Two</option>
-            <option class="sub_cat">Sub Category Three</option>
-          </select>
-        </div>
-        <div class="field">
-          <p>How many kids do you have?</p>
-          <input type="text" placeholder="1, 2, more?" name="user[username]" id="user_kid_count">
-        </div>
-        <div class="field">
-          <p>Write something about yourself...</p>
-          <textarea type="text" placeholder="Ex: I'm always checking out KinPins for great ideas on healty recipes..." name="user[username]" id="user_short_bio"></textarea>
-        </div>
-        <div class="submit">
-          <input type="submit" value="Finish, Go to Profile &rarr;" name="commit" class="btn tertiary_action">
-        </div>
-        <div class="buttons">
-          <a  href="profile_recent_empty.html">skip this</a>
-        </div>
-      </form>
+  <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form narrow signup"} do |f| %>
+    <%= hidden_field_tag :step_2, true %>
+    <h1>Last Step, Personalize Your ParentPin Experience</h1>
+    <%= error_messages_for(@profile) %>
+    <div class="field">
+      <p>Select at least one interest area</p>
+      <%= f.select :interested_categories, select_options(Category.all), {}, :multiple => true %>
     </div>
-
+    <div class="field">
+      <p>How many kids do you have?</p>
+      <%= f.text_field :kids, :placeholder => "1, 2, more?" %>
+    </div>
+    <div class="field">
+      <p>Write something about yourself...</p>
+      <%= f.text_area :bio, :placeholder => "Ex: I'm always checking out KinPins for great ideas on healty recipes..." %>
+    </div>
+    <div class="submit">
+      <input type="submit" value="Finish, Go to Profile &rarr;" name="commit" class="btn tertiary_action">
+    </div>
+    <div class="buttons">
+      <a href="<%= activity_profile_path(@profile) %>">skip this</a>
+    </div>
+  <% end %>
 </div>

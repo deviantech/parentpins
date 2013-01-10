@@ -1044,7 +1044,7 @@ form .field {
     display:block; } }
 
 .form .field {
-  input, textarea {
+  input, textarea, select[multiple="multiple"] {
     display: block;
     width: 240px;
     background: none repeat scroll 0 0 white;
@@ -1058,7 +1058,13 @@ form .field {
     font-size: 16px;
     font-weight: normal;
     padding: 8px 10px;
-    resize: none; } }
+    resize: none; } 
+  select[multiple="multiple"] {
+    width: 260px;
+    option {
+      color: #666;
+    }
+  }}
 
 input[placeholder], textarea[placeholder], [placeholder], *[placeholder] {
   color: #898989 !important; }

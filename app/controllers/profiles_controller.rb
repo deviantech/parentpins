@@ -7,10 +7,7 @@ class ProfilesController < ApplicationController
     redirect_to :action => 'boards'
   end
   
-  def activity
-    # TODO - implement this only when viewing from signup page
-    @show_signup_step_2 = true
-    
+  def activity    
     if params[:add] && to_add = Category.find_by_id(params[:add])
       current_user.add_interested_categories(to_add)
     end
@@ -62,6 +59,16 @@ class ProfilesController < ApplicationController
   end
   
   def update
+    if @profile.update_attributes(params[:user])
+      redirect_to activity_profile_path(@profile), :notice => "Updated profile"
+    else
+      if params[:step_2]
+        activity
+        render 'activity'
+      else
+        render 'edit'
+      end
+    end
   end
   
   protected
@@ -74,9 +81,9 @@ class ProfilesController < ApplicationController
     @profile_counters = {
       :pins       => @profile.pins.count,
       :boards     => @profile.boards.count,
-      :likes      => 3,
-      :followers  => 0,
-      :following   => 12
+      :likes      => @profile.likes.count,
+      :followers  => @profile.followers.count,
+      :following   => @profile.following.count
     }
   end
   

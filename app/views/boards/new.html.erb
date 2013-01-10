@@ -15,12 +15,12 @@
 
       <div class="field">
         <%= f.label :category_id, "Select a Category" %>
-        <%= f.select :category_id, Category.all.collect{|c| [c.name, c.id]} %>
+        <%= f.select :category_id, select_options(Category.all) %>
       </div>
 
       <div class="field">
         <%= f.label :age_group_id, "Select an Age Group" %>
-        <%= f.select :age_group_id, AgeGroup.all.collect{|c| [c.name, c.id]} %>
+        <%= f.select :age_group_id, select_options(AgeGroup.all) %>
       </div>
 
       <div class="field">
