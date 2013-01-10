@@ -9,7 +9,7 @@ module PinsHelper
       str += @category.name
     end
     
-    str = "Trending Parenting Articles, Ideas, Gifts, &amp; More" if str.blank?
+    str = "Trending Parenting Articles, Ideas, Gifts, & More" if str.blank?
     
     return str
   end

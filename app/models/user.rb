@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :pins_originally_from_me,                :class_name => 'Pin',   :foreign_key => 'originally_from_id'
   has_many :comments,     :dependent => :destroy
   
+  has_many :feedbacks
 
   def interested_categories
     Category.where(:id => Rails.redis.smembers(interested_category_set_name))

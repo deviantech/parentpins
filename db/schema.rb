@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130109013956) do
+ActiveRecord::Schema.define(:version => 20130110133951) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -50,6 +50,15 @@ ActiveRecord::Schema.define(:version => 20130109013956) do
 
   add_index "comments", ["pin_id"], :name => "index_comments_on_pin_id"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
+  create_table "feedbacks", :force => true do |t|
+    t.text     "body"
+    t.string   "email"
+    t.integer  "user_id"
+    t.string   "user_agent"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "pins", :force => true do |t|
     t.string   "name"

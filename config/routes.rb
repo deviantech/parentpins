@@ -76,9 +76,11 @@ ParentPins::Application.routes.draw do
 
   root :to => 'pins#index'
   
-  match '/about' => 'static#about'
-  match '/legal' => 'static#legal'
-  match '/privacy' => 'static#privacy'
+  resource :feedback, :only => [:new, :create]
+  
+  match '/about' => 'front#about'
+  match '/legal' => 'front#legal'
+  match '/privacy' => 'front#privacy'
 
   # See how all your routes lay out with "rake routes"
 end
