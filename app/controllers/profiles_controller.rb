@@ -8,6 +8,9 @@ class ProfilesController < ApplicationController
   end
   
   def activity
+    # TODO - implement this only when viewing from signup page
+    @show_signup_step_2 = true
+    
     if params[:add] && to_add = Category.find_by_id(params[:add])
       current_user.add_interested_categories(to_add)
     end
