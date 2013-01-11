@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   mount_uploader :cover_image,  CoverImageUploader
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_categories, :kids, :bio
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_category_ids, :kids, :bio
   
   has_many :boards,       :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -21,13 +21,17 @@ class User < ActiveRecord::Base
   
   validates_numericality_of :kids, :allow_blank => true
 
-  def interested_categories=(ids)
+  def interested_category_ids=(ids)
     Rails.redis.del(interested_category_set_name)
     add_interested_categories(ids)
   end
 
+  def interested_category_ids
+    Rails.redis.smembers(interested_category_set_name)
+  end
+
   def interested_categories
-    Category.where(:id => Rails.redis.smembers(interested_category_set_name))
+    Category.where(:id => interested_category_ids)
   end
   
   def add_interested_categories(cats)

@@ -2,21 +2,11 @@
   <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form narrow signup"} do |f| %>
     <%= hidden_field_tag :step_2, true %>
     <h1>Last Step, Personalize Your ParentPin Experience</h1>
-    <%= error_messages_for(@profile) %>
-    <div class="field">
-      <p>Select at least one interest area</p>
-      <%= f.select :interested_categories, select_options(Category.all), {}, :multiple => true %>
-    </div>
-    <div class="field">
-      <p>How many kids do you have?</p>
-      <%= f.text_field :kids, :placeholder => "1, 2, more?" %>
-    </div>
-    <div class="field">
-      <p>Write something about yourself...</p>
-      <%= f.text_area :bio, :placeholder => "Ex: I'm always checking out KinPins for great ideas on healty recipes..." %>
-    </div>
+
+    <%= render 'form_fields', :f => f %>
+
     <div class="submit">
-      <input type="submit" value="Finish, Go to Profile &rarr;" name="commit" class="btn tertiary_action">
+      <%= f.submit "Finish, Go to Profile &rarr;", :class => 'btn tertiary_action' %>
     </div>
     <div class="buttons">
       <a href="<%= activity_profile_path(@profile) %>">skip this</a>
