@@ -23,7 +23,7 @@ class Pin < ActiveRecord::Base
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
   scope :in_categories, lambda {|cats|
-    where({:category_id => Array(cats).map(&:id)})
+    cats.blank? ? where('1=1') : where({:category_id => Array(cats).map(&:id)})
   }
   scope :pinned_by, lambda {|uids|
     where({:user_id => uids})

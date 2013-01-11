@@ -1,4 +1,7 @@
-<h1><span><%= @profile.name %>'s Board:</span> <%= @board.name %></h1>
+<h1>
+  <span><%= current_user == @profile ? 'Your' : "#{@profile.name}'s" %> Board:</span>
+  <%= @board.name %>
+</h1>
 <select class="cat_select">
   <option>All Pins</option>
   <option>Articles</option>

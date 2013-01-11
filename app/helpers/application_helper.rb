@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def modal_class
+    params[:via_ajax] ? 'pinly_overlay' : nil
+  end
+
   def select_options(collection)
     collection.collect do |item|
       item.respond_to?(:name) ? [item.name, item.id] : [item.titleize, item]

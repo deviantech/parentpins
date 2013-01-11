@@ -2,7 +2,14 @@
 
   <div class="content board board_wide">
     <h1>
-      <a href="<%= boards_profile_path(@board.user) %>" class="user"><%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %><%= @board.user.name %>'s</a> Board: <%= @board.name %>
+      <a href="<%= boards_profile_path(@board.user) %>" class="user">
+        <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
+        <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
+      </a>
+      Board: <%= @board.name %>
+      <% if current_user == @board.user %>
+        <span class="action">[ <%= link_to 'edit', edit_board_path(@board), :class => 'ajax' %> ]</span>
+      <% end %>
     </h1>
     
     <% unless @board.description.blank? %>

@@ -1647,3 +1647,13 @@ textarea {
   margin-top: 50px;
   float: right;
 }
+h1, h2 {
+  span.action {
+    font-size: 0.6em;
+    margin-left: 20px;
+    display: inline-block;
+    a {
+      color: #E55799;
+    }
+  }
+}
