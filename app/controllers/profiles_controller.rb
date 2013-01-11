@@ -60,14 +60,15 @@ class ProfilesController < ApplicationController
   end
   
   def update
-    if @profile.update_attributes(params[:user])
+    params[:from] = 'edit' unless %w(edit account).include?(params[:from])
+    if params[:from] == 'account' ? @profile.update_with_password(params[:user]) : @profile.update_attributes(params[:user])
       redirect_to activity_profile_path(@profile), :notice => "Updated profile"
     else
       if params[:step_2]
         activity
         render 'activity'
       else
-        render 'edit'
+        render params[:from]
       end
     end
   end

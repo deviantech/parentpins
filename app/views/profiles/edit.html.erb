@@ -2,6 +2,7 @@
 
   <div class="content board board_wide">
     <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form narrow", :multipart => true} do |f| %>
+      <%= hidden_field_tag :from, 'edit' %>
       <h1>
         Edit Profile
         <span>[ <%= link_to 'account', account_profile_path(@profile) %> ]</span>
