@@ -55,6 +55,29 @@ class Pin < ActiveRecord::Base
     
     [source, the_pin]
   end
+  
+  # ===========================================================
+  # = REDIS: Liked Pins (implementation partially in user.rb) =
+  # ===========================================================
+
+  def liked_by
+    User.where(:id => liked_by_ids)
+  end
+  
+  def liked_by_ids
+    Rails.redis.smembers(redis_name__liked_by)
+  end
+  
+  def liked_by_count
+    Rails.redis.scard(redis_name__liked_by)
+  end
+  
+  # ======================
+  # = REDIS: queue names =
+  # ======================    
+  def redis_name__liked_by
+    "p:#{self.id}:liked_by"
+  end
     
   protected
   

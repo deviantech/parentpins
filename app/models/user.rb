@@ -21,13 +21,20 @@ class User < ActiveRecord::Base
   
   validates_numericality_of :kids, :allow_blank => true
 
+  def name
+    username.to_s.titleize
+  end
+
+  # ================================
+  # = REDIS: Interested Categories =
+  # ================================
   def interested_category_ids=(ids)
-    Rails.redis.del(interested_category_set_name)
+    Rails.redis.del(redis_name__categories)
     add_interested_categories(ids)
   end
 
   def interested_category_ids
-    Rails.redis.smembers(interested_category_set_name)
+    Rails.redis.smembers(redis_name__categories)
   end
 
   def interested_categories
@@ -35,29 +42,109 @@ class User < ActiveRecord::Base
   end
   
   def add_interested_categories(cats)
-    Rails.redis.sadd(interested_category_set_name, cleaned_ids(cats))
+    Rails.redis.sadd(redis_name__categories, cleaned_ids(cats))
   end
   
   def remove_interested_categories(cats)
-    Rails.redis.srem(interested_category_set_name, cleaned_ids(cats))
-  end
-  
-  def name
-    username.to_s.titleize
+    Rails.redis.srem(redis_name__categories, cleaned_ids(cats))
   end
   
 
-  # TODO: implement this
-  def likes; pins.map(&:id); end
-  def followers; User.all.map(&:id); end
-  def following; User.all.map(&:id); end
+  # ==============================
+  # = REDIS: Following/Followers =
+  # ==============================
+  
+  def followers
+    User.where(:id => follower_ids)
+  end
+
+  def following
+    User.where(:id => following_ids)
+  end
+  
+  def follower_ids
+    Rails.redis.smembers(redis_name__followers)
+  end
+  
+  def following_ids
+    Rails.redis.smembers(redis_name__following)
+  end
+  
+  def follow(other_user_id)
+    other_user = other_user_id.is_a?(User) ? other_user_id : User.find(other_user_id)
+    return nil if other_user.blank? || other_user.id == self.id
+    
+    Rails.redis.sadd(redis_name__following, other_user.id)
+    Rails.redis.sadd(other_user.redis_name__followers, self.id)
+  end
+
+  def unfollow(other_user_id)
+    other_user = other_user_id.is_a?(User) ? other_user_id : User.find(other_user_id)
+    return nil if other_user.blank? || other_user.id == self.id
+    
+    Rails.redis.srem(redis_name__following, other_user.id)
+    Rails.redis.srem(other_user.redis_name__followers, self.id)
+  end
+
+  def followers_count
+    Rails.redis.scard(redis_name__followers)
+  end
+      
+  def following_count
+    Rails.redis.scard(redis_name__following)
+  end
   
   
-  protected
+  # ==========================================================
+  # = REDIS: Liked Pins (implementation partially in pin.rb) =
+  # ==========================================================
+
+  def likes
+    Pin.where(:id => like_ids)
+  end
   
-  def interested_category_set_name
+  def like_ids
+    Rails.redis.smembers(redis_name__likes)
+  end
+
+  def likes_count
+    Rails.redis.scard(redis_name__likes)
+  end
+  
+  def like(pin)
+    pin = pin.is_a?(Pin) ? pin : Pin.find(pin)
+    
+    Rails.redis.sadd(redis_name__likes, pin.id)
+    Rails.redis.sadd(pin.redis_name__liked_by, self.id)
+  end
+  
+  def unlike(pin)
+    pin = pin.is_a?(Pin) ? pin : Pin.find(pin)
+
+    Rails.redis.srem(redis_name__likes, pin.id)
+    Rails.redis.srem(pin.redis_name__liked_by, self.id)    
+  end
+  
+  # ======================
+  # = REDIS: queue names =
+  # ======================    
+  def redis_name__categories
     "u:#{self.id}:categories"
   end
+  
+  def redis_name__followers
+    "u:#{self.id}:followers"
+  end
+  
+  def redis_name__following
+    "u:#{self.id}:following"
+  end
+
+  def redis_name__likes
+    "u:#{self.id}:likes"
+  end
+
+  protected
   
   def cleaned_ids(cats)
     Array(cats).select{|c| !c.blank?}.map{ |cat| cat.respond_to?(:id) ? cat.id : cat }.uniq

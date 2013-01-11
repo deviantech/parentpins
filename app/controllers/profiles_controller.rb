@@ -90,9 +90,9 @@ class ProfilesController < ApplicationController
     @profile_counters = {
       :pins       => @profile.pins.count,
       :boards     => @profile.boards.count,
-      :likes      => @profile.likes.count,
-      :followers  => @profile.followers.count,
-      :following   => @profile.following.count
+      :likes      => @profile.likes_count,
+      :followers  => @profile.followers_count,
+      :following   => @profile.following_count
     }
   end
   
