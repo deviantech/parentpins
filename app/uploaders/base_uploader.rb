@@ -25,7 +25,11 @@ class BaseUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    SecureRandom.hex(12) + (original_filename.blank? ? '' : File.extname(original_filename))
+    return super unless model.class.name == 'User'
+    
+    # OK to use model.id, because avatar never created before user record is created
+    @name ||= Digest::MD5.hexdigest("#{model.class.name}.#{model.id}")
+    "#{@name}.#{file.extension}"
   end
   
   # Override the directory where uploaded files will be stored.
@@ -45,7 +49,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   # Rotates the image based on the EXIF Orientation
   def fix_exif_rotation
     manipulate! do |img|
-      img.auto_orient!
+      img.auto_orient
       img = yield(img) if block_given?
       img
     end
@@ -54,7 +58,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   # Strips out all embedded information from the image
   def strip
     manipulate! do |img|
-      img.strip!
+      img.strip
       img = yield(img) if block_given?
       img
     end

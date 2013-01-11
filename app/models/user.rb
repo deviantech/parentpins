@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   mount_uploader :cover_image,  CoverImageUploader
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_category_ids, :kids, :bio
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_category_ids, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache
   
   has_many :boards,       :dependent => :destroy
   has_many :pins,         :dependent => :destroy

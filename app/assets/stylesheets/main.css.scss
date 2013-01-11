@@ -1066,6 +1066,21 @@ form .field {
     }
   }}
 
+form.form .field.with_image {
+  img {
+    float: left;
+    width: 50px;
+  }
+  input {
+    margin-left: 55px;
+    width: 195px;
+  }
+}
+.cover_image_preview img {
+  width: 260px;
+  margin: 5px 0px;
+}
+
 input[placeholder], textarea[placeholder], [placeholder], *[placeholder] {
   color: #898989 !important; }
 
