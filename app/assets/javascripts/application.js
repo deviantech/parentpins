@@ -44,6 +44,16 @@ $(document).ready(function() {
     e.preventDefault();
   });
   
+  // Comment Button
+  $('.comment_button').click(function(e) {
+    if ($(this).parents('.pinly_overlay').length) {
+      $.scrollTo( $(this).parents('.pinly_overlay').find('.comment textarea').first().focus() );
+    } else {
+      $.scrollTo( $(this).parents('li.pin').find('.comment textarea').first().focus() );
+    }
+    e.preventDefault();
+  });
+  
   // Infinite scrolling
   $.ias({
     container: '#pins',
