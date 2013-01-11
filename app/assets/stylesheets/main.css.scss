@@ -363,14 +363,14 @@ a {
       background-image: -ms-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
       background-image: -o-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
       background-image: radial-gradient(farthest-corner circle at center center, rgba(255, 255, 255, 0) 20%, black 90%); } 
-    button {
+    a.hover_link {
       display:none;
       color:#fff;
       text-shadow:0 -1px 0 #000;
       position:absolute;
       top:30px;
       left:18px; } 
-    &:hover button {
+    &:hover a.hover_link {
       display:block; } }
   .cover_photo {
     margin:0;

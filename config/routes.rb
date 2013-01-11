@@ -1,4 +1,5 @@
 ParentPins::Application.routes.draw do
+  # Devise edit path redirect to profile/account edit
   match "users/edit" => redirect('/profiles/account')
   devise_for :users
 

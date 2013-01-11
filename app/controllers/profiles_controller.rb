@@ -1,8 +1,8 @@
 class ProfilesController < ApplicationController
   before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :account]
   before_filter :set_profile,         :only => [:account]
-  before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :get_profile
+  before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   
   def show
     redirect_to :action => 'boards'
