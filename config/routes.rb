@@ -7,8 +7,11 @@ ParentPins::Application.routes.draw do
   resources :pins do
     member do 
       post 'add_comment'
+      post 'like'
+      post 'unlike'
     end
   end
+  
   get "/pin/:source_id/repin" => "pins#new", :as => 'repin'
   
   # Pretty URLs for pin subtypes

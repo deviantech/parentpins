@@ -70,20 +70,34 @@ class User < ActiveRecord::Base
     Rails.redis.smembers(redis_name__following)
   end
   
-  def follow(other_user_id)
-    other_user = other_user_id.is_a?(User) ? other_user_id : User.find(other_user_id)
-    return nil if other_user.blank? || other_user.id == self.id
+  def following?(user)
+    user = user.is_a?(User) ? user.id : user
+    return nil if user.blank? || user.id == self.id
     
-    Rails.redis.sadd(redis_name__following, other_user.id)
-    Rails.redis.sadd(other_user.redis_name__followers, self.id)
+    Rails.redis.sismember(redis_name__following, user.id)
+  end
+  
+  def followed_by?(user)
+    user = user.is_a?(User) ? user.id : user
+    return nil if user.blank? || user.id == self.id
+    
+    Rails.redis.sismember(redis_name__followers, user.id)
+  end
+  
+  def follow(user)
+    user = user.is_a?(User) ? user.id : user
+    return nil if user.blank? || user.id == self.id
+    
+    Rails.redis.sadd(redis_name__following, user.id)
+    Rails.redis.sadd(user.redis_name__followers, self.id)
   end
 
-  def unfollow(other_user_id)
-    other_user = other_user_id.is_a?(User) ? other_user_id : User.find(other_user_id)
-    return nil if other_user.blank? || other_user.id == self.id
+  def unfollow(user)
+    user = user.is_a?(User) ? user.id : user
+    return nil if user.blank? || user.id == self.id
     
-    Rails.redis.srem(redis_name__following, other_user.id)
-    Rails.redis.srem(other_user.redis_name__followers, self.id)
+    Rails.redis.srem(redis_name__following, user.id)
+    Rails.redis.srem(user.redis_name__followers, self.id)
   end
 
   def followers_count
@@ -102,13 +116,19 @@ class User < ActiveRecord::Base
   def likes
     Pin.where(:id => like_ids)
   end
-  
+    
   def like_ids
     Rails.redis.smembers(redis_name__likes)
   end
 
   def likes_count
     Rails.redis.scard(redis_name__likes)
+  end
+  
+  def likes?(pin)
+    pin = pin.is_a?(Pin) ? pin : Pin.find(pin)
+    
+    Rails.redis.sismember(redis_name__likes, pin.id)
   end
   
   def like(pin)

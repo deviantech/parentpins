@@ -1,5 +1,15 @@
-<div class="actions">
-  <a class="btn sec_action repin_button" href="<%= repin_path(pin) %>">Repin</a>
-  <a class="btn sec_action like_button" href="#">Like</a>
-  <a class="btn sec_action comment_button" href="#pinly_comment">Comment</a>
-</div>
+<% if user_signed_in? %>
+  <div class="actions">
+    <% if pin.user_id != current_user.id %>
+      <a class="btn sec_action repin_button" href="<%= repin_path(pin) %>">Repin</a>
+    <% end %>
+    
+    <% if current_user.likes?(pin) %>
+      <a class="btn sec_action like_button" href="#">Unlike</a>
+    <% else %>
+      <a class="btn sec_action like_button" href="#">Like</a>
+    <% end %>
+      
+    <a class="btn sec_action comment_button" href="#pinly_comment">Comment</a>
+  </div>
+<% end %>
