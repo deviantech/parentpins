@@ -6,7 +6,7 @@
     <%= render 'form_fields', :f => f %>
 
     <div class="submit">
-      <%= f.submit "Finish, Go to Profile &rarr;", :class => 'btn tertiary_action' %>
+      <%= f.submit "Finish, Go to Profile &rarr;".html_safe, :class => 'btn tertiary_action' %>
     </div>
     <div class="buttons">
       <a href="<%= activity_profile_path(@profile) %>">skip this</a>

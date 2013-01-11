@@ -25,7 +25,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
-    return super unless model.class.name == 'User'
+    return super unless model.class.name == 'User' && file
     
     # OK to use model.id, because avatar never created before user record is created
     @name ||= Digest::MD5.hexdigest("#{model.class.name}.#{model.id}")
