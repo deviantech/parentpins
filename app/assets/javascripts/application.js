@@ -1,4 +1,4 @@
-
+var Global = Global || {};
 
 $(document).ready(function() {  
   // Handle ajax/modals
@@ -19,8 +19,9 @@ $(document).ready(function() {
     });
   }
     
+  // Only close overlay if click was ON overlay, not just bubbled up to it
   $('.pinly_overlay').click(function(e) {
-    closeModal();
+    if ($(e.target).hasClass('pinly_overlay')) closeModal();
   });
   
   $(document).keyup(function(e) {   // Escape key
@@ -46,11 +47,17 @@ $(document).ready(function() {
   
   // Comment Button
   $('.comment_button').click(function(e) {
-    if ($(this).parents('.pinly_overlay').length) {
-      $.scrollTo( $(this).parents('.pinly_overlay').find('.comment textarea').first().focus() );
+    $this = $(this);
+    var focusable;
+    
+    if ($this.parents('.pinly_overlay').length) {
+      focusable = $this.parents('.pinly_overlay').find('.comment_form textarea').first();
+      $this.parents('.pinly_overlay').scrollTo(focusable);
     } else {
-      $.scrollTo( $(this).parents('li.pin').find('.comment textarea').first().focus() );
+      focusable = $this.parents('li.pin').find('.comment textarea').first();
+      $.scrollTo( $this.parents('li.pin') );
     }
+    focusable.focus();
     e.preventDefault();
   });
   
