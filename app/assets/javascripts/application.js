@@ -36,6 +36,14 @@ $(document).ready(function() {
      $('#pins').masonry('reload');
   });
   
+  // Like/Unlike
+  $('.like_button').click(function(e) {
+    $(this).siblings('.like_button.hidden').removeClass('hidden');
+    $(this).addClass('hidden');
+    $.post($(this).attr('href'));
+    e.preventDefault();
+  });
+  
   // Infinite scrolling
   $.ias({
     container: '#pins',
