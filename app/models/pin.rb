@@ -1,7 +1,8 @@
 class Pin < ActiveRecord::Base
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image, :via_id, :original_poster_id
+  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image
 
   VALID_TYPES = %w(gift article idea)
+  REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
 
   mount_uploader :image, PinImageUploader
 
@@ -32,6 +33,28 @@ class Pin < ActiveRecord::Base
   # TODO: IMPLEMENT THESE
   def like_count; 2; end
   def repin_count; 5; end
+  
+  # If a source pin was passed in, copy relevant attributes (repin). Otherwise, generate a clean pin record.
+  def self.craft_new_pin(user, source_id, other_params)
+    the_pin = if source = !source_id.blank? && Pin.find_by_id(source_id)
+      pin = Pin.new
+      REPIN_ATTRIBUTES.each do |k|
+        pin.send("#{k}=", source.send(k))
+      end
+      pin.attributes = other_params
+      
+      pin.original_poster = source.original_poster ? source.original_poster : source.user
+      pin.original_poster = nil if pin.original_poster == user
+      
+      pin.via = source.user unless source.user == user
+      pin.user = user
+      pin
+    else
+      user.pins.new(other_params)
+    end
+    
+    [source, the_pin]
+  end
     
   protected
   

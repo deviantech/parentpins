@@ -1,5 +1,5 @@
 class PinsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index]
+  before_filter :authenticate_user!, :except => [:index, :show]
   before_filter :find_current_users_pin, :only => [:edit, :update, :destroy]
   before_filter :find_any_pin, :only => [:show, :add_comment]
     
@@ -15,11 +15,13 @@ class PinsController < ApplicationController
     if current_user.boards.empty?
       redirect_to(new_board_path, :notice => 'Please add a board first!') and return
     end
-    @pin = current_user.pins.new(params[:pin])
+    
+    # If a source ID is passed, allow repining
+    @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
   end
   
   def create
-    @pin = current_user.pins.new(params[:pin])
+    @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
     if @pin.save
       redirect_to @pin.board, :notice => 'Added new pin'
     else
