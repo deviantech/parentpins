@@ -33,21 +33,9 @@ module ApplicationHelper
   def body_class
     case params[:controller]
     when 'profiles' then 'profile'
-    when 'pins'
+    when 'pins', 'boards'
       params[:action] == 'index' ? 'full_width' : nil
-    else
-      case params[:action]
-      when 'recent_pins', 'articles', 'board', 'board_landing', 'category_board'
-        'full_width'
-      when 'about'
-        'theme_one'
-      when 'modal_edit_pin', 'modal_signup_2'
-        'modal'
-      when 'profile_likes', 'profile_recent', 'profile_followers', 'profile_following', 'profile_recent_empty', 'profile_specific_board', 'profile_activity'
-        'profile'
-      else
-        nil
-      end
+    else nil
     end
   end
   
