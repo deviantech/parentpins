@@ -1,0 +1,44 @@
+<div class="wrapper profile">
+
+  <div class="content board board_wide">
+    <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form narrow", :multipart => true} do |f| %>
+      <%= hidden_field_tag :from, 'edit' %>
+      <h1>
+        Edit Profile
+        <span>[ <%= link_to 'account', account_profile_path(@profile) %> ]</span>
+      </h1>
+
+      <%= error_messages_for @profile %>
+
+      <%= render 'form_fields', :f => f %>
+
+      <div class="field <%= 'with_image' if @profile.avatar? %>">
+        <%= f.label :avatar, "#{@profile.avatar? ? 'Update' : 'Upload an'} Avatar" %>
+        <%= image_tag(@profile.avatar.v50.url) if @profile.avatar? %>
+        <%= f.file_field :avatar %>
+        <%= f.hidden_field :avatar_cache %>
+        <div class="clearfix"></div>
+      </div>      
+
+      <div class="field">
+        <%= f.label :avatar, "#{@profile.cover_image? ? 'Update' : 'Upload a'} Cover Image <span>(1020x160)</span>".html_safe %>
+        <% if @profile.cover_image? %>
+          <div class="cover_image_preview">
+            <%= image_tag(@profile.cover_image.url) %>
+          </div>
+        <% end %>
+        <%= f.file_field :cover_image %>
+        <%= f.hidden_field :cover_image_cache %>
+        <div class="clearfix"></div>
+      </div>      
+
+      <div class="submit">
+        <%= f.submit 'Update Settings', :class => 'btn tertiary_action' %>
+      </div>        
+    <% end %>
+  
+  </div>
+
+  <div class="clearfix"></div>
+
+</div>

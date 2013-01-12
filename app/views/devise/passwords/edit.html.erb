@@ -1,16 +1,29 @@
-<h2>Change your password</h2>
+<div class="wrapper profile">
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
+  <div class="content board board_wide">
+    <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :class => 'form narrow' }) do |f| %>
+      <h1>Change your Password</h1>
 
-  <div><%= f.label :password, "New password" %><br />
-  <%= f.password_field :password %></div>
+      <%= devise_error_messages! %>
+      <%= f.hidden_field :reset_password_token %>
 
-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
-  <%= f.password_field :password_confirmation %></div>
+      <div class="field">
+        <%= f.password_field :password, :placeholder => 'New password' %>
+      </div>
 
-  <div><%= f.submit "Change my password" %></div>
-<% end %>
+      <div class="field">
+        <%= f.password_field :password_confirmation, :placeholder => "Confirm new password" %>
+      </div>
 
-<%= render "devise/shared/links" %>
+      <div class="submit">
+        <%= f.submit "Change my password", :class => 'btn tertiary_action' %>
+      </div>
+
+      <div class="buttons">
+        <%= render "devise/shared/links" %>
+      </div>
+    <% end %>
+
+  
+  </div>
+</div>

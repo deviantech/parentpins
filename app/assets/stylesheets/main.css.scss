@@ -363,14 +363,14 @@ a {
       background-image: -ms-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
       background-image: -o-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, black 90%);
       background-image: radial-gradient(farthest-corner circle at center center, rgba(255, 255, 255, 0) 20%, black 90%); } 
-    button {
+    a.hover_link {
       display:none;
       color:#fff;
       text-shadow:0 -1px 0 #000;
       position:absolute;
       top:30px;
       left:18px; } 
-    &:hover button {
+    &:hover a.hover_link {
       display:block; } }
   .cover_photo {
     margin:0;
@@ -840,7 +840,7 @@ a {
       -webkit-border-radius: 3px;
       border-radius: 3px;
       resize: none; }
-    button {
+    input {
       float: right;
       margin: 0 0 5px 0;
       padding: 8px 15px;
@@ -1044,7 +1044,7 @@ form .field {
     display:block; } }
 
 .form .field {
-  input, textarea {
+  input, textarea, select[multiple="multiple"] {
     display: block;
     width: 240px;
     background: none repeat scroll 0 0 white;
@@ -1058,7 +1058,28 @@ form .field {
     font-size: 16px;
     font-weight: normal;
     padding: 8px 10px;
-    resize: none; } }
+    resize: none; } 
+  select[multiple="multiple"] {
+    width: 260px;
+    option {
+      color: #666;
+    }
+  }}
+
+form.form .field.with_image {
+  img {
+    float: left;
+    width: 50px;
+  }
+  input {
+    margin-left: 55px;
+    width: 195px;
+  }
+}
+.cover_image_preview img {
+  width: 260px;
+  margin: 5px 0px;
+}
 
 input[placeholder], textarea[placeholder], [placeholder], *[placeholder] {
   color: #898989 !important; }
@@ -1620,4 +1641,36 @@ font-size: 13px; }
       
 textarea {
   height: 50px;
+}
+
+.ajax-loader {
+ position: fixed;
+ top: 20%;
+ left: 47%;
+ background-color: rgba(255,255,255,0.7);
+ -webkit-box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+ -moz-box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+ box-shadow: 0 0 3px rgba(0,0,0, 0.3);
+ padding: 25px;
+}
+.empty-pins {
+  padding: 10px 20px;
+  font-size: 1.4em;
+  background: #FFF;
+  display: block;
+  margin: 40px 25px;
+  text-align: center;
+}
+h1, h2 {
+  span.action {
+    font-size: 0.6em;
+    margin-left: 20px;
+    display: inline-block;
+    a {
+      color: #E55799;
+    }
+  }
+}
+.hidden {
+  display: none;
 }

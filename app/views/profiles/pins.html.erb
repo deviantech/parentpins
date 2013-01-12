@@ -13,8 +13,4 @@
   </div>
 <% end %>
 
-<ul class="timeline" id="pins">
-  <!-- Image max-widths should be 192px maintianing aspect ratio with flexible height -->
-  <!-- timeline center dot alignments need work to match masonry configuration -->
-  <%= render :partial => 'pins/pin', :collection => @pins %>
-</ul>
+<%= render 'pins/pins' %>

@@ -1,27 +1,17 @@
 <li class="pin">
   <% unless pin.new_record? %>
-    <div class="actions">
-      <a href="/pin/pin_id/repin/" class="btn sec_action repin_button">Repin</a>
-      <a href="#" class="btn sec_action like_button">Like</a>
-      <a href="#" class="btn sec_action comment_button">Comment</a>
-    </div>
+    <%= render 'pins/actions', :pin => pin %>
   <% end %>
   <% if pin.price %>
     <div class="gift_price"><%= number_to_currency pin.price %></div>
   <% end %>
-  <a href="specific_pin.html" class="image_link">
-    <img src="/assets/temp/art_2.jpg" class="pin_image">
-  </a>
-  <p class="description"><a href="specific_pin.html"><strong class="kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>
-  <div class="stats">
-    <span class="like_count">2 likes</span>
-    <span class="comment_count">3 comments</span>
-    <span class="repins_count">4 repins</span>
-  </div>
+  <%= link_to pin, :class => 'ajax image_link' do %>
+    <%= image_tag pin.image.v192.url, :class => 'pin_image', :alt => 'Pin image' %>
+  <% end %>
+  <p class="description"><a href="<%= url_for(pin) %>"><strong class="kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>
+  <%= render 'pins/stats', :pin => pin %>
   <div class="attribution">
-    <a class="image_link" title="User Name" href="/path_to_user_profile">
-      <img alt="Profile picture of User Name" src="/assets/temp/avatar_30.jpg"/>
-    </a>
+    <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name %>
     <p class="details">
       <%= link_to pin.user.name, profile_path(pin.user) %>
       <% if pin.via %>
@@ -36,14 +26,11 @@
   </div>
   <% if user_signed_in? && !pin.new_record? %>
     <div class="comment">
-      <a class="image_link" title="<%= current_user.name %>" href="<%= profile_path(current_user) %>">
-        <img alt="<%= current_user.name %>'s avatar" src="/assets/temp/avatar_30.jpg"/>
-      </a>
-      <form method="POST" action="/pin/pin_id/comment/">
-        <input class="pin_comment_replies" type="hidden" name="replies">
-        <textarea class="add_comment" placeholder="Add a comment..." maxlength="1000"></textarea>
-        <button class="Button WhiteButton Button11 grid_comment_button" type="button" style="display: inline-block;">Comment</button>
-      </form>
+      <%= form_for Comment.new, :url => add_comment_pin_path(pin) do |f| %>
+        <%= link_to image_tag(current_user.avatar.v30.url, :alt => "#{current_user.name}'s avatar"), profile_path(current_user), :title => current_user.name %>
+        <%= f.text_area :body, :placeholder => 'Add a comment...', :maxlength => 10000 %>
+        <%= f.submit 'Comment', :class => "Button WhiteButton Button11 grid_comment_button", :style => 'display: inline-block' %>
+      <% end %>
     </div>
   <% end %>
 </li>

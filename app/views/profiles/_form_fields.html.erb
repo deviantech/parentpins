@@ -1,0 +1,14 @@
+<%= error_messages_for(@profile) %>
+
+<div class="field">
+  <p>Select at least one interest area</p>
+  <%= f.select :interested_category_ids, select_options(Category.all), {}, :multiple => true %>
+</div>
+<div class="field">
+  <p>How many kids do you have?</p>
+  <%= f.text_field :kids, :placeholder => "1, 2, more?" %>
+</div>
+<div class="field">
+  <p>Write something about yourself...</p>
+  <%= f.text_area :bio, :placeholder => "Ex: I'm always checking out KinPins for great ideas on healty recipes..." %>
+</div>

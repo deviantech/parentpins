@@ -1,13 +1,20 @@
 <li class="board">
-  <h3><%= link_to board.name, board %></h3>
-  <h4><a href="profile_recent.html"><img src="/assets/temp/avatar_50.jpg"> <%= board.user.name %></a></h4>
+  <h3><%= link_to board.name, @profile ? board_profile_path(@profile, board) : board_path(board) %></h3>
+  <h4>
+    <%= link_to pins_profile_path(board.user) do %>
+      <%= image_tag board.user.avatar.v50.url, :alt => "#{board.user.name}'s avatar" %>
+      <%= board.user.name %>
+    <% end %>
+  </h4>
   <div class="holder">
-    <%= link_to '', board, :class => 'link' %>
+    <%= link_to '', @profile ? board_profile_path(@profile, board) : board_path(board), :class => 'link' %>
     <div class="cover">
-      <img src="/assets/temp/board_image_1.jpg" class="board_image">
+      <%= image_tag board.cover.url, :class => 'board_image' %>
     </div>
     <div class="thumbs">
-      <img src="/assets/temp/board_thumb_1.jpg" class="board_image">
+      <% board.thumbnails.each do |src| %>
+        <%= image_tag src, :class => 'board_image' %>
+      <% end %>
     </div>
     <div class="description">
       <p><%= board.description.blank? ? 'No description provided' : board.description %></p>

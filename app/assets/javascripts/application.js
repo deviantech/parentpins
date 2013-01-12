@@ -1,23 +1,35 @@
-$(document).ready(function() {
-  $('.pinly_toggle').click(function(){
-    //get collapse content selector
-    var collapse_content_selector = $(this).attr('href');					
+var Global = Global || {};
 
-    //make the collapse content to be shown or hide
-    var toggle_switch = $(this);
-    $(collapse_content_selector).toggle(function(){
-      if($(this).css('display')=='none'){
-        //change the button label to be 'Show'
-        toggle_switch.html('Show');
-      }else{
-        //change the button label to be 'Hide'
-        toggle_switch.html('Hide');
-      }
-    });
+$(document).ready(function() {  
+  // Handle ajax/modals
+  $ajax = $('<div id="ajax-modal-target"></div>').appendTo($('body'));
+
+  $('.ajax').click(function(e) {
+    var url = $(this).attr('href');
+    
+    $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn();
+    url = url + (url.match(/\?/) ? '&' : '?') + 'via_ajax=true';
+    $ajax.load(url);
+    e.preventDefault();
   });
-});	
 
-$(document).ready(function() {
+  function closeModal() {
+    $('#ajax-modal-target:visible').fadeOut(function() {
+      $(this).empty().show();
+    });
+  }
+    
+  // Only close overlay if click was ON overlay, not just bubbled up to it
+  $('.pinly_overlay').click(function(e) {
+    if ($(e.target).hasClass('pinly_overlay')) closeModal();
+  });
+  
+  $(document).keyup(function(e) {   // Escape key
+    if (e.keyCode == 27) { closeModal(); }
+  });
+
+  
+  // Masonry layout a la pinterest
   $('#pins').masonry({
      columnWidth: 50,
      itemSelector: '.pin'
@@ -25,6 +37,31 @@ $(document).ready(function() {
      $('#pins').masonry('reload');
   });
   
+  // Like/Unlike
+  $('.like_button').click(function(e) {
+    $(this).siblings('.like_button.hidden').removeClass('hidden');
+    $(this).addClass('hidden');
+    $.post($(this).attr('href'));
+    e.preventDefault();
+  });
+  
+  // Comment Button
+  $('.comment_button').click(function(e) {
+    $this = $(this);
+    var focusable;
+    
+    if ($this.parents('.pinly_overlay').length) {
+      focusable = $this.parents('.pinly_overlay').find('.comment_form textarea').first();
+      $this.parents('.pinly_overlay').scrollTo(focusable);
+    } else {
+      focusable = $this.parents('li.pin').find('.comment textarea').first();
+      $.scrollTo( $this.parents('li.pin') );
+    }
+    focusable.focus();
+    e.preventDefault();
+  });
+  
+  // Infinite scrolling
   $.ias({
     container: '#pins',
     item: '.pin',

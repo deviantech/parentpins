@@ -1,0 +1,18 @@
+<h1>New feedback received</h1>
+<p>
+  <strong>From</strong>: 
+  <% if @feedback.user %>
+  <%= link_to @feedback.user.name, profile_url(@feedback.user) %>
+  <% else %>
+  Unknown User
+  <% end %>
+</p>
+<p>
+  <strong>Email</strong>: <%= @feedback.email %>
+</p>
+<p>
+  <strong>User Agent</strong>: <%= @feedback.user_agent %>
+</p>
+<p>
+  <blockquote><%= @feedback.body %></blockquote>
+</p>

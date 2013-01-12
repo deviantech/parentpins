@@ -3,7 +3,7 @@
     <a href="/" class="logo ir">ParentPins</a>
     <ul class="nav_main">
       <li>
-        <%= nav_link 'Trending', pins_path %>
+        <%= nav_link 'Trending', pins_path, :also_accept => '/' %>
       </li>
       <li>
         <%= nav_link 'Boards', boards_path %>
@@ -22,17 +22,17 @@
           <%= link_to '+ Add', '#', :class => "add" %>
           <ul>
             <li><%= link_to '+ Pin', new_pin_path %></li>
-            <li><%= link_to '+ Board', new_board_path %></li>
+            <li><%= link_to '+ Board', new_board_path, :class => 'ajax' %></li>
           </ul>
         </li>
         <li class="profile_link">
-          <a href="profile_recent.html">Hi, <%= current_user.username.titleize %></a>
+          <%= link_to "Hi, #{current_user.username.titleize}", pins_profile_path(current_user) %>
           <ul>
             <li><%= link_to 'Activity', activity_profile_path(current_user) %></li>
             <li><%= link_to 'Pins', pins_profile_path(current_user) %></li>
             <li><%= link_to 'Likes', likes_profile_path(current_user) %></li>
             <li><%= link_to 'Boards', boards_profile_path(current_user) %></li>
-            <li><%= link_to 'Edit Profiles / Settings', edit_profile_path(current_user) %></li>
+            <li><%= link_to 'Edit Profile / Account', edit_profile_path(current_user) %></li>
             <li>
               <%= link_to('Logout', destroy_user_session_path, :method => :delete, :class => 'logout') %>
             </li>

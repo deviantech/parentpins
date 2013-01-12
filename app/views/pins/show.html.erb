@@ -1,0 +1,58 @@
+<div class="<%= modal_class %>">
+  <div class="pinly">
+    <div class="pin_type"><%= @pin.kind.to_s.titleize %></div>
+
+    <div class="attribute">
+      <%= avatar_link(@pin.user) %>      
+      <div class="attribute_info">
+        <p>
+          <%= link_to @pin.user.name, profile_path(@pin.user) %>
+          <% if @pin.via %>
+          via <%= link_to @pin.via.name, profile_path(@pin.via) %>
+          <% end %>
+        </p>
+        <p class="time"><%= time_ago_in_words @pin.created_at %> ago from <%= link_to @pin.board.name, @pin.board %></p>
+      </div>
+    </div>
+
+    <div class="detail">
+      <h2>
+        <%= link_to @pin.name, @pin.url %>
+        <% if current_user == @pin.user %>
+          <span class="action">[ <%= link_to 'edit', edit_pin_path(@pin) %> ]</span>
+        <% end %>
+      </h2>
+      <p><%= link_to @pin.url, @pin.url %></p>
+      <%= render 'pins/stats', :pin => @pin %>
+      <%= render 'pins/actions', :pin => @pin %>
+      <%= link_to @pin.url, :class => 'image_link' do %>
+      <% if @pin.price %>
+      <div class="price"><%= number_to_currency @pin.price %></div>
+      <% end %>
+      <%= image_tag @pin.image.url %>
+      <% end %>
+      <p class="description"><%= @pin.description %></p>
+
+      <% if @pin.original_poster != @pin.via %>
+      <p>
+        Originally posted by <%= link_to @pin.original_poster.name, profile_path(@pin.original_poster) %>
+        <a href="#" class="btn action follow">follow</a>
+      </p>
+      <% end %>
+
+      <div class="comments" id="pinly_comment">
+        <%= render @pin.comments %>
+        <% if user_signed_in?%>
+        <div class="comment_form">
+          <%= form_for @comment, :url => add_comment_pin_path(@pin) do |f| %>
+          <%= avatar_link(current_user) %>
+          <%= f.text_area :body, :placeholder => 'Enter your comment...', :maxlength => 10000 %>
+          <%= f.submit 'Comment', :class => "btn sec_action comment_button" %>
+          <% end %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>

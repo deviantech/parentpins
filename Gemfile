@@ -2,11 +2,9 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.9'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'mysql2'
-
+gem 'redis'
+gem 'redis-namespace'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -35,3 +33,8 @@ gem 'haml'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
+
+# Used for carrerwave uploads
+gem 'carrierwave'
+gem 'mime-types'
+gem 'mini_magick'

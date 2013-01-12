@@ -1,15 +1,13 @@
 <div class="wrapper">
 
   <div class="content board board_wide">
-    <h1><% if @kind %>Recently Pinned <%= @kind.pluralize.titleize %><% else %>Trending Parenting Articles, Ideas, Gifts, &amp; More<% end %></h1>
+    <h1><%= pins_index_header %></h1>
     <select class="cat_select" data-base-url="/pins" data-filter-name="kind">
       <%= options_for_select [['All Pins', '']] + Pin::VALID_TYPES.collect{|t| [t.pluralize.titleize, t]}, @kind %>
     </select>
-    <ul class="timeline" id="pins">
-      <!-- Image max-widths should be 320px maintianing aspect ratio with flexible height -->
-      <!-- timeline center dot alignments need work to match masonry configuration -->
-      <%= render @pins %>
-    </ul>
+
+    <%= render 'pins/pins' %>
+
     <a href="#" class="btn action load_more_button tertiary_action">Load More</a>
     <br/>
     <img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>

@@ -2,12 +2,14 @@
   <%= javascript_include_tag "add-pin" %>
 <% end %>
 
-<!-- use this view for edit pin as well -->
 <div class="wrapper profile">
 
   <div class="content board board_wide">
     <%= form_for(@pin, :html => {:class => 'form narrow edit_pin'}) do |f| %>
       <h1><%= @pin.new_record? ? 'Add' : 'Edit' %> Your Pin</h1>
+      <% if @pin.new_record? && @source %>
+        <%= hidden_field_tag :source_id, @source.id %>
+      <% end %>
       
       <%= error_messages_for @pin %>
 
@@ -23,12 +25,12 @@
 
       <div class="field">
         <%= f.label :kind, 'Type of Pin' %>
-        <%= f.select :kind, Pin::VALID_TYPES.collect{|t| [t.titleize, t]} %>
+        <%= f.select :kind, select_options(Pin::VALID_TYPES) %>
       </div>
 
       <div class="field">
         <%= f.label :category_id, 'Select a Category' %>
-        <%= f.select :category_id, Category.all.collect{|t| [t.name, t.id]} %>
+        <%= f.select :category_id, select_options(Category.all) %>
       </div>
       
       <div class="field">
@@ -37,12 +39,12 @@
 
       <div class="field">
         <%= f.label :board_id, 'Pin to Which Board?' %>
-        <%= f.select :board_id, current_user.boards.collect{|t| [t.name, t.id]} %>
+        <%= f.select :board_id, select_options(current_user.boards) %>
       </div>
 
       <div class="field">
         <%= f.label :age_group_id, 'Select an Age Group' %>
-        <%= f.select :age_group_id, AgeGroup.all.collect{|t| [t.name, t.id]} %>
+        <%= f.select :age_group_id, select_options(AgeGroup.all) %>
       </div>
 
       <div class="field">

@@ -1,8 +1,21 @@
 <div class="wrapper board">
 
   <div class="content board board_wide">
-    <h1><a href="<%= boards_profile_path(@board.user) %>" class="user"><img src="/assets/temp/avatar_30.jpg"><%= @board.user.name %>'s</a> Board: <%= @board.name %></h1>
-
+    <h1>
+      <a href="<%= boards_profile_path(@board.user) %>" class="user">
+        <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
+        <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
+      </a>
+      Board: <%= @board.name %>
+      <% if current_user == @board.user %>
+        <span class="action">[ <%= link_to 'edit', edit_board_path(@board), :class => 'ajax' %> ]</span>
+      <% end %>
+    </h1>
+    
+    <% unless @board.description.blank? %>
+      <div class="board_description"><%= @board.description %></div>
+    <% end %>
+    
     <select class="cat_select">
       <option>All Pins</option>
       <option>Articles</option>
@@ -10,11 +23,7 @@
       <option>Ideas</option>
     </select>
 
-    <ul class="timeline" id="pins">
-      <!-- Image max-widths should be 320px maintianing aspect ratio with flexible height -->
-      <!-- timeline center dot alignments need work to match masonry configuration -->
-      <%= render :partial => 'pins/pin', :collection => @pins %>
-    </ul>
+    <%= render 'pins/pins' %>
 
     <div class="clearfix"></div>
     <a href="http://localhost:3000/boards/1" class="btn action load_more_button tertiary_action js-pagination" id="loadMoreBtn">View More</a>

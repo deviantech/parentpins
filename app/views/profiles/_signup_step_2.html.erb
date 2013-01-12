@@ -1,0 +1,15 @@
+<div class="pinly_overlay">
+  <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form narrow signup"} do |f| %>
+    <%= hidden_field_tag :step_2, true %>
+    <h1>Last Step, Personalize Your ParentPin Experience</h1>
+
+    <%= render 'form_fields', :f => f %>
+
+    <div class="submit">
+      <%= f.submit "Finish, Go to Profile &rarr;".html_safe, :class => 'btn tertiary_action' %>
+    </div>
+    <div class="buttons">
+      <a href="<%= activity_profile_path(@profile) %>">skip this</a>
+    </div>
+  <% end %>
+</div>

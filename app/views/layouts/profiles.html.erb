@@ -8,7 +8,7 @@
           <a href="#" class="btn action follow">follow</a>
         <!--if following 
           <a href="#" class="btn action unfollow">following</a> -->
-        <a href="<%= profile_path(@profile) %>" class="avatar"><img src="/assets/temp/avatar.jpg"></a>
+        <%= link_to image_tag(@profile.avatar.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
         <h2><%= @profile.name %></h2>
         <ul class="nav_profile">
           <li><%= profile_nav_link :activity %></li>
@@ -18,8 +18,12 @@
           <li><%= profile_nav_link :followers %></li>
           <li><%= profile_nav_link :following %></li>
         </ul>
-        <p class="kid_count">Has 3 kids</p>
-        <p class="bio">I love my kid and I love this site. Great place to find out about parenting tips, great toys, education and more.</p>
+
+        <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
+
+        <% unless @profile.bio.blank? %>
+          <p class="bio"><%= @profile.bio %></p>
+        <% end %>
       </div>
 
       <div class="content">
