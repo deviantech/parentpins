@@ -48,8 +48,8 @@ class ProfilesController < ApplicationController
   end
   
   def board
-    unless @board = @profile.boards.find_by_id(params[:id])
-      redirect_to :action => 'show', :notice => "Unable to find the specified board"
+    unless @board = @profile.boards.find_by_id(params[:board_id])
+      redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
     end
     @pins = @board.pins.limit(20) # TODO: add pagination
   end
