@@ -86,7 +86,8 @@ $(document).ready(function() {
     $.post($(this).data('url'));
     e.preventDefault();
     
-    $(this).parent().find('.following-action').each(function() {
+    var cssClass = $(this).parent().attr('class');
+    $('.'+cssClass).find('.following-action').each(function() {
       if ($(this).hasClass('hidden')) {
         $(this).removeClass('hidden');
       } else {

@@ -1,0 +1,6 @@
+<% if user_signed_in? && current_user != to_follow %>
+<span class="following-action-for-<%= to_follow.id %>">
+  <a href="#" data-url="<%= follow_profile_path(to_follow) %>" class="btn action following-action follow <%= 'hidden' if current_user.following?(to_follow) %>">follow</a>
+  <a href="#" data-url="<%= unfollow_profile_path(to_follow) %>" class="btn action following-action unfollow <%= 'hidden' unless current_user.following?(to_follow) %>">following</a>
+</span>
+<% end %>          
