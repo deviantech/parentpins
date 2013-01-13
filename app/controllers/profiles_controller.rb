@@ -76,6 +76,16 @@ class ProfilesController < ApplicationController
   def account
   end
   
+  def follow
+    current_user.follow(@profile) if user_signed_in?
+    render :nothing => true
+  end
+  
+  def unfollow
+    current_user.unfollow(@profile) if user_signed_in?
+    render :nothing => true
+  end
+  
   protected
   
   def get_profile

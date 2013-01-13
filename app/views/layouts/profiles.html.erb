@@ -3,11 +3,11 @@
   <div class="wrapper profile">
 
       <div class="info">
-        <!-- Following button interaction -->
-        <!--if not following -->
-          <a href="#" class="btn action follow">follow</a>
-        <!--if following 
-          <a href="#" class="btn action unfollow">following</a> -->
+        <% if user_signed_in? && current_user != @profile %>
+          <a href="#" data-url="<%= follow_profile_path(@profile) %>" class="btn action following-action follow <%= 'hidden' if current_user.following?(@profile) %>">follow</a>
+          <a href="#" data-url="<%= unfollow_profile_path(@profile) %>" class="btn action following-action unfollow <%= 'hidden' unless current_user.following?(@profile) %>">following</a>
+        <% end %>          
+          
         <%= link_to image_tag(@profile.avatar.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
         <h2><%= @profile.name %></h2>
         <ul class="nav_profile">

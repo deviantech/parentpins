@@ -1,7 +1,7 @@
 module ApplicationHelper
 
   def modal_class
-    params[:via_ajax] ? 'pinly_overlay' : nil
+    params[:via] == 'ajax' ? 'pinly_overlay' : nil
   end
 
   def select_options(collection)
@@ -33,7 +33,9 @@ module ApplicationHelper
   def body_class
     case params[:controller]
     when 'profiles' then 'profile'
-    when 'pins', 'boards'
+    when 'boards'
+      %w(show index).include?(params[:action]) ? 'full_width' : nil
+    when 'pins'
       params[:action] == 'index' ? 'full_width' : nil
     else nil
     end

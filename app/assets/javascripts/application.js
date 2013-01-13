@@ -8,7 +8,7 @@ $(document).ready(function() {
     var url = $(this).attr('href');
     
     $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn();
-    url = url + (url.match(/\?/) ? '&' : '?') + 'via_ajax=true';
+    url = url + (url.match(/\?/) ? '&' : '?') + 'via=ajax';
     $ajax.load(url);
     e.preventDefault();
   });
@@ -79,6 +79,20 @@ $(document).ready(function() {
     }
     focusable.focus();
     e.preventDefault();
+  });
+  
+  // Follow/unfollow buttons
+  $(document).on('click', '.following-action', function(e) {
+    $.post($(this).data('url'));
+    e.preventDefault();
+    
+    $(this).parent().find('.following-action').each(function() {
+      if ($(this).hasClass('hidden')) {
+        $(this).removeClass('hidden');
+      } else {
+        $(this).addClass('hidden');
+      }
+    });
   });
   
   // Infinite scrolling

@@ -7,8 +7,7 @@ class ApplicationController < ActionController::Base
   private
   
   def consider_ajax_layout
-    self.class.layout(false) if params[:via_ajax]
-    true
+    self.class.layout(false) if params[:via] == 'ajax'
   end
   
   # Devise: after user signs up, direct to activity page with the step 2 shown (note that after_sign_up_path_for wasn't working)

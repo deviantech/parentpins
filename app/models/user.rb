@@ -71,21 +71,21 @@ class User < ActiveRecord::Base
   end
   
   def following?(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.sismember(redis_name__following, user.id)
   end
   
   def followed_by?(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.sismember(redis_name__followers, user.id)
   end
   
   def follow(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.sadd(redis_name__following, user.id)
@@ -93,7 +93,7 @@ class User < ActiveRecord::Base
   end
 
   def unfollow(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.srem(redis_name__following, user.id)

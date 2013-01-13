@@ -32,6 +32,8 @@ ParentPins::Application.routes.draw do
       get 'following'
       get 'boards/:board_id' => 'profiles#board', :as => 'board'
       get 'account'
+      post 'follow'
+      post 'unfollow'
     end
   end
   
