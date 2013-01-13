@@ -1,11 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  layout :consider_ajax_layout
   
   
   
   private
   
-  def maybe_ajax
+  def consider_ajax_layout
     params[:via_ajax] ? false : true
   end
   

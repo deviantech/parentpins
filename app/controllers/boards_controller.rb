@@ -28,7 +28,7 @@ class BoardsController < ApplicationController
   end
 
   def edit
-    render :action => 'new', :layout => maybe_ajax
+    render :action => 'new'
   end
 
   def update
