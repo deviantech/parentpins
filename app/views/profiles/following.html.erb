@@ -1,22 +1,17 @@
-<h1><span><%= @profile.name %>'s</span> Following 87 / Recent Activity</h1>
-<div class="followers_list">
-  <ul class="users">
-    <li>
-      <a href="#" class="btn action follow_in_list">un-follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-    <li>
-      <a href="#" class="btn action follow_in_list">un-follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-    <li>
-      <a href="#" class="btn action follow_in_list">un-follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-    <li>
-      <a href="#" class="btn action follow_in_list">un-follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-  </ul>
-</div>
+<% if @profile.following_count.zero? %>
+  <h1><span><%= @profile.name %></span> isn't following anyone yet</h1>
+<% else %>
+  <h1><span><%= @profile.name %></span> is following <%= @profile.following_count %> other user. Their recent activity:</h1>
+
+  <div class="followers_list">
+    <ul class="users">
+      <% @profile.following.each do |user| %>
+        <%= render 'follower', :follower => user %>
+      <% end %>
+    </ul>
+  </div>
+
+<% end %>
+
+<div class="clearfix"></div>
 <%= render 'pins/pins' %>

@@ -32,13 +32,13 @@ class ProfilesController < ApplicationController
   end
   
   def followers
-    @followers = [] # TODO: implement followers
+    @followers = @profile.followers
     @pins = Pin.pinned_by(@followers).limit(20)
     # TODO: add pagination
   end
   
   def following
-    @following = [] # TODO: implement following
+    @following = @profile.following
     @pins = Pin.pinned_by(@following).limit(20)
     # TODO: add pagination
   end
