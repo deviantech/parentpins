@@ -37,12 +37,32 @@ $(document).ready(function() {
      $('#pins').masonry('reload');
   });
   
+  // Pin actions
+  function getContainingClassNameForPinAction(btn) {
+    var classList;
+    if ($(btn).parents('.pinly').length) { // Clicked in Pin
+      classList = $(btn).parents('.pinly').attr('class');
+    } else {
+      classList = $(btn).parents('li').attr('class');
+    }
+    var matched = classList.match(/pin_(\d+)/);
+    return matched ? matched[0] : null;
+  }
+  
   // Like/Unlike
-  $('.like_button').click(function(e) {
-    $(this).siblings('.like_button.hidden').removeClass('hidden');
-    $(this).addClass('hidden');
-    $.post($(this).attr('href'));
+  $(document).on('click', '.like_button', function(e) {
+    $.post($(this).data('url'));
     e.preventDefault();
+    
+    // Update any other pins on the page, too
+    var cssClass = getContainingClassNameForPinAction(this);
+    $('.'+cssClass).find('.like_button').each(function() {
+      if ($(this).hasClass('hidden')) {
+        $(this).removeClass('hidden');
+      } else {
+        $(this).addClass('hidden');
+      }
+    });
   });
   
   // Comment Button

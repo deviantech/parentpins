@@ -1,13 +1,14 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  layout :consider_ajax_layout
+  before_filter :consider_ajax_layout
   
   
   
   private
   
   def consider_ajax_layout
-    params[:via_ajax] ? false : true
+    self.class.layout(false) if params[:via_ajax]
+    true
   end
   
   # Devise: after user signs up, direct to activity page with the step 2 shown (note that after_sign_up_path_for wasn't working)
