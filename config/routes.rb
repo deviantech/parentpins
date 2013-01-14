@@ -12,7 +12,7 @@ ParentPins::Application.routes.draw do
     end
   end
   
-  get "/pin/:source_id/repin" => "pins#new", :as => 'repin'
+  get "/pins/:source_id/repin" => "pins#new", :as => 'repin'
   
   # Pretty URLs for pin subtypes
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
