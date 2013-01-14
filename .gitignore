@@ -15,5 +15,5 @@
 /tmp
 .rvmrc
 .rbenv-version
-
+.DS_Store
 public/uploads
