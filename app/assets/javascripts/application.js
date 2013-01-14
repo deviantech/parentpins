@@ -51,7 +51,8 @@ $(document).ready(function() {
   
   // Like/Unlike
   $(document).on('click', '.like_button', function(e) {
-    $.post($(this).data('url'));
+    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    $.post(url);
     e.preventDefault();
     e.stopPropagation();
     
@@ -141,8 +142,19 @@ $(document).ready(function() {
 
 function updateProfileCounters(data) {
   for (var key in data) {
-    var target = $('.nav_profile a.'+key+' .counter');
-    if (target.length) target.first().html(data[key]);
+    var target = $('.nav_profile a.'+key);
+    if (target.length) {
+      target.find('.counter').html(data[key]);
+      var label = key.substr(0,1).toUpperCase() + key.substr(1);            
+      if (key != 'following') {
+        if (data[key] == 1) {
+          if (label.substr(label.length-1, 1) == 's') label = label.substr(0, label.length - 1);
+        } else {
+          if (label.substr(label.length-1, 1) != 's') label = label + 's';
+        }
+      }
+      target.find('.label').html(label);
+    }
   }
 }
 

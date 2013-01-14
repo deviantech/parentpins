@@ -62,12 +62,11 @@ class PinsController < ApplicationController
   
   def like
     current_user.like(@pin)
-    render :nothing => true
   end
   
   def unlike
     current_user.unlike(@pin)
-    render :nothing => true
+    render 'like'
   end
   
   protected
