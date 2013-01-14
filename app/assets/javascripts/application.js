@@ -20,7 +20,7 @@ $(document).ready(function() {
   }
     
   // Only close overlay if click was ON overlay, not just bubbled up to it
-  $('.pinly_overlay').click(function(e) {
+  $(document).on('click', '.pinly_overlay', function(e) {
     if ($(e.target).hasClass('pinly_overlay')) closeModal();
   });
   
@@ -53,6 +53,7 @@ $(document).ready(function() {
   $(document).on('click', '.like_button', function(e) {
     $.post($(this).data('url'));
     e.preventDefault();
+    e.stopPropagation();
     
     // Update any other pins on the page, too
     var cssClass = getContainingClassNameForPinAction(this);
@@ -79,6 +80,7 @@ $(document).ready(function() {
     }
     focusable.focus();
     e.preventDefault();
+    e.stopPropagation();
   });
   
   // Follow/unfollow buttons
@@ -86,6 +88,7 @@ $(document).ready(function() {
     var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
     $.post(url);
     e.preventDefault();
+    e.stopPropagation();
     
     var cssClass = $(this).parent().attr('class');
     $('.'+cssClass).find('.following-action').each(function() {
