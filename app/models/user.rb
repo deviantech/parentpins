@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   has_many :feedbacks
   
   validates_numericality_of :kids, :allow_blank => true
-  before_destroy :clear_redis
+  before_destroy :clean_redis
 
 
   def name
@@ -172,7 +172,7 @@ class User < ActiveRecord::Base
     Array(cats).select{|c| !c.blank?}.map{ |cat| cat.respond_to?(:id) ? cat.id : cat }.uniq
   end
 
-  def clear_redis
+  def clean_redis
     # Clear self from other objects' redis entries
     following.each {|u| unfollow(u) }
     followers.each {|u| u.unfollow(self) }

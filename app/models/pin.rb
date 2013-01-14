@@ -20,6 +20,8 @@ class Pin < ActiveRecord::Base
   validates_length_of :description, :maximum => 255, :allow_blank => true
   validate :url_format
   
+  before_destroy :clean_redis
+  
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
@@ -84,4 +86,13 @@ class Pin < ActiveRecord::Base
   def url_format
     errors.add(:url, "doesn't look like a valid link") unless url.to_s.match(/\Ahttps?:\/\//)
   end
+  
+  def clean_redis
+    # Clear self from other objects' redis entries
+    liked_by.each {|u| u.unlike(self) }
+
+    # Remove my redis objects
+    Rails.redis.del(redis_name__liked_by)
+  end
+
 end
