@@ -7,10 +7,12 @@
 // TODO -- only call on page when needed, and include in modal if going to be loaded. WHAT IF loaded in modal, then closed, then a new modal loaded? only load once.
 
 
-$pinForm = $('form.edit_pin');
-$outletBase = $('#pin-preview');
+var $pinForm = $('form.edit_pin');
+var $outletBase = $('#pin-preview');
 
 if ($pinForm.length) {
+  var $pinImage = $outletBase.find('.pin_image');
+  $pinImage.data('original-src', $pinImage.attr('src'));
 
   $pinForm.on('change', function(e) {
     updateBindingsFor(e.target);
@@ -62,6 +64,18 @@ function displayValueForField(name, $field, $outlet) {
   
   if (name == 'board_id') {
     return 'onto <a href="/boards/' + $field.val() + '">' + $field.find('option:selected').text() + '</a>';
+  }
+  
+  if (name == 'image') {
+    if ($field.val() == '') {
+      if ($('#pin_image_cache').val() == '') {
+        $pinImage.attr('src', '/assets/fallback/pin_image/v192_default.jpg');
+      } else {
+        $pinImage.attr('src', $pinImage.data('original-src'));
+      }      
+    } else {
+      $pinImage.attr('src', '/assets/fallback/pin_image/pending_upload.jpg');
+    }
   }
   
   return $field.val();
