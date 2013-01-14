@@ -68,13 +68,20 @@ function displayValueForField(name, $field, $outlet) {
   
   if (name == 'image') {
     if ($field.val() == '') {
+      $('.pin_image_holder').addClass('hidden');
+      $pinImage.removeClass('hidden');
+      
       if ($('#pin_image_cache').val() == '') {
         $pinImage.attr('src', '/assets/fallback/pin_image/v192_default.jpg');
       } else {
         $pinImage.attr('src', $pinImage.data('original-src'));
       }      
     } else {
-      $pinImage.attr('src', '/assets/fallback/pin_image/pending_upload.jpg');
+      $pinImage.addClass('hidden');
+      if (!$('.pin_image_holder').length) {
+        $pinImage.parent().append( $('<div class="pin_image_holder">New Image</div>') );
+      }
+      $('.pin_image_holder').removeClass('hidden');      
     }
   }
   
