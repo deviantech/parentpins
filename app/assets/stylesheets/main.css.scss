@@ -634,7 +634,14 @@ a {
     transition: left .2s ease-in-out, top .2s ease-in-out .2s; }
   &:hover .actions {
     top: -1px; } }
-
+#pin-preview {
+  .pin .actions, .pin .comment {
+    display: none;
+  }
+  .pin:hover .actions {
+    display: none;
+  }
+}
 .sec_action:before {
   content: "";
   position: absolute;
