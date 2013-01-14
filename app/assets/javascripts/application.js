@@ -8,7 +8,7 @@ $(document).ready(function() {
     var url = $(this).attr('href');
     
     $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn();
-    url = url + (url.match(/\?/) ? '&' : '?') + 'via=ajax';
+    url = urlPlusParamString(url, 'via=ajax');
     $ajax.load(url);
     e.preventDefault();
   });
@@ -83,7 +83,8 @@ $(document).ready(function() {
   
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {
-    $.post($(this).data('url'));
+    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    $.post(url);
     e.preventDefault();
     
     var cssClass = $(this).parent().attr('class');
@@ -135,8 +136,16 @@ $(document).ready(function() {
   });
 });
 
+function updateProfileCounters(data) {
+  for (var key in data) {
+    var target = $('.nav_profile a.'+key+' .counter');
+    if (target.length) target.first().html(data[key]);
+  }
+}
 
-
+function urlPlusParamString(url, params) {
+  return url + (url.match(/\?/) ? '&' : '?') + params;
+}
 
 $(function () { // run this code on page load (AKA DOM load)
   

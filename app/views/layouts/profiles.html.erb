@@ -7,7 +7,7 @@
           
         <%= link_to image_tag(@profile.avatar.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
         <h2><%= @profile.name %></h2>
-        <ul class="nav_profile">
+        <ul class="nav_profile" data-profile-id="<%= @profile.id %>">
           <li><%= profile_nav_link :activity %></li>
           <li><%= profile_nav_link :pins %></li>
           <li><%= profile_nav_link :likes %></li>
