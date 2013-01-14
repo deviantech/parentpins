@@ -1,1 +1,3 @@
-// This script is only included on the add-pin page to live-update the pin contents
+// =============================================================
+// = Handles live-updating contents when creating/editing pins =
+// =============================================================

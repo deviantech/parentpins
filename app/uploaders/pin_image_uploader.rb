@@ -14,7 +14,7 @@ class PinImageUploader < BaseUploader
 
   # Used for board thumbs
   version :v55 do
-    process :resize_to_fit => [55, 55]
+    process :resize_to_fill => [55, 55]
   end
   
   # Choose what kind of storage to use for this uploader:

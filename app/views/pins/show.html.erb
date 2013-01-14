@@ -21,7 +21,7 @@
       <h2>
         <%= link_to @pin.name, @pin.url %>
         <% if current_user == @pin.user %>
-          <span class="action">[ <%= link_to 'edit', edit_pin_path(@pin) %> ]</span>
+          <span class="action">[ <%= link_to 'edit', edit_pin_path(@pin), :class => 'ajax' %> ]</span>
         <% end %>
       </h2>
       <p><%= link_to @pin.url, @pin.url %></p>

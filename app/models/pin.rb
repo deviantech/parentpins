@@ -1,5 +1,5 @@
 class Pin < ActiveRecord::Base
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image
+  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image, :image_cache
 
   VALID_TYPES = %w(gift article idea)
   REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
@@ -20,7 +20,9 @@ class Pin < ActiveRecord::Base
   validates_length_of :description, :maximum => 255, :allow_blank => true
   validate :url_format
   
-  before_destroy :clean_redis
+  after_create    :update_board_add_image
+  before_destroy  :update_board_remove_image
+  before_destroy  :clean_redis
   
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
@@ -31,6 +33,8 @@ class Pin < ActiveRecord::Base
   scope :pinned_by, lambda {|uids|
     where({:user_id => uids})
   }
+  
+  scope :with_image, where('image <> ""')
 
   # TODO: IMPLEMENT THESE
   def like_count; 2; end
@@ -85,6 +89,14 @@ class Pin < ActiveRecord::Base
   
   def url_format
     errors.add(:url, "doesn't look like a valid link") unless url.to_s.match(/\Ahttps?:\/\//)
+  end
+
+  def update_board_add_image
+    board.try(:set_cover_from_pin, self)
+  end
+  
+  def update_board_remove_image
+    board.try(:update_cover_before_pin_removed, self)
   end
   
   def clean_redis

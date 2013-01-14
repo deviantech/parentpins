@@ -1,80 +1,81 @@
-<% content_for :footer_js do %>
-  <%= javascript_include_tag "add-pin" %>
-<% end %>
+<div class="<%= modal_class %>">
+  <div class="wrapper profile">
 
-<div class="wrapper profile">
-
-  <div class="content board board_wide">
-    <%= form_for(@pin, :html => {:class => 'form narrow edit_pin'}) do |f| %>
-      <h1><%= @pin.new_record? ? 'Add' : 'Edit' %> Your Pin</h1>
-      <% if @pin.new_record? && @source %>
-        <%= hidden_field_tag :source_id, @source.id %>
-      <% end %>
+    <div class="content board board_wide">
+      <%= form_for(@pin, :html => {:class => 'form narrow edit_pin'}) do |f| %>
+        <h1><%= @pin.new_record? ? 'Add' : 'Edit' %> Your Pin</h1>
+        <% if @pin.new_record? && @source %>
+          <%= hidden_field_tag :source_id, @source.id %>
+        <% end %>
       
-      <%= error_messages_for @pin %>
+        <%= error_messages_for @pin %>
 
-      <div class="field">
-        <%= f.label :name, 'Pin Title' %>
-        <%= f.text_field :name %>
-      </div>
-
-      <div class="field">
-        <%= f.label :url, 'Pin Link' %>
-        <%= f.text_field :url %>
-      </div>
-
-      <div class="field">
-        <%= f.label :kind, 'Type of Pin' %>
-        <%= f.select :kind, select_options(Pin::VALID_TYPES) %>
-      </div>
-
-      <div class="field">
-        <%= f.label :category_id, 'Select a Category' %>
-        <%= f.select :category_id, select_options(Category.all) %>
-      </div>
-      
-      <div class="field">
-        put image uploader here.
-      </div>
-
-      <div class="field">
-        <%= f.label :board_id, 'Pin to Which Board?' %>
-        <%= f.select :board_id, select_options(current_user.boards) %>
-      </div>
-
-      <div class="field">
-        <%= f.label :age_group_id, 'Select an Age Group' %>
-        <%= f.select :age_group_id, select_options(AgeGroup.all) %>
-      </div>
-
-      <div class="field">
-        <%= f.label :description, 'Description...' %>
-        <%= f.text_area :description, :placeholder => "First few sentences please, this Pin will link to the full article" %>        
-      </div>
-      
-      <div class="field">
-        <%= f.label :price, 'Price' %>
-        <%= f.text_field :price, :placeholder => "$0.00" %>
-      </div>
-
-      <div class="submit">
-        <%= f.submit 'Save Pin', :class => 'btn tertiary_action' %>
-      </div>
-      
-      <% unless @pin.new_record? %>
-        <div class="buttons">
-          <%= link_to 'Delete this Pin', @pin, :confirm => 'Are you sure you want to remove this pin?', :method => :delete %>
+        <div class="field">
+          <%= f.label :name, 'Pin Title' %>
+          <%= f.text_field :name %>
         </div>
+
+        <div class="field">
+          <%= f.label :url, 'Pin Link' %>
+          <%= f.text_field :url %>
+        </div>
+
+        <div class="field">
+          <%= f.label :kind, 'Type of Pin' %>
+          <%= f.select :kind, select_options(Pin::VALID_TYPES) %>
+        </div>
+
+        <div class="field">
+          <%= f.label :category_id, 'Select a Category' %>
+          <%= f.select :category_id, select_options(Category.all) %>
+        </div>
+      
+        <div class="field">
+          <%= f.label :image, "#{@pin.image? ? 'Update' : 'Upload a'} Image" %>
+          <%= image_tag(@pin.image.v55.url) if @pin.image? %>
+          <%= f.file_field :image %>
+          <%= f.hidden_field :image_cache %>
+          <div class="clearfix"></div>
+        </div>            
+
+        <div class="field">
+          <%= f.label :board_id, 'Pin to Which Board?' %>
+          <%= f.select :board_id, select_options(current_user.boards) %>
+        </div>
+
+        <div class="field">
+          <%= f.label :age_group_id, 'Select an Age Group' %>
+          <%= f.select :age_group_id, select_options(AgeGroup.all) %>
+        </div>
+
+        <div class="field">
+          <%= f.label :description, 'Description...' %>
+          <%= f.text_area :description, :placeholder => "First few sentences please, this Pin will link to the full article" %>        
+        </div>
+      
+        <div class="field">
+          <%= f.label :price, 'Price' %>
+          <%= f.text_field :price, :placeholder => "$0.00" %>
+        </div>
+
+        <div class="submit">
+          <%= f.submit 'Save Pin', :class => 'btn tertiary_action' %>
+        </div>
+      
+        <% unless @pin.new_record? %>
+          <div class="buttons">
+            <%= link_to 'Delete this Pin', @pin, :confirm => 'Are you sure you want to remove this pin?', :method => :delete %>
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
     
     
-    <ul class="timeline edit_preview_pin" id="pin-preview">
-      <%= render :partial => 'pins/pin', :object => @pin %>
-    </ul>
+      <ul class="timeline edit_preview_pin" id="pin-preview">
+        <%= render :partial => 'pins/pin', :object => @pin %>
+      </ul>
 
+    </div>
+
+    <div class="clearfix"></div>
   </div>
-
-  <div class="clearfix"></div>
-
 </div>

@@ -47,7 +47,7 @@ class PinsController < ApplicationController
   end
   
   def destroy
-    redirect_to @pin.board, :notice => 'Removed Pin'
+    redirect_to board_profile_path(current_user, @pin.board), :notice => 'Removed Pin'
     @pin.destroy
   end
   

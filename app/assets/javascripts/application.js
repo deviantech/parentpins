@@ -4,13 +4,14 @@ $(document).ready(function() {
   // Handle ajax/modals
   $ajax = $('<div id="ajax-modal-target"></div>').appendTo($('body'));
 
-  $('.ajax').click(function(e) {
+  $(document).on('click', '.ajax', function(e) {
     var url = $(this).attr('href');
-    
     $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn();
+    
     url = urlPlusParamString(url, 'via=ajax');
     $ajax.load(url);
     e.preventDefault();
+    e.stopPropagation();
   });
 
   function closeModal() {
