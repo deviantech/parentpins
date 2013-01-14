@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
   has_many :feedbacks
   
   validates_numericality_of :kids, :allow_blank => true
+  before_destroy :clear_redis
+
 
   def name
     username.to_s.titleize
@@ -168,6 +170,19 @@ class User < ActiveRecord::Base
   
   def cleaned_ids(cats)
     Array(cats).select{|c| !c.blank?}.map{ |cat| cat.respond_to?(:id) ? cat.id : cat }.uniq
+  end
+
+  def clear_redis
+    # Clear self from other objects' redis entries
+    following.each {|u| unfollow(u) }
+    followers.each {|u| u.unfollow(self) }
+    likes.each {|l| unlike(l)}
+    
+    # Remove my redis objects
+    Rails.redis.del(redis_name__categories)
+    Rails.redis.del(redis_name__following)
+    Rails.redis.del(redis_name__followers)
+    Rails.redis.del(redis_name__likes)
   end
   
 end
