@@ -55,6 +55,7 @@ class Pin < ActiveRecord::Base
       
       pin.via = source.user unless source.user == user
       pin.user = user
+      pin.board_id ||= user.boards.first.try(:id)
       pin
     else
       user.pins.new(other_params)

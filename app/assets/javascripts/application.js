@@ -146,7 +146,7 @@ function updateProfileCounters(data) {
     var target = $('.nav_profile a.'+key);
     if (target.length) {
       target.find('.counter').html(data[key]);
-      var label = key.substr(0,1).toUpperCase() + key.substr(1);            
+      var label = capitalize(key);
       if (key != 'following') {
         if (data[key] == 1) {
           if (label.substr(label.length-1, 1) == 's') label = label.substr(0, label.length - 1);

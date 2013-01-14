@@ -21,10 +21,11 @@
         via
         <%= link_to pin.via.name, profile_path(pin.via) %>
       <% end %>
-      <% if pin.board %>
+
+      <span class="bind-board_id">
         onto
-        <%= link_to pin.board.name, board_path(pin.board) %>
-      <% end %>
+        <%= pin.board ? link_to(pin.board.name, board_path(pin.board)) : 'Unknown Board' %>
+      </span>
     </p>
   </div>
   <% if user_signed_in? && !pin.new_record? %>
