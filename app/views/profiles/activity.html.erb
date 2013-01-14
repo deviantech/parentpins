@@ -27,7 +27,7 @@
 
 <%= render 'signup_step_2' if params[:step_2] %>
 
-<% content_for :footer_js do %>
+<% provide :footer_js do %>
   <script type="text/javascript" charset="utf-8">
     $('#category_to_add').change(function(e) {
       if ($(this).val().length > 0) {
