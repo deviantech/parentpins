@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
   has_many :feedbacks
   
   validates_numericality_of :kids, :allow_blank => true
+  before_destroy :clean_redis
+
 
   def name
     username.to_s.titleize
@@ -71,21 +73,21 @@ class User < ActiveRecord::Base
   end
   
   def following?(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.sismember(redis_name__following, user.id)
   end
   
   def followed_by?(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.sismember(redis_name__followers, user.id)
   end
   
   def follow(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.sadd(redis_name__following, user.id)
@@ -93,7 +95,7 @@ class User < ActiveRecord::Base
   end
 
   def unfollow(user)
-    user = user.is_a?(User) ? user.id : user
+    user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.srem(redis_name__following, user.id)
@@ -168,6 +170,19 @@ class User < ActiveRecord::Base
   
   def cleaned_ids(cats)
     Array(cats).select{|c| !c.blank?}.map{ |cat| cat.respond_to?(:id) ? cat.id : cat }.uniq
+  end
+
+  def clean_redis
+    # Clear self from other objects' redis entries
+    following.each {|u| unfollow(u) }
+    followers.each {|u| u.unfollow(self) }
+    likes.each {|l| unlike(l)}
+    
+    # Remove my redis objects
+    Rails.redis.del(redis_name__categories)
+    Rails.redis.del(redis_name__following)
+    Rails.redis.del(redis_name__followers)
+    Rails.redis.del(redis_name__likes)
   end
   
 end

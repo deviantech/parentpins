@@ -1,14 +1,17 @@
-<li class="pin">
+<li class="pin <%= dom_id(pin) %>">
   <% unless pin.new_record? %>
     <%= render 'pins/actions', :pin => pin %>
   <% end %>
-  <% if pin.price %>
-    <div class="gift_price"><%= number_to_currency pin.price %></div>
-  <% end %>
+  <div class="bind-price gift_price<%= ' hidden' unless pin.price %>"><%= number_to_currency pin.price %></div>
   <%= link_to pin, :class => 'ajax image_link' do %>
     <%= image_tag pin.image.v192.url, :class => 'pin_image', :alt => 'Pin image' %>
   <% end %>
-  <p class="description"><a href="<%= url_for(pin) %>"><strong class="kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong> <%= pin.name %></a></p>
+  <p class="description">
+    <a href="<%= url_for(pin) %>">
+      <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
+      <span class="bind-name"><%= pin.name %></span>
+    </a>
+  </p>
   <%= render 'pins/stats', :pin => pin %>
   <div class="attribution">
     <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name %>
@@ -18,10 +21,11 @@
         via
         <%= link_to pin.via.name, profile_path(pin.via) %>
       <% end %>
-      <% if pin.board %>
+
+      <span class="bind-board_id">
         onto
-        <%= link_to pin.board.name, board_path(pin.board) %>
-      <% end %>
+        <%= pin.board ? link_to(pin.board.name, board_path(pin.board)) : 'Unknown Board' %>
+      </span>
     </p>
   </div>
   <% if user_signed_in? && !pin.new_record? %>

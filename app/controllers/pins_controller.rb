@@ -23,7 +23,7 @@ class PinsController < ApplicationController
   def create
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
     if @pin.save
-      redirect_to @pin.board, :notice => 'Added new pin'
+      redirect_to board_profile_path(current_user, @pin.board), :notice => 'Added new pin'
     else
       flash.now[:error] = "Unable to save pin"
       render :action => 'new'
@@ -47,7 +47,7 @@ class PinsController < ApplicationController
   end
   
   def destroy
-    redirect_to @pin.board, :notice => 'Removed Pin'
+    redirect_to board_profile_path(current_user, @pin.board), :notice => 'Removed Pin'
     @pin.destroy
   end
   
@@ -62,12 +62,11 @@ class PinsController < ApplicationController
   
   def like
     current_user.like(@pin)
-    render :nothing => true
   end
   
   def unlike
     current_user.unlike(@pin)
-    render :nothing => true
+    render 'like'
   end
   
   protected

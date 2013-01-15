@@ -20,7 +20,7 @@ class BoardsController < ApplicationController
   def create
     @board = current_user.boards.new(params[:board])
     if @board.save
-      redirect_to @board, :notice => 'Created new board'
+      redirect_to board_profile_path(@board.user, @board), :notice => 'Created new board'
     else
       flash.now[:error] = "Unable to save board"
       render :action => 'new'
@@ -42,7 +42,7 @@ class BoardsController < ApplicationController
 
   def destroy
     @board.destroy
-    redirect_to boards_profile_path(current_user, :notice => 'Removed Board')
+    redirect_to boards_profile_path(current_user), :notice => 'Removed Board'
   end
 
   protected

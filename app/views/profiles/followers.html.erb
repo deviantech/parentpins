@@ -1,24 +1,17 @@
-<h1><span><%= @profile.name %>'s</span> 116 Followers Recent Activity</h1>
+<% if @profile.followers_count.zero? %>
+  <h1><span><%= @profile.name %></span> isn't being followed by anyone</h1>
+<% else %>
+  <h1><span><%= @profile.name %>'s</span> <%= pluralize @profile.followers_count, "Follower's", "Followers'" %> Recent Activity</h1>
 
-<div class="followers_list">
-  <ul class="users">
-    <li>
-      <a href="#" class="btn action follow_in_list">follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-    <li>
-      <a href="#" class="btn action follow_in_list">follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-    <li>
-      <a href="#" class="btn action follow_in_list">un-follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-    <li>
-      <a href="#" class="btn action follow_in_list">follow</a>
-      <a href="#" class="user"><img src="/assets/images/fallback/user_avatar/v50_default.jpg"> User Name Here <span>23 Followers</span><span>Following 345</span></a>
-    </li>
-  </ul>
-</div>
+  <div class="followers_list">
+    <ul class="users">
+      <% @profile.followers.each do |user| %>
+        <%= render 'follower', :follower => user %>
+      <% end %>
+    </ul>
+  </div>
 
+<% end %>
+
+<div class="clearfix"></div>
 <%= render 'pins/pins' %>

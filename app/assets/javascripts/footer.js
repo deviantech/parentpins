@@ -12,9 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require plugins
+//= require helpers
 //= require spinners.min.js
 //= require jquery.masonry
 //= require jquery.infinite-ajax-scroll
 //= require jquery.scrollTo
 //= require application
+//= require add-pin

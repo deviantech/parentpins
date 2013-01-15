@@ -4,13 +4,14 @@ $(document).ready(function() {
   // Handle ajax/modals
   $ajax = $('<div id="ajax-modal-target"></div>').appendTo($('body'));
 
-  $('.ajax').click(function(e) {
+  $(document).on('click', '.ajax', function(e) {
     var url = $(this).attr('href');
-    
     $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn();
-    url = url + (url.match(/\?/) ? '&' : '?') + 'via_ajax=true';
+    
+    url = urlPlusParamString(url, 'via=ajax');
     $ajax.load(url);
     e.preventDefault();
+    e.stopPropagation();
   });
 
   function closeModal() {
@@ -20,7 +21,7 @@ $(document).ready(function() {
   }
     
   // Only close overlay if click was ON overlay, not just bubbled up to it
-  $('.pinly_overlay').click(function(e) {
+  $(document).on('click', '.pinly_overlay', function(e) {
     if ($(e.target).hasClass('pinly_overlay')) closeModal();
   });
   
@@ -37,12 +38,34 @@ $(document).ready(function() {
      $('#pins').masonry('reload');
   });
   
+  // Pin actions
+  function getContainingClassNameForPinAction(btn) {
+    var classList;
+    if ($(btn).parents('.pinly').length) { // Clicked in Pin
+      classList = $(btn).parents('.pinly').attr('class');
+    } else {
+      classList = $(btn).parents('li').attr('class');
+    }
+    var matched = classList.match(/pin_(\d+)/);
+    return matched ? matched[0] : null;
+  }
+  
   // Like/Unlike
-  $('.like_button').click(function(e) {
-    $(this).siblings('.like_button.hidden').removeClass('hidden');
-    $(this).addClass('hidden');
-    $.post($(this).attr('href'));
+  $(document).on('click', '.like_button', function(e) {
+    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    $.post(url);
     e.preventDefault();
+    e.stopPropagation();
+    
+    // Update any other pins on the page, too
+    var cssClass = getContainingClassNameForPinAction(this);
+    $('.'+cssClass).find('.like_button').each(function() {
+      if ($(this).hasClass('hidden')) {
+        $(this).removeClass('hidden');
+      } else {
+        $(this).addClass('hidden');
+      }
+    });
   });
   
   // Comment Button
@@ -59,6 +82,24 @@ $(document).ready(function() {
     }
     focusable.focus();
     e.preventDefault();
+    e.stopPropagation();
+  });
+  
+  // Follow/unfollow buttons
+  $(document).on('click', '.following-action', function(e) {
+    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    $.post(url);
+    e.preventDefault();
+    e.stopPropagation();
+    
+    var cssClass = $(this).parent().attr('class');
+    $('.'+cssClass).find('.following-action').each(function() {
+      if ($(this).hasClass('hidden')) {
+        $(this).removeClass('hidden');
+      } else {
+        $(this).addClass('hidden');
+      }
+    });
   });
   
   // Infinite scrolling
@@ -100,8 +141,27 @@ $(document).ready(function() {
   });
 });
 
+function updateProfileCounters(data) {
+  for (var key in data) {
+    var target = $('.nav_profile a.'+key);
+    if (target.length) {
+      target.find('.counter').html(data[key]);
+      var label = capitalize(key);
+      if (key != 'following') {
+        if (data[key] == 1) {
+          if (label.substr(label.length-1, 1) == 's') label = label.substr(0, label.length - 1);
+        } else {
+          if (label.substr(label.length-1, 1) != 's') label = label + 's';
+        }
+      }
+      target.find('.label').html(label);
+    }
+  }
+}
 
-
+function urlPlusParamString(url, params) {
+  return url + (url.match(/\?/) ? '&' : '?') + params;
+}
 
 $(function () { // run this code on page load (AKA DOM load)
   

@@ -1,5 +1,5 @@
 <div class="<%= modal_class %>">
-  <div class="pinly">
+  <div class="pinly <%= dom_id(@pin) %>">
     <div class="pin_type"><%= @pin.kind.to_s.titleize %></div>
 
     <div class="attribute">
@@ -7,8 +7,10 @@
       <div class="attribute_info">
         <p>
           <%= link_to @pin.user.name, profile_path(@pin.user) %>
+          <%= render 'profiles/follow_buttons', :to_follow => @pin.user %>
           <% if @pin.via %>
-          via <%= link_to @pin.via.name, profile_path(@pin.via) %>
+            via <%= link_to @pin.via.name, profile_path(@pin.via) %>
+            <%= render 'profiles/follow_buttons', :to_follow => @pin.via %>
           <% end %>
         </p>
         <p class="time"><%= time_ago_in_words @pin.created_at %> ago from <%= link_to @pin.board.name, @pin.board %></p>
@@ -19,7 +21,7 @@
       <h2>
         <%= link_to @pin.name, @pin.url %>
         <% if current_user == @pin.user %>
-          <span class="action">[ <%= link_to 'edit', edit_pin_path(@pin) %> ]</span>
+          <span class="action">[ <%= link_to 'edit', edit_pin_path(@pin), :class => 'ajax' %> ]</span>
         <% end %>
       </h2>
       <p><%= link_to @pin.url, @pin.url %></p>
@@ -33,10 +35,10 @@
       <% end %>
       <p class="description"><%= @pin.description %></p>
 
-      <% if @pin.original_poster != @pin.via %>
+      <% if @pin.original_poster && @pin.original_poster != @pin.via %>
       <p>
         Originally posted by <%= link_to @pin.original_poster.name, profile_path(@pin.original_poster) %>
-        <a href="#" class="btn action follow">follow</a>
+        <%= render 'profiles/follow_buttons', :to_follow => @pin.original_poster %>
       </p>
       <% end %>
 

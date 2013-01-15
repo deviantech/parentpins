@@ -32,13 +32,13 @@ class ProfilesController < ApplicationController
   end
   
   def followers
-    @followers = [] # TODO: implement followers
+    @followers = @profile.followers
     @pins = Pin.pinned_by(@followers).limit(20)
     # TODO: add pagination
   end
   
   def following
-    @following = [] # TODO: implement following
+    @following = @profile.following
     @pins = Pin.pinned_by(@following).limit(20)
     # TODO: add pagination
   end
@@ -48,8 +48,8 @@ class ProfilesController < ApplicationController
   end
   
   def board
-    unless @board = @profile.boards.find_by_id(params[:id])
-      redirect_to :action => 'show', :notice => "Unable to find the specified board"
+    unless @board = @profile.boards.find_by_id(params[:board_id])
+      redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
     end
     @pins = @board.pins.limit(20) # TODO: add pagination
   end
@@ -74,6 +74,15 @@ class ProfilesController < ApplicationController
   end
   
   def account
+  end
+  
+  def follow
+    current_user.follow(@profile) if user_signed_in?
+  end
+  
+  def unfollow
+    current_user.unfollow(@profile) if user_signed_in?
+    render 'follow'
   end
   
   protected

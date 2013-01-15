@@ -1,37 +1,34 @@
-<% content_for :content do %>
+<% provide :content do %>
   <%= render 'shared/profile_header' %>
   <div class="wrapper profile">
 
-      <div class="info">
-        <!-- Following button interaction -->
-        <!--if not following -->
-          <a href="#" class="btn action follow">follow</a>
-        <!--if following 
-          <a href="#" class="btn action unfollow">following</a> -->
-        <%= link_to image_tag(@profile.avatar.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
-        <h2><%= @profile.name %></h2>
-        <ul class="nav_profile">
-          <li><%= profile_nav_link :activity %></li>
-          <li><%= profile_nav_link :pins %></li>
-          <li><%= profile_nav_link :likes %></li>
-          <li><%= profile_nav_link :boards %></li>
-          <li><%= profile_nav_link :followers %></li>
-          <li><%= profile_nav_link :following %></li>
-        </ul>
+    <div class="info">
+      <%= render 'profiles/follow_buttons', :to_follow => @profile %>
 
-        <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
+      <%= link_to image_tag(@profile.avatar.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
+      <h2><%= @profile.name %></h2>
+      <ul class="nav_profile" data-profile-id="<%= @profile.id %>">
+        <li><%= profile_nav_link :activity %></li>
+        <li><%= profile_nav_link :pins %></li>
+        <li><%= profile_nav_link :likes %></li>
+        <li><%= profile_nav_link :boards %></li>
+        <li><%= profile_nav_link :followers %></li>
+        <li><%= profile_nav_link :following %></li>
+      </ul>
 
-        <% unless @profile.bio.blank? %>
-          <p class="bio"><%= @profile.bio %></p>
-        <% end %>
-      </div>
+      <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
 
-      <div class="content">
-        <%= yield %>
-      </div>
-      
-      <div class="clearfix"></div>
+      <% unless @profile.bio.blank? %>
+      <p class="bio"><%= @profile.bio %></p>
+      <% end %>
     </div>
+
+    <div class="content">
+      <%= yield %>
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
 <% end %>
 
 <%= render :template => 'layouts/application' %>
