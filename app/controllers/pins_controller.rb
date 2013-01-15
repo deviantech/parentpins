@@ -13,7 +13,8 @@ class PinsController < ApplicationController
   
   def new
     if current_user.boards.empty?
-      redirect_to(new_board_path, :notice => 'Please add a board first!') and return
+      session[:post_board_url] = url_for(params.merge(:via => nil))
+      redirect_to(new_board_path(:via => params[:via]), :notice => 'Please add a board first!') and return
     end
     
     # If a source ID is passed, allow repining

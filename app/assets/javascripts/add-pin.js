@@ -2,11 +2,6 @@
 // = Handles live-updating contents when creating/editing pins =
 // =============================================================
 
-
-
-// TODO -- only call on page when needed, and include in modal if going to be loaded. WHAT IF loaded in modal, then closed, then a new modal loaded? only load once.
-
-
 var $pinForm = $('form.edit_pin');
 var $outletBase = $('#pin-preview');
 
@@ -28,7 +23,7 @@ if ($pinForm.length) {
   
   $pinForm.on('change', '#pin_kind', function(e) {
     if ($(this).val() == 'gift') {
-      $pinForm.find('.field-price').slideDown();
+      $pinForm.find('.field-price').removeClass('hidden').slideDown();
       $('#pin_price').trigger('change');
     } else {
       $pinForm.find('.field-price').slideUp();

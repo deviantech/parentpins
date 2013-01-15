@@ -20,7 +20,10 @@ class BoardsController < ApplicationController
   def create
     @board = current_user.boards.new(params[:board])
     if @board.save
-      redirect_to board_profile_path(@board.user, @board), :notice => 'Created new board'
+      # Allow returning back to pin if opened because trying to create pin with no return yet
+      url = session.delete(:post_board_url)
+      url ||= board_profile_path(@board.user, @board)
+      redirect_to url, :notice => 'Created new board'
     else
       flash.now[:error] = "Unable to save board"
       render :action => 'new'
