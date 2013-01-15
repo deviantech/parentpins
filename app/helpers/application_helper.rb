@@ -1,5 +1,15 @@
 module ApplicationHelper
 
+  def include_javascript_for_modal(js)
+    if params[:via] == 'ajax' # We're in a modal, load inline
+      javascript_include_tag(js)
+    else # Rendering with a normal layout, put the JS at the end of the page
+      content_for(:footer_js) do
+        javascript_include_tag(js)
+      end
+    end
+  end
+
   def modal_class
     params[:via] == 'ajax' ? 'pinly_overlay' : nil
   end

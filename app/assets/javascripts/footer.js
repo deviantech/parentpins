@@ -18,4 +18,3 @@
 //= require jquery.infinite-ajax-scroll
 //= require jquery.scrollTo
 //= require application
-//= require add-pin

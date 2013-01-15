@@ -38,7 +38,7 @@ if ($pinForm.length) {
   
   // Trigger once to initialize
   $pinForm.find('input, select').each(function() {
-    if ($(this).attr('id')) updateBindingsFor(this);
+    if ($(this).attr('id') && $(this).attr('type') != 'hidden') updateBindingsFor(this);
   });
 }
 
