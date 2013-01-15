@@ -42,6 +42,7 @@ module ApplicationHelper
   
   def body_class
     case params[:controller]
+    when 'search'   then 'full_width'
     when 'profiles' then 'profile'
     when 'boards'
       %w(show index).include?(params[:action]) ? 'full_width' : nil

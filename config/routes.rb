@@ -44,4 +44,7 @@ ParentPins::Application.routes.draw do
   match '/about' => 'front#about'
   match '/legal' => 'front#legal'
   match '/privacy' => 'front#privacy'
+  
+  match '/search/:kind' => 'search#index',  :as => 'search'
+  match '/search' => redirect('/search/pins')
 end

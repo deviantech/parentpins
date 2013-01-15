@@ -12,8 +12,9 @@
         <%= nav_link 'Articles', articles_path %>
       </li>
     </ul>
-    <form class="search">
-      <input type="text" placeholder="Search..."/>
+    <form class="search" method="post" action="<%= search_path %>">
+      <%= text_field_tag :q, params[:q], :placeholder => 'Search...' %>
+      <%= hidden_field_tag 'kind', @kind %>
       <button class="btn search_button primary">Go</button>
     </form>
     <ul class="nav_login">

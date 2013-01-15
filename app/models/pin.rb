@@ -1,4 +1,6 @@
+require 'searchable'
 class Pin < ActiveRecord::Base
+  extend Searchable
   attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image, :image_cache
 
   VALID_TYPES = %w(gift article idea)
