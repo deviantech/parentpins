@@ -35,10 +35,18 @@ if ($pinForm.length) {
       $outletBase.find('.bind-price').addClass('hidden');
     }
   });
+  
+  // Trigger once to initialize
+  $pinForm.find('input, select').each(function() {
+    if ($(this).attr('id')) updateBindingsFor(this);
+  });
 }
 
 function updateBindingsFor(target) {
   var $field = $(target);
+  if (($field.attr('id') || '').indexOf('pin_') == -1) {
+    console.log('Attempting to update bindings for unknown field: ', target);
+  }
   var name = $field.attr('id').replace(/pin_/, '');
 
   var $outlet = $outletBase.find('.bind-'+name);
@@ -85,7 +93,9 @@ function displayValueForField(name, $field, $outlet) {
     }
   }
   
-  return $field.val();
+  var value = $field.val();
+  if (!value.length) value = $field.attr('placeholder');
+  return value;
 }
 
 

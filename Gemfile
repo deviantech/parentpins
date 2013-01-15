@@ -38,3 +38,8 @@ gem 'omniauth-facebook'
 gem 'carrierwave'
 gem 'mime-types'
 gem 'mini_magick'
+
+
+
+
+gem 'system_timer', :platform => :ruby_18
