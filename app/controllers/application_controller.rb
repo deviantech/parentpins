@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   private
   
-  def set_filters
+  def set_pin_filters
     @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
     
     cat_id = params[:category_id] || params[:category]

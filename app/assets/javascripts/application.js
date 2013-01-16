@@ -124,7 +124,7 @@ $(document).ready(function() {
   });
   
   // Set filters
-  $('.set_filters').on('change', function(e) {
+  $('.set_pin_filters').on('change', function(e) {
     $select = $(e.target);
     
     if ($select.data('base-url-if-blank')) {

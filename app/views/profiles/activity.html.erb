@@ -1,5 +1,4 @@
 <h1><span>A few pins you might like</span>Suggested Pins</h1>
-<%= render 'shared/filters' %>
 
 <div class="cat_filter">
   <%= select_tag :category_to_add, options_for_select([['Add a Category', '']] + select_options(Category.all)) %>

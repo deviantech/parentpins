@@ -1,6 +1,7 @@
 class BoardsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:index, :show]
-  before_filter :find_board, :only => [:edit, :update, :destroy]
+  before_filter :authenticate_user!,  :except => [:index, :show]
+  before_filter :find_board,          :only   => [:edit, :update, :destroy]
+  before_filter :set_pin_filters,     :only   => [:show]
 
   def index
     # TODO: implement some sort of trending logic
@@ -10,7 +11,7 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find(params[:id])
-    @pins = @board.pins.limit(20)
+    @pins = @board.pins.by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
   end
 
   def new

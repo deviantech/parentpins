@@ -3,7 +3,7 @@ class ProfilesController < ApplicationController
   before_filter :set_profile,         :only => [:account]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
-  before_filter :set_filters,         :only => [:pins, :likes, :followers, :following]
+  before_filter :set_pin_filters,     :only => [:pins, :likes, :followers, :following, :board]
   
   def show
     redirect_to :action => 'boards'
@@ -52,7 +52,8 @@ class ProfilesController < ApplicationController
     unless @board = @profile.boards.find_by_id(params[:board_id])
       redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
     end
-    @pins = @board.pins.limit(20) # TODO: add pagination
+    @pins = @board.pins.by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
+    # TODO: add pagination
   end
   
   def edit

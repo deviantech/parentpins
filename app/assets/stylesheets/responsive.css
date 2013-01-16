@@ -37,8 +37,8 @@ and (max-device-width : 1024px) {
   .content {width:560px;}
   .content.board_wide {width:760px !important;}
   .wrapper.general .content {width:740px;padding:0 10px;}
-  .set_filters {position:relative;margin:0 0 0 10px;right:0;top:0;}
-  .profile .set_filters {position:absolute;right:5px;top:10px;}
+  .set_pin_filters {position:relative;margin:0 0 0 10px;right:0;top:0;}
+  .profile .set_pin_filters {position:absolute;right:5px;top:10px;}
   .cat_filter {padding:20px 0px 0 40px;}
   .cat_filter p {padding:0 0 25px;}
   ul.boards {margin:10px 0;}

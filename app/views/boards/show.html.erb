@@ -16,13 +16,8 @@
       <div class="board_description"><%= @board.description %></div>
     <% end %>
     
-    <select class="set_filters">
-      <option>All Pins</option>
-      <option>Articles</option>
-      <option>Gifts</option>
-      <option>Ideas</option>
-    </select>
-
+    <%= render 'shared/filters' %>
+    
     <%= render 'pins/pins' %>
 
     <div class="clearfix"></div>

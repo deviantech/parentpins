@@ -2,7 +2,7 @@ class PinsController < ApplicationController
   before_filter :authenticate_user!,      :except => [:index, :show]
   before_filter :find_current_users_pin,  :only => [:edit, :update, :destroy]
   before_filter :find_any_pin,            :only => [:show, :add_comment, :like, :unlike]
-  before_filter :set_filters,             :only => [:index]
+  before_filter :set_pin_filters,         :only => [:index]
     
   def index
     # TODO: implement some sort of trending logic if kind/category aren't provided
