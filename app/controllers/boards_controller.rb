@@ -1,17 +1,17 @@
 class BoardsController < ApplicationController
   before_filter :authenticate_user!,  :except => [:index, :show]
   before_filter :find_board,          :only   => [:edit, :update, :destroy]
-  before_filter :set_pin_filters,     :only   => [:show]
+  before_filter :set_filters,         :only   => [:show, :index]
 
   def index
     # TODO: implement some sort of trending logic
     @category = Category.find_by_id(params[:category]) unless params[:category].blank?
-    @boards = Board.in_category(@category).limit(20)
+    @boards = Board.in_category(@category).in_age_group(@age_group).limit(20)
   end
 
   def show
     @board = Board.find(params[:id])
-    @pins = @board.pins.by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
+    @pins = @board.pins.by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
   end
 
   def new

@@ -3,7 +3,7 @@ class ProfilesController < ApplicationController
   before_filter :set_profile,         :only => [:account]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
-  before_filter :set_pin_filters,     :only => [:pins, :likes, :followers, :following, :board]
+  before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board]
   
   def show
     redirect_to :action => 'boards'
@@ -18,29 +18,29 @@ class ProfilesController < ApplicationController
       current_user.remove_interested_categories(to_remove)
     end
     
-    @pins = Pin.in_categories(current_user.interested_categories).limit(20)
+    @pins = Pin.in_category(current_user.interested_categories).limit(20)
     # TODO: add pagination
   end
   
   def pins
     # TODO: add better logic for picking popular vs new pins
-    @pins = @profile_counters[:pins].zero? ? Pin.limit(20) : @profile.pins.by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
+    @pins = @profile_counters[:pins].zero? ? Pin.limit(20) : @profile.pins.by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
   end
   
   def likes
-    @pins = Pin.where(:id => @profile.likes).by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
+    @pins = Pin.where(:id => @profile.likes).by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
     # TODO: add pagination
   end
   
   def followers
     @followers = @profile.followers
-    @pins = Pin.pinned_by(@followers).by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
+    @pins = Pin.pinned_by(@followers).by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
     # TODO: add pagination
   end
   
   def following
     @following = @profile.following
-    @pins = Pin.pinned_by(@following).by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
+    @pins = Pin.pinned_by(@following).by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
     # TODO: add pagination
   end
   
@@ -52,7 +52,7 @@ class ProfilesController < ApplicationController
     unless @board = @profile.boards.find_by_id(params[:board_id])
       redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
     end
-    @pins = @board.pins.by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
+    @pins = @board.pins.by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
     # TODO: add pagination
   end
   

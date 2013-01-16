@@ -30,10 +30,10 @@ class Pin < ActiveRecord::Base
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
-  scope :in_categories, lambda {|cats|
+  scope :in_category, lambda {|cats|
     cats.blank? ? where('1=1') : where({:category_id => Array(cats).map(&:id)})
   }
-  scope :in_age_groups, lambda {|groups|
+  scope :in_age_group, lambda {|groups|
     groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
   }
   scope :pinned_by, lambda {|uids|

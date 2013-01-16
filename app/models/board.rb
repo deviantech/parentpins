@@ -17,6 +17,10 @@ class Board < ActiveRecord::Base
   scope :in_category, lambda {|cat|
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
   }
+  scope :in_age_group, lambda {|groups|
+    groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
+  }
+  
   
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
   def thumbnails
