@@ -1,0 +1,13 @@
+<div class="set_filters">
+  <select data-filter-name="kind" data-base-url-if-blank="/pins">
+    <%= options_for_select [['All Pin Types', '']] + select_options(Pin::VALID_TYPES), @kind %>
+  </select>
+
+  <select data-filter-name="category">
+    <%= options_for_select([['All Categories', '']] + select_options(Category.all), @category.try(:id)) %>
+  </select>
+  
+  <select data-filter-name="age_group">
+    <%= options_for_select([['All Age Groups', '']] + select_options(AgeGroup.all), @age_group.try(:id)) %>
+  </select>
+</div>

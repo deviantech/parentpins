@@ -2,13 +2,12 @@ class PinsController < ApplicationController
   before_filter :authenticate_user!,      :except => [:index, :show]
   before_filter :find_current_users_pin,  :only => [:edit, :update, :destroy]
   before_filter :find_any_pin,            :only => [:show, :add_comment, :like, :unlike]
+  before_filter :set_filters,             :only => [:index]
     
   def index
     # TODO: implement some sort of trending logic if kind/category aren't provided
     # TODO: include user or else cache username
-    @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
-    @category = Category.find_by_id(params[:category_id]) unless params[:category_id].blank?
-    @pins = Pin.by_kind(@kind).in_categories(@category).limit(20)
+    @pins = Pin.by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
   end
   
   def new
@@ -80,6 +79,12 @@ class PinsController < ApplicationController
   
   def find_current_users_pin
     @pin = current_user.pins.find(params[:id])
+  end
+
+  def set_filters
+    @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
+    @category = Category.find_by_id(params[:category_id]) unless params[:category_id].blank?
+    @age_group = AgeGroup.find_by_id(params[:age_group_id]) unless params[:age_group_id].blank?
   end
   
 end

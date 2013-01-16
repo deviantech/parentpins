@@ -2,9 +2,8 @@
 
   <div class="content board board_wide">
     <h1><%= pins_index_header %></h1>
-    <select class="cat_select" data-base-url="/pins" data-filter-name="kind">
-      <%= options_for_select [['All Pins', '']] + Pin::VALID_TYPES.collect{|t| [t.pluralize.titleize, t]}, @kind %>
-    </select>
+    
+    <%= render 'shared/filters' %>
 
     <%= render 'pins/pins' %>
 

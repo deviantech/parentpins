@@ -123,21 +123,23 @@ $(document).ready(function() {
     }
   });
   
-  // Implement category selects
-  $('.cat_select').each(function(idx, select){
-    select = $(select);
-    select.on('change', function() {
-      var url = select.data('baseUrl');
-      if (!url) {
-        alert('category_select not yet implemented');
-        return;
+  // Set filters
+  $('.set_filters').on('change', function(e) {
+    $select = $(e.target);
+    
+    if ($select.data('base-url-if-blank')) {
+      // Adding support to handle pretty URLs, e.g. /pins if not kind set, but /gifts if kind is 'gift'
+      var baseURL;
+      if ($select.val()) {
+        baseURL = '/' + $select.val() + 's';
+      } else {
+        baseURL = $select.data('base-url-if-blank');
       }
-      if (select.val().length) {
-        url += url.indexOf('?') == -1 ? '?' : '&';
-        url += select.data('filterName') + '=' + select.val();
-      }
-      window.location = url;
-    });
+      window.location = urlReplacingPathKeepingParams(baseURL);
+    } else {
+      // Normal, update URL components but don't worry about base URL changing
+      window.location = urlPossiblyReplacingParam(window.location + '', $select.data('filterName'), $select.val());
+    }
   });
 });
 
@@ -157,10 +159,6 @@ function updateProfileCounters(data) {
       target.find('.label').html(label);
     }
   }
-}
-
-function urlPlusParamString(url, params) {
-  return url + (url.match(/\?/) ? '&' : '?') + params;
 }
 
 $(function () { // run this code on page load (AKA DOM load)

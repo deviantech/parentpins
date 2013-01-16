@@ -43,5 +43,22 @@ Number.prototype.formatMoney = function(places, symbol, thousand, decimal) {
 
 
 function capitalize(word) {
-  return word.substr(0,1).toUpperCase() + word.substr(1)  
+  return word.substr(0,1).toUpperCase() + word.substr(1);
+}
+
+function urlPlusParamString(url, paramString) {
+  return (url + (url.indexOf('?') == -1 ? '?' : '&') + paramString).
+    replace(/&&+/, '&').
+    replace(/\?\?+/, '?').
+    replace(/\?&/, '?').
+    replace(/[\?&]$/, '');
+}
+
+function urlPossiblyReplacingParam(url, param, value) {
+  var re = new RegExp(param + '=[^&]+');
+  return urlPlusParamString(url.replace(re, ''), value && value.length ? (param + '=' + value) : '');
+}
+
+function urlReplacingPathKeepingParams(newPath) {
+  return urlPlusParamString(newPath, window.location.search);
 }
