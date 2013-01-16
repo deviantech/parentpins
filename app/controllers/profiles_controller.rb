@@ -3,6 +3,7 @@ class ProfilesController < ApplicationController
   before_filter :set_profile,         :only => [:account]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
+  before_filter :set_filters,         :only => [:pins, :likes, :followers, :following]
   
   def show
     redirect_to :action => 'boards'
@@ -23,23 +24,23 @@ class ProfilesController < ApplicationController
   
   def pins
     # TODO: add better logic for picking popular vs new pins
-    @pins = @profile_counters[:pins].zero? ? Pin.limit(20) : @profile.pins
+    @pins = @profile_counters[:pins].zero? ? Pin.limit(20) : @profile.pins.by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
   end
   
   def likes
-    @pins = Pin.where(:id => @profile.likes).limit(20)
+    @pins = Pin.where(:id => @profile.likes).by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
     # TODO: add pagination
   end
   
   def followers
     @followers = @profile.followers
-    @pins = Pin.pinned_by(@followers).limit(20)
+    @pins = Pin.pinned_by(@followers).by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
     # TODO: add pagination
   end
   
   def following
     @following = @profile.following
-    @pins = Pin.pinned_by(@following).limit(20)
+    @pins = Pin.pinned_by(@following).by_kind(@kind).in_categories(@category).in_age_groups(@age_group).limit(20)
     # TODO: add pagination
   end
   
@@ -53,8 +54,6 @@ class ProfilesController < ApplicationController
     end
     @pins = @board.pins.limit(20) # TODO: add pagination
   end
-  
-  
   
   def edit
   end

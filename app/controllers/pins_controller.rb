@@ -80,11 +80,5 @@ class PinsController < ApplicationController
   def find_current_users_pin
     @pin = current_user.pins.find(params[:id])
   end
-
-  def set_filters
-    @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
-    @category = Category.find_by_id(params[:category_id]) unless params[:category_id].blank?
-    @age_group = AgeGroup.find_by_id(params[:age_group_id]) unless params[:age_group_id].blank?
-  end
   
 end

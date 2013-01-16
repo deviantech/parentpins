@@ -138,7 +138,7 @@ $(document).ready(function() {
       window.location = urlReplacingPathKeepingParams(baseURL);
     } else {
       // Normal, update URL components but don't worry about base URL changing
-      window.location = urlPossiblyReplacingParam(window.location + '', $select.data('filterName'), $select.val());
+      window.location = urlPossiblyReplacingParam(window.location + '', $select.attr('name'), $select.val());
     }
   });
 });
