@@ -1,13 +1,7 @@
 <h1><span>A few pins you might like</span>Suggested Pins</h1>
-<select class="set_filters">
-  <option>All Pins</option>
-  <option>Articles</option>
-  <option>Gifts</option>
-  <option>Ideas</option>
-</select>
+<%= render 'shared/filters' %>
 
-
-<div class="pins_category">
+<div class="cat_filter">
   <%= select_tag :category_to_add, options_for_select([['Add a Category', '']] + select_options(Category.all)) %>
 
   <p>Manage categories you are interested in:</p>
