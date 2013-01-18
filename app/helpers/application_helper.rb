@@ -1,6 +1,9 @@
 module ApplicationHelper
 
   def pin_pagination_link
+    # No link if we're not paginating or don't have additional pages to show
+    return unless @pins && @pins.respond_to?(:total_entries) && @pins.total_entries > @pins.length
+    
     n = params[:page].to_i
     n = 1 if n.zero?
     n = n + 1

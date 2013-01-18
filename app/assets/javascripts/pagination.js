@@ -1,40 +1,52 @@
 // TODO :
-// better handling of concurrent ajax loads (don't hide loader until all gone, don't show multiple)
+// Show 'no more to load' text as necessary
 // make infiite scrolling
+// better handling of concurrent ajax loads (don't hide loader until all gone, don't show multiple)
 
 Global.nextPinPage = null;
+Global.pinsDonePaginating = false;
 
 $('.load_more_button').on('click', function(e) {
   e.preventDefault();
+  if (Global.pinsDonePaginating) return;
   
-  var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>').hide().insertAfter(this).fadeIn();
+  var $btn = $(this);
+  $btn.fadeOut();
+  var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
 
   if (Global.nextPinPage) {
     Global.nextPinPage = Global.nextPinPage + 1;
   } else {
-    Global.nextPinPage = $(this).data('next-page') ? parseInt($(this).data('next-page'), 10) : 1;
+    Global.nextPinPage = $btn.data('next-page') ? parseInt($btn.data('next-page'), 10) : 1;
   }
 
   $.ajax({
-    url: urlPossiblyReplacingParam(this.href, 'page', Global.nextPinPage),
+    url: urlPossiblyReplacingParam($btn.attr('href'), 'page', Global.nextPinPage),
     headers: { 
       Accept: "pin/pagination",
       "Content-Type": "pin/pagination"
     },
     success: function(items) {
       // hide new items while they are loading, wait for images to load, then show and update masonry
-      var $newElems = $(items).hide();
-      $('#pins').append($newElems);
+      var $newItems = $(items).hide();
+      $('#pins').append($newItems);
       
-      $newElems.imagesLoaded(function(){
+      $newItems.imagesLoaded(function(){
         try {
-          $newElems.fadeIn();
+          $newItems.fadeIn();
         } catch(e) {
           // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
-          $newElems.show();
+          $newItems.show();
         }
-        $('#pins').masonry('appended', $newElems, true);
-      });          
+        $('#pins').masonry('appended', $newItems, true);
+      });
+      
+      // If none shown, hide button
+      if ($newItems.length) {
+        $btn.fadeIn();
+      } else {
+        Global.pinsDonePaginating = true;
+      }
     },
     complete: function() {
       $paginationLoader.fadeOut();
@@ -58,10 +70,10 @@ $(document).ready(function() {
   //   beforePageChange: function(scrollOffset, nextPageUrl) { console.log("The user wants to go to the next page: "+nextPageUrl); return true; },
   //   onLoadItems: function(items) {
   //     // hide new items while they are loading, wait for images to load, then show and update masonry
-  //     var $newElems = $(items).show().css({ opacity: 0 });
-  //     $newElems.imagesLoaded(function(){
-  //       $newElems.animate({ opacity: 1 });
-  //       $('#pins').masonry('appended', $newElems, true);
+  //     var $newItems = $(items).show().css({ opacity: 0 });
+  //     $newItems.imagesLoaded(function(){
+  //       $newItems.animate({ opacity: 1 });
+  //       $('#pins').masonry('appended', $newItems, true);
   //     });
   //     return true;
   //   }
