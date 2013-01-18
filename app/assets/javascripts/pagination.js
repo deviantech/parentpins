@@ -83,6 +83,7 @@ function initPinPagination(paginationButton) {
       
       // Allow another load to happen
       if (jqxhr == lastPaginationAjax) currentlyConsidering = false;
+      considerInfiniteScrolling();
     }
   
   }

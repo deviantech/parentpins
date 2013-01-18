@@ -5,10 +5,8 @@ class PinsController < ApplicationController
   before_filter :set_filters,             :only => [:index]
     
   def index
-    # TODO: implement some sort of trending logic if kind/category aren't provided
     # TODO: include user or else cache username
-    @pins = Pin.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
-    paginate_pins
+    paginate_pins Pin.trending
   end
   
   def new

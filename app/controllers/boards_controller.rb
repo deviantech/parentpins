@@ -11,7 +11,7 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find(params[:id])
-    @pins = @board.pins.by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
+    paginate_pins @board.pins
   end
 
   def new

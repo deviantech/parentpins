@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   
   private
 
-  def paginate_pins
+  def paginate_pins(base_scope)
+    @pins = base_scope.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
     respond_to do |format|
       format.html {}
       format.pagination { render('shared/paginate_pins', :formats => :html, :layout => false) }

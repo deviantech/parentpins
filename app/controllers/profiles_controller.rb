@@ -18,30 +18,25 @@ class ProfilesController < ApplicationController
       current_user.remove_interested_categories(to_remove)
     end
     
-    @pins = Pin.in_category(current_user.interested_categories).limit(20)
-    # TODO: add pagination
+    paginate_pins Pin.in_category(current_user.interested_categories)
   end
   
   def pins
-    # TODO: add better logic for picking popular vs new pins
-    @pins = @profile_counters[:pins].zero? ? Pin.limit(20) : @profile.pins.by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
+    paginate_pins @profile_counters[:pins].zero? ? Pin.trending : @profile.pins
   end
   
   def likes
-    @pins = Pin.where(:id => @profile.likes).by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
-    # TODO: add pagination
+    paginate_pins Pin.where(:id => @profile.likes)
   end
   
   def followers
     @followers = @profile.followers
-    @pins = Pin.pinned_by(@followers).by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
-    # TODO: add pagination
+    paginate_pins Pin.pinned_by(@followers)
   end
   
   def following
     @following = @profile.following
-    @pins = Pin.pinned_by(@following).by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
-    # TODO: add pagination
+    paginate_pins Pin.pinned_by(@following)
   end
   
   def boards
@@ -52,8 +47,7 @@ class ProfilesController < ApplicationController
     unless @board = @profile.boards.find_by_id(params[:board_id])
       redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
     end
-    @pins = @board.pins.by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
-    # TODO: add pagination
+    paginate_pins @board.pins
   end
   
   def edit

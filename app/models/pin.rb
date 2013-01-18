@@ -42,8 +42,12 @@ class Pin < ActiveRecord::Base
   
   scope :with_image, where('image <> ""')
 
+  def self.trending
+    # TODO: implement some sort of trending logic if kind/category aren't provided
+    order('id DESC')
+  end
+
   # TODO: IMPLEMENT THESE
-  def like_count; 2; end
   def repin_count; 5; end
   
   # If a source pin was passed in, copy relevant attributes (repin). Otherwise, generate a clean pin record.
