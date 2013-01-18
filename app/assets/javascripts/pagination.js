@@ -10,7 +10,9 @@ $('.load_more_button').on('click', function(e) {
   e.preventDefault();
   if (Global.pinsDonePaginating) return;
   
+  var $pinHolder = $('#pins');
   var $btn = $(this);
+  
   $btn.fadeOut();
   var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
 
@@ -23,35 +25,41 @@ $('.load_more_button').on('click', function(e) {
   $.ajax({
     url: urlPossiblyReplacingParam($btn.attr('href'), 'page', Global.nextPinPage),
     headers: { 
-      Accept: "pin/pagination",
+      "Accept": "pin/pagination",
       "Content-Type": "pin/pagination"
     },
-    success: function(items) {
-      // hide new items while they are loading, wait for images to load, then show and update masonry
-      var $newItems = $(items).hide();
-      $('#pins').append($newItems);
-      
-      $newItems.imagesLoaded(function(){
-        try {
-          $newItems.fadeIn();
-        } catch(e) {
-          // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
-          $newItems.show();
-        }
-        $('#pins').masonry('appended', $newItems, true);
-      });
-      
-      // If none shown, hide button
-      if ($newItems.length) {
-        $btn.fadeIn();
-      } else {
-        Global.pinsDonePaginating = true;
-      }
-    },
+    success: insertNewPinPage,
     complete: function() {
       $paginationLoader.fadeOut();
     }
   });
+  
+  function insertNewPinPage(items) {
+    // hide new items while they are loading, wait for images to load, then show and update masonry
+    var $newItems = $(items).hide();
+    $pinHolder.append($newItems);
+
+    // If none shown, hide button
+    if ($newItems.length) {
+      $btn.fadeIn();
+    } else {
+      Global.pinsDonePaginating = true;
+      
+      // Show no results div
+      $('<div class="empty-pins">No more pins to show.</div>').hide().insertAfter($pinHolder).fadeIn();
+    }    
+
+    // Now actually show the results
+    $newItems.imagesLoaded(function(){
+      try {
+        $newItems.fadeIn();
+      } catch(e) {
+        // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
+        $newItems.show();
+      }
+      $('#pins').masonry('appended', $newItems, true);
+    });
+  }
   
 });
 
