@@ -1,5 +1,5 @@
 // Configurable
-Global.loadNextPageIfBelow = 300; 
+Global.loadNextPageIfCloseThan = 300; 
 Global.useInfinitePagination = true;
 
 $(document).ready(function() {
@@ -14,6 +14,10 @@ function initAjaxPagination(paginationButton) {
   var ajaxDonePaginating = false;
   var lastPaginationAjax = null;
   var currentlyConsidering = false;
+
+  var $doc = $(document);  
+  var $resultsHolder = $('ul.ajax-pagination');
+  var $btn = paginationButton;
   
   paginationButton.on('click', function(e) {
     e.preventDefault();
@@ -22,12 +26,8 @@ function initAjaxPagination(paginationButton) {
   
   function loadNextPage() {
     if (ajaxDonePaginating) {
-      console.log('ajaxDonePaginating');
       return;
     }
-  
-    var $resultsHolder = $('ul.ajax-pagination');
-    var $btn = paginationButton;
   
     $btn.fadeOut();
     $('.loader_icon').hide(); // If any were animating nicely, just get rid of them
@@ -38,7 +38,6 @@ function initAjaxPagination(paginationButton) {
     } else {
       nextAjaxPage = $btn.data('next-page') ? parseInt($btn.data('next-page'), 10) : 1;
     }
-    console.log('Next page: '+urlPossiblyReplacingParam($btn.attr('href'), 'page', nextAjaxPage));
 
     lastPaginationAjax = $.ajax({
       url: urlPossiblyReplacingParam($btn.attr('href'), 'page', nextAjaxPage),
@@ -48,14 +47,11 @@ function initAjaxPagination(paginationButton) {
       },
       success: insertNewPage,
       complete: function(jqxhr) {
-        console.log('completed');
         if (jqxhr == lastPaginationAjax) $paginationLoader.fadeOut();
       }
     });
   
     function insertNewPage(items, status, jqxhr) {
-      console.log('success');
-      
       // hide new items while they are loading, wait for images to load, then show and update masonry
       var $newItems = $(items).hide();
       $resultsHolder.append($newItems);
@@ -67,8 +63,8 @@ function initAjaxPagination(paginationButton) {
         ajaxDonePaginating = true;
       
         // Show no results div
-        $('<div class="empty-results">No more to show.</div>').hide().insertAfter($resultsHolder).fadeIn();
-      }    
+        $('<div class="clearfix"></div><div class="empty-results">No more to show.</div>').hide().insertAfter($resultsHolder).fadeIn();
+      }
 
       // Now actually show the results
       $newItems.imagesLoaded(function(){
@@ -91,19 +87,18 @@ function initAjaxPagination(paginationButton) {
   if (Global.useInfinitePagination) {
     $(window).on('scroll resize', considerInfiniteScrolling);
   }
-  
+
+  // See how much of .ajax-pagination is still below the viewport. If less than Global.loadNextPageIfCloseThan, start loading more
   function considerInfiniteScrolling() {
     if (currentlyConsidering || ajaxDonePaginating) return;
-
-    var $doc = $(document);
-    var pageHeight      = $doc.height();
+    
+    var pageHeight      = $resultsHolder.offset().top + $resultsHolder.height();
     var scrollPos       = $doc.scrollTop();
     var viewportHeight  = $(window).height();
-    var distanceToDocumentBottomBelowViewport = pageHeight - scrollPos - viewportHeight;
+    var remainingDist   = pageHeight - scrollPos - viewportHeight;
 
-    if (distanceToDocumentBottomBelowViewport < Global.loadNextPageIfBelow) {
+    if (remainingDist < Global.loadNextPageIfCloseThan) {
       currentlyConsidering = true;
-      console.log('Loading next page');
       loadNextPage( $('.load_more_button') );
     }
   }
