@@ -22,7 +22,7 @@ if ($pinForm.length) {
   });
   
   $pinForm.on('change', '#pin_kind', function(e) {
-    if ($(this).val() == 'gift') {
+    if ($(this).val() == 'product') {
       $pinForm.find('.field-price').removeClass('hidden').slideDown();
       $('#pin_price').trigger('change');
     } else {

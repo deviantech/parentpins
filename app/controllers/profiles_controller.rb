@@ -6,19 +6,11 @@ class ProfilesController < ApplicationController
   before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board, :boards]
   
   def show
-    redirect_to :action => 'boards'
+    redirect_to :action => @profile == current_user ? 'activity' : 'boards'
   end
   
   def activity    
-    if params[:add] && to_add = Category.find_by_id(params[:add])
-      current_user.add_interested_categories(to_add)
-    end
-    
-    if params[:remove] && to_remove = Category.find_by_id(params[:remove])
-      current_user.remove_interested_categories(to_remove)
-    end
-    
-    paginate_pins Pin.in_category(current_user.interested_categories)
+    paginate_pins @profile_counters[:following].zero? ? Pin.trending.in_category(current_user.interested_categories) : Pin.pinned_by(@following)
   end
   
   def pins
@@ -31,12 +23,10 @@ class ProfilesController < ApplicationController
   
   def followers
     @followers = @profile.followers
-    paginate_pins Pin.pinned_by(@followers)
   end
   
   def following
     @following = @profile.following
-    paginate_pins Pin.pinned_by(@following)
   end
   
   def boards

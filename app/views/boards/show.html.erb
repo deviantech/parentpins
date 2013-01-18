@@ -15,9 +15,7 @@
     <% unless @board.description.blank? %>
       <div class="board_description"><%= @board.description %></div>
     <% end %>
-    
-    <%= render 'shared/filters' %>
-    
+        
     <%= render 'pins/pins' %>
   </div>
 

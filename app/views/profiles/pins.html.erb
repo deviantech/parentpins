@@ -1,11 +1,5 @@
 <h1><span><%= @profile.name %>'s</span>Recent Pins</h1>
-<%= render 'shared/filters' %>
 
-<% if @profile_counters[:pins].zero? %>
-  <div class="empty_pins">
-    <p>Here are a few pins to get you excited about all the wonderful ideas here on ParentPins. Check out a few boards or start pinning things you like</p>
-    <p><a href="/bookmarklet.html">Get the ParentPin Bookmarklet now</a> to start ParentPinning from any site on the web.</p>
-  </div>
-<% end %>
+<%= render ('nothing_yet') if @profile_counters[:pins].zero? %>
 
 <%= render 'pins/pins' %>

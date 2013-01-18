@@ -1,36 +1,7 @@
-<h1><span>A few pins you might like</span>Suggested Pins</h1>
+<h1><span>Recent pins by the users and boards</span>You Follow</h1>
 
-<div class="cat_filter">
-  <%= select_tag :category_to_add, options_for_select([['Add a Category', '']] + select_options(Category.all)) %>
-
-  <p>Manage categories you are interested in:</p>
-  <% if current_user.interested_categories.blank? %>
-    Select a category on the right
-  <% else %>
-    <% current_user.interested_categories.each do |cat| %>
-      <div class="selected_cat">
-        <%= link_to cat.name, pins_category_path(cat.id) %> 
-        <a href="#" class="removeCategory" data-cat-id="<%= cat.id %>"><span>X</span></a>
-      </div>
-    <% end %>
-  <% end %>
-</div>
+<%= render ('nothing_yet') if @profile_counters[:following].zero? %>
 
 <%= render 'pins/pins' %>
 
 <%= render 'signup_step_2' if params[:step_2] %>
-
-<% provide :footer_js do %>
-  <script type="text/javascript" charset="utf-8">
-    $('#category_to_add').change(function(e) {
-      if ($(this).val().length > 0) {
-        window.location = "<%= activity_profile_path(current_user) %>?add=" + $(this).val();
-      }
-    });
-    
-    $('.removeCategory').click(function(e) {
-      e.preventDefault();
-      window.location = "<%= activity_profile_path(current_user) %>?remove=" + $(this).data('cat-id');
-    });
-  </script>
-<% end %>

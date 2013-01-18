@@ -1,5 +1,10 @@
 <% if @profile.followers_count.zero? %>
   <h1><span><%= @profile.name %></span> isn't being followed by anyone</h1>
+  
+  <div class="empty_pins">
+    <p>Following users will appear here.</p>
+  </div>
+  
 <% else %>
   <h1><span><%= @profile.name %>'s</span> <%= pluralize @profile.followers_count, "Follower's", "Followers'" %> Recent Activity</h1>
 
@@ -12,8 +17,3 @@
   </div>
 
 <% end %>
-
-<%= render 'shared/filters' %>
-
-<div class="clearfix"></div>
-<%= render 'pins/pins' %>

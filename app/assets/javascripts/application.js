@@ -107,7 +107,7 @@ $(document).ready(function() {
     $select = $(e.target);
     
     if ($select.data('base-url-if-blank')) {
-      // Adding support to handle pretty URLs, e.g. /pins if not kind set, but /gifts if kind is 'gift'
+      // Adding support to handle pretty URLs, e.g. /pins if not kind set, but /products if kind is 'product'
       var baseURL;
       if ($select.val()) {
         baseURL = '/' + $select.val() + 's';
