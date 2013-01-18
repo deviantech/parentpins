@@ -38,7 +38,7 @@ class PinsController < ApplicationController
   
   def update
     if @pin.update_attributes(params[:pin])
-      redirect_to @pin.board, :notice => 'Saved changes to pin'
+      redirect_to board_profile_path(current_user, @pin.board), :notice => 'Saved changes to pin'
     else
       flash.now[:error] = "Unable to save pin"
       render :action => 'new'

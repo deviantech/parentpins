@@ -1,6 +1,8 @@
 <% if user_signed_in? %>
   <div class="actions">
-    <% if pin.user_id != current_user.id %>
+    <% if pin.user_id == current_user.id %>
+      <a class="btn sec_action edit_button ajax" href="<%= edit_pin_path(pin) %>">Edit</a>
+    <% else %>
       <a class="btn sec_action repin_button ajax" href="<%= repin_path(pin) %>">Repin</a>
     <% end %>
     
