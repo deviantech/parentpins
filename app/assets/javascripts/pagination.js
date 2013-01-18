@@ -1,90 +1,110 @@
-// TODO :
-// make infiite scrolling
-
-Global.nextPinPage = null;
-Global.pinsDonePaginating = false;
-Global.lastPaginationAjax = null;
-
-$('.load_more_button').on('click', function(e) {
-  e.preventDefault();
-  if (Global.pinsDonePaginating) return;
-  
-  var $pinHolder = $('#pins');
-  var $btn = $(this);
-  
-  $btn.fadeOut();
-  var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
-
-  if (Global.nextPinPage) {
-    Global.nextPinPage = Global.nextPinPage + 1;
-  } else {
-    Global.nextPinPage = $btn.data('next-page') ? parseInt($btn.data('next-page'), 10) : 1;
-  }
-
-  Global.lastPaginationAjax = $.ajax({
-    url: urlPossiblyReplacingParam($btn.attr('href'), 'page', Global.nextPinPage),
-    headers: { 
-      "Accept": "pin/pagination",
-      "Content-Type": "pin/pagination"
-    },
-    success: insertNewPinPage,
-    complete: function(xjr) {
-      if (xjr == Global.lastPaginationAjax) $paginationLoader.fadeOut();
-    }
-  });
-  
-  function insertNewPinPage(items) {
-    // hide new items while they are loading, wait for images to load, then show and update masonry
-    var $newItems = $(items).hide();
-    $pinHolder.append($newItems);
-
-    // If none shown, hide button
-    if ($newItems.length) {
-      $btn.fadeIn();
-    } else {
-      Global.pinsDonePaginating = true;
-      
-      // Show no results div
-      $('<div class="empty-pins">No more pins to show.</div>').hide().insertAfter($pinHolder).fadeIn();
-    }    
-
-    // Now actually show the results
-    $newItems.imagesLoaded(function(){
-      try {
-        $newItems.fadeIn();
-      } catch(e) {
-        // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
-        $newItems.show();
-      }
-      $('#pins').masonry('appended', $newItems, true);
-    });
-  }
-  
-});
-
+// Configurable
+Global.loadNextPageIfBelow = 300; 
+Global.useInfinitePagination = true;
 
 $(document).ready(function() {
-  
-  // Infinite scrolling
-  // $.ias({
-  //   container: '#pins',
-  //   item: '.pin',
-  //   pagination: '#loadMoreBtn',
-  //   next: '#loadMoreBtn',
-  //   noneleft: '<li class="pagination-none-left">No more to show.</li>',
-  //   loader: '/assets/ui/loader.gif',
-  //   tresholdMargin: -200,
-  //   beforePageChange: function(scrollOffset, nextPageUrl) { console.log("The user wants to go to the next page: "+nextPageUrl); return true; },
-  //   onLoadItems: function(items) {
-  //     // hide new items while they are loading, wait for images to load, then show and update masonry
-  //     var $newItems = $(items).show().css({ opacity: 0 });
-  //     $newItems.imagesLoaded(function(){
-  //       $newItems.animate({ opacity: 1 });
-  //       $('#pins').masonry('appended', $newItems, true);
-  //     });
-  //     return true;
-  //   }
-  // });
-  
-  
+  if ($('#pins').length && $('.load_more_button').length) {
+    if (Global.useInfinitePagination) $('.load_more_button').hide(); // If no JS, show as fallback. If JS, not needed
+    initPinPagination( $('.load_more_button') );
+  }
 });
+ 
+function initPinPagination(paginationButton) {
+  var nextPinPage = null;
+  var pinsDonePaginating = false;
+  var lastPaginationAjax = null;
+  var currentlyConsidering = false;
+  
+  paginationButton.on('click', function(e) {
+    e.preventDefault();
+    loadNextPage();
+  });
+  
+  function loadNextPage() {
+    if (pinsDonePaginating) {
+      console.log('pinsDonePaginating');
+      return;
+    }
+  
+    var $pinHolder = $('#pins');
+    var $btn = paginationButton;
+  
+    $btn.fadeOut();
+    $('.loader_icon').hide(); // If any were animating nicely, just get rid of them
+    var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
+
+    if (nextPinPage) {
+      nextPinPage = nextPinPage + 1;
+    } else {
+      nextPinPage = $btn.data('next-page') ? parseInt($btn.data('next-page'), 10) : 1;
+    }
+    console.log('Next page: '+urlPossiblyReplacingParam($btn.attr('href'), 'page', nextPinPage));
+
+    lastPaginationAjax = $.ajax({
+      url: urlPossiblyReplacingParam($btn.attr('href'), 'page', nextPinPage),
+      headers: { 
+        "Accept": "pin/pagination",
+        "Content-Type": "pin/pagination"
+      },
+      success: insertNewPinPage,
+      complete: function(jqxhr) {
+        console.log('completed');
+        if (jqxhr == lastPaginationAjax) $paginationLoader.fadeOut();
+      }
+    });
+  
+    function insertNewPinPage(items, status, jqxhr) {
+      console.log('success');
+      
+      // hide new items while they are loading, wait for images to load, then show and update masonry
+      var $newItems = $(items).hide();
+      $pinHolder.append($newItems);
+
+      // If none shown, hide button
+      if ($newItems.length) {
+        if (!Global.useInfinitePagination) $btn.fadeIn();
+      } else {
+        pinsDonePaginating = true;
+      
+        // Show no results div
+        $('<div class="empty-pins">No more to show.</div>').hide().insertAfter($pinHolder).fadeIn();
+      }    
+
+      // Now actually show the results
+      $newItems.imagesLoaded(function(){
+        try {
+          $newItems.fadeIn();
+        } catch(e) {
+          // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
+          $newItems.show();
+        }
+        $pinHolder.masonry('appended', $newItems, true);
+      });
+      
+      // Allow another load to happen
+      if (jqxhr == lastPaginationAjax) currentlyConsidering = false;
+    }
+  
+  }
+
+  if (Global.useInfinitePagination) {
+    $(window).on('scroll resize', considerInfiniteScrolling);
+  }
+  
+  function considerInfiniteScrolling() {
+    if (currentlyConsidering || pinsDonePaginating) return;
+
+    var $doc = $(document);
+    var pageHeight      = $doc.height();
+    var scrollPos       = $doc.scrollTop();
+    var viewportHeight  = $(window).height();
+    var distanceToDocumentBottomBelowViewport = pageHeight - scrollPos - viewportHeight;
+
+    if (distanceToDocumentBottomBelowViewport < Global.loadNextPageIfBelow) {
+      currentlyConsidering = true;
+      console.log('Loading next page');
+      loadNextPage( $('.load_more_button') );
+    }
+  }
+  
+}

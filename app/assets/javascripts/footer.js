@@ -15,7 +15,6 @@
 //= require helpers
 //= require spinners.min.js
 //= require jquery.masonry
-//= require jquery.infinite-ajax-scroll
 //= require jquery.scrollTo
 //= require application
 //= require pagination
