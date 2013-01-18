@@ -7,13 +7,21 @@ class ApplicationController < ActionController::Base
   private
 
   def paginate_pins(base_scope)
-    @pins = base_scope.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
+    @results = @pins = base_scope.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
     respond_to do |format|
       format.html {}
-      format.pagination { render('shared/paginate_pins', :formats => :html, :layout => false) }
+      format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
     end
   end
-  
+
+  def paginate_boards(base_scope)
+    @results = @boards = base_scope.in_category(@category).in_age_group(@age_group).page(params[:page])
+    respond_to do |format|
+      format.html {}
+      format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
+    end
+  end
+    
   def set_filters
     @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
     

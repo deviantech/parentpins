@@ -4,9 +4,7 @@ class BoardsController < ApplicationController
   before_filter :set_filters,         :only   => [:show, :index]
 
   def index
-    # TODO: implement some sort of trending logic
-    @category = Category.find_by_id(params[:category]) unless params[:category].blank?
-    @boards = Board.in_category(@category).in_age_group(@age_group).limit(20)
+    paginate_boards Board.trending
   end
 
   def show

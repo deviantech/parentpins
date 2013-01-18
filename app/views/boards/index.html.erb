@@ -4,11 +4,7 @@
       <h1>Trending Boards<% if @category %> :: <%= @category.name %><% end %></h1>
       <%= render 'shared/filters', :for_boards => true %>
       
-      <ul class="boards">
-        <%= render @boards %>
-      </ul>
-      
-      <div class="clearfix"></div>
+      <%= render 'boards/boards' %>
     </div>
     
     <div class="clearfix"></div>

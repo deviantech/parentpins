@@ -40,7 +40,7 @@ class ProfilesController < ApplicationController
   end
   
   def boards
-    @boards = @profile.boards
+    paginate_boards @profile.boards
   end
   
   def board

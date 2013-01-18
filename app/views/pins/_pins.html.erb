@@ -1,8 +1,8 @@
 <% if @pins.blank? %>
-  <div class="empty-pins">No pins to show.</div>
+  <div class="empty-results">No pins to show.</div>
 <% else %>
-  <ul class="timeline" id="pins">
+  <ul class="timeline ajax-pagination" id="pins">
     <%= render @pins %>
   </ul>
-  <%= pin_pagination_link %>
+  <%= pagination_link %>
 <% end %>

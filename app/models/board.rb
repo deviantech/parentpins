@@ -22,6 +22,11 @@ class Board < ActiveRecord::Base
   }
   
   
+  def self.trending
+    # TODO: implement some sort of trending logic
+    order('id DESC')
+  end
+  
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
   def thumbnails
     pins.order('id DESC').limit(4).collect{ |p| p.image.v55.url }

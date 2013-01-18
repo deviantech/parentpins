@@ -3,15 +3,15 @@ Global.loadNextPageIfBelow = 300;
 Global.useInfinitePagination = true;
 
 $(document).ready(function() {
-  if ($('#pins').length && $('.load_more_button').length) {
+  if ($('.ajax-pagination').length && $('.load_more_button').length) {
     if (Global.useInfinitePagination) $('.load_more_button').hide(); // If no JS, show as fallback. If JS, not needed
-    initPinPagination( $('.load_more_button') );
+    initAjaxPagination( $('.load_more_button') );
   }
 });
  
-function initPinPagination(paginationButton) {
-  var nextPinPage = null;
-  var pinsDonePaginating = false;
+function initAjaxPagination(paginationButton) {
+  var nextAjaxPage = null;
+  var ajaxDonePaginating = false;
   var lastPaginationAjax = null;
   var currentlyConsidering = false;
   
@@ -21,53 +21,53 @@ function initPinPagination(paginationButton) {
   });
   
   function loadNextPage() {
-    if (pinsDonePaginating) {
-      console.log('pinsDonePaginating');
+    if (ajaxDonePaginating) {
+      console.log('ajaxDonePaginating');
       return;
     }
   
-    var $pinHolder = $('#pins');
+    var $resultsHolder = $('ul.ajax-pagination');
     var $btn = paginationButton;
   
     $btn.fadeOut();
     $('.loader_icon').hide(); // If any were animating nicely, just get rid of them
     var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
 
-    if (nextPinPage) {
-      nextPinPage = nextPinPage + 1;
+    if (nextAjaxPage) {
+      nextAjaxPage = nextAjaxPage + 1;
     } else {
-      nextPinPage = $btn.data('next-page') ? parseInt($btn.data('next-page'), 10) : 1;
+      nextAjaxPage = $btn.data('next-page') ? parseInt($btn.data('next-page'), 10) : 1;
     }
-    console.log('Next page: '+urlPossiblyReplacingParam($btn.attr('href'), 'page', nextPinPage));
+    console.log('Next page: '+urlPossiblyReplacingParam($btn.attr('href'), 'page', nextAjaxPage));
 
     lastPaginationAjax = $.ajax({
-      url: urlPossiblyReplacingParam($btn.attr('href'), 'page', nextPinPage),
+      url: urlPossiblyReplacingParam($btn.attr('href'), 'page', nextAjaxPage),
       headers: { 
-        "Accept": "pin/pagination",
-        "Content-Type": "pin/pagination"
+        "Accept": "ajax/pagination",
+        "Content-Type": "ajax/pagination"
       },
-      success: insertNewPinPage,
+      success: insertNewPage,
       complete: function(jqxhr) {
         console.log('completed');
         if (jqxhr == lastPaginationAjax) $paginationLoader.fadeOut();
       }
     });
   
-    function insertNewPinPage(items, status, jqxhr) {
+    function insertNewPage(items, status, jqxhr) {
       console.log('success');
       
       // hide new items while they are loading, wait for images to load, then show and update masonry
       var $newItems = $(items).hide();
-      $pinHolder.append($newItems);
+      $resultsHolder.append($newItems);
 
       // If none shown, hide button
       if ($newItems.length) {
         if (!Global.useInfinitePagination) $btn.fadeIn();
       } else {
-        pinsDonePaginating = true;
+        ajaxDonePaginating = true;
       
         // Show no results div
-        $('<div class="empty-pins">No more to show.</div>').hide().insertAfter($pinHolder).fadeIn();
+        $('<div class="empty-results">No more to show.</div>').hide().insertAfter($resultsHolder).fadeIn();
       }    
 
       // Now actually show the results
@@ -78,7 +78,7 @@ function initPinPagination(paginationButton) {
           // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
           $newItems.show();
         }
-        $pinHolder.masonry('appended', $newItems, true);
+        $resultsHolder.masonry('appended', $newItems, true);
       });
       
       // Allow another load to happen
@@ -93,7 +93,7 @@ function initPinPagination(paginationButton) {
   }
   
   function considerInfiniteScrolling() {
-    if (currentlyConsidering || pinsDonePaginating) return;
+    if (currentlyConsidering || ajaxDonePaginating) return;
 
     var $doc = $(document);
     var pageHeight      = $doc.height();
