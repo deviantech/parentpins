@@ -27,7 +27,11 @@ module ApplicationHelper
 
   def select_options(collection)
     collection.collect do |item|
-      item.respond_to?(:name) ? [item.name, item.id] : [item.titleize, item]
+      if item.is_a?(Array)
+        item # Allow passing in e.g. ["No Age Group", ''] directly
+      else
+        item.respond_to?(:name) ? [item.name, item.id] : [item.titleize, item]
+      end
     end
   end
 
