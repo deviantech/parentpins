@@ -1,10 +1,9 @@
 // TODO :
-// Show 'no more to load' text as necessary
 // make infiite scrolling
-// better handling of concurrent ajax loads (don't hide loader until all gone, don't show multiple)
 
 Global.nextPinPage = null;
 Global.pinsDonePaginating = false;
+Global.lastPaginationAjax = null;
 
 $('.load_more_button').on('click', function(e) {
   e.preventDefault();
@@ -22,15 +21,15 @@ $('.load_more_button').on('click', function(e) {
     Global.nextPinPage = $btn.data('next-page') ? parseInt($btn.data('next-page'), 10) : 1;
   }
 
-  $.ajax({
+  Global.lastPaginationAjax = $.ajax({
     url: urlPossiblyReplacingParam($btn.attr('href'), 'page', Global.nextPinPage),
     headers: { 
       "Accept": "pin/pagination",
       "Content-Type": "pin/pagination"
     },
     success: insertNewPinPage,
-    complete: function() {
-      $paginationLoader.fadeOut();
+    complete: function(xjr) {
+      if (xjr == Global.lastPaginationAjax) $paginationLoader.fadeOut();
     }
   });
   
