@@ -1,5 +1,10 @@
-<ul class="boards ajax-pagination">
-  <%= render @boards %>
-</ul>
-<%= pagination_link %>      
-<div class="clearfix"></div>
+<% if @boards.blank? %>
+  <div class="empty-results">No boards to show.</div>
+<% else %>
+  <ul class="boards ajax-pagination">
+    <%= render @boards %>
+  </ul>
+  <div class="clearfix"></div>
+  <%= pagination_link %>      
+  <div class="clearfix"></div>
+<% end %>

@@ -1,5 +1,5 @@
 <div class="set_filters">
-  <% unless defined?(for_boards) %>
+  <% if defined?(@pins) %>
     <select name="kind" data-base-url-if-blank="<%= params[:controller] == 'pins' && params[:action] == 'index' ? '/pins' : '' %>">
       <%= options_for_select [['All Pin Types', '']] + select_options(Pin::VALID_TYPES), @kind %>
     </select>

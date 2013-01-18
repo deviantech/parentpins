@@ -3,7 +3,7 @@ class ProfilesController < ApplicationController
   before_filter :set_profile,         :only => [:account]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
-  before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board]
+  before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board, :boards]
   
   def show
     redirect_to :action => 'boards'
