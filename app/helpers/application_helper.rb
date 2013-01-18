@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def pin_pagination_link
+    n = params[:page].to_i
+    n = 1 if n.zero?
+    n = n + 1
+    next_page_link = url_for( params.merge(:page => n) )
+    link_to 'Load More', next_page_link, :class => "btn action load_more_button tertiary_action", :'data-next-page' => n
+  end
+
   def include_javascript_for_modal(js)
     if params[:via] == 'ajax' # We're in a modal, load inline
       javascript_include_tag(js)

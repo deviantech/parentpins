@@ -5,6 +5,13 @@ class ApplicationController < ActionController::Base
   
   
   private
+
+  def paginate_pins
+    respond_to do |format|
+      format.html {}
+      format.pagination { render('shared/paginate_pins', :formats => :html, :layout => false) }
+    end
+  end
   
   def set_filters
     @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])

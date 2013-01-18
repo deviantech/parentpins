@@ -101,28 +101,7 @@ $(document).ready(function() {
       }
     });
   });
-  
-  // Infinite scrolling
-  $.ias({
-    container: '#pins',
-    item: '.pin',
-    pagination: '#loadMoreBtn',
-    next: '#loadMoreBtn',
-    noneleft: '<li class="pagination-none-left">No more to show.</li>',
-    loader: '/assets/ui/loader.gif',
-    tresholdMargin: -200,
-    beforePageChange: function(scrollOffset, nextPageUrl) { console.log("The user wants to go to the next page: "+nextPageUrl); return true; },
-    onLoadItems: function(items) {
-      // hide new items while they are loading, wait for images to load, then show and update masonry
-      var $newElems = $(items).show().css({ opacity: 0 });
-      $newElems.imagesLoaded(function(){
-        $newElems.animate({ opacity: 1 });
-        $('#pins').masonry('appended', $newElems, true);
-      });
-      return true;
-    }
-  });
-  
+    
   // Set filters
   $('.set_filters').on('change', function(e) {
     $select = $(e.target);

@@ -7,7 +7,8 @@ class PinsController < ApplicationController
   def index
     # TODO: implement some sort of trending logic if kind/category aren't provided
     # TODO: include user or else cache username
-    @pins = Pin.by_kind(@kind).in_category(@category).in_age_group(@age_group).limit(20)
+    @pins = Pin.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
+    paginate_pins
   end
   
   def new

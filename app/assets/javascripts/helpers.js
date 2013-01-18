@@ -56,9 +56,19 @@ function urlPlusParamString(url, paramString) {
 
 function urlPossiblyReplacingParam(url, param, value) {
   var re = new RegExp(param + '=[^&]+');
-  return urlPlusParamString(url.replace(re, ''), value && value.length ? (param + '=' + value) : '');
+  return urlPlusParamString(url.replace(re, ''), value ? (param + '=' + value) : '');
 }
 
 function urlReplacingPathKeepingParams(newPath) {
   return urlPlusParamString(newPath, window.location.search);
+}
+
+function deparam(url) {
+  var params = {};
+  var paramString = url.substr(url.indexOf('?') + 1);
+  $.each(paramString.split('&'), function(i, param) {
+    params[param.split('=')[0]] = decodeURIComponent(param.split('=')[1]);
+  });
+  
+  return params;
 }

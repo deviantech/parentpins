@@ -18,3 +18,4 @@
 //= require jquery.infinite-ajax-scroll
 //= require jquery.scrollTo
 //= require application
+//= require pagination
