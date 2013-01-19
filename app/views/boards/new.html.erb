@@ -33,7 +33,7 @@
         
         <% unless @board.new_record? %>
           <div class="buttons">
-            <%= link_to 'Delete this Board', @board, :confirm => 'Are you sure you want to remove this board (and all contained pins)?', :method => :delete %>
+            <%= link_to 'Delete this Board', @board, :confirm => 'Are you sure you want to remove this board (and all contained pins)?', :method => :delete, :class => 'delete' %>
           </div>
         <% end %>
         

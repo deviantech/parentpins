@@ -1,18 +1,19 @@
-<div class="wrapper profile">
+<div class="profile">
 
-  <div class="content board board_wide">
-    <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form narrow", :multipart => true} do |f| %>
+  <div class="content board">
+    <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form wide", :multipart => true} do |f| %>
       <%= hidden_field_tag :from, 'edit' %>
       <h1>
-        Edit Profile
-        <span>[ <%= link_to 'account', account_profile_path(@profile) %> ]</span>
+        Edit Profile &amp; Account Settings
       </h1>
 
       <%= error_messages_for @profile %>
 
-      <%= render 'form_fields', :f => f %>
+      <div class="section">
+        <h3>Profile Settings</h3>
+        <%= render 'form_fields', :f => f %>
 
-      <div class="field <%= 'with_image' if @profile.avatar? %>">
+        <div class="field <%= 'with_image' if @profile.avatar? %>">
         <%= f.label :avatar, "#{@profile.avatar? ? 'Update' : 'Upload an'} Avatar" %>
         <%= image_tag(@profile.avatar.v50.url) if @profile.avatar? %>
         <%= f.file_field :avatar %>
@@ -20,7 +21,7 @@
         <div class="clearfix"></div>
       </div>      
 
-      <div class="field">
+        <div class="field">
         <%= f.label :avatar, "#{@profile.cover_image? ? 'Update' : 'Upload a'} Cover Image <span>(1020x160)</span>".html_safe %>
         <% if @profile.cover_image? %>
           <div class="cover_image_preview">
@@ -31,10 +32,42 @@
         <%= f.hidden_field :cover_image_cache %>
         <div class="clearfix"></div>
       </div>      
+      </div>
+      
+      <div class="section">
+        <h3>Account Settings</h3>
+        <div class="field">
+          <%= f.label :email %>
+          <%= f.email_field :email %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password, "Password <span>(leave blank if you don't want to change it)</span>".html_safe %>
+          <%= f.password_field :password, :autocomplete => "off", :placeholder => 'Password' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :password_confirmation %>
+          <%= f.password_field :password_confirmation, :placeholder => 'Password Confirmation' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :current_password, "Current Password <span>(required to edit account settings)</span>".html_safe %>
+          <%= f.password_field :current_password, :placeholder => 'Current Password' %>
+        </div>
+ 
+      </div>
+
+      <div class="clear"></div>
 
       <div class="submit">
         <%= f.submit 'Update Settings', :class => 'btn tertiary_action' %>
-      </div>        
+      </div>     
+      
+      <div class="buttons">
+        <p>Unhappy? <%= link_to "Cancel your account", registration_path(@profile), :data => { :confirm => "Are you SURE? This will remove all your pins, and is NOT reversible." }, :method => :delete, :class => 'delete' %>.</p>
+      </div>
+         
     <% end %>
   
   </div>

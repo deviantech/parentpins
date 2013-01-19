@@ -17,7 +17,7 @@
       <% end %>
     </div>
     <div class="description">
-      <p><%= board.description.blank? ? 'No description provided' : board.description %></p>
+      <p><%= board.description.blank? ? 'No description provided' : board.description.truncate(100, :separator => ' ') %></p>
     </div>
   </div>
 </li>
