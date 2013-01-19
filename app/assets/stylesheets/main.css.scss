@@ -1087,11 +1087,16 @@ ul.boards {
     margin: 0 1px 0 0; } }
     
 
-
 .content.board_wide {
   width: 900px !important;
   float: none !important;
   margin: 0 auto !important; }
+
+.cover_image {
+  .content.board_wide {
+    width:1020px !important;
+    margin: 0 auto !important;
+    float: none !important; } }
 
 /* forms */
 

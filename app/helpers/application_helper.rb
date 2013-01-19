@@ -62,7 +62,7 @@ module ApplicationHelper
     when 'search'   then 'custom cover_image'
     when 'profiles' then 'profile'
     when 'boards'
-      %w(show index).include?(params[:action]) ? 'custom' : nil
+      %w(show index).include?(params[:action]) ? 'custom cover_image' : nil
     when 'pins'
       params[:action] == 'index' ? 'custom' : nil
     else nil
