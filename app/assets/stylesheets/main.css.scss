@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'pinli';
+	src:url('/fonts/pinli.eot');
+	src:url('/fonts/pinli.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/pinli.svg#pinli') format('svg'),
+  url('/fonts/pinli.woff') format('woff'),
+  url('/fonts/pinli.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal; }
+
 body {height:100%;}
 html{height:100%;}
 body.cover_image {
@@ -12,6 +22,8 @@ body.cover_image {
     background:rgba(255, 255, 255, 0.6); } }
 
 /* typography */
+
+
 
 p {
   font-size: 13px; }
@@ -75,8 +87,7 @@ a {
     width: 15px;
     position: absolute;
     top: 7px;
-    left: 6px;
-    background: transparent url(/assets/ui/glyphicons-halflings-white.png) -406px -96px repeat; }
+    left: 6px; }
   &.unfollow {
     background-color: #ddd;
     border: 1px solid #bbb;
@@ -88,8 +99,7 @@ a {
       width: 15px;
       position: absolute;
       top: 7px;
-      left: 6px;
-      background: url("/assets/ui/glyphicons-halflings-white.png") repeat scroll -432px -96px transparent; } }
+      left: 6px; } }
   &.follow_in_list {
     background-color: #ddd;
     border: 1px solid #bbb;
@@ -423,16 +433,23 @@ a {
     padding: 0 10px 0 25px; }
   .kid_count {
     position: relative;
-    padding: 8px 10px 0 64px;
+    padding: 8px 10px 0 50px;
     margin: 10px 0 0 0;
     &:before {
-      content: "";
+      font-family: 'pinli';
+      content: "\e012";
       position: absolute;
-      top: 0;
-      left: 15px;
+      top: 8px;
+      left: 20px;
       height: 30px;
       width: 40px;
-      background: transparent url(/assets/ui/glyphicons_gray.png) -135px -192px repeat; } }
+    	speak: none;
+    	font-style: normal;
+    	font-weight: normal;
+    	color:#000;
+    	font-size:15px;
+    	line-height: 1;
+    	-webkit-font-smoothing: antialiased; } }
   .bio {
     font-family: "times new roman", times, georgia, serif;
       font-size: 18px;
@@ -500,32 +517,39 @@ a {
     border-top: 1px solid #F88EBF;
     &:after {
       content: "";
-      background: transparent url(/assets/ui/glyphicons_gray.png) 0 0 repeat;
+      font-family: 'pinli';
+    	speak: none;
+    	font-style: normal;
+    	font-weight: normal;
+    	color:#fff;
+    	font-size:15px;
+    	line-height: 1;
+    	-webkit-font-smoothing: antialiased;
       position: absolute;
-      top: 8px;
-      left: 6px;
+      top:15px;
+      left: 20px;
       height: 30px;
       width: 30px; } }
+  .pins:after {
+    content:"\e000"; }
   .activity:after {
-    background-position: -93px -143px; }
+    content:"\e003"; }
   .recent:after {
-    background-position: -235px -1583px; }
+    content:"\e000"; }
   .likes:after {
-    background-position: -92px -47px; }
+    content:"\e005"; }
   .boards:after {
-    background-position: -380px -1487px; }
+    content:"\e00f"; }
   .followers:after {
-    background-position: -189px -1055px; }
+    content:"\e00b"; }
   .following:after {
-    background-position: -143px -1055px; }
+    content:"\e00c"; }
   a:hover {
     background: #e5579a;
     color: #222;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out; }
+    &:hover:after {
+      color:#000; } }
   .active {
     background: #B42366;
     -webkit-box-shadow: 10px 0 9px rgba(0, 0, 0, 0.2) inset;
@@ -542,7 +566,9 @@ a {
       border-top: 10px solid transparent;
       border-bottom: 10px solid transparent; }
     &:hover:before {
-      border-left: 10px solid #e5579a; } }
+      border-left: 10px solid #e5579a; }
+    &:hover:after {
+      color:#000; } }
   a:active {
     -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
     -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
@@ -671,28 +697,36 @@ a {
 }
 .sec_action:before {
   content: "";
+  font-family: 'pinli';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	color:#222;
+	font-size:15px;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
   position: absolute;
   top: 6px;
   left: 6px;
   height: 18px;
-  width: 18px;
-  background: transparent url(/assets/ui/glyphicons-halflings-black.png) 0 0 repeat; }
+  width: 18px; }
 
 .repin_button:before {
-  background-position: -118px -118px; }
+  content:"\e000"; }
 
 .like_button:before {
-  background-position: -93px 1px; }
+  content:"\e005"; }
 
 .edit_button:before {
-  background-position: 0 -71px; }
+  content:"\e011";
+  font-size:13px; }
 
 .repin_button {
   margin-right: 10px; }
 
 .comment_button {
   &:before {
-    background-position: -238px -119px; }
+    content:"\e001";}
   margin-top: 10px; }
 
 .controls a {
@@ -774,8 +808,10 @@ a {
         border-left: 10px solid transparent; } }
     .kind.article:hover:before {
       content: "Pinned from a blog, top 10 list, writer, etc."; }
-    .kind.gift:hover:before {
+    .kind.product:hover:before {
       content: "Pinned from an online store, ParentPin Store, or just a cool product for sale."; }
+    .kind.gift:hover:before {
+      content: "Pinned from an online store, ParentPin Store, and would make a great gift."; }
     .kind.idea:hover:before {
       content: "Just generally a cool idea for Parents."; }
     a {
@@ -925,27 +961,28 @@ ul.boards {
 
 .board {
   .holder {
-    min-height:360px; }
+    height:275px; }
   h3, h4 {
     overflow: hidden;
-    padding: 5px 15px 0;
-    margin: 0 0 4px 0;
+    padding: 5px 15px;
+    margin: 0;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 13px; }
+    font-size: 13px;
+    background:rgba(255, 255, 255, 0.4); }
   h3 {
     height: 20px;
     padding-bottom: 0;
     font-family: palatino,"palatino linotype","book antiqua",serif;
     a {
       color: #584D4D;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 600;
       overflow: hidden;
       padding-bottom: 0;
-      text-shadow: 0 1px 0 #FFFFFF;
       text-decoration: none;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.64);
     &:hover {
       color: #000;
       text-decoration: underline; } } }
@@ -959,14 +996,18 @@ ul.boards {
       color: #b6457a;
       text-decoration: underline; }
     img {
-      height: 18px;
+      height: 20px;
       margin-right: 5px;
       vertical-align: bottom;
-      width: 18px; } } 
+      width: 20px; } } 
   .description {
-    margin:10px 0;
+    height: 55px;
+    margin: 10px 0 5px;
+    overflow: hidden;
     p {
-      padding:0 10px; } } }
+      padding:0 10px;
+      margin:0;
+      height:60px; } } }
 
 .link {
   position: absolute;
@@ -1036,6 +1077,7 @@ ul.boards {
   display: block;
   width: 224px;
   overflow:hidden;
+  background:#F2F2F2;
   img {
     float: left;
     opacity: 1;
