@@ -1290,15 +1290,24 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
         -moz-transition: all 0.4s ease-in-out;
         -o-transition: all 0.4s ease-in-out;
         transition: all 0.4s ease-in-out; } } } }
-        
-.user_results {
-  width:800px;
-  margin:0;
-  .users {
-    li {
-      float:left;
-      width:200px;
-      padding:0 0 10px 0; } } }
+    
+.timeline {        
+  .user_results {
+    width:800px;
+    margin:0;
+    .users {
+      li:before {
+        background:none; }
+      li {
+        float:left;
+        margin:0 !important;
+        background:none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        border:none;
+        width:200px;
+        padding:0 0 10px 0; } } } }
 
 /* page modifier styles */
 
