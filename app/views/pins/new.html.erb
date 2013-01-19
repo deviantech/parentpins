@@ -30,7 +30,7 @@
           <%= f.select :category_id, select_options(Category.all) %>
         </div>
       
-        <div class="field">
+        <div class="field pin_image_loader">
           <%= f.label :image, "#{@pin.image? ? 'Update' : 'Upload a'} Image" %>
           <%= image_tag(@pin.image.v55.url) if @pin.image? %>
           <%= f.file_field :image %>
