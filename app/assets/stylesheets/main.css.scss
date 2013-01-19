@@ -137,7 +137,8 @@ a {
     background-position: 5px 0;
     position: relative;
     &:hover {
-      background-color:#658AD9;}
+      background-color:#658AD9;
+      text-decoration:none; }
     &:after {
       content: "ParentPins is more fun with friends!";
       position: absolute;
@@ -1076,6 +1077,15 @@ form .field {
       padding: 2px 0;
     }
   }}
+  
+.form .field.checkbox {
+  overflow:hidden;
+  input {
+    display:block;
+    width:20px;
+    float:left; }
+  label {
+    float:left; } }
 
 .delete:hover {color:red;}
 
@@ -1089,6 +1099,7 @@ form.form .field.with_image {
     width: 195px;
   }
 }
+
 .cover_image_preview img {
   width: 260px;
   margin: 5px 0px;
@@ -1196,8 +1207,11 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   right: 45px;
   padding: 4px 10px;
   font-size: 13px;
-  option {
-    display: block; } }
+  select {
+    padding:4px;
+    option {
+      display: block;
+      font-size:12px; } } }
     
 .modal_select {
   padding: 4px 10px;
@@ -1310,9 +1324,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
           border-right: 1px solid rgba(255, 255, 255, 0.4);
           border-bottom: 1px solid rgba(255, 255, 255, 0.4); } } }
     .timeline li {
-      margin: 10px 0 14px 15px; } }
-  .header {
-    width: auto; } }
+      margin: 10px 0 14px 15px; } } }
 
 .profile .follow_list #pins {
   width: 500px;
