@@ -1,7 +1,9 @@
+require 'searchable'
 class Pin < ActiveRecord::Base
+  extend Searchable
   attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image, :image_cache
 
-  VALID_TYPES = %w(gift article idea)
+  VALID_TYPES = %w(product article idea)
   REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
 
   mount_uploader :image, PinImageUploader
@@ -28,8 +30,11 @@ class Pin < ActiveRecord::Base
   scope :by_kind, lambda {|kind|
     kind.blank? ? where('1=1') : where({:kind => kind})
   }
-  scope :in_categories, lambda {|cats|
+  scope :in_category, lambda {|cats|
     cats.blank? ? where('1=1') : where({:category_id => Array(cats).map(&:id)})
+  }
+  scope :in_age_group, lambda {|groups|
+    groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
   }
   scope :pinned_by, lambda {|uids|
     where({:user_id => uids})
@@ -37,8 +42,12 @@ class Pin < ActiveRecord::Base
   
   scope :with_image, where('image <> ""')
 
+  def self.trending
+    # TODO: implement some sort of trending logic if kind/category aren't provided
+    order('id DESC')
+  end
+
   # TODO: IMPLEMENT THESE
-  def like_count; 2; end
   def repin_count; 5; end
   
   # If a source pin was passed in, copy relevant attributes (repin). Otherwise, generate a clean pin record.

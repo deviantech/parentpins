@@ -3,58 +3,42 @@ class ProfilesController < ApplicationController
   before_filter :set_profile,         :only => [:account]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
+  before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board, :boards]
   
   def show
-    redirect_to :action => 'boards'
+    redirect_to :action => @profile == current_user ? 'activity' : 'boards'
   end
   
   def activity    
-    if params[:add] && to_add = Category.find_by_id(params[:add])
-      current_user.add_interested_categories(to_add)
-    end
-    
-    if params[:remove] && to_remove = Category.find_by_id(params[:remove])
-      current_user.remove_interested_categories(to_remove)
-    end
-    
-    @pins = Pin.in_categories(current_user.interested_categories).limit(20)
-    # TODO: add pagination
+    paginate_pins @profile_counters[:following].zero? ? Pin.trending.in_category(current_user.interested_categories) : Pin.pinned_by(@following)
   end
   
   def pins
-    # TODO: add better logic for picking popular vs new pins
-    @pins = @profile_counters[:pins].zero? ? Pin.limit(20) : @profile.pins
+    paginate_pins @profile_counters[:pins].zero? ? Pin.trending : @profile.pins
   end
   
   def likes
-    @pins = Pin.where(:id => @profile.likes).limit(20)
-    # TODO: add pagination
+    paginate_pins Pin.where(:id => @profile.likes)
   end
   
   def followers
     @followers = @profile.followers
-    @pins = Pin.pinned_by(@followers).limit(20)
-    # TODO: add pagination
   end
   
   def following
     @following = @profile.following
-    @pins = Pin.pinned_by(@following).limit(20)
-    # TODO: add pagination
   end
   
   def boards
-    @boards = @profile.boards
+    paginate_boards @profile.boards
   end
   
   def board
     unless @board = @profile.boards.find_by_id(params[:board_id])
       redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
     end
-    @pins = @board.pins.limit(20) # TODO: add pagination
+    paginate_pins @board.pins
   end
-  
-  
   
   def edit
   end

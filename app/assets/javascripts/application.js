@@ -101,43 +101,24 @@ $(document).ready(function() {
       }
     });
   });
-  
-  // Infinite scrolling
-  $.ias({
-    container: '#pins',
-    item: '.pin',
-    pagination: '#loadMoreBtn',
-    next: '#loadMoreBtn',
-    noneleft: '<li class="pagination-none-left">No more to show.</li>',
-    loader: '/assets/ui/loader.gif',
-    tresholdMargin: -200,
-    beforePageChange: function(scrollOffset, nextPageUrl) { console.log("The user wants to go to the next page: "+nextPageUrl); return true; },
-    onLoadItems: function(items) {
-      // hide new items while they are loading, wait for images to load, then show and update masonry
-      var $newElems = $(items).show().css({ opacity: 0 });
-      $newElems.imagesLoaded(function(){
-        $newElems.animate({ opacity: 1 });
-        $('#pins').masonry('appended', $newElems, true);
-      });
-      return true;
+    
+  // Set filters
+  $('.set_filters').on('change', function(e) {
+    $select = $(e.target);
+    
+    if ($select.data('base-url-if-blank')) {
+      // Adding support to handle pretty URLs, e.g. /pins if not kind set, but /products if kind is 'product'
+      var baseURL;
+      if ($select.val()) {
+        baseURL = '/' + $select.val() + 's';
+      } else {
+        baseURL = $select.data('base-url-if-blank');
+      }
+      window.location = urlReplacingPathKeepingParams(baseURL);
+    } else {
+      // Normal, update URL components but don't worry about base URL changing
+      window.location = urlPossiblyReplacingParam(window.location + '', $select.attr('name'), $select.val());
     }
-  });
-  
-  // Implement category selects
-  $('.cat_select').each(function(idx, select){
-    select = $(select);
-    select.on('change', function() {
-      var url = select.data('baseUrl');
-      if (!url) {
-        alert('category_select not yet implemented');
-        return;
-      }
-      if (select.val().length) {
-        url += url.indexOf('?') == -1 ? '?' : '&';
-        url += select.data('filterName') + '=' + select.val();
-      }
-      window.location = url;
-    });
   });
 });
 
@@ -157,10 +138,6 @@ function updateProfileCounters(data) {
       target.find('.label').html(label);
     }
   }
-}
-
-function urlPlusParamString(url, params) {
-  return url + (url.match(/\?/) ? '&' : '?') + params;
 }
 
 $(function () { // run this code on page load (AKA DOM load)

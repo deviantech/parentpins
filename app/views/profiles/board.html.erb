@@ -2,12 +2,7 @@
   <span><%= current_user == @profile ? 'Your' : "#{@profile.name}'s" %> Board:</span>
   <%= @board.name %>
 </h1>
-<select class="cat_select">
-  <option>All Pins</option>
-  <option>Articles</option>
-  <option>Gifts</option>
-  <option>Ideas</option>
-</select>
+
 <div class="controls">
   <%= link_to 'Edit', edit_board_path(@board), :class => "btn sec_action edit_button ajax" %>
 </div>

@@ -1,5 +1,10 @@
 <% if @profile.following_count.zero? %>
   <h1><span><%= @profile.name %></span> isn't following anyone yet</h1>
+  
+  <div class="empty_pins">
+    <p>Followed users and boards will appear here.</p>
+  </div>
+  
 <% else %>
   <h1><span><%= @profile.name %></span> is following <%= @profile.following_count %> other user. Their recent activity:</h1>
 
@@ -12,6 +17,3 @@
   </div>
 
 <% end %>
-
-<div class="clearfix"></div>
-<%= render 'pins/pins' %>

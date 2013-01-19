@@ -2,18 +2,17 @@ class PinsController < ApplicationController
   before_filter :authenticate_user!,      :except => [:index, :show]
   before_filter :find_current_users_pin,  :only => [:edit, :update, :destroy]
   before_filter :find_any_pin,            :only => [:show, :add_comment, :like, :unlike]
+  before_filter :set_filters,             :only => [:index]
     
   def index
-    # TODO: implement some sort of trending logic if kind/category aren't provided
     # TODO: include user or else cache username
-    @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
-    @category = Category.find_by_id(params[:category_id]) unless params[:category_id].blank?
-    @pins = Pin.by_kind(@kind).in_categories(@category).limit(20)
+    paginate_pins Pin.trending
   end
   
   def new
     if current_user.boards.empty?
-      redirect_to(new_board_path, :notice => 'Please add a board first!') and return
+      session[:post_board_url] = url_for(params.merge(:via => nil))
+      redirect_to(new_board_path(:via => params[:via]), :notice => 'Please add a board first!') and return
     end
     
     # If a source ID is passed, allow repining
@@ -39,7 +38,7 @@ class PinsController < ApplicationController
   
   def update
     if @pin.update_attributes(params[:pin])
-      redirect_to @pin.board, :notice => 'Saved changes to pin'
+      redirect_to board_profile_path(current_user, @pin.board), :notice => 'Saved changes to pin'
     else
       flash.now[:error] = "Unable to save pin"
       render :action => 'new'

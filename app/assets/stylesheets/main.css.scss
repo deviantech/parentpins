@@ -673,7 +673,7 @@ a {
   right: 45px;
   top: -50px; }
 
-.gift_price {
+.price {
   background: #f9f9f9;
   padding: 5px 10px;
   width: 145px;
@@ -746,7 +746,7 @@ a {
         border-left: 10px solid transparent; } }
     .kind.article:hover:before {
       content: "Pinned from a blog, top 10 list, writer, etc."; }
-    .kind.gift:hover:before {
+    .kind.product:hover:before {
       content: "Pinned from an online store, ParentPin Store, or just a cool product for sale."; }
     .kind.idea:hover:before {
       content: "Just generally a cool idea for Parents."; }
@@ -1170,7 +1170,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   margin-left: 570px !important;
   min-height:820px; }
 
-.cat_select {
+.set_filters {
   position: absolute;
   top: 10px;
   right: 45px;
@@ -1303,54 +1303,6 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   &:hover {
     color: #0088CC !important; } }
 
-/* cateogery suggestions feed */
-
-.cat_filter {
-  padding:20px 40px 0 60px;
-  overflow:hidden;
-  p {
-    margin:0;
-    padding:0 0 5px 0; }
-  select {
-    float:right;
-    padding: 4px 10px;
-    font-size: 13px; }
-  .selected_cat {
-    float:left;
-    display:inline-block;
-    background:#E3E1D4;
-    color:#333;
-    padding:4px 5px 4px 10px;
-    margin:0 10px 10px 0;
-    font-size:12px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    font-size:12px;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.3);
-    a {
-      text-decoration:none;
-      &:hover {
-        color:#000; } }
-    span {
-      background:#C2C0AE;
-      display:inline-block;
-      padding:2px 6px;
-      text-align:center;
-      -moz-border-radius: 10px;
-      -webkit-border-radius: 10px;
-      border-radius: 10px;
-      margin:0 0 0 4px;
-      color:#fff;
-      -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.25) inset;
-      -moz-box-shadow: 0 0 3px rgba(0,0,0,0.25) inset;
-      box-shadow: 0 0 3px rgba(0,0,0,0.25) inset;
-      font-weight:bold;
-      &:hover {
-        background:#000;
-        cursor:pointer; } } } }
 
 /* flash messaging */
 
@@ -1660,7 +1612,7 @@ textarea {
  box-shadow: 0 0 3px rgba(0,0,0, 0.3);
  padding: 25px;
 }
-.empty-pins {
+.empty-results {
   padding: 10px 20px;
   font-size: 1.4em;
   background: #FFF;
@@ -1683,4 +1635,8 @@ h1, h2 {
 }
 .pinly_overlay .profile.wrapper {
   margin-top: 0px;
+}
+.search_navigation .marker {
+  font-weight: bold;
+  color: #E55799;
 }

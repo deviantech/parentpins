@@ -1,4 +1,6 @@
+require 'searchable'
 class User < ActiveRecord::Base
+  extend Searchable
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable

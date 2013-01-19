@@ -19,6 +19,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'will_paginate'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
@@ -26,7 +27,6 @@ gem 'jquery-rails'
 gem 'capistrano'
 gem 'ruby-debug', :platform => :ruby_18
 gem 'debugger', :platform => :ruby_19
-
 
 gem 'haml'
 

@@ -16,7 +16,7 @@ ParentPins::Application.routes.draw do
   
   # Pretty URLs for pin subtypes
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
-  match '/gifts'    => 'pins#index',  :kind => 'gift',      :as => 'gifts'
+  match '/products' => 'pins#index',  :kind => 'product',   :as => 'products'
   match '/ideas'    => 'pins#index',  :kind => 'idea',      :as => 'ideas'
 
   match '/pins/category/:category_id' => 'pins#index',  :as => 'pins_category'
@@ -44,4 +44,7 @@ ParentPins::Application.routes.draw do
   match '/about' => 'front#about'
   match '/legal' => 'front#legal'
   match '/privacy' => 'front#privacy'
+  
+  match '/search/:kind' => 'search#index'
+  match '/search' => 'search#redirect_by_kind'
 end

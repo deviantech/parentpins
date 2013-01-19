@@ -53,7 +53,7 @@
           <%= f.text_area :description, :placeholder => "First few sentences please, this Pin will link to the full article" %>        
         </div>
       
-        <div class="field field-price">
+        <div class="field field-price<%= ' hidden' unless @pin.kind == 'product' %>">
           <%= f.label :price, 'Price' %>
           <%= f.text_field :price, :placeholder => "$0.00" %>
         </div>
@@ -79,3 +79,5 @@
     <div class="clearfix"></div>
   </div>
 </div>
+
+<%= include_javascript_for_modal 'add-pin' %>
