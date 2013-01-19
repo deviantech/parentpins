@@ -278,8 +278,8 @@ a {
       background-image: -webkit-gradient(linear, center top, center bottom, from(#e5579a), to(#FF8FC7));
       background-image: -webkit-linear-gradient(top, #e5579a, #FF8FC7);
       background-image: linear-gradient(top, #e5579a, #FF8FC7);
-      color: #F1F1F1;
-      text-shadow: 0 -1px 0 black; } } }
+      color: #fff;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4); } } }
 
 .nav_main {
   float: left;
@@ -965,7 +965,7 @@ ul.boards {
 
 .board {
   .holder {
-    height:275px; }
+    height:280px; }
   h3, h4 {
     overflow: hidden;
     padding: 5px 15px;
@@ -974,7 +974,7 @@ ul.boards {
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 13px;
-    background:rgba(255, 255, 255, 0.4); }
+    background:rgba(255, 255, 255, 0.8); }
   h3 {
     height: 20px;
     padding-bottom: 0;
@@ -1005,9 +1005,7 @@ ul.boards {
       vertical-align: bottom;
       width: 20px; } } 
   .description {
-    height: 55px;
     margin: 10px 0 5px;
-    overflow: hidden;
     p {
       padding:0 10px;
       margin:0;
@@ -1218,6 +1216,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     margin: 60px auto; 
     h1 {
       color:#000 !important;
+      background:none !important;
       text-shadow:0 1px 0 #fff !important;
       border-bottom: 1px dashed #C2C2C2 !important; } }
   &.wide {
@@ -1225,6 +1224,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     width:620px;
     h1 {
       color:#000 !important;
+      background:none !important;
       text-shadow:0 1px 0 #fff !important;
       border-bottom: 1px dashed #C2C2C2 !important; }
     .section {
@@ -1432,7 +1432,8 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
 .custom {
   .content {
     h1 {
-      margin: 0 0 10px;
+      margin: 0;
+      background:rgba(255,255,255,0.8);
       .user {
         text-align: left;
         text-decoration: none;
@@ -1523,7 +1524,8 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   width: 100%;
   overflow-y:scroll;
   z-index:3;
-}
+  .board_wide {
+    padding-top:20px; } }
 
 .pinly {
   position: static;
@@ -1716,8 +1718,8 @@ margin: 0; }
     background: none; }
   .board_description {
     font-size:13px;
-    background:rgba(255,255,255,0.4);
-    padding:0 0 0 20px; } }
+    background:rgba(255,255,255,0.8);
+    padding:10px 20px; } }
 
 
 
