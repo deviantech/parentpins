@@ -569,7 +569,15 @@ a {
     display: block; } }
 
 .empty_pins {
-  margin: 20px 0 20px 65px;
+  margin: 20px 0 20px 60px;
+  background: rgba(255,255,255,0.4);
+  padding: 10px 20px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.2) inset;
+  -moz-box-shadow: 0 0 4px rgba(0,0,0,0.2) inset;
+  box-shadow: 0 0 4px rgba(0,0,0,0.2) inset;
   p {
     font-size: 14px; } }
 
@@ -1232,7 +1240,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   font-size: 12px; }
 
 .followers_list {
-  width: 240px;
+  width: 750px;
   float: left;
   margin: 20px 0 0 60px; }
 
@@ -1246,8 +1254,10 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       margin: 0;
       padding: 0 0 4px 0;
       position: relative;
+      width:250px;
+      float:left;
       .following-action {
-        left:200px;
+        left:-33px;
         z-index:1; } }
       
     .user {
