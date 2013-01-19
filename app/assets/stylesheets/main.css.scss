@@ -8,6 +8,8 @@ a {
   color: #E55799;
   &:hover {
     text-decoration: none; } }
+    
+.clear {clear:both;}
 
 /* buttons */
 
@@ -729,7 +731,8 @@ a {
         background: #000;
         color: #fff;
         text-align: center;
-        font-size: 13px;
+        font-size: 12px;
+        font-weight:400;
         line-height: 17px;
         padding: 4px 10px;
         width: 160px; }
@@ -746,7 +749,7 @@ a {
         border-left: 10px solid transparent; } }
     .kind.article:hover:before {
       content: "Pinned from a blog, top 10 list, writer, etc."; }
-    .kind.product:hover:before {
+    .kind.gift:hover:before {
       content: "Pinned from an online store, ParentPin Store, or just a cool product for sale."; }
     .kind.idea:hover:before {
       content: "Just generally a cool idea for Parents."; }
@@ -754,7 +757,6 @@ a {
       text-decoration: none;
       color: #222;
       &:hover {
-        text-decoration: underline;
         color: #000; } } }
   .stats {
     margin: 10px 0 5px 0;
@@ -837,7 +839,7 @@ a {
       font-size: 11px;
       height: 21px;
       padding: 4px 3px 3px;
-      width: 153px;
+      width: 160px;
       margin: 0 0 5px 0;
       -webkit-box-shadow: 0 0 2px rgba(255, 255, 255, 0.75) inset;
       -moz-box-shadow: 0 0 2px rgba(255, 255, 255, 0.75) inset;
@@ -1070,8 +1072,12 @@ form .field {
     width: 260px;
     option {
       color: #666;
+      font-size: 13px;
+      padding: 2px 0;
     }
   }}
+
+.delete:hover {color:red;}
 
 form.form .field.with_image {
   img {
@@ -1117,6 +1123,8 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   clear: both;
   font-size: 13px;
   padding: 10px;
+  p {
+    margin:0 0 5px 0; }
   a {
     text-decoration: none;
     &:hover {
@@ -1135,7 +1143,19 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     h1 {
       color:#000 !important;
       text-shadow:0 1px 0 #fff !important;
-      border-bottom: 1px dashed #C2C2C2 !important; } }
+      border-bottom: 1px dashed #C2C2C2 !important; }
+    .section {
+      float:left;
+      width:280px;
+      margin:0 14px;
+      h3 {
+        font-size:16px;
+        font-weight:400; } 
+      label span {
+        display:block;
+        font-weight:100;
+        color:#555;font-size: 13px;
+            padding: 2px 0; } } }
   &.signup:after {
     content: "";
     display: block;
@@ -1358,6 +1378,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   top: 0;
   width: 100%;
   overflow-y:scroll;
+  z-index:3;
 }
 
 .pinly {

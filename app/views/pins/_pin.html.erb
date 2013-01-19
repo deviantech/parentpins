@@ -14,7 +14,7 @@
   </p>
   <%= render 'pins/stats', :pin => pin %>
   <div class="attribution">
-    <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name %>
+    <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name, :class=> 'image_link' %>
     <p class="details">
       <%= link_to pin.user.name, profile_path(pin.user) %>
       <% if pin.via %>
