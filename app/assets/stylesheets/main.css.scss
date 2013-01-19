@@ -1,3 +1,5 @@
+body {height:100%;}
+html{height:100%;}
 body.cover_image {
   background-attachment:scroll;
   background-clip:border-box;
@@ -1666,6 +1668,7 @@ margin: 0; }
     background: none; }
   .board_description {
     font-size:13px;
+    background:rgba(255,255,255,0.4);
     padding:0 0 0 20px; } }
 
 
