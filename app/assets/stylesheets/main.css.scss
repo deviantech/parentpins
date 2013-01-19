@@ -72,35 +72,17 @@ a {
   &.follow, &.unfollow {
     top: 5px;
     left: 4px;
-    padding-right: 3px;
-    text-indent: -299px;
+    padding:5px 10px;
     overflow: hidden;
     -webkit-transition: all 0.4s ease-in-out;
     -moz-transition: all 0.4s ease-in-out;
     -o-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out; }
-  &.follow:hover, &.unfollow:hover {
-    text-indent: 0;
-    padding-right: 10px; }
-  &.follow:before {
-    content: "";
-    height: 15px;
-    width: 15px;
-    position: absolute;
-    top: 7px;
-    left: 6px; }
   &.unfollow {
     background-color: #ddd;
     border: 1px solid #bbb;
     &:hover {
-      color: #333; }
-    &:before {
-      content: "";
-      height: 15px;
-      width: 15px;
-      position: absolute;
-      top: 7px;
-      left: 6px; } }
+      color: #333; } }
   &.follow_in_list {
     background-color: #ddd;
     border: 1px solid #bbb;
@@ -413,7 +395,8 @@ a {
   position: relative;
   width: 195px;
   padding: 0 0 30px 0;
-  background: transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
+  // background: transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
+  background:#F8F8F8;
   -moz-border-radius: 12px 0 0 12px;
   -webkit-border-radius: 12px 0 0 12px;
   border-radius: 12px 0 0 12px;
@@ -487,7 +470,13 @@ a {
     img {
       -moz-border-radius: 100px;
       -webkit-border-radius: 100px;
-      border-radius: 100px; } } }
+      border-radius: 100px; } } 
+  .follow,.unfollow {
+    position:absolute;
+    top:5px;
+    left:5px;
+    text-decoration:none;
+    font-size:14px; } }
 
 .nav_profile {
   margin: 0;
@@ -1067,6 +1056,7 @@ ul.boards {
   text-align: center;
   padding: 0;
   display: block;
+  border-top:1px solid rgba(0, 0, 0, 0.1);
   img {
     opacity: 1;
     border: none;
@@ -1075,8 +1065,9 @@ ul.boards {
 .thumbs {
   display: block;
   width: 224px;
+  height:55px;
   overflow:hidden;
-  background:#F2F2F2;
+  background:#F8F8F8;
   img {
     float: left;
     opacity: 1;
@@ -1326,8 +1317,7 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       width:250px;
       float:left;
       .following-action {
-        left:-33px;
-        z-index:1; } }
+        padding-left:60px; } }
       
     .user {
       display: block;
