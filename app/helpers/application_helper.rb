@@ -58,8 +58,8 @@ module ApplicationHelper
   def body_class
     case params[:controller]
     # full_width also available her but currently depricated due to front end UI support
-    when 'pins'     then 'custom'
-    when 'search'   then 'custom'
+    when 'pins'     then 'custom cover_image'
+    when 'search'   then 'custom cover_image'
     when 'profiles' then 'profile'
     when 'boards'
       %w(show index).include?(params[:action]) ? 'custom' : nil
