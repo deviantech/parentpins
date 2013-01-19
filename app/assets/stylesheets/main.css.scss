@@ -10,7 +10,7 @@
 
 body {height:100%;}
 html{height:100%;}
-body.cover_image {
+body.background_cover {
   background-attachment:scroll;
   background-clip:border-box;
   background-color:#fff;
@@ -958,7 +958,10 @@ ul.boards {
     float: left;
     display: block;
     width: 222px;
-    margin: 15px 15px 10px 15px; } }
+    margin: 15px 15px 10px 15px;
+    -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+    -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
+    box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38); } }
 
 .board {
   .holder {
@@ -1056,10 +1059,7 @@ ul.boards {
   overflow: hidden;
   width: 222px;
   background: #fff;
-  position: relative;
-  -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
-  -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
-  box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38); }
+  position: relative; }
 
 .cover {
   height: 150px;
@@ -1092,7 +1092,7 @@ ul.boards {
   float: none !important;
   margin: 0 auto !important; }
 
-.cover_image {
+.background_cover {
   .content.board_wide {
     width:1020px !important;
     margin: 0 auto !important;
