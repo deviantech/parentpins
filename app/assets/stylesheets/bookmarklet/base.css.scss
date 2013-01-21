@@ -24,21 +24,41 @@
     }
   }
   #ppBookmarkletContent {
-    position: static;
-    width: 500px;
-    padding: 10px;
-    margin: 20px auto;
-    margin-top: 100px;
-    background: #fff;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    -webkit-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
-    -moz-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
-    box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+    margin: 100px;
+    text-align: center;
     -webkit-transition: all 0.4s ease-in-out;
     -moz-transition: all 0.4s ease-in-out;
     -o-transition: all 0.4s ease-in-out;
     transition: all 0.4s ease-in-out;
-  }
-  
+    #noPotentialImages {
+      /* Add styling here for the no-images message */
+    }
+    a.potentialImage {
+      display: inline-block;
+      -webkit-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+      -moz-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+      box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+      height: 192px;
+      width: 192px;
+      border: 1px solid #999;
+      margin: 20px;
+      overflow: hidden;
+      position: relative;
+      opacity: 0.8;
+      .details {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        margin: 0px;
+        padding: 5px;
+        background: rgba(255, 255, 255, 0.38);
+        color: #000;
+        text-align: center;
+      }
+      &:hover {
+        opacity: 1.0;
+      }
+    }
+  } 
 }

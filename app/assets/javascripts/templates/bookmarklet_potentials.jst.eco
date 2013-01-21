@@ -1,0 +1,10 @@
+<% if @images.length: %>
+  <% for image in @images: %>
+    <a class="potentialImage" href="#">
+      <img src="<%= image.src %>" alt=""/>
+      <span class="details"><%= image.height %> x <%= image.width %></span>
+    </a>
+  <% end %>
+<% else: %>
+  <div id="noPotentialImages">No pinnable images found on this page.</div>
+<% end %>
