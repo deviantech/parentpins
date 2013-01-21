@@ -1,5 +1,3 @@
-<%= error_messages_for(@profile) %>
-
 <div class="field">
   <p>Select at least one interest area</p>
   <%= f.select :interested_category_ids, select_options(Category.all), {}, :multiple => true %>
