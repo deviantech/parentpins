@@ -1,7 +1,7 @@
 module ApplicationHelper
   
   def bookmarklet_link  
-    link_to 'Grab It', "javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src','//#{HOST}/assets/bookmarklet.js?r='+Math.random()*9999999);b.body.appendChild(s)})(document));"
+    link_to 'Test Bookmarklet', "javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src','//#{HOST}/assets/bookmarklet.js?r='+Math.random()*9999999);b.body.appendChild(s)})(document));"
   end
 
   def pagination_link

@@ -9,6 +9,7 @@
 (function(document, jQuery) {
   // Config
   var popupName = 'ParentPinBookmarklet';
+  var cssUrl = '//<%= HOST %>/assets/bookmarklet/base.css';
   var minJQversion = '1.6.0';
   var desiredJQversion = '1.8.2';
   
@@ -31,46 +32,30 @@
   // Just to be sure $ is available and not in compatibility mode on the host site
   function initBookmarkletWrapper() {
     (window.myBookmarklet = function() {
-       initBookmarklet(jQuery);
+      includeBookmarkletStyles();
+      initBookmarklet(jQuery);
     })();
+  }
+  
+  function includeBookmarkletStyles() {
+    if ($('link#'+popupName+'CSS').length) return;
+    $('head').append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />');
   }
   
   // Close popup if any are open
   function initBookmarklet($) {
     if ($('#'+popupName).length) {
-      $('#'+popupName).fadeOut();
+      closeBookmarklet();
       return;
     }
     
-    
-    // .pinly_overlay {
-    //   background: rgba(255,255,255,0.9);
-    //   display: block;
-    //   height: 100%;
-    //   left: 0;
-    //   position: fixed;
-    //   top: 0;
-    //   width: 100%;
-    //   overflow-y:scroll;
-    // }
-    // 
-    // .pinly {
-    //   position: static;
-    //   width: 500px;
-    //   padding: 10px;
-    //   margin: 20px auto;
-    //   background: #fff;
-    //   border-right: 1px solid #ddd;
-    //   border-bottom: 1px solid #ddd;
-    //   -webkit-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
-    //   -moz-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
-    //   box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
-    //   -webkit-transition: all 0.4s ease-in-out;
-    //   -moz-transition: all 0.4s ease-in-out;
-    //   -o-transition: all 0.4s ease-in-out;
-    //   transition: all 0.4s ease-in-out;
-    
-    var $popup = $('<div id="test">Woot</div>').appendTo( $('body') );
+    var $popup = $( JST['templates/bookmarklet']({popupName: popupName}) ).appendTo( $('body') );
+  }
+  
+  function closeBookmarklet() {
+    $('#'+popupName).fadeOut(function() {
+      $(this).remove();
+    });
   }
   
 })(document, jQuery);
