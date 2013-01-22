@@ -9,20 +9,21 @@
 	font-style: normal; }
 
 body {height:100%;}
-html{height:100%;}
+html{
+  height:100%;
+  background:#fff url(/assets/patterns/debut_light.png) 0 0 repeat;}
+  
 body.background_cover {
-  background-attachment:scroll;
   background-clip:border-box;
-  background-color:#fff;
-  background-position: 0 0;
+  background-color:transparent;
+  background-position: bottom left;
   background-repeat:no-repeat;
-  background-size:cover;
   .footer_wrapper {
     background:rgba(255, 255, 255, 0.6); } }
 
 <% (1..NUM_BACKGROUND_IMAGES).each do |i| %>
 body.background_cover_<%= i %> {
-  background-image:url(/assets/backgrounds/<%= i %>.jpg);
+  background-image:url(/assets/backgrounds/<%= i %>.png);
 }
 <% end %>
 
@@ -1195,6 +1196,12 @@ input[placeholder], textarea[placeholder], [placeholder], *[placeholder] {
 
 input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placeholder] {
   color: #222 !important; }
+  
+input:focus[placeholder], textarea:focus[placeholder] {
+  background-color:#EDF6FF !important;
+  border-color:blue;
+  color:#000; }
+  
 
 .content form {
   h1 {
@@ -1437,7 +1444,12 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
       margin: 10px 0 14px 15px; } } }
       
 .custom {
+  .wrapper {
+    width:auto; 
+    .board_wide {
+      width:auto !important; }}
   .content {
+    width:100%;
     h1 {
       margin: 0;
       background:rgba(255,255,255,0.8);
@@ -1818,6 +1830,7 @@ h1, h2 {
 }
 .pinly_overlay .profile.wrapper {
   margin-top: 0px;
+  width:820px;
 }
 .search_navigation .marker {
   font-weight: bold;
