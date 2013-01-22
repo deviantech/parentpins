@@ -7,7 +7,7 @@
     <%= image_tag pin.image.v192.url, :class => 'pin_image', :alt => 'Pin image' %>
   <% end %>
   <p class="description">
-    <a href="<%= url_for(pin) %>">
+    <a href="<%= url_for(pin) %>" class="ajax">
       <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
       <span class="bind-name"><%= pin.name %></span>
     </a>

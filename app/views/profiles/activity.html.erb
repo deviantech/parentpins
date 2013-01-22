@@ -1,6 +1,11 @@
 <h1><span>Recent pins by the users and boards</span>You Follow</h1>
 
-<%= render ('nothing_yet') if @profile_counters[:following].zero? %>
+<% if @profile_counters[:following].zero? %>
+  <div class="empty_pins">
+    <p>Here are a few pins to get you excited about all the wonderful ideas here on ParentPins. Check out a few boards, follow other pinners, or start pinning things you like.</p>
+    <p><a href="/bookmarklet.html">Get the ParentPin Bookmarklet now</a> to start ParentPinning from any site on the web.</p>
+  </div>
+<% end %>
 
 <%= render 'pins/pins' %>
 

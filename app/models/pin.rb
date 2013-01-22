@@ -21,6 +21,7 @@ class Pin < ActiveRecord::Base
   validates_inclusion_of :kind, :in => VALID_TYPES
   validates_length_of :description, :maximum => 255, :allow_blank => true
   validate :url_format
+  validate :not_previously_pinned, :on => :create
   
   before_update   :update_board_images_on_change
   after_create    :update_board_add_image
@@ -100,6 +101,12 @@ class Pin < ActiveRecord::Base
   
   def url_format
     errors.add(:url, "doesn't look like a valid link") unless url.to_s.match(/\Ahttps?:\/\//)
+  end
+  
+  def not_previously_pinned
+    return true unless board
+    return true if board.pins.where(:url => self.url).where(:image => self['image']).empty?
+    errors.add_to_base("You've already pinned this on this board!")
   end
 
   def update_board_images_on_change
