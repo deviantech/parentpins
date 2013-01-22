@@ -178,15 +178,20 @@ a {
 .logo {
   display: block;
   position: absolute;
-  padding: 20px 20px;
   top: 0;
   left: 10px;
   text-align: center;
   text-decoration: none;
   color: #E55799;
   font-family:times;
-  font-size:22px;
-  padding:14px 20px 16px; }
+  font-size:24px;
+  font-weight:600;
+  padding:14px 10px 16px;
+  margin:0 10px 0 0;
+  &:hover {
+    color:#000; }
+  span {
+    font-weight:100; } }
 
 .ir.logo {
   text-indent: 0; }
@@ -239,7 +244,7 @@ a {
       background-image: -webkit-gradient(linear, center top, center bottom, from(#e5579a), to(#cd2479));
       background-image: -webkit-linear-gradient(top, #e5579a, #cd2479);
       background-image: linear-gradient(top, #e5579a, #cd2479);
-      color: #F1F1F1;
+      color: #fff;
       text-shadow: 0 -1px 0 black;
       -webkit-transition: all 0.4s ease-in-out;
       -moz-transition: all 0.4s ease-in-out;
@@ -265,7 +270,7 @@ a {
 
 .nav_main {
   float: left;
-  margin: 0 0 0 135px;
+  margin: 0 0 0 145px;
   padding: 0;
   li {
     float: left; }
@@ -369,12 +374,12 @@ a {
       height:160px;
       width:1020px;
       background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyYWRpYWxHcmFkaWVudCBpZD0iZyI+PHN0b3Agb2Zmc2V0PSIwLjIiIHN0b3AtY29sb3I9InJnYmEoMjU1LCAyNTUsIDI1NSwgMCkiLz48c3RvcCBvZmZzZXQ9IjAuOSIgc3RvcC1jb2xvcj0iYmxhY2siLz48L3JhZGlhbEdyYWRpZW50PjxyZWN0IHg9IjAlIiB5PSIwJSIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iYmxhY2siIC8+PHJlY3QgeD0iLTAuNzQ5NyUiIHk9Ii0yNDEuOTYwMyUiIHdpZHRoPSIxMDEuNDk5NSUiIGhlaWdodD0iNTgzLjkyMDYlIiBmaWxsPSJ1cmwoI2cpIiAvPjwvc3ZnPg==);
-      background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 496, color-stop(20%, rgba(255, 255, 255, 0)), color-stop(90%, white));
-      background-image: -webkit-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 90%);
-      background-image: -moz-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 90%);
-      background-image: -ms-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 90%);
-      background-image: -o-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 90%);
-      background-image: radial-gradient(farthest-corner circle at center center, rgba(255, 255, 255, 0) 20%, #F7F7F7 90%); } 
+      background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 496, color-stop(20%, rgba(255, 255, 255, 0)), color-stop(94%, white));
+      background-image: -webkit-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 94%);
+      background-image: -moz-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 94%);
+      background-image: -ms-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 94%);
+      background-image: -o-radial-gradient(center center, farthest-corner circle, rgba(255, 255, 255, 0) 20%, #F7F7F7 94%);
+      background-image: radial-gradient(farthest-corner circle at center center, rgba(255, 255, 255, 0) 20%, #F7F7F7 94%); } 
     a.hover_link {
       display:none;
       color:#fff;
@@ -563,6 +568,16 @@ a {
     -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
     -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; } }
+
+.featured {
+  background:#222;
+  margin:-20px 0 20px;
+  height:300px;
+  .featured_blogger {
+    width:980px;
+    padding:20px;
+    margin:0 auto;
+    color:#fff;} }
 
 .content {
   h1 {
@@ -1312,12 +1327,15 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     list-style: none;
     li {
       margin: 0;
-      padding: 0 0 4px 0;
+      padding: 0 0 20px 0;
       position: relative;
       width:250px;
       float:left;
       .following-action {
-        padding-left:60px; } }
+        padding-left:60px;
+        text-decoration:none;
+        &:hover {
+          text-decoration:underline; } } }
       
     .user {
       display: block;
