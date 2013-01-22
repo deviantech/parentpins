@@ -33,12 +33,12 @@ class Board < ActiveRecord::Base
   end
   
   def set_cover_from_pin(pin)
-    update_attribute :cover, pin.image.v320
+    update_attribute :cover, pin.image
   end
   
   def update_cover_before_pin_removed(pin)
     if next_pin = pins.with_image.order('id DESC').where(['id <> ?', pin.try(:id)]).first
-      update_attribute :cover, next_pin.image.v320
+      update_attribute :cover, next_pin.image
     else
       update_attribute :remove_cover, true
     end

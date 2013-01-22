@@ -14,13 +14,17 @@ body.background_cover {
   background-attachment:scroll;
   background-clip:border-box;
   background-color:#fff;
-  /* KALI TODO: can use 1 - 10 here. Need to insert random number in this range */
-  background-image:url(/assets/backgrounds/1.jpg);
   background-position: 0 0;
   background-repeat:no-repeat;
   background-size:cover;
   .footer_wrapper {
     background:rgba(255, 255, 255, 0.6); } }
+
+<% (1..NUM_BACKGROUND_IMAGES).each do |i| %>
+body.background_cover_<%= i %> {
+  background-image:url(/assets/backgrounds/<%= i %>.jpg);
+}
+<% end %>
 
 /* typography */
 
@@ -1364,37 +1368,27 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
     span {
       color: #444;
       display: block;
-      font-weight: normal;
-      font-size: 12px; }
-    li {
-      .follow_in_list {
-        display: none;
-        opacity: 0; }
-      &:hover .follow_in_list {
-        display: block;
-        opacity: 1;
-        -webkit-transition: all 0.4s ease-in-out;
-        -moz-transition: all 0.4s ease-in-out;
-        -o-transition: all 0.4s ease-in-out;
-        transition: all 0.4s ease-in-out; } } } }
+      opacity: 1;
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out; } } }
     
-.timeline {        
-  .user_results {
-    width:800px;
-    margin:0;
-    .users {
-      li:before {
-        background:none; }
-      li {
-        float:left;
-        margin:0 !important;
-        background:none;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border:none;
-        width:200px;
-        padding:0 0 10px 0; } } } }
+.timeline.user_results {        
+  width:800px;
+  margin:0;
+  li.users:before {
+    background:none; }
+  li.users {
+    float:left;
+    margin:0 !important;
+    background:none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border:none;
+    width:200px;
+    padding:0 0 10px 0; } }
 
 /* page modifier styles */
 

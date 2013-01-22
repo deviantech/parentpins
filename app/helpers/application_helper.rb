@@ -1,4 +1,8 @@
 module ApplicationHelper
+  
+  def bookmarklet_link  
+    link_to 'Test Bookmarklet', "javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src','//#{HOST}/assets/bookmarklet.js?r='+Math.random()*9999999);b.body.appendChild(s)})(document));"
+  end
 
   def pagination_link
     # No link if we're not paginating or don't have additional pages to show
@@ -55,14 +59,19 @@ module ApplicationHelper
     link_to(text, target, opts)
   end
   
+  def background_class_names
+    n = (rand * NUM_BACKGROUND_IMAGES).floor + 1
+    "custom background_cover background_cover_#{n}"
+  end
+  
   def body_class
     case params[:controller]
-    # full_width also available her but currently depricated due to front end UI support
-    when 'pins'     then 'custom background_cover'
-    when 'search'   then 'custom background_cover'
+    # full_width also available here but currently depricated due to front end UI support
+    when 'pins'     then background_class_names
+    when 'search'   then background_class_names
     when 'profiles' then 'profile'
     when 'boards'
-      %w(show index).include?(params[:action]) ? 'custom background_cover' : nil
+      %w(show index).include?(params[:action]) ? background_class_names : nil
     when 'pins'
       params[:action] == 'index' ? 'custom' : nil
     else nil

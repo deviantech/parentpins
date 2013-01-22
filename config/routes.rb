@@ -1,6 +1,6 @@
 ParentPins::Application.routes.draw do
   # Devise edit path redirect to profile/account edit
-  match "users/edit" => redirect('/profiles/account')
+  match "users/edit" => redirect('/profiles/edit')
   devise_for :users
 
   resources :boards
@@ -31,7 +31,6 @@ ParentPins::Application.routes.draw do
       get 'followers'
       get 'following'
       get 'boards/:board_id' => 'profiles#board', :as => 'board'
-      get 'account'
       post 'follow'
       post 'unfollow'
     end

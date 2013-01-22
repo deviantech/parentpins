@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   mount_uploader :cover_image,  CoverImageUploader
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_category_ids, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_category_ids, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password
   
   has_many :boards,       :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -27,6 +27,18 @@ class User < ActiveRecord::Base
 
   def name
     username.to_s.titleize
+  end
+
+  # If password required for update, try. Otherwise just to update. Not the cleanest combination of forms...
+  def update_maybe_with_password(params)
+    if params[:email] != email || !params[:password].blank? || !params[:password_confirmation].blank?
+      update_with_password(params)
+    else
+      params.delete(:password)
+      params.delete(:password_confirmation)
+      params.delete(:current_password)
+      update_attributes(params)
+    end
   end
 
   # ================================

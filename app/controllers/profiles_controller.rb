@@ -1,6 +1,5 @@
 class ProfilesController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :account]
-  before_filter :set_profile,         :only => [:account]
+  before_filter :authenticate_user!,  :only => [:edit, :update, :activity]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board, :boards]
@@ -44,22 +43,18 @@ class ProfilesController < ApplicationController
   end
   
   def update
-    params[:from] = 'edit' unless %w(edit account).include?(params[:from])
-    if params[:from] == 'account' ? @profile.update_with_password(params[:user]) : @profile.update_attributes(params[:user])
+    if @profile.update_maybe_with_password(params[:user])
       redirect_to activity_profile_path(@profile), :notice => "Updated profile"
     else
       if params[:step_2]
         activity
         render 'activity'
       else
-        render params[:from]
+        render 'edit'
       end
     end
   end
-  
-  def account
-  end
-  
+    
   def follow
     current_user.follow(@profile) if user_signed_in?
   end
@@ -72,8 +67,9 @@ class ProfilesController < ApplicationController
   protected
   
   def get_profile
-    if params[:id] == 'account' && params[:action] == 'show' # redirect from devise's user editing
-      redirect_to account_profile_path(current_user) and return
+    if params[:id] == 'edit' && params[:action] == 'show' # redirect from devise's user editing
+      authenticate_user!
+      redirect_to edit_profile_path(current_user) and return
     end
     
     unless @profile ||= User.find_by_id(params[:id])
@@ -95,7 +91,4 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def set_profile
-    @profile = current_user
-  end
 end

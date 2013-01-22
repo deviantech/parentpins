@@ -1,14 +1,8 @@
-<!-- TODO:KYLE - implement user search result here, in an LI like pins and boards -->
-<div class="followers_list user_results">
-  <ul class="users">
-    <li>
-      <a class="user" href="/profiles/2">
-        <img src="/assets/fallback/user_avatar/v50_default.jpg" alt="V50_default">
-        <%= user.name %>
-        <span>1 Follower</span>
-        <span>1 Following</span>
-      </a>
-    </li>
-  </ul>
-</div>
-
+<li class="user">
+  <%= link_to profile_path(user) do %>
+    <%= image_tag user.avatar.v50 %>
+    <%= user.name %>
+    <span><%= pluralize user.followers_count, 'Follower', 'Followers' %></span>
+    <span><%= user.following_count %> Following</span>
+  <% end %>
+</li>

@@ -1,0 +1,85 @@
+//= require templates/bookmarklet
+//= require templates/bookmarklet_potentials
+
+
+// TODO - how to not mess with calling page's jquery version?
+// TODO - how to wrap template includes in our bigger function to protect it from including page's content?
+
+
+(function(document, jQuery) {
+  // Config
+  var popupName = 'ParentPinBookmarklet';
+  var cssUrl = '//<%= HOST %>/assets/bookmarklet/base.css';
+  var minJQversion = '1.6.0';
+  var desiredJQversion = '1.8.2';
+  var minImageWidth = 192;
+  var minImageHeight = 100;
+  
+	// check prior inclusion and version
+	if (window.jQuery === undefined || window.jQuery.fn.jquery < minJQversion) {
+		var done = false;
+		var script = document.createElement("script");
+		script.src = "//ajax.googleapis.com/ajax/libs/jquery/" + desiredJQversion + "/jquery.min.js";
+		script.onload = script.onreadystatechange = function(){
+			if (!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
+				done = true;
+				initBookmarkletWrapper();
+			}
+		};
+		document.getElementsByTagName("head")[0].appendChild(script);
+	} else {
+		initBookmarkletWrapper();
+	}
+  
+  // Just to be sure $ is available and not in compatibility mode on the host site
+  function initBookmarkletWrapper() {
+    (window.myBookmarklet = function() {
+      includeBookmarkletStyles();
+      initBookmarklet(jQuery);
+    })();
+  }
+  
+  function includeBookmarkletStyles() {
+    if ($('link#'+popupName+'CSS').length) return;
+    $('head').append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />');
+  }
+  
+  // Close popup if any are open
+  function initBookmarklet($) {
+    if ($('#'+popupName).length) {
+      closeBookmarklet();
+      return;
+    }
+    
+    var $popup = $( JST['templates/bookmarklet']({popupName: popupName}) ).appendTo( $('body') );
+    $popup.on('click', '#ppClose', closeBookmarklet);
+    var $content = $popup.find('#ppBookmarkletContent');
+    $content.html( JST['templates/bookmarklet_potentials']({images: getPotentialImages()}) );
+    $popup.on('click', 'a.potentialImage', switchToPinView);
+  }
+  
+  function closeBookmarklet() {
+    $('#'+popupName).fadeOut(function() {
+      $(this).remove();
+    });
+    return false;
+  }
+  
+  // Return list of all sufficiently-large images on this page (excluding .nonPinnable, which will be applied to any images in our bookmarklet)
+  function getPotentialImages() {
+    var allImages = $("img:not('.nonPinnable')");
+
+    return allImages.filter(function() {
+      return ($(this).width() >= minImageWidth) && ($(this).height() >= minImageHeight);
+    });
+  }
+  
+  function switchToPinView(e) {
+    var link = $(e.currentTarget);
+    alert("When implemented, will open a pin dialog with this image: " + link.find('img').attr('src') );
+    // TODO - implement pin dialog
+    
+    return false;
+  }
+  
+})(document, jQuery);
