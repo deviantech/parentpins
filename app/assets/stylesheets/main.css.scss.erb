@@ -14,13 +14,17 @@ body.background_cover {
   background-attachment:scroll;
   background-clip:border-box;
   background-color:#fff;
-  /* KALI TODO: can use 1 - 10 here. Need to insert random number in this range */
-  background-image:url(/assets/backgrounds/1.jpg);
   background-position: 0 0;
   background-repeat:no-repeat;
   background-size:cover;
   .footer_wrapper {
     background:rgba(255, 255, 255, 0.6); } }
+
+<% (1..NUM_BACKGROUND_IMAGES).each do |i| %>
+body.background_cover_<%= i %> {
+  background-image:url(/assets/backgrounds/<%= i %>.jpg);
+}
+<% end %>
 
 /* typography */
 
