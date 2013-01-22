@@ -92,8 +92,7 @@ $(document).ready(function() {
     e.preventDefault();
     e.stopPropagation();
     
-    var cssClass = $(this).parent().attr('class');
-    $('.'+cssClass).find('.following-action').each(function() {
+    $(this).parent().find('.following-action').each(function() {
       if ($(this).hasClass('hidden')) {
         $(this).removeClass('hidden');
       } else {
