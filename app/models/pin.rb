@@ -20,8 +20,7 @@ class Pin < ActiveRecord::Base
   validates_presence_of :user, :name, :board, :category, :age_group
   validates_inclusion_of :kind, :in => VALID_TYPES
   validates_length_of :description, :maximum => 255, :allow_blank => true
-  validate :url_format
-  validate :not_previously_pinned, :on => :create
+  validate :url_format, :not_previously_pinned, :on => :create
   
   before_update   :update_board_images_on_change
   after_create    :update_board_add_image
@@ -100,7 +99,12 @@ class Pin < ActiveRecord::Base
   protected
   
   def url_format
-    errors.add(:url, "doesn't look like a valid link") unless url.to_s.match(/\Ahttps?:\/\//)
+    begin
+      uri = URI.parse(url.to_s)
+      self.domain = uri.host
+    rescue
+      errors.add(:url, "doesn't appear to be a valid link")
+    end
   end
   
   def not_previously_pinned
