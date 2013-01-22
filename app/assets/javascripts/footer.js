@@ -18,3 +18,4 @@
 //= require jquery.scrollTo
 //= require application
 //= require pagination
+//= require lte-ie7
