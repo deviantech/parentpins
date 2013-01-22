@@ -33,7 +33,9 @@ $(document).ready(function() {
   // Masonry layout a la pinterest
   $('#pins').masonry({
      columnWidth: 50,
-     itemSelector: '.pin'
+     itemSelector: '.pin',
+     isAnimatedFromBottom: true,
+     isFitWidth: true
   }).imagesLoaded(function() {
      $('#pins').masonry('reload');
   });
