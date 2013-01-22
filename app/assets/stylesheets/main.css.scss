@@ -1360,23 +1360,21 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
         -o-transition: all 0.4s ease-in-out;
         transition: all 0.4s ease-in-out; } } } }
     
-.timeline {        
-  .user_results {
-    width:800px;
-    margin:0;
-    .users {
-      li:before {
-        background:none; }
-      li {
-        float:left;
-        margin:0 !important;
-        background:none;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-        border:none;
-        width:200px;
-        padding:0 0 10px 0; } } } }
+.timeline.user_results {        
+  width:800px;
+  margin:0;
+  li.users:before {
+    background:none; }
+  li.users {
+    float:left;
+    margin:0 !important;
+    background:none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border:none;
+    width:200px;
+    padding:0 0 10px 0; } }
 
 /* page modifier styles */
 
