@@ -7,10 +7,8 @@ class SearchController < ApplicationController
   
   def index
     klass = @kind.capitalize.singularize.constantize
-
-    # TODO: eventually use sphinx or similar for indexing
-    @results = klass.search(params[:q])
-    # TODO - add pagination
+    @results = klass.search(params[:q]).page(params[:page])
+    support_ajax_pagination
   end
 
   protected

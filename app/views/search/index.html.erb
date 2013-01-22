@@ -15,9 +15,13 @@
     <% if @results.blank? %>
       <div class="empty-results">No <%= @kind.pluralize %> to show.</div>
     <% else %>
-      <ul class="timeline<%= ' followers_list user_results' if @kind = 'user' %>" id="pins">
+      <ul class="ajax-pagination timeline<%= ' followers_list user_results' if @kind = 'user' %>" id="pins">
         <%= render @results %>
       </ul>
+      
+      <div class="clearfix"></div>
+      <%= pagination_link %>
+      <div class="clearfix"></div>
     <% end %>
   </div>
   <div class="clearfix"></div>

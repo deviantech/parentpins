@@ -8,14 +8,16 @@ class ApplicationController < ActionController::Base
 
   def paginate_pins(base_scope)
     @results = @pins = base_scope.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
-    respond_to do |format|
-      format.html {}
-      format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
-    end
+    support_ajax_pagination
   end
 
   def paginate_boards(base_scope)
     @results = @boards = base_scope.in_category(@category).in_age_group(@age_group).page(params[:page])
+    support_ajax_pagination
+  end
+
+  def support_ajax_pagination
+    # Note that if we render(@results) directly, the format gets confused and Rails won't find our templates
     respond_to do |format|
       format.html {}
       format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
