@@ -16,6 +16,7 @@
 //= require spinners.min.js
 //= require jquery.masonry
 //= require jquery.scrollTo
+//= require bootstrap/alerts
 //= require application
 //= require pagination
 //= require lte-ie7

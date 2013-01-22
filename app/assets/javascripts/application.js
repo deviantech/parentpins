@@ -1,6 +1,6 @@
 var Global = Global || {};
 
-$(document).ready(function() {  
+$(document).ready(function() {    
   // Handle ajax/modals
   $ajax = $('<div id="ajax-modal-target"></div>').appendTo($('body'));
 
