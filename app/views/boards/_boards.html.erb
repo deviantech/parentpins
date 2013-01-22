@@ -2,7 +2,11 @@
 
 
 <% if @boards.blank? %>
-  <div class="empty-results">No boards to show.</div>
+  <div class="empty-results">
+    <h2>Create your first board.</h2>
+    <p>You can create boards for any parenting topic to help other parents learn what interests you.</p>
+    <p><%= link_to 'Add your first board', new_board_path, :class => 'ajax btn large primary' %></p>
+  </div>
 <% else %>
   <ul class="boards ajax-pagination">
     <%= render @boards %>

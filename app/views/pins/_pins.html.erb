@@ -1,7 +1,11 @@
 <%= render 'shared/filters' %>
 
 <% if @pins.blank? %>
-  <div class="empty-results">No pins to show.</div>
+  <div class="empty-results">
+    <h2>Start adding pins to this board.</h2> 
+    <p>You can add pins by repining other parent's pins, using the <a href="#">ParentPin button</a> to add pins from any web site, or by creating pins directly below.</p> 
+    <p><%= link_to 'Add your first pin to this board', new_pin_path, :class => 'ajax btn large primary' %></p>
+  </div>
 <% else %>
   <ul class="timeline ajax-pagination" id="pins">
     <%= render @pins %>
