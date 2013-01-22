@@ -306,7 +306,8 @@ a {
     position: relative;
     width:70px !important;
     a {
-      padding:20px 0; } }
+      padding:20px 0;
+      color:#fff; } }
   .profile_link, .add_pins {
     border: none;
     text-align: center;
@@ -583,7 +584,7 @@ a {
     border-bottom: 1px dashed #C2C2C2;
     span {
       display: block;
-      font-size: 14px;
+      font-size: 18px;
       margin: 0;
       padding: 0; } }
   h2 {
@@ -630,7 +631,6 @@ a {
   margin: 10px 0;
   padding: 10px 0;
   width: auto;
-  height:auto !important;
   li {
     display: block;
     float: left;
@@ -652,7 +652,7 @@ a {
   .actions {
     display: block;
     background: none repeat scroll 0 0 rgba(255, 255, 255, 0.5);
-    padding: 20px 20px 10px;
+    padding: 20px 20px 6px;
     position: absolute;
     width: 182px;
     height: 70px;
@@ -666,7 +666,7 @@ a {
     -o-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
     transition: left .2s ease-in-out, top .2s ease-in-out .2s; }
   &:hover .actions {
-    top: -1px; } }
+    top: -11px; } }
 #pin-preview {
   .pin .actions, .pin .comment {
     display: none;
@@ -701,7 +701,7 @@ a {
   content:"\e011";
   font-size:13px; }
 
-.repin_button {
+.repin_button, .edit_button {
   margin-right: 10px; }
 
 .comment_button {
@@ -1224,8 +1224,11 @@ input:focus[placeholder], textarea:focus[placeholder] {
       width:280px;
       margin:0 14px;
       h3 {
-        font-size:16px;
-        font-weight:400; } 
+        background: transparent;
+        font-size: 18px;
+        font-weight: 400;
+        margin: 0 0 10px;
+        overflow: visible; } 
       label span {
         display:block;
         font-weight:100;
