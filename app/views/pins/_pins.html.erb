@@ -2,9 +2,8 @@
 
 <% if @pins.blank? %>
   <div class="empty-results">
-    <h2>Start adding pins to this board.</h2> 
-    <p>You can add pins by repining other parent's pins, using the <a href="#">ParentPin button</a> to add pins from any web site, or by creating pins directly below.</p> 
-    <p><%= link_to 'Add your first pin to this board', new_pin_path, :class => 'ajax btn large primary' %></p>
+    <h2>Ramp up your activity feed.</h2> 
+    <p>Follow another parent or a parent's board to see their pins here.</p>
   </div>
 <% else %>
   <ul class="timeline ajax-pagination" id="pins">
