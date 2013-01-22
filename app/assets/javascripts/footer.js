@@ -12,11 +12,14 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require helpers
 //= require spinners.min.js
 //= require jquery.masonry
 //= require jquery.scrollTo
 //= require bootstrap/alerts
+//= require app/helpers
+//= require app/flash
+//= require app/modal
+//= require app/scrollToTop
 //= require application
 //= require pagination
 //= require lte-ie7

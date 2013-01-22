@@ -1,3 +1,5 @@
+var Global = Global || {};
+
 // Avoid `console` errors in browsers that lack a console.
 (function() {
     var method;
@@ -71,4 +73,22 @@ function deparam(url) {
   });
   
   return params;
+}
+
+function updateProfileCounters(data) {
+  for (var key in data) {
+    var target = $('.nav_profile a.'+key);
+    if (target.length) {
+      target.find('.counter').html(data[key]);
+      var label = capitalize(key);
+      if (key != 'following') {
+        if (data[key] == 1) {
+          if (label.substr(label.length-1, 1) == 's') label = label.substr(0, label.length - 1);
+        } else {
+          if (label.substr(label.length-1, 1) != 's') label = label + 's';
+        }
+      }
+      target.find('.label').html(label);
+    }
+  }
 }

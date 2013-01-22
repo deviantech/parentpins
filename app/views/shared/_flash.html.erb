@@ -1,13 +1,12 @@
-<%# can have classes of .alert, .error, or .success %>
-<% unless flash.blank? %>
-  <div id="flash">
+<div id="flash" class="<%= 'hidden' if flash.blank? %>">
+  <% unless flash.blank? %>    
     <% flash.each do |name, msg| %>
       <% if msg.is_a?(String) %>
         <div class="flashmsg alert alert-<%= name %>">
           <a class="close" data-dismiss="alert">&#215;</a>
-          <%= content_tag :div, msg, :id => "flash_#{name}" %>
+          <%= content_tag :div, msg, :class => "flash_wrapper" %>
         </div>
       <% end %>
     <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>

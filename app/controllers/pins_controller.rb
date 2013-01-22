@@ -3,7 +3,8 @@ class PinsController < ApplicationController
   before_filter :find_current_users_pin,  :only => [:edit, :update, :destroy]
   before_filter :find_any_pin,            :only => [:show, :add_comment, :like, :unlike]
   before_filter :set_filters,             :only => [:index]
-    
+  respond_to :html, :js
+  
   def index
     # TODO: include user or else cache username
     paginate_pins Pin.trending
@@ -21,12 +22,13 @@ class PinsController < ApplicationController
   
   def create
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
-    if @pin.save
-      redirect_to board_profile_path(current_user, @pin.board), :notice => 'Added new pin'
-    else
-      flash.now[:error] = "Unable to save pin"
-      render :action => 'new'
-    end    
+    respond_with @pin
+    # if @pin.save
+    #   redirect_to board_profile_path(current_user, @pin.board), :notice => 'Added new pin'
+    # else
+    #   flash.now[:error] = "Unable to save pin"
+    #   render :action => 'new'
+    # end    
   end
   
   def show

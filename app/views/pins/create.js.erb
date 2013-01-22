@@ -1,0 +1,3 @@
+<%# Note that this is only called when pin is created via ajax, which is only when repinning %>
+
+Global.addFlashMsg('Added new pin: <%= escape_javascript(@pin.name) %>');

@@ -1,35 +1,4 @@
-var Global = Global || {};
-
-$(document).ready(function() {    
-  // Handle ajax/modals
-  $ajax = $('<div id="ajax-modal-target"></div>').appendTo($('body'));
-
-  $(document).on('click', '.ajax', function(e) {
-    var url = $(this).attr('href');
-    $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn();
-    
-    url = urlPlusParamString(url, 'via=ajax');
-    $ajax.load(url);
-    e.preventDefault();
-    e.stopPropagation();
-  });
-
-  function closeModal() {
-    $('#ajax-modal-target:visible').fadeOut(function() {
-      $(this).empty().show();
-    });
-  }
-    
-  // Only close overlay if click was ON overlay, not just bubbled up to it
-  $(document).on('click', '.pinly_overlay', function(e) {
-    if ($(e.target).hasClass('pinly_overlay')) closeModal();
-  });
-  
-  $(document).keyup(function(e) {   // Escape key
-    if (e.keyCode == 27) { closeModal(); }
-  });
-
-  
+$(document).ready(function() {      
   // Masonry layout a la pinterest
   $('#pins').masonry({
      columnWidth: 50,
@@ -121,49 +90,4 @@ $(document).ready(function() {
       window.location = urlPossiblyReplacingParam(window.location + '', $select.attr('name'), $select.val());
     }
   });
-});
-
-function updateProfileCounters(data) {
-  for (var key in data) {
-    var target = $('.nav_profile a.'+key);
-    if (target.length) {
-      target.find('.counter').html(data[key]);
-      var label = capitalize(key);
-      if (key != 'following') {
-        if (data[key] == 1) {
-          if (label.substr(label.length-1, 1) == 's') label = label.substr(0, label.length - 1);
-        } else {
-          if (label.substr(label.length-1, 1) != 's') label = label + 's';
-        }
-      }
-      target.find('.label').html(label);
-    }
-  }
-}
-
-$(function () { // run this code on page load (AKA DOM load)
-  
-    /* set variables locally for increased performance */
-    var scroll_timer;
-    var displayed = false;
-    var $message = $('#scroll_to_top a');
-    var $window = $(window);
-    var top = $(document.body).children(0).position().top;
-  
-    /* react to scroll event on window */
-    $window.scroll(function () {
-        window.clearTimeout(scroll_timer);
-        scroll_timer = window.setTimeout(function () { // use a timer for performance
-            if($window.scrollTop() <= top) // hide if at the top of the page
-            {
-                displayed = false;
-                $message.fadeOut(500);
-            }
-            else if(displayed == false) // show if scrolling down
-            {
-                displayed = true;
-                $message.stop(true, true).show().click(function () { $message.fadeOut(500); });
-            }
-        }, 100);
-    });
 });

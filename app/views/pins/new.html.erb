@@ -1,10 +1,11 @@
+<% repining = @pin.new_record? && @source %>
 <div class="<%= modal_class %>">
   <div class="wrapper profile">
 
     <div class="content board board_wide">
-      <%= form_for(@pin, :html => {:class => 'form narrow edit_pin'}) do |f| %>
+      <%= form_for(@pin, :html => {:class => 'form narrow edit_pin'}, :remote => repining) do |f| %>
         <h1><%= @pin.new_record? ? 'Add' : 'Edit' %> Your Pin</h1>
-        <% if @pin.new_record? && @source %>
+        <% if repining %>
           <%= hidden_field_tag :source_id, @source.id %>
         <% end %>
       
@@ -15,7 +16,7 @@
           <%= f.text_field :name, :placeholder => 'Pin Title' %>
         </div>
 
-        <% unless @pin.new_record? && @source %>
+        <% unless repining %>
           <div class="field">
             <%= f.label :url, 'Pin Link' %>
             <%= f.text_field :url, :placeholder => 'Pin URL' %>
@@ -37,7 +38,7 @@
           <%= f.select :age_group_id, select_options(AgeGroup.all) %>
         </div>
       
-        <% unless @pin.new_record? && @source %>
+        <% unless repining %>
           <div class="field pin_image_loader">
             <%= f.label :image, "#{@pin.image? ? 'Update' : 'Upload an'} Image" %>
             <%= image_tag(@pin.image.v55.url) if @pin.image? %>
