@@ -13,10 +13,11 @@
   var minJQversion = '1.6.0';
   var desiredJQversion = '1.8.2';
   var minImageWidth = 192;
-  var minImageHeight = 100;
+  var minImageHeight = 150;
+  var pinBaseUrl = '//<%= HOST %><%= Rails.application.routes.url_helpers.bookmarklet_path %>';
   
 	// check prior inclusion and version
-	if (window.jQuery === undefined || window.jQuery.fn.jquery < minJQversion) {
+	if (jQuery === undefined || jQuery.fn.jquery < minJQversion) {
 		var done = false;
 		var script = document.createElement("script");
 		script.src = "//ajax.googleapis.com/ajax/libs/jquery/" + desiredJQversion + "/jquery.min.js";
@@ -33,7 +34,7 @@
   
   // Just to be sure $ is available and not in compatibility mode on the host site
   function initBookmarkletWrapper() {
-    (window.myBookmarklet = function() {
+    (window.ppBookmarklet = function() {
       includeBookmarkletStyles();
       initBookmarklet(jQuery);
     })();
@@ -55,6 +56,12 @@
     $popup.on('click', '#ppClose', closeBookmarklet);
     var $content = $popup.find('#ppBookmarkletContent');
     $content.html( JST['templates/bookmarklet_potentials']({images: getPotentialImages()}) );
+
+    // Adjust height to exactly match image
+    $('.potentialImage').each(function() {
+      var $container = $(this);
+      $container.css('height', $container.find('img').height() + 'px');
+    });
     $popup.on('click', 'a.potentialImage', switchToPinView);
   }
   
@@ -76,10 +83,9 @@
   
   function switchToPinView(e) {
     var link = $(e.currentTarget);
-    alert("When implemented, will open a pin dialog with this image: " + link.find('img').attr('src') );
-    // TODO - implement pin dialog
-    
+    var url = pinBaseUrl + '?media=' + link.find('img').attr('src');
+    window.open(url,'pinWindow','height=320,width=630,menubar=no,status=no,toolbar=no,location=no');
     return false;
   }
   
-})(document, jQuery);
+})(document, window.jQuery);

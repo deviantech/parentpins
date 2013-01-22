@@ -10,6 +10,11 @@ class PinsController < ApplicationController
     paginate_pins Pin.trending
   end
   
+  def bookmarklet
+    # TODO - implement this, kinda like new but optimized for popup window
+    render(:layout => false)
+  end
+    
   def new
     if current_user.boards.empty?
       session[:post_board_url] = url_for(params.merge(:via => nil))

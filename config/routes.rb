@@ -11,8 +11,9 @@ ParentPins::Application.routes.draw do
       post 'unlike'
     end
   end
-  
+
   get "/pins/:source_id/repin" => "pins#new", :as => 'repin'
+  get "/pins/new/bookmarklet" => "pins#bookmarklet", :as => 'bookmarklet'
   
   # Pretty URLs for pin subtypes
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
