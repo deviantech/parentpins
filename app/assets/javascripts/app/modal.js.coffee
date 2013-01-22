@@ -1,7 +1,10 @@
-# Define global function
+# Define global functions
 Global.closeModal = -> 
   $('#ajax-modal-target:visible').fadeOut ->
     $(this).empty().show();
+
+Global.updateModalContents = (html) ->
+  $('#ajax-modal-target:visible .pinly_overlay').html(html)
 
 # Only close overlay if click was ON overlay, not just bubbled up to it
 $(document).on 'click', '.pinly_overlay', (e) ->

@@ -1,3 +1,9 @@
 <%# Note that this is only called when pin is created via ajax, which is only when repinning %>
 
-Global.addFlashMsg('Added new pin: <%= escape_javascript(@pin.name) %>');
+<% if @pin.new_record? %>
+  Global.updateModalContents("<%= escape_javascript(render(:template => 'pins/new')) %>");
+  $('.pinly_overlay').scrollTo(0);
+<% else %>
+  Global.closeModal();
+  Global.addFlashMsg('Added new pin: <%= escape_javascript(@pin.name) %>');
+<% end %>

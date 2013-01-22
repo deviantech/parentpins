@@ -22,13 +22,8 @@ class PinsController < ApplicationController
   
   def create
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
-    respond_with @pin
-    # if @pin.save
-    #   redirect_to board_profile_path(current_user, @pin.board), :notice => 'Added new pin'
-    # else
-    #   flash.now[:error] = "Unable to save pin"
-    #   render :action => 'new'
-    # end    
+    @pin.save
+    respond_with @pin, :location => board_profile_path(current_user, @pin.board)
   end
   
   def show
