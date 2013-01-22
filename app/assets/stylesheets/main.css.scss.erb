@@ -642,10 +642,7 @@ a {
   margin: 10px 0;
   padding: 10px 0;
   width: auto;
-  .left {
-    float: left;
-    clear: left; }
-  .right {}
+  height:auto !important;
   li {
     display: block;
     float: left;
@@ -654,25 +651,10 @@ a {
     width: 192px;
     margin: 10px 0 14px 6px;
     list-style: none;
-    border: 1px solid #fff;
     padding: 15px 15px 0;
-    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-    &:before {
-      content: "";
-      display: block;
-      position: absolute;
-      height: 20px;
-      width: 23px; }
-    &:nth-of-type(odd):before {
-      right: -24px;
-      top: 20px;
-      background: transparent url(/assets/ui/timeline_marker.png) -10px 0 no-repeat; }
-    &:nth-of-type(even):before {
-      left: -24px;
-      top: 120px;
-      background: transparent url(/assets/ui/timeline_marker.png) -20px 0 no-repeat; } } }
+    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); } }
 
 .pin {
   font-size: 11px;
@@ -1382,10 +1364,8 @@ input:focus[placeholder], textarea:focus[placeholder] {
       transition: all 0.4s ease-in-out; } } }
     
 .timeline.user_results {        
-  width:800px;
+  width:auto;
   margin:0;
-  li.users:before {
-    background:none; }
   li.users {
     float:left;
     margin:0 !important;
@@ -1395,7 +1375,23 @@ input:focus[placeholder], textarea:focus[placeholder] {
     box-shadow: none;
     border:none;
     width:200px;
-    padding:0 0 10px 0; } }
+    padding:0 0 10px 0; }
+  li.user {  
+    padding:10px 15px;
+    a {
+      text-decoration:none;
+      font-size:13px;}
+    img {
+      display:block;
+      float:left;
+      margin:0 10px 0 0;
+      -moz-border-radius: 30px;
+      -webkit-border-radius: 30px;
+      border-radius: 30px;
+      border:4px solid #cd2479; } 
+    span {
+      display:block;
+      margin:0 0 0 65px; } } }
 
 /* page modifier styles */
 
