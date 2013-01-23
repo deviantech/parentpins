@@ -110,7 +110,13 @@ class Pin < ActiveRecord::Base
   
   def url_format
     begin
-      uri = URI.parse(url.to_s)
+      if url.to_s.starts_with?(/https?/i)
+        uri = URI.parse(url.to_s)
+      else
+        uri = URI.join(self.via_url.to_s, url.to_s)
+        self.url = uri.to_s
+      end
+      
       self.domain = uri.host
     rescue
       errors.add(:url, "doesn't appear to be a valid link")

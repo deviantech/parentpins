@@ -5,8 +5,8 @@ class BookmarkletController < ApplicationController
       session[:bookmarklet_pin] = url_for(params)
       redirect_to(:action => 'login') and return 
     end
-    
-    @pin = params[:pin] ? Pin.new(params[:pin]) : Pin.from_bookmarklet(current_user, params)
+        
+    @pin = params[:pin] ? Pin.new(params[:pin]) : Pin.from_bookmarklet(current_user, params)    
   end
   
   def create

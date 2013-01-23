@@ -103,6 +103,9 @@
       description: $("meta[name='description']").attr('content')
     };
     
+    if (args['title'].length > 100) args['title'] = args['title'].substr(0, 100) + '...';
+    if (args['description'].length > 250) args['description'] = args['description'].substr(0, 250) + '...';
+    
     // Set URL to current location, unless image was in a link. Then set URL to the link href, and via to the current URL.
     if (potential.data('link').length) args['url'] = potential.data('link');
     args[ (args['url'].length ? 'via' : 'url') ] = window.location + '';
