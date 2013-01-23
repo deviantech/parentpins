@@ -11,4 +11,5 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
+//= require app/helpers
 //= require add-pin
