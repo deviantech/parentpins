@@ -5,7 +5,9 @@
 var $pinForm = $('form.pin_form');
 var $outletBase = $('#pin-preview');
 
-if ($pinForm.length) {
+if ($pinForm.length) initPinForm();
+  
+function initPinForm() {
   var $pinImage = $outletBase.find('.pin_image');
   $pinImage.data('original-src', $pinImage.attr('src'));
 
@@ -21,15 +23,19 @@ if ($pinForm.length) {
     }, 5);
   });
   
-  $pinForm.on('change', '#pin_kind', function(e) {
-    if ($(this).val() == 'product') {
+  $pinForm.on('change', '#pin_kind', setPriceVisibility);
+  setPriceVisibility();
+  
+  function setPriceVisibility() {
+    if ($pinForm.find('#pin_kind').val() == 'product') {
       $pinForm.find('.field-price').removeClass('hidden').slideDown();
       $('#pin_price').trigger('change');
     } else {
       $pinForm.find('.field-price').slideUp();
       $outletBase.find('.bind-price').addClass('hidden');
     }
-  });
+  }
+  
   
   
   
@@ -63,67 +69,67 @@ if ($pinForm.length) {
   $pinForm.find('input, select').each(function() {
     if ($(this).attr('id') && $(this).attr('type') != 'hidden') updateBindingsFor(this);
   });
-}
 
-function updateBindingsFor(field, target) {
-  $field = $(field);
-  if ( !$field.attr('id').match(/(pin_|board_)/) ) {
-    console.log('Attempting to update bindings for unknown field: ', target);
-  }
-  var target = target || $field.attr('id').replace(/pin_/, '').replace(/attributes_/, '');
-
-  var $outlet = $outletBase.find('.bind-'+target);
-  $outlet.html( displayValueForField(target, $field, $outlet) );
-}
-
-// Handle custom things like showing/hiding price
-function displayValueForField(name, $field, $outlet) {  
-  if (name == 'price') {
-    var value = moneyToFloat($field.val());
-
-    if (isNaN(value) || value == 0) {
-      $outlet.addClass('hidden');
-    } else {
-      $outlet.removeClass('hidden');
+  // Update the display outlet with the current value of the input field
+  function updateBindingsFor(field, target) {
+    $field = $(field);
+    if ( !$field.attr('id').match(/(pin_|board_)/) ) {
+      console.log('Attempting to update bindings for unknown field: ', target);
     }
-    return value.formatMoney();
+    var target = target || $field.attr('id').replace(/pin_/, '').replace(/attributes_/, '');
+
+    var $outlet = $outletBase.find('.bind-'+target);
+    $outlet.html( displayValueForField(target, $field, $outlet) );
   }
-  
-  if (name == 'kind') {
-    return capitalize($field.val()) + ':';
-  }
-  
-  if (name == 'board_id') {
-    if ($field[0].tagName == 'SELECT' && $field.val().length) { // Existing board
-      return 'onto <a href="/boards/' + $field.val() + '">' + $field.find('option:selected').text() + '</a>';
-    }
-    // Name of a not-yet-created board
-    var boardName = $boardName.val().length ? $boardName.val() : 'New Board';
-    return 'onto <strong>'+boardName+'</strong>';
-  }
-  
-  if (name == 'image') {
-    if ($field.val() == '') {
-      $('.pin_image_holder').addClass('hidden');
-      $pinImage.removeClass('hidden');
-      
-      if ($('#pin_image_cache').val() == '') {
-        $pinImage.attr('src', '/assets/fallback/pin_image/v192_default.jpg');
+
+  // Handle custom things like showing/hiding price, adding link to board name, etc.
+  function displayValueForField(name, $field, $outlet) {  
+    if (name == 'price') {
+      var value = moneyToFloat($field.val());
+
+      if (isNaN(value) || value == 0) {
+        $outlet.addClass('hidden');
       } else {
-        $pinImage.attr('src', $pinImage.data('original-src'));
-      }      
-    } else {
-      $pinImage.addClass('hidden');
-      if (!$('.pin_image_holder').length) {
-        $pinImage.parent().append( $('<div class="pin_image_holder">New Image</div>') );
+        $outlet.removeClass('hidden');
       }
-      $('.pin_image_holder').removeClass('hidden');      
+      return value.formatMoney();
     }
-  }
   
-  var value = $field.val();
-  if (!value.length) value = $field.attr('placeholder');
-  return value;
+    if (name == 'kind') {
+      return capitalize($field.val()) + ':';
+    }
+  
+    if (name == 'board_id') {
+      if ($field[0].tagName == 'SELECT' && $field.val().length) { // Existing board
+        return 'onto <a href="/boards/' + $field.val() + '">' + $field.find('option:selected').text() + '</a>';
+      }
+      // Name of a not-yet-created board
+      var boardName = $boardName.val().length ? $boardName.val() : 'New Board';
+      return 'onto <strong>'+boardName+'</strong>';
+    }
+  
+    if (name == 'image') {
+      if ($field.val() == '') {
+        $('.pin_image_holder').addClass('hidden');
+        $pinImage.removeClass('hidden');
+      
+        if ($('#pin_image_cache').val() == '') {
+          $pinImage.attr('src', '/assets/fallback/pin_image/v192_default.jpg');
+        } else {
+          $pinImage.attr('src', $pinImage.data('original-src'));
+        }      
+      } else {
+        $pinImage.addClass('hidden');
+        if (!$('.pin_image_holder').length) {
+          $pinImage.parent().append( $('<div class="pin_image_holder">New Image</div>') );
+        }
+        $('.pin_image_holder').removeClass('hidden');      
+      }
+    }
+  
+    var value = $field.val();
+    if (!value.length) value = $field.attr('placeholder');
+    return value;
+  }
+
 }
-
-
