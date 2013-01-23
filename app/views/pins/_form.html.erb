@@ -4,33 +4,30 @@
 </div>
 
 <div class="field">
-  <%= f.label :kind, 'Type of Pin' %>
-  <%= f.select :kind, select_options(Pin::VALID_TYPES) %>
-</div>
-
-<div class="field">
-  <%= f.label :category_id, 'Select a Category' %>
-  <%= f.select :category_id, select_options(Category.all) %>
-</div>
-
-<div class="field">
-  <%= f.label :age_group_id, 'Select an Age Group' %>
-  <%= f.select :age_group_id, select_options(AgeGroup.all) %>
-</div>
-
-<div class="field">
-  <%= f.label :board_id, 'Pin to Which Board?' %>
-  <%= f.select :board_id, select_options(current_user.boards) %>
-</div>
-
-<div class="field">
   <%= f.label :description, 'Description...' %>
   <%= f.text_area :description, :placeholder => "First few sentences please, this Pin will link to the full article" %>        
+</div>
+
+<div class="field">
+  <%= f.label :kind, 'Type of Pin' %>
+  <%= f.select :kind, select_options(Pin::VALID_TYPES) %>
 </div>
 
 <div class="field field-price<%= ' hidden' unless @pin.kind == 'product' %>">
   <%= f.label :price, 'Price' %>
   <%= f.text_field :price, :placeholder => "$0.00" %>
+</div>
+
+<div class="field">
+  <%= f.label :board_id, 'Pin to Which Board?' %>
+  <%= f.select :board_id, select_options([['Add New Board', '']] + current_user.boards) %>
+</div>
+
+<div class="board-fields">
+  <% f.object.board || f.object.build_board %>
+  <%= f.fields_for :board do |b| %>
+    <%= render 'boards/form', :f => b %>
+  <% end %>
 </div>
 
 <div class="submit">

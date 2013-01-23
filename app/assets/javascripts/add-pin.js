@@ -15,8 +15,8 @@ if ($pinForm.length) {
 
   // Note that keyup doesn't have the correct originating e.target.
   $pinForm.on('keypress', function(e) {
+    // The setTimeout seems to be necessary to wait until the new value is applied. 
     setTimeout(function(){
-      // The setTimeout seems to be necessary to wait until the new value is applied. 
       updateBindingsFor(e.target);
     }, 5);
   });
@@ -31,25 +31,53 @@ if ($pinForm.length) {
     }
   });
   
+  
+  
+  // Board selection shows/hides category and age group.
+  var $pinBoard = $pinForm.find('#pin_board_id');
+  var $boardFields = $pinForm.find('.board-fields');
+  function setBoardFieldVisibility() {
+    $pinBoard.val() == '' ? $boardFields.slideDown() : $boardFields.slideUp();
+  }
+  $pinForm.on('change', '#pin_board_id', setBoardFieldVisibility);
+  
+  // Board selection: initially set to first non-blank value, make user manually choose to add new board
+  if ($pinBoard.val() == '') {
+    var defaultVal = $pinBoard.find('option').filter(function() {
+      return $(this).val() != '';
+    }).first().val();
+    if (defaultVal) $pinBoard.val(defaultVal);
+  }
+  setBoardFieldVisibility();
+  
+  // Board selection: if creating new board, autofill display name from board name field, not board_id selection
+  var $boardName = $pinForm.find('#pin_board_attributes_name');
+  $boardName.on('keypress', function() {
+    // The setTimeout seems to be necessary to wait until the new value is applied. 
+    setTimeout(function(){
+      updateBindingsFor($boardName, 'board_id');
+    }, 5);
+  });
+  
   // Trigger once to initialize
   $pinForm.find('input, select').each(function() {
     if ($(this).attr('id') && $(this).attr('type') != 'hidden') updateBindingsFor(this);
   });
 }
 
-function updateBindingsFor(target) {
-  var $field = $(target);
-  if (($field.attr('id') || '').indexOf('pin_') == -1) {
+function updateBindingsFor(field, target) {
+  $field = $(field);
+  if ( !$field.attr('id').match(/(pin_|board_)/) ) {
     console.log('Attempting to update bindings for unknown field: ', target);
   }
-  var name = $field.attr('id').replace(/pin_/, '');
+  var target = target || $field.attr('id').replace(/pin_/, '').replace(/attributes_/, '');
 
-  var $outlet = $outletBase.find('.bind-'+name);
-  $outlet.html( displayValueForField(name, $field, $outlet) );
+  var $outlet = $outletBase.find('.bind-'+target);
+  $outlet.html( displayValueForField(target, $field, $outlet) );
 }
 
 // Handle custom things like showing/hiding price
-function displayValueForField(name, $field, $outlet) {
+function displayValueForField(name, $field, $outlet) {  
   if (name == 'price') {
     var value = moneyToFloat($field.val());
 
@@ -66,7 +94,12 @@ function displayValueForField(name, $field, $outlet) {
   }
   
   if (name == 'board_id') {
-    return 'onto <a href="/boards/' + $field.val() + '">' + $field.find('option:selected').text() + '</a>';
+    if ($field[0].tagName == 'SELECT' && $field.val().length) { // Existing board
+      return 'onto <a href="/boards/' + $field.val() + '">' + $field.find('option:selected').text() + '</a>';
+    }
+    // Name of a not-yet-created board
+    var boardName = $boardName.val().length ? $boardName.val() : 'New Board';
+    return 'onto <strong>'+boardName+'</strong>';
   }
   
   if (name == 'image') {

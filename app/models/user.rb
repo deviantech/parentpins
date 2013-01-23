@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
   validates_numericality_of :kids, :allow_blank => true
   before_destroy :clean_redis
 
+  # Used by searchable
+  scope :newest_first, order('id DESC')
 
   def name
     username.to_s.titleize

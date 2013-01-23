@@ -1,6 +1,6 @@
 class Pin < ActiveRecord::Base
   extend Searchable
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :age_group_id, :board_id, :category_id, :image, :image_cache, :via_url, :remote_image_url
+  attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :via_url, :remote_image_url
 
   VALID_TYPES = %w(product article idea)
   REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
@@ -18,7 +18,10 @@ class Pin < ActiveRecord::Base
   has_many    :repins,           :class_name => 'Pin',    :foreign_key => 'repinned_from_id'
   
   has_many :comments, :dependent => :destroy
+
+  accepts_nested_attributes_for :board
   
+  before_validation :copy_board_settings
   validates_presence_of :user, :name, :board, :category, :age_group
   validates_inclusion_of :kind, :in => VALID_TYPES
   validates_length_of :description, :maximum => 255, :allow_blank => true
@@ -43,10 +46,14 @@ class Pin < ActiveRecord::Base
   }
   
   scope :with_image, where('image <> ""')
+  
+  scope :newest_first, order('id DESC')
+  
+  default_scope newest_first
 
   def self.trending
     # TODO: implement some sort of trending logic if kind/category aren't provided
-    order('id DESC')
+    newest_first
   end
   
   def self.from_bookmarklet(user, params)
@@ -106,6 +113,13 @@ class Pin < ActiveRecord::Base
   end
     
   protected
+  
+  def copy_board_settings
+    return true unless board
+    
+    self.age_group_id = board.age_group_id
+    self.category_id = board.category_id
+  end
   
   def url_format
     begin

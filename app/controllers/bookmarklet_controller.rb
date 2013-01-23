@@ -6,7 +6,7 @@ class BookmarkletController < ApplicationController
       redirect_to(popup_login_path) and return 
     end
         
-    @pin = params[:pin] ? Pin.new(params[:pin]) : Pin.from_bookmarklet(current_user, params)    
+    @pin = params[:pin] ? Pin.new(params[:pin]) : Pin.from_bookmarklet(current_user, params)
   end
   
   def create
@@ -22,9 +22,5 @@ class BookmarkletController < ApplicationController
     session[:popup_login] = true # On login error, redirect back here rather than normal sessions/new path
     render 'devise/sessions/new', :layout => 'bookmarklet'
   end
-  
-  protected
-  
-  
-  
+    
 end
