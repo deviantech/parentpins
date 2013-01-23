@@ -1,5 +1,5 @@
-//= require templates/bookmarklet
-//= require templates/bookmarklet_potentials
+//= require templates/bookmarklet/base
+//= require templates/bookmarklet/potentials
 
 
 // TODO - how to not mess with calling page's jquery version?
@@ -9,12 +9,12 @@
 (function(document, jQuery) {
   // Config
   var popupName = 'ParentPinBookmarklet';
-  var cssUrl = '//<%= HOST %>/assets/bookmarklet/base.css';
+  var cssUrl = '//<%= HOST %>/assets/bookmarklet.css';
   var minJQversion = '1.6.0';
   var desiredJQversion = '1.8.2';
   var minImageWidth = 192;
   var minImageHeight = 150;
-  var pinBaseUrl = '//<%= HOST %><%= Rails.application.routes.url_helpers.bookmarklet_path %>';
+  var pinBaseUrl = '//<%= HOST %><%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>';
   var popupHeight = 640;
   var popupWidth = 640;
   
@@ -55,10 +55,10 @@
       return;
     }
     
-    var $popup = $( JST['templates/bookmarklet']({popupName: popupName}) ).appendTo( $('body') );
+    var $popup = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') );
     $popup.on('click', '#ppClose', closeBookmarklet);
     var $content = $popup.find('#ppBookmarkletContent');
-    $content.html( JST['templates/bookmarklet_potentials']({images: getPotentialImages()}) );
+    $content.html( JST['templates/bookmarklet/potentials']({images: getPotentialImages()}) );
 
     // Adjust height to exactly match image
     $('.potentialImage').each(function() {

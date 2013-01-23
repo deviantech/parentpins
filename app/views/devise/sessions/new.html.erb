@@ -22,7 +22,7 @@
       </div>
       
       <div class="buttons">
-        <% if params[:controller] == 'bookmarklet' %>
+        <% if params[:controller] == 'popup' %>
           <%- resource_class.omniauth_providers.each do |provider| %>
             <p><%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), :class => 'btn btn_facebook' %></p>
           <% end -%>

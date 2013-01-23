@@ -4,7 +4,7 @@
 
 <div class="form">
   <%= error_messages_for @pin %>
-  <%= form_for @pin, :url => popup_pin_url, :html => {:class => 'pin_form'} do |f| %>
+  <%= form_for @pin, :url => pin_from_popup_url, :html => {:class => 'pin_form'} do |f| %>
     <%= f.hidden_field :url %>
     <%= f.hidden_field :via_url %>
     <%= f.hidden_field :image_cache %>

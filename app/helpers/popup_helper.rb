@@ -1,4 +1,4 @@
-module BookmarkletHelper
+module PopupHelper
   
   # Allow re-using devise forms: https://github.com/plataformatec/devise/wiki/How-To:-Display-a-custom-sign_in-form-anywhere-in-your-app
   def resource_name

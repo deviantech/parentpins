@@ -14,9 +14,9 @@ ParentPins::Application.routes.draw do
 
   get "/pins/:source_id/repin" => "pins#new", :as => 'repin'
   
-  get   "/pins/new/popup" => "bookmarklet#pin",     :as => 'bookmarklet'
-  post  "/pins/new/popup" => "bookmarklet#create",  :as => 'popup_pin'
-  get   "/popup/login" => "bookmarklet#login",     :as => 'popup_login'
+  get   "/popup/pins/new" => "popup#pin",     :as => 'bookmarklet_popup'
+  post  "/popup/pins/new" => "popup#create",  :as => 'pin_from_popup'
+  get   "/popup/login"    => "popup#login",   :as => 'popup_login'
   
   # Pretty URLs for pin subtypes
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'

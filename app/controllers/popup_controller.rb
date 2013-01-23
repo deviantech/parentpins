@@ -1,4 +1,4 @@
-class BookmarkletController < ApplicationController
+class PopupController < ApplicationController
   
   def pin
     unless user_signed_in?
@@ -21,7 +21,7 @@ class BookmarkletController < ApplicationController
   
   def login
     session[:popup_login] = true # On login error, redirect back here rather than normal sessions/new path
-    render 'devise/sessions/new', :layout => 'bookmarklet'
+    render 'devise/sessions/new', :layout => 'popup'
   end
     
 end

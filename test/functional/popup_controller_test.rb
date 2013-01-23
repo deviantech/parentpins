@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class BookmarkletControllerTest < ActionController::TestCase
+class PopupControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end
