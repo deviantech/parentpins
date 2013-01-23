@@ -1,0 +1,18 @@
+html {
+  background: url("/assets/patterns/debut_light.png") repeat scroll 0 0 white;
+}
+#bookmarklet_wrapper {
+  margin: 20px;
+  width: 600px;
+  .media-preview {
+    width: 192px;
+    float: left;
+    img {
+      width: 192px;
+    }
+  }
+  .form {
+    margin-left: 200px;
+    width: 400px;
+  }
+}

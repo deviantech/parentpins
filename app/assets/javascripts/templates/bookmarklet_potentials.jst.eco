@@ -1,6 +1,6 @@
 <% if @images.length: %>
   <% for image in @images: %>
-    <a class="potentialImage" href="#">
+    <a class="potentialImage" href="#" data-link="<%= image.link %>">
       <img src="<%= image.src %>" alt=""/>
       <span class="details"><%= image.height %> x <%= image.width %></span>
     </a>

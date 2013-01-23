@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130122185532) do
+ActiveRecord::Schema.define(:version => 20130123043558) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -77,6 +77,9 @@ ActiveRecord::Schema.define(:version => 20130122185532) do
     t.integer  "original_poster_id"
     t.integer  "comments_count",                                    :default => 0
     t.string   "domain"
+    t.string   "via_url"
+    t.integer  "repinned_from_id"
+    t.integer  "repin_count",                                       :default => 0
   end
 
   add_index "pins", ["age_group_id"], :name => "index_pins_on_age_group_id"
