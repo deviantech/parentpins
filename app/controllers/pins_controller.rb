@@ -21,9 +21,11 @@ class PinsController < ApplicationController
   end
   
   def create
+    conditionally_remove_nested_attributes(:pin, :board)
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
     @pin.save
-    respond_with @pin, :location => board_profile_path(current_user, @pin.board)
+    success_url = (@pin.board && !@pin.board.new_record?) ? board_profile_path(current_user, @pin.board) : '/'
+    respond_with @pin, :location => success_url
   end
   
   def show

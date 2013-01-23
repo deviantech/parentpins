@@ -24,7 +24,7 @@
 </div>
 
 <div class="board-fields">
-  <% f.object.board || f.object.build_board %>
+  <% @pin.build_board if @pin.board.blank? || !@pin.board.new_record? %>
   <%= f.fields_for :board do |b| %>
     <%= render 'boards/form', :f => b %>
   <% end %>

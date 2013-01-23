@@ -5,7 +5,7 @@ class Board < ActiveRecord::Base
   belongs_to :user
   belongs_to :category
   belongs_to :age_group
-  has_many :pins, :dependent => :destroy, :after_add => :set_cover_from_pin, :before_remove => :update_cover_before_pin_removed
+  has_many :pins, :dependent => :destroy, :after_add => :set_cover_from_pin, :before_remove => :update_cover_before_pin_removed, :inverse_of => :board
   
   attr_protected :id
   
@@ -42,4 +42,5 @@ class Board < ActiveRecord::Base
       update_attribute :remove_cover, true
     end
   end
+    
 end

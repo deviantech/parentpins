@@ -1,6 +1,6 @@
 class Pin < ActiveRecord::Base
   extend Searchable
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :via_url, :remote_image_url
+  attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :via_url, :remote_image_url, :board_attributes
 
   VALID_TYPES = %w(product article idea)
   REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
@@ -10,7 +10,7 @@ class Pin < ActiveRecord::Base
   belongs_to :user
   belongs_to :via,              :class_name => 'User'
   belongs_to :original_poster,  :class_name => 'User'
-  belongs_to :board
+  belongs_to :board,            :inverse_of => :pins
   belongs_to :category
   belongs_to :age_group
   
@@ -81,6 +81,11 @@ class Pin < ActiveRecord::Base
       pin.via = source.user unless source.user == user
       pin.user = user
       pin.board_id ||= user.boards.first.try(:id)
+      
+      if pin.board # If just created board from scratch
+        pin.board.user_id ||= user.id
+      end
+      
       pin
     else
       user.pins.new(other_params)

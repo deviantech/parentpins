@@ -6,15 +6,6 @@ class ApplicationController < ActionController::Base
   
   private
 
-  # def after_sign_in_path_for(resource)
-  #   sign_in_url = url_for(:action => 'new', :controller => 'sessions', :only_path => false, :protocol => 'http')
-  #   if request.referer == sign_in_url
-  #     super
-  #   else
-  #     stored_location_for(resource) || request.referer || root_path
-  #   end
-  # end
-
   def paginate_pins(base_scope)
     @results = @pins = base_scope.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
     support_ajax_pagination
@@ -47,5 +38,14 @@ class ApplicationController < ActionController::Base
     # Returning false means no layout. Returning nil resets layout, and it will be set as usual by inheritance
     self.class.layout(params[:via] == 'ajax' ? false : nil)
   end
-  
+
+  # e.g. pin form has board fields, but even if they have values no new board should be created if user set the pin's board_id
+  def conditionally_remove_nested_attributes(parent_model, nested_model)
+    params[parent_model] ||= {}
+    params[parent_model]["#{nested_model}_attributes"] ||= {} 
+    # NOTE: if use for other associations, handle that they may not have user_id defined
+    params[parent_model]["#{nested_model}_attributes"]['user_id'] = current_user.try(:id)
+    return true if params[parent_model]["#{nested_model}_id"].blank?
+    params[parent_model].delete("#{nested_model}_attributes")
+  end
 end

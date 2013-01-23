@@ -10,6 +10,7 @@ class BookmarkletController < ApplicationController
   end
   
   def create
+    conditionally_remove_nested_attributes(:pin, :board)
     @pin = Pin.from_bookmarklet(current_user, params)
     if @pin.update_attributes(params[:pin])
       render :text => %Q{<script type="text/javascript" charset="utf-8">window.close();</script>}
