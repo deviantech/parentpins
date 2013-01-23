@@ -52,7 +52,7 @@ and (max-device-width : 1024px) {
   .profile .follow_list #pins {margin-left:280px !important;width:260px;}
   .follow_list .users li:hover .follow_in_list {display:none;}
   .profile .content #pins.edit_preview_pin {margin-left:500px !important;}
-  .form.edit_pin:after {right:-220px;}
+  .form.pin_form:after {right:-220px;}
 }
 
 /* iPads (landscape) ----------- */

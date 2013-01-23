@@ -38,4 +38,5 @@ class ApplicationController < ActionController::Base
     # Returning false means no layout. Returning nil resets layout, and it will be set as usual by inheritance
     self.class.layout(params[:via] == 'ajax' ? false : nil)
   end
+  
 end

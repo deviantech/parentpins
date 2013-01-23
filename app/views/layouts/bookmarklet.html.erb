@@ -12,5 +12,6 @@
     <div id="bookmarklet_wrapper">
         <%= content_for?(:content) ? yield(:content) : yield %>
     </div>
+    <%= javascript_include_tag "pin_popup" %>
   </body>
 </html>

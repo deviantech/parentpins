@@ -3,7 +3,7 @@
   <div class="wrapper profile">
 
     <div class="content board board_wide">
-      <%= form_for(@pin, :html => {:class => 'form narrow edit_pin'}, :remote => repinning) do |f| %>
+      <%= form_for(@pin, :html => {:class => 'form narrow pin_form'}, :remote => repinning) do |f| %>
         <h1><%= @pin.new_record? ? 'Add' : 'Edit' %> Your Pin</h1>
         <% if repinning %>
           <%= hidden_field_tag :source_id, @source.id %>

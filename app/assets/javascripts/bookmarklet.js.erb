@@ -15,6 +15,8 @@
   var minImageWidth = 192;
   var minImageHeight = 150;
   var pinBaseUrl = '//<%= HOST %><%= Rails.application.routes.url_helpers.bookmarklet_path %>';
+  var popupHeight = 640;
+  var popupWidth = 640;
   
 	// check prior inclusion and version
 	if (jQuery === undefined || jQuery.fn.jquery < minJQversion) {
@@ -106,7 +108,8 @@
     args[ (args['url'].length ? 'via' : 'url') ] = window.location + '';
     
     var url = pinBaseUrl + '?' + $.param(args);
-    window.open(url,'pinWindow','height=640,width=640,menubar=no,status=no,toolbar=no,location=no');
+    var pinWindow = window.open(url,'pinWindow','height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no');
+    if (window.focus) pinWindow.focus();
     return false;
   }
   

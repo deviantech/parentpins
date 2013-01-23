@@ -1,15 +1,17 @@
 <div class="media-preview">
-  <%= image_tag params[:media] %>
+  <%= image_tag @pin.image? ? @pin.image.v192.url : params[:media] %>
 </div>
 
 <div class="form">
   <%= error_messages_for @pin %>
-  
-  <%= form_for @pin, :url => popup_pin_url do |f| %>
+  <%= form_for @pin, :url => popup_pin_url, :html => {:class => 'pin_form'} do |f| %>
     <%= f.hidden_field :url %>
     <%= f.hidden_field :via_url %>
     <%= f.hidden_field :image_cache %>
-    <%= f.hidden_field :remote_image_url, :value => params[:media] %>
+
+    <% unless params[:media].blank? %>
+      <%= f.hidden_field :remote_image_url, :value => params[:media] %>
+    <% end %>
     
     <%= render 'pins/form', :f => f %>    
   <% end %>
