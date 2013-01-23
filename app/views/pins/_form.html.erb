@@ -20,7 +20,7 @@
 
 <div class="field">
   <%= f.label :board_id, 'Pin to Which Board?' %>
-  <%= f.select :board_id, select_options([['Add New Board', '']] + current_user.boards) %>
+  <%= f.select :board_id, select_options([['Add New Board', '']] + current_user.boards), {}, 'data-new-board' => @pin.board.try(:new_record?) %>
 </div>
 
 <div class="board-fields">

@@ -47,8 +47,10 @@ function initPinForm() {
   }
   $pinForm.on('change', '#pin_board_id', setBoardFieldVisibility);
   
-  // Board selection: initially set to first non-blank value, make user manually choose to add new board
-  if ($pinBoard.val() == '') {
+  // Board selection: initially set to first non-blank value, make user manually choose to add new board (unless user submitted form to make a new board, but was invalid)
+  if ($pinBoard.data('new-board')) {
+    $pinBoard.val('');
+  } else if ($pinBoard.val() == '') {
     var defaultVal = $pinBoard.find('option').filter(function() {
       return $(this).val() != '';
     }).first().val();
