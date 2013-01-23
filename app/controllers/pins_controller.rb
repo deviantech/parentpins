@@ -10,12 +10,7 @@ class PinsController < ApplicationController
     paginate_pins Pin.trending
   end
       
-  def new
-    if current_user.boards.empty?
-      session[:post_board_url] = url_for(params.merge(:via => nil))
-      redirect_to(new_board_path(:via => params[:via]), :notice => 'Please add a board first!') and return
-    end
-    
+  def new    
     # If a source ID is passed, allow repinning
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
   end

@@ -4,14 +4,7 @@
     <div class="content board board_wide">
       <%= form_for(@board, :html => {:class => 'form narrow edit_board'}) do |f| %>
         <%= hidden_field_tag :via %>
-        <h1>
-          <% if session[:post_board_url] %>
-            Please Create Board
-            <div class="subtitle">before adding new pins</div>
-          <% else %>
-            <%= @board.new_record? ? 'Add' : 'Edit' %> Your Board
-          <% end %>
-        </h1>
+        <h1><%= @board.new_record? ? 'Add' : 'Edit' %> Your Board</h1>
 
         <%= error_messages_for @board %>
 
