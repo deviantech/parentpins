@@ -25,6 +25,7 @@ end
 
 gem 'jquery-rails'
 gem 'will_paginate'
+gem 'roadie'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

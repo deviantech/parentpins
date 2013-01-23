@@ -62,5 +62,14 @@ module ParentPins
     
     # Devise suggests this when deploying on Heroku
     config.assets.initialize_on_precompile = false
+    
+    # Set host for use elsewhere
+    HOST = if Rails.env.production?  then 'www.parentpins.com'
+        elsif Rails.env.staging?     then 'staging.parentpins.com'
+        else                              'localhost:3000'
+        end
+
+    # Set base host for emails
+    config.action_mailer.default_url_options = { :host => HOST }
   end
 end
