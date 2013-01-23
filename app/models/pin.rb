@@ -21,7 +21,7 @@ class Pin < ActiveRecord::Base
 
   accepts_nested_attributes_for :board
   
-  before_validation :copy_board_settings
+  before_validation :copy_board_settings,       :on => :create
   validates_presence_of :user, :name, :board, :category, :age_group
   validates_inclusion_of :kind, :in => VALID_TYPES
   validates_length_of :description, :maximum => 255, :allow_blank => true

@@ -12,6 +12,8 @@ class Board < ActiveRecord::Base
   validates_length_of :name, :minimum => 2
   validates_uniqueness_of :name, :scope => :user_id
   
+  after_save :update_pin_settings
+  
   scope :in_category, lambda {|cat|
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
   }
@@ -36,6 +38,17 @@ class Board < ActiveRecord::Base
       update_attribute :cover, next_pin.image
     else
       update_attribute :remove_cover, true
+    end
+  end
+
+  protected
+  
+  def update_pin_settings
+    return true unless category_id_changed?
+    
+    pins.find_each do |pin|
+      pin.send(:copy_board_settings)
+      pin.save
     end
   end
     
