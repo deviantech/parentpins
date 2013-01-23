@@ -4,11 +4,11 @@ Global.closeModal = ->
     $(this).empty().show();
 
 Global.updateModalContents = (html) ->
-  $('#ajax-modal-target:visible .pinly_overlay').html(html)
+  $('#ajax-modal-target:visible .modal_overlay').html(html)
 
-# Only close overlay if click was ON overlay, not just bubbled up to it
-$(document).on 'click', '.pinly_overlay', (e) ->
-  Global.closeModal() if $(e.target).hasClass('pinly_overlay')
+# Only close overlay if click was ON overlay (or various other wrapper elements), not just bubbled up to it.
+$(document).on 'click', '.modal_overlay', (e) ->
+  Global.closeModal() if $(e.target).hasClass('modal_overlay') || $(e.target).hasClass('wrapper') || $(e.target).hasClass('content')
 
 # Close if escape key pressed
 $(document).on 'keyup', (e) ->
@@ -19,7 +19,7 @@ $ajax = $('#ajax-modal-target').length || $('<div id="ajax-modal-target"></div>'
 
 # Catch clicks on ajax links
 $(document).on 'click', 'a.ajax', (e) ->
-  $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/></div>').fadeIn()
+  $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="Loading" class="loader_icon"/></div>').fadeIn()
   url = urlPlusParamString($(this).attr('href'), 'via=ajax')
   $ajax.load(url)
   e.preventDefault()

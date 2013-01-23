@@ -1,0 +1,179 @@
+/* modal */
+
+.modal_overlay {
+  background: rgba(255,255,255,0.9);
+  display: block;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  overflow-y:scroll;
+  z-index:3;
+  .board_wide {
+    padding-top:20px; }
+  .profile.wrapper {
+    margin-top: 0px;
+    width:820px; }
+}
+
+.pinly {
+  position: static;
+  width: 500px;
+  padding: 10px;
+  margin: 20px auto;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  -webkit-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+  -moz-box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+  box-shadow: 0 0px 9px rgba(0, 10, 10, 0.38);
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  .pin_type {
+    background: none repeat scroll 0 0 #656565;
+    color: #FFFFFF;
+    display: block;
+    float: right;
+    font-size: 12px;
+    padding: 4px 8px;
+    position: relative; }
+  .btn.action {
+    position:relative;
+    float:none; }
+  .attribute {
+    padding: 10px 0;
+    border-bottom: 1px dashed #ddd;
+    margin: 0 0 10px 0;
+    position: relative;
+    min-height: 50px;
+    .avatar_link {
+      position: absolute;
+      display: block;
+      top: 5px;
+      left: 3px;
+      height: 50px;
+      width: 50px; } }
+  .attribute_info {
+    margin: 0 10px 0 65px;
+    a {
+      text-decoration: none;
+      font-size: 17px;
+      line-height: 20px;
+      &:hover {
+        color: #222; } }
+    p {
+      padding: 0;
+      margin: 0;
+      color: #999;
+      font-size: 12px; }
+    span {
+      padding: 0;
+      margin: 0;
+      color: #000;
+      font-size: 18px;
+      font-weight: bold; }
+    .time {
+      font-style: italic;
+      a {
+        font-style:normal;
+        font-size: 12px; } } }
+  h2 {
+    color: #222;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    a {
+      color: #222;
+      text-decoration: none;
+      &:hover {
+        color: #E55799; } } }
+  p {
+    margin:0 0 8px 0; }
+  .image_link {
+    display: block;
+    overflow: hidden;
+    width: 500px;
+    background: #eee;
+    margin:0 0 10px 0;
+    position:relative;
+    .price {
+      background: #f9f9f9;
+      padding: 5px 10px;
+      width: 145px;
+      color: #333;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+      z-index: 1;
+      position: absolute;
+      top: 14px;
+      left: -50px;
+      text-align: center;
+      font-weight: normal;
+      font-size: 16px;
+      -moz-transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+      -o-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+      -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27);
+      -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27); }
+    img {
+      display: block;
+      margin: 0 auto; } }
+  .stats {
+    color: #999;
+    font-size: 12px;
+    margin: 0;
+    padding: 0 0 10px 0;
+    span {
+      padding: 0 10px 0 0; } }
+  .detail {
+    position: relative;
+    .actions {
+      padding: 10px 10px 20px 30px;
+      position: absolute;
+      top: 80px;
+      left: 520px;
+      width: 100px;
+      background: transparent; }
+    .actions a {
+      margin-top: 15px !important; } } 
+  .comments {
+    background:#fff;
+    border-top:1px dashed #ddd;
+    margin:0 -10px;
+    padding:10px; 
+    .comment {
+      background:#fff;
+      margin:0 0 10px 0;
+      position:relative;
+      .avatar_link {
+        position:absolute;
+        top:0;
+        left:0; } 
+      .user_info {
+        padding-left:60px;
+        font-size:13px;
+        a {
+          font-weight:bold;
+          text-decoration:none; } } }
+    textarea {
+      border: 1px solid #ccc;
+      font-size: 11px;
+      height: 30px;
+      padding: 4px 3px 3px;
+      width: 335px;
+      margin: 0 0 5px 0;
+      -webkit-box-shadow: 0 0 2px rgba(255, 255, 255, 0.75) inset;
+      -moz-box-shadow: 0 0 2px rgba(255, 255, 255, 0.75) inset;
+      box-shadow: 0 0 2px rgba(255, 255, 255, 0.75) inset;
+      color: #8C7E7E;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+      resize: none; } 
+    .comment_button {
+      padding:8px 10px 6px 25px;
+      top:-6px; } } }

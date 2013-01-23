@@ -2,7 +2,7 @@
 
 <% if @pin.new_record? %>
   Global.updateModalContents("<%= escape_javascript(render(:template => 'pins/new')) %>");
-  $('.pinly_overlay').scrollTo(0);
+  $('.modal_overlay').scrollTo(0);
 <% else %>
   Global.closeModal();
   Global.addFlashMsg('Added new pin: <%= escape_javascript(@pin.name) %>');

@@ -44,9 +44,9 @@ $(document).ready(function() {
     $this = $(this);
     var focusable;
     
-    if ($this.parents('.pinly_overlay').length) {
-      focusable = $this.parents('.pinly_overlay').find('.comment_form textarea').first();
-      $this.parents('.pinly_overlay').scrollTo(focusable);
+    if ($this.parents('.modal_overlay').length) {
+      focusable = $this.parents('.modal_overlay').find('.comment_form textarea').first();
+      $this.parents('.modal_overlay').scrollTo(focusable);
     } else {
       focusable = $this.parents('li.pin').find('.comment textarea').first();
       $.scrollTo( $this.parents('li.pin') );

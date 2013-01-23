@@ -26,7 +26,7 @@ module ApplicationHelper
   end
 
   def modal_class
-    params[:via] == 'ajax' ? 'pinly_overlay' : nil
+    params[:via] == 'ajax' ? 'modal_overlay' : nil
   end
 
   def select_options(collection)

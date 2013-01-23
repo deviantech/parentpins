@@ -31,7 +31,7 @@ function initAjaxPagination(paginationButton) {
   
     $btn.fadeOut();
     $('.loader_icon').hide(); // If any were animating nicely, just get rid of them
-    var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="loading icon" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
+    var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="Loading" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
 
     if (nextAjaxPage) {
       nextAjaxPage = nextAjaxPage + 1;
