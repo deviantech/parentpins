@@ -1,0 +1,5 @@
+<%= form_for Comment.new, :url => add_comment_pin_path(commentable) do |f| %>
+  <%= link_to image_tag(current_user.avatar.v30.url, :alt => "#{current_user.name}'s avatar"), profile_path(current_user), :title => current_user.name %>
+  <%= f.text_area :body, :placeholder => 'Add a comment...', :maxlength => 10000 %>
+  <%= f.submit 'Comment', :class => "Button WhiteButton Button11 grid_comment_button", :style => 'display: inline-block' %>
+<% end %>

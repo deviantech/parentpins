@@ -15,7 +15,11 @@
     </li>
   </ul>
   <div id="more_comments" style="display:none;">
-    <div>comment on this board form here</div>
+    
+    <div>
+      <%= render 'shared/comment_form', :commentable => @board %>
+    </div>
+    
     <ul class="comments">
       <li>
         <a href="#" class="avatar"><img src="/assets/fallback/user_avatar/v50_default.jpg"></a>
