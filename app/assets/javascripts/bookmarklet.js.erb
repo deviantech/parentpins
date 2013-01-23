@@ -24,6 +24,7 @@
 		script.onload = script.onreadystatechange = function(){
 			if (!done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")) {
 				done = true;
+				jQuery = window.jQuery;
 				initBookmarkletWrapper();
 			}
 		};
@@ -78,13 +79,34 @@
 
     return allImages.filter(function() {
       return ($(this).width() >= minImageWidth) && ($(this).height() >= minImageHeight);
+    }).map(function(){
+      // Collect image information, send it to the template
+      var $img = $(this);
+      return {
+        src:    $img.attr('src'),
+        height: $img.attr('height'),
+        width:  $img.attr('width'),
+        link:   $img.parents('a').first().attr('href')
+      };
     });
   }
   
   function switchToPinView(e) {
-    var link = $(e.currentTarget);
-    var url = pinBaseUrl + '?media=' + link.find('img').attr('src');
-    window.open(url,'pinWindow','height=320,width=630,menubar=no,status=no,toolbar=no,location=no');
+    e.preventDefault();
+    var potential = $(e.currentTarget);
+    
+    var args = {
+      media: potential.find('img').attr('src'),
+      title: document.title,
+      description: $("meta[name='description']").attr('content')
+    };
+    
+    // Set URL to current location, unless image was in a link. Then set URL to the link href, and via to the current URL.
+    if (potential.data('link').length) args['url'] = potential.data('link');
+    args[ (args['url'].length ? 'via' : 'url') ] = window.location + '';
+    
+    var url = pinBaseUrl + '?' + $.param(args);
+    window.open(url,'pinWindow','height=640,width=640,menubar=no,status=no,toolbar=no,location=no');
     return false;
   }
   

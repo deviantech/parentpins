@@ -9,19 +9,14 @@ class PinsController < ApplicationController
     # TODO: include user or else cache username
     paginate_pins Pin.trending
   end
-  
-  def bookmarklet
-    # TODO - implement this, kinda like new but optimized for popup window
-    render(:layout => false)
-  end
-    
+      
   def new
     if current_user.boards.empty?
       session[:post_board_url] = url_for(params.merge(:via => nil))
       redirect_to(new_board_path(:via => params[:via]), :notice => 'Please add a board first!') and return
     end
     
-    # If a source ID is passed, allow repining
+    # If a source ID is passed, allow repinning
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
   end
   

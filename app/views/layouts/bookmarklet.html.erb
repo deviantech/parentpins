@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>ParentPins - Add New Pin</title>    
+    <%= stylesheet_link_tag "pinwindow", :media => "all" %>
+    <%= csrf_meta_tags %>    
+  </head>
+  
+  <body>
+    <div id="bookmarklet_wrapper">
+        <%= content_for?(:content) ? yield(:content) : yield %>
+    </div>
+  </body>
+</html>
