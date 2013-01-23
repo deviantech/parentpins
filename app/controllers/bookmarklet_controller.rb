@@ -2,8 +2,8 @@ class BookmarkletController < ApplicationController
   
   def pin
     unless user_signed_in?
-      session[:bookmarklet_pin] = url_for(params)
-      redirect_to(:action => 'login') and return 
+      session[:user_return_to] = url_for(params)
+      redirect_to(popup_login_path) and return 
     end
         
     @pin = params[:pin] ? Pin.new(params[:pin]) : Pin.from_bookmarklet(current_user, params)    
@@ -19,7 +19,8 @@ class BookmarkletController < ApplicationController
   end
   
   def login
-    render :text => 'TODO: replace with a narrower login form'
+    session[:popup_login] = true # On login error, redirect back here rather than normal sessions/new path
+    render 'devise/sessions/new', :layout => 'bookmarklet'
   end
   
   protected

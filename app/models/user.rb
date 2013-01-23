@@ -1,4 +1,3 @@
-require 'searchable'
 class User < ActiveRecord::Base
   extend Searchable
   # Include default devise modules. Others available are:

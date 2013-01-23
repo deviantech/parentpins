@@ -2,7 +2,7 @@
 
   <div class="content board board_wide">
     <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form narrow'}) do |f| %>
-      <h1>Login to Your Account</h1>
+      <h1>Login to ParentPins</h1>
       <div class="field">
         <%= f.text_field :username, :placeholder => 'Username' %>
       </div>
@@ -22,7 +22,13 @@
       </div>
       
       <div class="buttons">
-        <%= render "devise/shared/links" %>
+        <% if params[:controller] == 'bookmarklet' %>
+          <%- resource_class.omniauth_providers.each do |provider| %>
+            <p><%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), :class => 'btn btn_facebook' %></p>
+          <% end -%>
+        <% else %>
+          <%= render "devise/shared/links" %>
+        <% end %>
       </div>
     <% end %>
 

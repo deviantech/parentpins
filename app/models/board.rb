@@ -1,4 +1,3 @@
-require 'searchable'
 class Board < ActiveRecord::Base
   extend Searchable
   mount_uploader :cover, BoardCoverUploader
