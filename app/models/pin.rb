@@ -1,6 +1,6 @@
 class Pin < ActiveRecord::Base
   extend Searchable
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :via_url, :remote_image_url, :board_attributes
+  attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :via_url, :remote_image_url, :board_attributes, :age_group_id
 
   VALID_TYPES = %w(product article idea)
   REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
@@ -121,8 +121,6 @@ class Pin < ActiveRecord::Base
   
   def copy_board_settings
     return true unless board
-    
-    self.age_group_id = board.age_group_id
     self.category_id = board.category_id
   end
   

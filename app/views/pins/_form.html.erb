@@ -19,6 +19,11 @@
 </div>
 
 <div class="field">
+  <%= f.label :age_group_id, "Select an Age Group" %>
+  <%= f.select :age_group_id, select_options(AgeGroup.all) %>
+</div>
+
+<div class="field">
   <%= f.label :board_id, 'Pin to Which Board?' %>
   <%= f.select :board_id, select_options([['Add New Board', '']] + current_user.boards), {}, 'data-new-board' => @pin.board.try(:new_record?) %>
 </div>

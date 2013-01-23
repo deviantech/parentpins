@@ -4,20 +4,16 @@ class Board < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :category
-  belongs_to :age_group
   has_many :pins, :dependent => :destroy, :after_add => :set_cover_from_pin, :before_remove => :update_cover_before_pin_removed, :inverse_of => :board
   
-  attr_protected :id
+  attr_protected :id, :created_at, :updated_at
   
-  validates_presence_of :user, :category, :age_group
+  validates_presence_of :user, :category
   validates_length_of :name, :minimum => 2
   validates_uniqueness_of :name, :scope => :user_id
   
   scope :in_category, lambda {|cat|
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
-  }
-  scope :in_age_group, lambda {|groups|  # Note age group isn't required, and this doesn't currently let us filter by ONLY NONE SPECIFIED
-    groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
   }
   scope :newest_first, order('id DESC')
   
