@@ -93,22 +93,25 @@
     });
   }
   
+  function ensureDefinedAndLimited(str, limit) {
+    if (!str || typeof(str) == 'undefined' || str == 'undefined') return '';
+    if (str.length > limit) return str.substr(0, limit) + '...';
+    return str;
+  }
+  
   function switchToPinView(e) {
     e.preventDefault();
     var potential = $(e.currentTarget);
     
     var args = {
       media: potential.find('img').attr('src'),
-      title: document.title,
-      description: $("meta[name='description']").attr('content')
+      title: ensureDefinedAndLimited(document.title, 100),
+      description: ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)
     };
-    
-    if (args['title'].length > 100) args['title'] = args['title'].substr(0, 100) + '...';
-    if (args['description'].length > 250) args['description'] = args['description'].substr(0, 250) + '...';
-    
+        
     // Set URL to current location, unless image was in a link. Then set URL to the link href, and via to the current URL.
     if (potential.data('link').length) args['url'] = potential.data('link');
-    args[ (args['url'].length ? 'via' : 'url') ] = window.location + '';
+    args[ ((args['url'] && args['url'].length) ? 'via' : 'url') ] = window.location + '';
     
     var url = pinBaseUrl + '?' + $.param(args);
     var pinWindow = window.open(url,'pinWindow','height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no');
