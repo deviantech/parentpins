@@ -8,7 +8,7 @@
       </a>
       Board: <%= @board.name %>
       <% if current_user == @board.user %>
-        <span class="action">[ <%= link_to 'edit', edit_board_path(@board), :class => 'ajax' %> ]</span>
+        <span class="action"><%= link_to 'edit', edit_board_path(@board), :class => 'ajax' %></span>
       <% end %>
     </h1>
     
