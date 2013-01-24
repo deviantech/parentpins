@@ -24,7 +24,8 @@
           <ul>
             <li><%= link_to '+ Pin', new_pin_path, :class => 'ajax' %></li>
             <li><%= link_to '+ Board', new_board_path, :class => 'ajax' %></li>
-            <li><%= bookmarklet_link %></li>
+            <!-- Kali Todo: remove if fasle when kyle can run this again locally -->
+            <% if false %><li><%= bookmarklet_link %></li><% end %>
           </ul>
         </li>
         <li class="profile_link">
