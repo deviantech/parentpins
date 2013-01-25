@@ -13,8 +13,8 @@ class PopupController < ApplicationController
   
   def create
     conditionally_remove_nested_attributes(:pin, :board)
-    @pin = Pin.from_bookmarklet(current_user, params)
-    if @pin.update_attributes(params[:pin])
+    @pin = current_user.pins.new(params[:pin])
+    if @pin.save
       render :text => %Q{<script type="text/javascript" charset="utf-8">window.close();</script>}
     else
       render 'pin'
@@ -30,7 +30,6 @@ class PopupController < ApplicationController
   
   def process_base64_urls
     return true if params[:media].blank? || !params[:media].match(/base64[;:,]/)
-    
     tempfile = Tempfile.new("base64file")
     tempfile.binmode
     tempfile.write( Base64.decode64(params[:media]) )
