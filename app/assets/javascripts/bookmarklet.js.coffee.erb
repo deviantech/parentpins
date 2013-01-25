@@ -107,6 +107,11 @@ do(document = document, jQuery = window.jQuery) ->
     $toTest.appendTo(Global.imageTestbed) 
   
   startEvaluatingPotentialImages = ->
+    evaluatePotentialImages()
+    # TODO: if we want to check again when ajax completes...
+    # $(document).bind('ajaxComplete', evaluatePotentialImages)
+    
+  evaluatePotentialImages = ->
     allImages = $("img:not('.nonPinnable')")
   
     # For every image, if it's in a link to another image, use the linked one instead. Otherwise, add to considering list if img is large enough
