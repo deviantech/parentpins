@@ -156,7 +156,7 @@ class Pin < ActiveRecord::Base
   
   def not_previously_pinned
     return true unless board
-    return true if board.pins.where(:url => self.url).where(:image => self['image']).empty?
+    return true if board.pins.where(:url => self.url).where(:image => image.filename).empty?
     errors.add :base, "You've already pinned this on this board!"
   end
 
