@@ -1,6 +1,6 @@
 //= require templates/bookmarklet/base
 //= require templates/bookmarklet/potential
-
+//= require jquery-imagesloaded-min.module
 
 # TODO - how to not mess with calling page's jquery version?
 # TODO - how to wrap template includes in our bigger function to protect it from including page's content?
@@ -31,14 +31,16 @@ do(document = document, jQuery = window.jQuery) ->
         if !done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")
           done = true;
           jQuery = window.jQuery
-          initBookmarkletWrapper()
+          initBookmarkletWithjQuery()
       document.getElementsByTagName("head")[0].appendChild(script)
     else
-      initBookmarkletWrapper()
+      initBookmarkletWithjQuery()
 
   # Just to be sure $ is available and not in compatibility mode on the host site
-  initBookmarkletWrapper = ->
+  initBookmarkletWithjQuery = ->
     includeBookmarkletStyles()
+    # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with
+    require('jquery-imagesloaded-min');
     initBookmarklet(jQuery)
   
   includeBookmarkletStyles = ->
@@ -88,10 +90,11 @@ do(document = document, jQuery = window.jQuery) ->
     sizes = []
 
     for img in images
-      # If images are the same size, it doesn't matter which we choose, so OK to use dictionary here
-      data = imgToData(img)
-      mapping[data.area] = data
-      sizes.push(data.area)
+      do (img) ->
+        # If images are the same size, it doesn't matter which we choose, so OK to use dictionary here
+        data = imgToData(img)
+        mapping[data.area] = data
+        sizes.push(data.area)
     
     # Grab largest
     biggest = mapping[ Math.max.apply(Math, sizes) ]    
@@ -104,6 +107,7 @@ do(document = document, jQuery = window.jQuery) ->
   
     # For every image, if it's in a link to another image, use the linked one instead. Otherwise, add to considering list if img is large enough
     for img in allImages
+      do (img) ->
         $img = $(img)
         imgExt = $img.attr('src').match(/\.\w+?$/)
         link = $img.parents('a').first().attr('href')
@@ -112,7 +116,8 @@ do(document = document, jQuery = window.jQuery) ->
         if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)
           linked = new Image()
           linked.src = link
-          linked.onload = ->
+          $(linked).imagesLoaded ->
+            console.log($(linked).height())
             evaluateImageSet(img, linked)
             
         else
