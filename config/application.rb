@@ -64,9 +64,9 @@ module ParentPins
     config.assets.initialize_on_precompile = false
     
     # Set host for use elsewhere
-    host = if Rails.env.production?  then 'www.parentpins.com'
-        elsif Rails.env.staging?     then 'staging.parentpins.com'
-        else                              'localhost:3000'
+    host = if Rails.env.production?  then '//www.parentpins.com'
+        elsif Rails.env.staging?     then '//staging.parentpins.com'
+        else                              '//localhost:3000'
         end
 
     # Set base host for emails

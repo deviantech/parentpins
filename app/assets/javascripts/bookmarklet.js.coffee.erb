@@ -1,6 +1,7 @@
 //= require templates/bookmarklet/base
 //= require templates/bookmarklet/potential
 //= require templates/bookmarklet/form
+//= require templates/bookmarklet/popup-placeholder
 //= require jquery-imagesloaded-min.module
 
 # TODO - how to not mess with calling page's jquery version?
@@ -173,6 +174,7 @@ do(document = document, jQuery = window.jQuery) ->
     popupWindowName = popupName + 'PinWindow';
     theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( Global.bookmarkletBase )
     pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
+    pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
     theForm.submit()
     pinWindow.focus() if (window.focus)    
     return false    
