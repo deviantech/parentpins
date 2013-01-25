@@ -1,0 +1,135 @@
+//= require templates/bookmarklet/base
+//= require templates/bookmarklet/potentials
+
+
+# TODO - how to not mess with calling page's jquery version?
+# TODO - how to wrap template includes in our bigger function to protect it from including page's content?
+
+
+loadBookmarklet = (document, jQuery) -> 
+  # Config
+  popupName = 'ParentPinBookmarklet'
+  cssUrl = '//<%= HOST %>/assets/bookmarklet.css'
+  minJQversion = '1.6.0'
+  desiredJQversion = '1.8.2'
+  minImageWidth = 192
+  minImageHeight = 150
+  pinBaseUrl = '//<%= HOST %><%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
+  popupHeight = 640
+  popupWidth = 640
+
+  initBookmarklet = ->
+    # check prior inclusion and version
+    if (not jQuery? || jQuery.fn.jquery < minJQversion)
+      done = false
+      script = document.createElement("script")
+      script.src = "//ajax.googleapis.com/ajax/libs/jquery/" + desiredJQversion + "/jquery.min.js"
+      script.onload = script.onreadystatechange = ->
+        if !done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")
+          done = true;
+          jQuery = window.jQuery
+          initBookmarkletWrapper()
+      document.getElementsByTagName("head")[0].appendChild(script)
+    else
+      initBookmarkletWrapper()
+  
+  # Just to be sure $ is available and not in compatibility mode on the host site
+  initBookmarkletWrapper = ->
+    includeBookmarkletStyles()
+    initBookmarklet(jQuery)
+    
+  includeBookmarkletStyles = ->
+    return if ($('link#'+popupName+'CSS').length)
+    $('head').append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />')
+
+
+  # Close popup if any are open
+  initBookmarklet = ($) ->
+    if ($('#'+popupName).length)
+      closeBookmarklet()
+    else
+      $content = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet).find('#ppBookmarkletContent');
+      $content.html( JST['templates/bookmarklet/potentials']({images: getPotentialImagesData()}) )
+      
+      # Adjust height to exactly match image
+      $('.potentialImage').each () ->
+        $(this).css('height', $(this).find('img').height() + 'px')
+
+      $content.on('click', 'a.potentialImage', switchToPinView)
+  
+  closeBookmarklet = ->
+    $('#'+popupName).fadeOut ->
+      $(this).remove()
+    return false
+
+  isImageBigEnough = (img) ->
+    $img = $(img)
+    $img.width() && $img.width() >= minImageWidth && $img.height() && $img.height() >= minImageHeight
+
+  getPotentialImages = ->
+    allImages = $("img:not('.nonPinnable')")
+    considering = []
+    
+    # For every image, if it's in a link to another image, use the linked one instead. Otherwise, add to considering list if img is large enough
+    for img in allImages
+        $img = $(img)
+        imgExt = $img.attr('src').match(/\.\w+?$/)
+        link = $img.parents('a').first().attr('href')
+        
+        # If small image linking to larger image with same extension, use larger image instead
+        if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)
+          $linked = $("<img src=\"#{link}\"/>")
+          if isImageBigEnough($linked)
+            # TODO -- add check that this is bigger
+            considering.push($linked)
+            continue
+            
+        if isImageBigEnough($img)
+            considering.push($img)
+    
+    # TODO: Deduplicate
+
+    return considering;
+
+  
+  # Return list of all sufficiently-large images on this page (excluding .nonPinnable, which will be applied to any images in our bookmarklet)
+  getPotentialImagesData = ->
+    getPotentialImages().map (img) ->
+      # Collect image information, send it to the template
+      $img = $(img)
+      return {
+        src:    $img.attr('src'),
+        height: $img.attr('height'),
+        width:  $img.attr('width'),
+        link:   $img.parents('a').first().attr('href')
+      }
+  
+  ensureDefinedAndLimited = (str, limit) ->
+    return '' if (!str? || typeof(str) == 'undefined' || str == 'undefined')
+    return str.substr(0, limit) + '...' if (str.length > limit)
+    return str
+
+
+  switchToPinView = (e) ->
+    e.preventDefault()
+    potential = $(e.currentTarget)
+    
+    args = {
+      media: potential.find('img').attr('src'),
+      title: ensureDefinedAndLimited(document.title, 100),
+      description: ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)
+    }
+        
+    # Set URL to current location, unless image was in a link. Then set URL to the link href, and via to the current URL.
+    args['url'] = potential.data('link') if (potential.data('link').length)
+    args[ ((args['url'] && args['url'].length) ? 'via' : 'url') ] = window.location + ''
+    
+    url = pinBaseUrl + '?' + $.param(args)
+    pinWindow = window.open(url,'pinWindow','height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
+    pinWindow.focus() if (window.focus)
+    return false
+
+
+  initBookmarklet(jQuery);
+  null
+loadBookmarklet(document, window.jQuery)
