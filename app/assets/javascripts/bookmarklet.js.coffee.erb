@@ -115,22 +115,24 @@ do(document = document, jQuery = window.jQuery) ->
     for img in allImages
       do (img) ->
         $img = $(img)
-        imgExt = $img.attr('src').match(/\.\w+?$/)
-        link = $img.parents('a').first().attr('href')
+        src = $img.attr('src') || $img.data('src')
+        if src # Some google images results don't have a src set
+          imgExt = src.match(/\.\w+?$/)
+          link = $img.parents('a').first().attr('href')
       
-        # If small image linking to larger image with same extension, use larger image instead
-        if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
-          linked = new Image()
-          linked.src = link
-          inTestBed linked, ->
-            evaluateImageSet(img, linked)
+          # If small image linking to larger image with same extension, use larger image instead
+          if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
+            linked = new Image()
+            linked.src = link
+            inTestBed linked, ->
+              evaluateImageSet(img, linked)
             
-        else
-          if $img.is(':visible') 
-            evaluateImageSet(img)
-          else 
-            inTestBed img, ->
+          else
+            if $img.is(':visible') 
               evaluateImageSet(img)
+            else 
+              inTestBed img, ->
+                evaluateImageSet(img)
                    
   # Convert image object to a hash containing the relevant keys
   imgToData = (img) ->
@@ -140,7 +142,7 @@ do(document = document, jQuery = window.jQuery) ->
     area   = height * width
     
     return {
-      src:    $img.attr('src'),
+      src:    $img.attr('src') || $img.data('src'),
       link:   $img.parents('a').first().attr('href'),
       height: height,
       width:  width,

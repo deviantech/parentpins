@@ -22,6 +22,7 @@ end
 
 group :development do
   gem 'thin'
+  gem 'mini_magick'
 end
 
 gem 'jquery-rails'
@@ -41,10 +42,19 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
 
-# Used for carrerwave uploads
+# Used for carrerwave uploads. NOTE that this requires libvips, with either of:
+#   apt-get install libvips-dev
+#   brew install --use-llvm vips
+# And add to zsh profile:
+# =>  export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/X11/lib/pkgconfig
 gem 'carrierwave'
 gem 'mime-types'
-gem 'mini_magick'
+
+group :production do
+  gem 'ruby-vips'
+  gem 'carrierwave-vips'
+end
+
 
 
 

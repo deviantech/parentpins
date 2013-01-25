@@ -41,6 +41,10 @@ GEM
     carrierwave (0.8.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
+    carrierwave-vips (1.0.3)
+      carrierwave
+      rmagick
+      ruby-vips (>= 0.2.0)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -154,6 +158,7 @@ GEM
     redis (3.0.2)
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
+    rmagick (2.13.1)
     roadie (2.3.4)
       actionmailer (> 3.0.0, < 3.3.0)
       css_parser
@@ -164,6 +169,7 @@ GEM
       ruby-debug-base (~> 0.10.4.0)
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
+    ruby-vips (0.3.5)
     sass (3.2.3)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
@@ -201,6 +207,7 @@ PLATFORMS
 DEPENDENCIES
   capistrano
   carrierwave
+  carrierwave-vips
   coffee-rails (~> 3.2.1)
   debugger
   devise
@@ -217,6 +224,7 @@ DEPENDENCIES
   redis-namespace
   roadie
   ruby-debug
+  ruby-vips
   sass-rails (~> 3.2.3)
   sprockets-commonjs
   system_timer

@@ -10,7 +10,8 @@
     <%= f.hidden_field :image_cache %>
 
     <% unless params[:media].blank? %>
-      <%= f.hidden_field :remote_image_url, :value => params[:media] %>
+      <% image_field = params[:media].starts_with?('data:') ? :image : :remote_image_url %>
+      <%= f.hidden_field image_field, :value => params[:media] %>
     <% end %>
     
     <%= render 'pins/form', :f => f %>    
