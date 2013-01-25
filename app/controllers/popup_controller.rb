@@ -1,4 +1,5 @@
 class PopupController < ApplicationController
+  protect_from_forgery :except => [:pin]
   
   def pin
     unless user_signed_in?

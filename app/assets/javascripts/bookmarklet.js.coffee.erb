@@ -1,5 +1,6 @@
 //= require templates/bookmarklet/base
 //= require templates/bookmarklet/potential
+//= require templates/bookmarklet/form
 //= require jquery-imagesloaded-min.module
 
 # TODO - how to not mess with calling page's jquery version?
@@ -52,10 +53,11 @@ do(document = document, jQuery = window.jQuery) ->
     if ($('#'+popupName).length)
       closeBookmarklet()
     else
-      Global.imageBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet).find('#ppBookmarkletContent');
+      Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet);
+      Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent');
       Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
-      Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.imageBase.parent()).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
+      Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
       startEvaluatingPotentialImages()
       notifyIfNoImagesFound = () ->
         if Global.imageBase && (!Global.potentials || Global.potentials.length == 0)
@@ -130,8 +132,6 @@ do(document = document, jQuery = window.jQuery) ->
             inTestBed img, ->
               evaluateImageSet(img)
                    
-  
-
   # Convert image object to a hash containing the relevant keys
   imgToData = (img) ->
     $img = $(img)
@@ -141,7 +141,7 @@ do(document = document, jQuery = window.jQuery) ->
     
     return {
       src:    $img.attr('src'),
-      link:   $img.parents('a').first().attr('href')
+      link:   $img.parents('a').first().attr('href'),
       height: height,
       width:  width,
       area:   area
@@ -157,20 +157,23 @@ do(document = document, jQuery = window.jQuery) ->
     e.preventDefault()
     potential = $(e.currentTarget)
   
-    args = {
-      media: potential.find('img').attr('src'),
-      title: ensureDefinedAndLimited(document.title, 100),
-      description: ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)
-    }
-      
-    # Set URL to current location, unless image was in a link. Then set URL to the link href, and via to the current URL.
-    args['url'] = potential.data('link') if (potential.data('link').length)
-    args[ ((args['url'] && args['url'].length) ? 'via' : 'url') ] = window.location + ''
-  
-    url = pinBaseUrl + '?' + $.param(args)
-    pinWindow = window.open(url,'pinWindow','height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
-    pinWindow.focus() if (window.focus)
-    return false
+    args = [
+      ['url',         '' + window.location],
+      ['media',       potential.find('img').attr('src')],
+      ['title',       ensureDefinedAndLimited(document.title, 100)],
+      ['description', ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)]
+    ]
+        
+    # If image was in a link, pass the link as well
+    args.push(['link', potential.data('link')]) if potential.data('link').length
+    
+    # Submit via POST (open pin window, then submit a form to it)
+    popupWindowName = popupName + 'PinWindow';
+    theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( Global.bookmarkletBase )
+    pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
+    theForm.submit()
+    pinWindow.focus() if (window.focus)    
+    return false    
 
 
   prepForBookmarklet(jQuery);

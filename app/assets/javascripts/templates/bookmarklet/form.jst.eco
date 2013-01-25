@@ -1,0 +1,5 @@
+<form method="post" action="<%= @url %>" target="<%= @target %>">
+  <% for args in @args: %>
+    <input type="hidden" name="<%= args[0] %>" value="<%= args[1] %>" />
+  <% end %>
+</form>
