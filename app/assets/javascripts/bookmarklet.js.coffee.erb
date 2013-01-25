@@ -18,7 +18,7 @@ loadBookmarklet = (document, jQuery) ->
   popupHeight = 640
   popupWidth = 640
 
-  initBookmarklet = ->
+  prepForBookmarklet = ->
     # check prior inclusion and version
     if (not jQuery? || jQuery.fn.jquery < minJQversion)
       done = false
@@ -130,6 +130,6 @@ loadBookmarklet = (document, jQuery) ->
     return false
 
 
-  initBookmarklet(jQuery);
+  prepForBookmarklet(jQuery);
   null
 loadBookmarklet(document, window.jQuery)
