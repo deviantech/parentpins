@@ -100,6 +100,12 @@ do(document = document, jQuery = window.jQuery) ->
       addImage(biggest)
 
 
+  inTestBed = (toTest, fnWhenLoaded) ->
+    $toTest = $(toTest)
+    $toTest.imagesLoaded ->
+      fnWhenLoaded && fnWhenLoaded()
+    $toTest.appendTo(Global.imageTestbed) 
+  
   startEvaluatingPotentialImages = ->
     allImages = $("img:not('.nonPinnable')")
   
@@ -114,13 +120,16 @@ do(document = document, jQuery = window.jQuery) ->
         if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
           linked = new Image()
           linked.src = link
-          $linked = $(linked)
-          $linked.imagesLoaded ->
+          inTestBed linked, ->
             evaluateImageSet(img, linked)
-          $linked = $linked.appendTo(Global.imageTestbed)
             
         else
-          evaluateImageSet(img)          
+          if $img.is(':visible') 
+            evaluateImageSet(img)
+          else 
+            inTestBed img, ->
+              evaluateImageSet(img)
+                   
   
 
   # Convert image object to a hash containing the relevant keys
