@@ -5,7 +5,7 @@
   </div>
   <div id="ppBookmarkletContentWrapper">
     <div id="ppBookmarkletContent">
-      &nbsp;
+      <div id="noPotentialImages">No pinnable images found on this page.</div>
     </div>
   </div>
 </div>

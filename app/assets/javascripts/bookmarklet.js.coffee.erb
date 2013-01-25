@@ -21,7 +21,7 @@ do(document = document, jQuery = window.jQuery) ->
   popupWidth = 640
   
   # Our "global" to share variables within nested coffeescript
-  Global = Global || {}
+  Global = Global || {potentials: []}
 
   prepForBookmarklet = ->
     # check prior inclusion and version
@@ -60,10 +60,6 @@ do(document = document, jQuery = window.jQuery) ->
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
       Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
       startEvaluatingPotentialImages()
-      notifyIfNoImagesFound = () ->
-        if Global.imageBase && (!Global.potentials || Global.potentials.length == 0)
-          Global.imageBase.html( $('<div id="noPotentialImages">No pinnable images found on this page.</div>') );
-      setTimeout(notifyIfNoImagesFound, 1000)
 
   closeBookmarklet = ->
     $('#'+popupName).fadeOut ->
@@ -76,9 +72,10 @@ do(document = document, jQuery = window.jQuery) ->
     if !Global.imageBase
       console.log('Attempting to add image before template has been processed')
     else
-      Global.potentials = Global.potentials || []
-      Global.potentials.push(img)
-      added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase )
+      if `!(img.src in Global.potentials)` # No duplicates
+        Global.potentials[img.src] = img
+        Global.imageBase.find('#noPotentialImages').hide();
+        added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase )
     
   
   isImageBigEnough = (data) ->
