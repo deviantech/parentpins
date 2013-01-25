@@ -3,7 +3,9 @@
     ParentPins
     <a href="#" id="ppClose">Cancel</a>
   </div>
-  <div id="ppBookmarkletContent">
-    &nbsp;
+  <div id="ppBookmarkletContentWrapper">
+    <div id="ppBookmarkletContent">
+      &nbsp;
+    </div>
   </div>
 </div>
