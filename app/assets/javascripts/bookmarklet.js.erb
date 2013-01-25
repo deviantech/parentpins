@@ -74,14 +74,48 @@
     });
     return false;
   }
+
+  function getPotentials_Images() {
+    var allImages = $("img:not('.nonPinnable')");
+    var toConsider = [];
+    var toReturn = [];
+        
+    //     TODO -- avoid duplicate images -- if link to larger image, try that first. If dimensions are big enough, remove smaller from the list.
+        
+    allImages.each(function() {
+      var $img = $(this);    
+      var imgExt = $img.attr('src').match(/\.\w+?$/);
+      var link = $img.parents('a').first().attr('href');
+
+      // If small image linking to larger image with same extension, use larger image instead
+      if (link && imgExt) {
+        var endsWithSameExtension = new RegExp(imgExt+'$');
+        if (link.match(endsWithSameExtension)) {
+          toConsider.push( $('<img src='+link+'"/>') );
+          return;
+        }
+      }
+      toConsider.push($img);
+    });
+    
+    console.log(toConsider);
+    // TODO -- loop over this ...
+    
+    $.each(toConsider, function() {
+      var $img = $(this);
+      if (($img.width() >= minImageWidth) && ($img.height() >= minImageHeight)) {
+        toReturn.push($img);
+      }
+    });
+    
+    
+    return toReturn;
+  }
   
   // Return list of all sufficiently-large images on this page (excluding .nonPinnable, which will be applied to any images in our bookmarklet)
   function getPotentialImages() {
-    var allImages = $("img:not('.nonPinnable')");
 
-    return allImages.filter(function() {
-      return ($(this).width() >= minImageWidth) && ($(this).height() >= minImageHeight);
-    }).map(function(){
+    getPotentials_Images().map(function(){
       // Collect image information, send it to the template
       var $img = $(this);
       return {
