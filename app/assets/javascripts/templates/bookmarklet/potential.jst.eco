@@ -1,0 +1,4 @@
+<a class="potentialImage" href="#" data-link="<%= @image.link %>">
+  <img src="<%= @image.src %>" alt=""/>
+  <span class="details"><%= @image.height %> x <%= @image.width %></span>
+</a>
