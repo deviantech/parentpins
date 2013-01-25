@@ -5,14 +5,12 @@
 <div class="form">
   <%= error_messages_for @pin %>
   <%= form_for @pin, :url => pin_from_popup_url, :html => {:class => 'pin_form'} do |f| %>
-    <%= hidden_field_tag :media, params[:media] %>
     <%= f.hidden_field :url %>
     <%= f.hidden_field :via_url %>
     <%= f.hidden_field :image_cache %>
 
-    <% unless params[:media].blank? %>
-      <% image_field = params[:media].starts_with?('data:') ? :image : :remote_image_url %>
-      <%= f.hidden_field image_field, :value => params[:media] %>
+    <% unless @pin.image? || params[:media].blank? %>
+      <%= f.hidden_field :remote_image_url, :value => params[:media] %>
     <% end %>
     
     <%= render 'pins/form', :f => f %>    

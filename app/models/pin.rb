@@ -59,12 +59,16 @@ class Pin < ActiveRecord::Base
   def self.from_bookmarklet(user, params)
     # params[:url] is always the URL it was pinned from
     # params[:link], if present, means the image linking to a new page. Show the new page instead (seems to be Pinterest's logic)
-    user.pins.new({
+    pin = user.pins.new({
       :name => params[:title],
       :description => params[:description] || params[:title],
       :url => params[:link] ? params[:link] : params[:url],
       :via_url => params[:link] ? params[:url] : nil
     })
+  end
+  
+  def remote_image_url=(str)
+    apply_base64_image(str) || super
   end
   
   # If a source pin was passed in, copy relevant attributes (repin). Otherwise, generate a clean pin record.
@@ -120,6 +124,15 @@ class Pin < ActiveRecord::Base
   end
     
   protected
+  
+  def apply_base64_image(string)
+    return false unless string.match(/base64,?/)
+    tempfile = Tempfile.new("base64file")
+    tempfile.binmode
+    tempfile.write( Base64.decode64( string.gsub(/.*base64,?/, '') ) )
+    fname = SecureRandom.hex(16)
+    self.image = ActionDispatch::Http::UploadedFile.new(:tempfile => tempfile, :filename => fname, :original_filename => fname)
+  end
   
   def copy_board_settings
     return true unless board
