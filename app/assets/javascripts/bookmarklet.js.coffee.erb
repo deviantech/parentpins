@@ -31,35 +31,35 @@ do(document = document, jQuery = window.jQuery) ->
         if !done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")
           done = true;
           jQuery = window.jQuery
-          initBookmarkletWithjQuery()
+          weHavejQuery()
       document.getElementsByTagName("head")[0].appendChild(script)
     else
-      initBookmarkletWithjQuery()
+      weHavejQuery()
 
   # Just to be sure $ is available and not in compatibility mode on the host site
-  initBookmarkletWithjQuery = ->
+  weHavejQuery = ->
     includeBookmarkletStyles()
     # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with
     require('jquery-imagesloaded-min');
-    initBookmarklet(jQuery)
+    initBookmarkletWithjQuery(jQuery)
   
   includeBookmarkletStyles = ->
     return if ($('link#'+popupName+'CSS').length)
     $('head').append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />')
-
-
-  notifyIfNoImagesFound = () ->
-    if Global.imageBase && (!Global.potentials || Global.potentials.length == 0)
-      Global.imageBase.html( $('<div id="noPotentialImages">No pinnable images found on this page.</div>') );
         
   # Close popup if any are open
-  initBookmarklet = ($) ->
+  initBookmarkletWithjQuery = ($) ->
     if ($('#'+popupName).length)
       closeBookmarklet()
     else
       Global.imageBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet).find('#ppBookmarkletContent');
       Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
+      # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
+      Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.imageBase.parent()).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
       startEvaluatingPotentialImages()
+      notifyIfNoImagesFound = () ->
+        if Global.imageBase && (!Global.potentials || Global.potentials.length == 0)
+          Global.imageBase.html( $('<div id="noPotentialImages">No pinnable images found on this page.</div>') );
       setTimeout(notifyIfNoImagesFound, 1000)
 
   closeBookmarklet = ->
@@ -76,8 +76,6 @@ do(document = document, jQuery = window.jQuery) ->
       Global.potentials = Global.potentials || []
       Global.potentials.push(img)
       added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase )
-      added.find('.potentialImage').each () ->
-        $(this).css('height', $(this).find('img').height() + 'px')
     
   
   isImageBigEnough = (data) ->
@@ -113,12 +111,13 @@ do(document = document, jQuery = window.jQuery) ->
         link = $img.parents('a').first().attr('href')
       
         # If small image linking to larger image with same extension, use larger image instead
-        if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)
+        if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
           linked = new Image()
           linked.src = link
-          $(linked).imagesLoaded ->
-            console.log($(linked).height())
+          $linked = $(linked)
+          $linked.imagesLoaded ->
             evaluateImageSet(img, linked)
+          $linked = $linked.appendTo(Global.imageTestbed)
             
         else
           evaluateImageSet(img)          
