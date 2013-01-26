@@ -22,7 +22,13 @@ end
 
 group :development do
   gem 'thin'
-  gem 'mini_magick'
+  gem 'mini_magick'  
+  gem 'git'
+  gem 'capistrano', :require => false
+  gem 'rvm-capistrano', :require => false
+  gem 'capistrano-ext', :require => false
+  gem 'capistrano_colors', :require => false
+  gem 'capistrano-conditional', :git => 'git://github.com/deviantech/capistrano-conditional.git', :require => false  
 end
 
 gem 'jquery-rails'

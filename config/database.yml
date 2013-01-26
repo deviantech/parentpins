@@ -35,7 +35,17 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: parentpins_production
+  database: pins
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
+
+staging:
+  adapter: mysql2
+  encoding: utf8
+  reconnect: false
+  database: pins_staging
   pool: 5
   username: root
   password:
