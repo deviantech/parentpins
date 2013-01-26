@@ -1,4 +1,4 @@
-# require "capistrano-conditional"
+require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 # require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
@@ -36,15 +36,12 @@ role :db,  site_ip, :primary => true
 set :keep_releases, 5
 after "deploy", "deploy:cleanup"
 
-task "whoami" do
-  run 'stat /var/www/pins/production/shared'
-end
 
 # =========
 # = Tasks =
 # =========
 
-# ConditionalDeploy.monitor_migrations(self)
+ConditionalDeploy.monitor_migrations(self)
 
 # ConditionalDeploy.register :whenever, :watchlist => 'config/schedule.rb' do
 #   after "deploy:create_symlink", "deploy:update_crontab"
@@ -154,4 +151,4 @@ end
 
 
 # Abort deployment if mismatch between local and remote git repositories
-# after 'deploy:update_code', 'conditional:ensure_latest_git'
+after 'deploy:update_code', 'conditional:ensure_latest_git'
