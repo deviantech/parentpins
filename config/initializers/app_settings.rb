@@ -1,5 +1,11 @@
 
-# Nothing here yet...
 
 
-# Seriously, this shouldn't be so hard!! Just include the damn helpers in the sprockets context...
+# It took WAY too long to figure this out, but if you want to include helpers in the .erb sprockets context, put 'em in here
+module Sprockets
+  module Helpers
+    module RailsHelper
+      include BookmarkletHelper
+    end
+  end
+end
