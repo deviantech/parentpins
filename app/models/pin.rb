@@ -2,7 +2,7 @@ class Pin < ActiveRecord::Base
   extend Searchable
   attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id
 
-  VALID_TYPES = %w(product article idea)
+  VALID_TYPES = %w(idea product article)
   REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
 
   mount_uploader :image, PinImageUploader

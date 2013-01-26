@@ -6,10 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-AgeGroup.create(:name => 'Group One')
-AgeGroup.create(:name => 'Group Two')
-AgeGroup.create(:name => 'Group Three')
+%w(Expecting Infants Toddlers Kids Tweens Teens).each do |n|
+  AgeGroup.create(:name => n)
+end
 
-Category.create(:name => 'Category One')
-Category.create(:name => 'Category Two')
-Category.create(:name => 'Category Three')
+
+(%w(Activities Education Health Disabilities Crafts Media Books Food Products Sports Holidays Photography Pregnancy Cuteness) + ['Parenting Advice', 'Funny / Humor']).each do |n|
+  Category.create(:name => n)
+end
