@@ -25,7 +25,7 @@
     <%= content_for?(:content) ? yield(:content) : yield %>
     <div class="clearfix"></div>
     <%= render 'shared/footer' %>
-    <%= javascript_include_tag "footer" %>
+    <%= javascript_include_tag "application" %>
     <%= yield :footer_js %>
     <script>
       $("#message_toggle").click(function () {

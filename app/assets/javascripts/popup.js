@@ -1,4 +1,4 @@
-// This is a manifest file that'll be compiled into footer.js, which will include all the files
+// This is a manifest file that'll be compiled into popup.js, which will include all the files
 // listed below.
 //
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
@@ -11,15 +11,5 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
-//= require spinners.min.js
-//= require jquery.masonry
-//= require jquery.scrollTo
-//= require bootstrap/alerts
 //= require app/helpers
-//= require app/flash
-//= require app/modal
-//= require app/scrollToTop
-//= require application
-//= require pagination
-//= require lte-ie7
+//= require add-pin
