@@ -67,10 +67,12 @@ class User < ActiveRecord::Base
   end
   
   def add_interested_categories(cats)
+    return if cleaned_ids(cats).blank?
     Rails.redis.sadd(redis_name__categories, cleaned_ids(cats))
   end
   
   def remove_interested_categories(cats)
+    return if cleaned_ids(cats).blank?
     Rails.redis.srem(redis_name__categories, cleaned_ids(cats))
   end
   
