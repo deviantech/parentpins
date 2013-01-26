@@ -44,6 +44,7 @@ class ProfilesController < ApplicationController
   
   def update
     if @profile.update_maybe_with_password(params[:user])
+      sign_in(@profile, :bypass => true)
       redirect_to activity_profile_path(@profile), :notice => "Updated profile"
     else
       if params[:step_2]
