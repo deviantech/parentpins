@@ -1,7 +1,11 @@
 module ApplicationHelper
-  
+
+  def host
+    ActionMailer::Base.default_url_options[:host]
+  end
+    
   def bookmarklet_link
-    link_to 'ParentPin It!', "javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src','//#{HOST}/assets/bookmarklet.js?r='+Math.random()*9999999);b.body.appendChild(s)})(document));"
+    link_to 'ParentPin It!', "javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src','//#{host}/assets/bookmarklet.js?r='+Math.random()*9999999);b.body.appendChild(s)})(document));"
   end
 
   def pagination_link
@@ -60,8 +64,7 @@ module ApplicationHelper
   end
   
   def background_class_names
-    n = (rand * NUM_BACKGROUND_IMAGES).floor + 1
-    "custom background_cover background_cover_#{n}"
+    "custom background_cover"
   end
   
   def body_class

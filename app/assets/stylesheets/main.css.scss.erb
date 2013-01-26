@@ -18,18 +18,13 @@ body.background_cover {
   background-color:transparent;
   background-position: bottom left;
   background-repeat:no-repeat;
+  background-attachment:fixed;
+  background-image:url(/assets/backgrounds/1.png);
   .footer_wrapper {
     background:rgba(255, 255, 255, 0.6); } }
 
-<% (1..NUM_BACKGROUND_IMAGES).each do |i| %>
-body.background_cover_<%= i %> {
-  background-image:url(/assets/backgrounds/<%= i %>.png);
-}
-<% end %>
 
 /* typography */
-
-
 
 p {
   font-size: 13px; }

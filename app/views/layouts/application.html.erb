@@ -23,6 +23,7 @@
     <%= render 'shared/navigation' %>
     <%= render 'shared/flash', :flash => flash %>
     <%= content_for?(:content) ? yield(:content) : yield %>
+    <div class="clearfix"></div>
     <%= render 'shared/footer' %>
     <%= javascript_include_tag "footer" %>
     <%= yield :footer_js %>

@@ -11,12 +11,12 @@
 do(document = document, jQuery = window.jQuery) -> 
   # Config
   popupName = 'ParentPinBookmarklet'
-  cssUrl = '//<%= HOST %>/assets/bookmarklet.css'
+  cssUrl = '//<%= host %>/assets/bookmarklet.css'
   minJQversion = '1.6.0'
   desiredJQversion = '1.8.2'
   minImageWidth = 192
   minImageHeight = 150
-  pinBaseUrl = '//<%= HOST %><%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
+  pinBaseUrl = '//<%= host %><%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
   popupHeight = 640
   popupWidth = 640
   
