@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   mount_uploader :avatar,       AvatarUploader
   mount_uploader :cover_image,  CoverImageUploader
   
+  
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_category_ids, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password
   
@@ -20,7 +21,13 @@ class User < ActiveRecord::Base
   
   has_many :feedbacks
   
+  extend FriendlyId
+  friendly_id :username
+  
+  validates_uniqueness_of :username, :allow_blank => false
+  validates_format_of :username, :with => /\A[a-z0-9]+\z/i
   validates_numericality_of :kids, :allow_blank => true
+  validate :valid_username
   before_destroy :clean_redis
 
   # Used by searchable
@@ -29,6 +36,7 @@ class User < ActiveRecord::Base
   def name
     username.to_s.titleize
   end
+
 
   # If password required for update, try. Otherwise just to update. Not the cleanest combination of forms...
   def update_maybe_with_password(params)
@@ -182,6 +190,11 @@ class User < ActiveRecord::Base
   end
 
   protected
+  
+  def valid_username
+    return if username.blank?
+    errors.add(:username, 'cannot start with a number') if username.match(/\A\d/)
+  end
   
   def cleaned_ids(cats)
     Array(cats).select{|c| !c.blank?}.map{ |cat| cat.respond_to?(:id) ? cat.id : cat }.uniq

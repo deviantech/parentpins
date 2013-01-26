@@ -33,10 +33,10 @@ class ProfilesController < ApplicationController
   end
   
   def board
-    unless @board = @profile.boards.find_by_id(params[:board_id])
-      redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
-    end
+    @board = @profile.boards.find(params[:board_id])
     paginate_pins @board.pins
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
   end
   
   def edit
@@ -72,10 +72,7 @@ class ProfilesController < ApplicationController
       redirect_to edit_profile_path(current_user) and return
     end
     
-    unless @profile ||= User.find_by_id(params[:id])
-      redirect_to(root_path, :notice => "Unable to find the specified profile") and return
-    end
-    
+    @profile ||= User.find(params[:id])
     @profile_counters = {
       :pins       => @profile.pins.count,
       :boards     => @profile.boards.count,
@@ -83,6 +80,8 @@ class ProfilesController < ApplicationController
       :followers  => @profile.followers_count,
       :following   => @profile.following_count
     }
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to(root_path, :notice => "Unable to find the specified profile")
   end
   
   def get_profile_owner

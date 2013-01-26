@@ -1,0 +1,8 @@
+class UserIndexes < ActiveRecord::Migration
+  def up
+    add_index :users, :username
+  end
+
+  def down
+  end
+end

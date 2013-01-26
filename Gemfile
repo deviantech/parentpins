@@ -64,6 +64,6 @@ end
 
 
 
-
+gem 'friendly_id'
 
 gem 'system_timer', :platform => :ruby_18
