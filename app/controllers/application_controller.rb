@@ -6,6 +6,14 @@ class ApplicationController < ActionController::Base
   
   private
 
+  def after_sign_in_path_for(user)
+    if user.sign_in_count == 1
+      activity_profile_path(user, :step_2 => true)
+    else
+      request.env['omniauth.origin'] || stored_location_for(user) || activity_profile_path(user)
+    end
+  end
+
   def paginate_pins(base_scope)
     @results = @pins = base_scope.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
     support_ajax_pagination

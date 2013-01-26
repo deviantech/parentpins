@@ -9,7 +9,7 @@ class ProfilesController < ApplicationController
   end
   
   def activity    
-    paginate_pins @profile_counters[:following].zero? ? Pin.trending.in_category(current_user.interested_categories) : Pin.pinned_by(@following)
+    paginate_pins Pin.pinned_by(@following)
   end
   
   def pins
@@ -43,11 +43,11 @@ class ProfilesController < ApplicationController
   end
   
   def update
-    if @profile.update_maybe_with_password(params[:user])
+    if params[:from] == 'step_2' ? @profile.update_attributes(params[:user]) : @profile.update_maybe_with_password(params[:user])
       sign_in(@profile, :bypass => true)
       redirect_to activity_profile_path(@profile), :notice => "Updated profile"
     else
-      if params[:step_2]
+      if params[:from] == 'step_2'
         activity
         render 'activity'
       else

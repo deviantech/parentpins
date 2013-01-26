@@ -1,7 +1,7 @@
 <div class="modal_overlay">
   <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form narrow signup"} do |f| %>
-    <%= hidden_field_tag :step_2, true %>
-    <h1>Last Step, Personalize Your ParentPin Experience</h1>
+    <%= hidden_field_tag :from, 'step_2' %>
+    <h1>Last Step, Tell Us About Yourself</h1>
 
     <%= render 'form_fields', :f => f %>
 

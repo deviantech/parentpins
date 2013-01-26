@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :interested_category_ids, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password
   
   has_many :boards,       :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -50,32 +50,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  # ================================
-  # = REDIS: Interested Categories =
-  # ================================
-  def interested_category_ids=(ids)
-    Rails.redis.del(redis_name__categories)
-    add_interested_categories(ids)
-  end
 
-  def interested_category_ids
-    Rails.redis.smembers(redis_name__categories)
-  end
-
-  def interested_categories
-    Category.where(:id => interested_category_ids)
-  end
-  
-  def add_interested_categories(cats)
-    return if cleaned_ids(cats).blank?
-    Rails.redis.sadd(redis_name__categories, cleaned_ids(cats))
-  end
-  
-  def remove_interested_categories(cats)
-    return if cleaned_ids(cats).blank?
-    Rails.redis.srem(redis_name__categories, cleaned_ids(cats))
-  end
-  
 
   # ==============================
   # = REDIS: Following/Followers =

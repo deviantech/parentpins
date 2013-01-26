@@ -1,8 +1,4 @@
 <div class="field">
-  <p>Select at least one interest area</p>
-  <%= f.select :interested_category_ids, select_options(Category.all), {}, :multiple => true %>
-</div>
-<div class="field">
   <p>How many kids do you have?</p>
   <%= f.text_field :kids, :placeholder => "1, 2, more?" %>
 </div>
