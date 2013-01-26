@@ -6,6 +6,9 @@ module Sprockets
   module Helpers
     module RailsHelper
       include BookmarkletHelper
+      
+      #  Any other custom helper methods go here
+      
     end
   end
 end
