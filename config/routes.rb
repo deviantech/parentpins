@@ -32,10 +32,8 @@ ParentPins::Application.routes.draw do
       get 'activity'
       get 'pins'
       get 'likes'
-      get 'boards'
       get 'followers'
       get 'following'
-      get 'boards/:board_id' => 'profiles#board', :as => 'board'
       post 'follow'
       post 'unfollow'
     end

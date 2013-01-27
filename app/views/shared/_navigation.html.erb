@@ -33,7 +33,7 @@
             <li><%= link_to 'Activity', activity_profile_path(current_user) %></li>
             <li><%= link_to 'Pins', pins_profile_path(current_user) %></li>
             <li><%= link_to 'Likes', likes_profile_path(current_user) %></li>
-            <li><%= link_to 'Boards', boards_profile_path(current_user) %></li>
+            <li><%= link_to 'Boards', profile_boards_path(current_user) %></li>
             <li><%= link_to 'Edit Profile / Account', edit_profile_path(current_user) %></li>
             <li>
               <%= link_to('Logout', destroy_user_session_path, :method => :delete, :class => 'logout') %>

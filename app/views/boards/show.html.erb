@@ -1,5 +1,5 @@
 <h1>
-  <a href="<%= boards_profile_path(@board.user) %>" class="user">
+  <a href="<%= profile_boards_path(@board.user) %>" class="user">
     <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
     <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
   </a>

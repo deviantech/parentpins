@@ -19,7 +19,7 @@ class PinsController < ApplicationController
     conditionally_remove_nested_attributes(:pin, :board)
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
     @pin.save
-    success_url = (@pin.board && !@pin.board.new_record?) ? board_profile_path(current_user, @pin.board) : '/'
+    success_url = (@pin.board && !@pin.board.new_record?) ? profile_board_path(current_user, @pin.board) : '/'
     respond_with @pin, :location => success_url
   end
   
@@ -32,7 +32,7 @@ class PinsController < ApplicationController
   
   def update
     if @pin.update_attributes(params[:pin])
-      redirect_to board_profile_path(current_user, @pin.board), :notice => 'Saved changes to pin'
+      redirect_to profile_board_path(current_user, @pin.board), :notice => 'Saved changes to pin'
     else
       flash.now[:error] = "Unable to save pin"
       render :action => 'new'
@@ -40,7 +40,7 @@ class PinsController < ApplicationController
   end
   
   def destroy
-    redirect_to board_profile_path(current_user, @pin.board), :notice => 'Removed Pin'
+    redirect_to profile_board_path(current_user, @pin.board), :notice => 'Removed Pin'
     @pin.destroy
   end
   
