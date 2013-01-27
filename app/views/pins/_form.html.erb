@@ -1,6 +1,12 @@
 <div class="field">
-  <%= f.label :kind, 'Type of Pin' %>
-  <%= f.select :kind, select_options(Pin::VALID_TYPES) %>
+  <%= f.label :kind, 'Type of Pin:' %>
+  <% f.object.kind ||= Pin::VALID_TYPES.first %>
+  <% Pin::VALID_TYPES.each do |kind| %>
+    <label class="radio_opt">
+      <%= f.radio_button :kind, kind %>
+      <%= kind.titleize %>
+    </label>
+  <% end %>
 </div>
 
 <div class="field field-price<%= ' hidden' unless @pin.kind == 'product' %>">

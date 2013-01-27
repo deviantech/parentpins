@@ -1102,7 +1102,18 @@ form .field {
     padding: 0; }
   label {
     clear:both;
-    display:block; } }
+    display:block; }
+  label.radio_opt {
+    clear: none;
+    display: inline-block;
+    margin-right: 5px;
+    width: 70px;
+    input {
+      width: auto;
+      display: inline-block;
+    }
+  }
+}
 
 .form .field {
   input, textarea, select[multiple="multiple"] {

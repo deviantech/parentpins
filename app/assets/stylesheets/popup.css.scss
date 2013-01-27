@@ -62,7 +62,19 @@ form .field {
     padding: 0; }
   label {
     clear:both;
-    display:block; } }
+    display:block; 
+  }
+  label.radio_opt {
+    clear: none;
+    display: inline-block;
+    margin-right: 5px;
+    width: 90px;
+    input {
+      width: auto;
+      display: inline-block;
+    }
+  }
+}
 
 .form {
   textarea {

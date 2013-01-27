@@ -10,15 +10,18 @@
   </a>
   <h2>Board Talk</h2>
   <div id="comment_form_wrapper"><%= render 'comments/form', :commentable => @board %></div>
-  <ul class="comments">
-    <%= render :partial => 'comment', :object => @board.comments.first, :locals => {:first => true} %>
-  </ul>
-  <div id="more_comments">
+  <% if @board.comments_count > 0 %>
     <ul class="comments">
-      <%= render :partial => 'comment', :collection => @board.comments.slice(1, @board.comments.length) %>
-      <li>Paginate here</li>
+      <%= render :partial => 'comment', :object => @board.comments.first, :locals => {:first => true} %>
     </ul>
-  </div>
-  
+  <% end %>
+  <% if @board.comments_count > 1 %>
+    <div id="more_comments">
+      <ul class="comments">
+        <%= render :partial => 'comment', :collection => @board.comments.slice(1, @board.comments.length) %>
+        <li>Paginate here</li>
+      </ul>
+    </div>
+  <% end %>  
 </div>
 
