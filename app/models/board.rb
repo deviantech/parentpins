@@ -6,9 +6,12 @@ class Board < ActiveRecord::Base
   belongs_to :category
   has_many :pins, :dependent => :destroy, :after_add => :set_cover_from_pin, :before_remove => :update_cover_before_pin_removed, :inverse_of => :board
   
-  attr_protected :id, :created_at, :updated_at
+  attr_protected :id, :created_at, :updated_at, :slug
+
+  extend FriendlyId
+  friendly_id :name, :use => [:slugged, :scoped], :scope => :user
   
-  validates_presence_of :user, :category
+  validates_presence_of :user, :category, :slug
   validates_length_of :name, :minimum => 2
   validates_uniqueness_of :name, :scope => :user_id
   

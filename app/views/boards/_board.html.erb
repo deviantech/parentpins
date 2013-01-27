@@ -1,5 +1,5 @@
 <li class="board">
-  <h3><%= link_to board.name, @profile ? board_profile_path(@profile, board) : board_path(board) %></h3>
+  <h3><%= link_to board.name, board_profile_path(board.user, board) %></h3>
   <h4>
     <%= link_to pins_profile_path(board.user) do %>
       <%= image_tag board.user.avatar.v50.url, :alt => "#{board.user.name}'s avatar" %>
@@ -7,7 +7,7 @@
     <% end %>
   </h4>
   <div class="holder">
-    <%= link_to '', @profile ? board_profile_path(@profile, board) : board_path(board), :class => 'link' %>
+    <%= link_to '', board_profile_path(board.user, board), :class => 'link' %>
     <div class="cover">
       <%= image_tag board.cover.url, :class => 'board_image' %>
     </div>

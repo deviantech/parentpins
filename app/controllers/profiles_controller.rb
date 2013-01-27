@@ -27,18 +27,7 @@ class ProfilesController < ApplicationController
   def following
     @following = @profile.following
   end
-  
-  def boards
-    paginate_boards @profile.boards
-  end
-  
-  def board
-    @board = @profile.boards.find(params[:board_id])
-    paginate_pins @board.pins
-  rescue ActiveRecord::RecordNotFound => e
-    redirect_to(boards_profile_path(@profile), :notice => "Unable to find the specified board") and return
-  end
-  
+    
   def edit
   end
   
@@ -74,13 +63,7 @@ class ProfilesController < ApplicationController
     end
     
     @profile ||= User.find(params[:id])
-    @profile_counters = {
-      :pins       => @profile.pins.count,
-      :boards     => @profile.boards.count,
-      :likes      => @profile.likes_count,
-      :followers  => @profile.followers_count,
-      :following   => @profile.following_count
-    }
+    get_profile_counters
   rescue ActiveRecord::RecordNotFound => e
     redirect_to(root_path, :notice => "Unable to find the specified profile")
   end

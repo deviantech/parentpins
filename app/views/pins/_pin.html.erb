@@ -24,7 +24,7 @@
 
       <span class="bind-board_id">
         onto
-        <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, board_path(pin.board)) : 'Unknown Board' %>
+        <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
       </span>
     </p>
   </div>

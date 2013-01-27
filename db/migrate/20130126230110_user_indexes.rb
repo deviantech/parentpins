@@ -4,5 +4,6 @@ class UserIndexes < ActiveRecord::Migration
   end
 
   def down
+    remove_index :users, :username
   end
 end

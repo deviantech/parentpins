@@ -5,6 +5,18 @@ class ApplicationController < ActionController::Base
   
   
   private
+  
+  def get_profile_counters
+    return true unless @profile 
+    
+    @profile_counters = {
+      :pins       => @profile.pins.count,
+      :boards     => @profile.boards.count,
+      :likes      => @profile.likes_count,
+      :followers  => @profile.followers_count,
+      :following   => @profile.following_count
+    }
+  end
 
   def after_sign_in_path_for(user)
     if user.sign_in_count == 1
@@ -24,10 +36,10 @@ class ApplicationController < ActionController::Base
     support_ajax_pagination
   end
 
-  def support_ajax_pagination
+  def support_ajax_pagination(custom_layout = nil)
     # Note that if we render(@results) directly, the format gets confused and Rails won't find our templates
     respond_to do |format|
-      format.html {}
+      format.html { @profile ? render(:layout => 'profiles') : render }
       format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
     end
   end

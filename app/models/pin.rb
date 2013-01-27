@@ -73,7 +73,13 @@ class Pin < ActiveRecord::Base
   
   # If a source pin was passed in, copy relevant attributes (repin). Otherwise, generate a clean pin record.
   def self.craft_new_pin(user, source_id, other_params)
-    the_pin = if source = !source_id.blank? && Pin.find_by_id(source_id)
+    source = begin
+      !source_id.blank? && Pin.find(source_id)
+    rescue ActiveRecord::RecordNotFound => e
+      nil
+    end
+    
+    the_pin = if source
       pin = Pin.new
       REPIN_ATTRIBUTES.each do |k|
         pin.send("#{k}=", source.send(k))

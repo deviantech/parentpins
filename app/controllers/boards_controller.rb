@@ -1,14 +1,16 @@
 class BoardsController < ApplicationController
   before_filter :authenticate_user!,  :except => [:index, :show]
-  before_filter :find_board,          :only   => [:edit, :update, :destroy]
+  before_filter :find_my_board,       :only   => [:edit, :update, :destroy]
+  before_filter :try_getting_user,    :only   => [:index, :show]
   before_filter :set_filters,         :only   => [:show, :index]
+  layout :set_layout
 
   def index
-    paginate_boards Board.trending
+    paginate_boards @profile ? @profile.boards : Board.trending    
   end
 
   def show
-    @board = Board.find(params[:id])
+    @board = @profile.boards.find(params[:id])
     paginate_pins @board.pins
   end
 
@@ -48,6 +50,18 @@ class BoardsController < ApplicationController
 
   def find_board
     @board = current_user.boards.find(params[:id])
+  end
+
+  def try_getting_user
+    if @profile = User.find(params[:profile_id])
+      get_profile_counters
+    end
+  rescue ActiveRecord::RecordNotFound => e
+    true
+  end
+
+  def set_layout
+    @profile ? 'profiles' : 'application'
   end
 
 end

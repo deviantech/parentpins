@@ -68,13 +68,15 @@ module ApplicationHelper
   end
   
   def body_class
+    return 'profile' if @profile
+    
     case params[:controller]
     # full_width also available here but currently depricated due to front end UI support
     when 'pins'     then params[:action] == 'index' ? background_class_names : ''
     when 'search'   then background_class_names
     when 'profiles' then 'profile'
     when 'boards'
-      %w(show index).include?(params[:action]) ? background_class_names : nil
+      %w(index).include?(params[:action]) ? background_class_names : nil
     when 'pins'
       params[:action] == 'index' ? 'custom' : nil
     else nil

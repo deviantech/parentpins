@@ -1,11 +1,16 @@
-<div class="wrapper">
-        
-    <div class="content board_wide">
-      <h1>Trending Boards<% if @category %> :: <%= @category.name %><% end %></h1>
-      
-      <%= render 'boards/boards' %>
-    </div>
+<% if @profile %>
+  <h1><span><%= @profile.name %>'s</span> Boards List</h1>
+
+  <div class="clearfix"></div>
+  <%= render 'boards/boards' %>
+<% else %>
+  <div class="wrapper">        
+      <div class="content board_wide">
+        <h1>Trending Boards<% if @category %> :: <%= @category.name %><% end %></h1>
     
-    <div class="clearfix"></div>
-    
-</div>
+        <%= render 'boards/boards' %>
+      </div>
+  
+      <div class="clearfix"></div>
+  </div>
+<% end %>

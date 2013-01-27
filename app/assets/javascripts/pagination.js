@@ -63,7 +63,7 @@ function initAjaxPagination(paginationButton) {
         ajaxDonePaginating = true;
       
         // Show no results div
-        $('<div class="clearfix"></div><div class="empty-results">No more to show.</div>').hide().insertAfter($resultsHolder).fadeIn();
+        if (!$('.empty-results').length) $('<div class="clearfix"></div><div class="empty-results">No more to show.</div>').hide().insertAfter($resultsHolder).fadeIn();
       }
 
       // Now actually show the results

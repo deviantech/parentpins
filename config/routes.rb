@@ -3,7 +3,6 @@ ParentPins::Application.routes.draw do
   match "users/edit" => redirect('/profiles/edit')
   devise_for :users
 
-  resources :boards
   resources :pins do
     member do 
       post 'add_comment'
@@ -25,8 +24,10 @@ ParentPins::Application.routes.draw do
 
   match '/pins/category/:category_id' => 'pins#index',  :as => 'pins_category'
 
+  resources :boards, :only => [:index]
   
   resources :profiles do
+    resources :boards
     member do
       get 'activity'
       get 'pins'
@@ -39,6 +40,7 @@ ParentPins::Application.routes.draw do
       post 'unfollow'
     end
   end
+  
   
   root :to => 'pins#index'
   

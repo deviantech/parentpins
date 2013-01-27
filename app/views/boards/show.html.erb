@@ -1,26 +1,23 @@
-<div class="wrapper board">
+<h1>
+  <a href="<%= boards_profile_path(@board.user) %>" class="user">
+    <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
+    <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
+  </a>
+  Board: <%= @board.name %>
+</h1>
 
-  <div class="content board board_wide">
-    <h1>
-      <a href="<%= boards_profile_path(@board.user) %>" class="user">
-        <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
-        <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
-      </a>
-      Board: <%= @board.name %>
-      <% if current_user == @board.user %>
-        <span class="action"><%= link_to 'edit', edit_board_path(@board), :class => 'ajax' %></span>
-      <% end %>
-    </h1>
-    
-    <% unless @board.description.blank? %>
-      <div class="board_description"><%= @board.description %></div>
-    <% end %>
-        
-    <%= render 'comments' %>
-        
-    <%= render 'pins/pins' %>
+<% unless @board.description.blank? %>
+  <div class="board_description"><%= @board.description %></div>
+<% end %>
+
+
+<% if current_user == @profile %>
+  <div class="controls">
+    <%= link_to 'Edit', edit_profile_board_path(current_user, @board), :class => "btn sec_action edit_button ajax" %>
   </div>
+<% end %>
 
-  <div class="clearfix"></div>
 
-</div>
+<%= render 'comments' %>
+
+<%= render 'pins/pins' %>
