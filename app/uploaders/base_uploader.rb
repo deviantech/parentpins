@@ -5,11 +5,8 @@ require 'carrierwave/processing/mime_types'
 class BaseUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
-  if Rails.env.production?
-    include CarrierWave::Vips
-  else
-    include CarrierWave::MiniMagick
-  end
+  # include CarrierWave::Vips
+  include CarrierWave::MiniMagick
 
   include CarrierWave::MimeTypes
   process :set_content_type
@@ -50,10 +47,10 @@ class BaseUploader < CarrierWave::Uploader::Base
   
   
   
-  # Rotates the image based on the EXIF Orientation
+  # Rotates the image based on the EXIF Orientation (not defined in Vips)
   def fix_exif_rotation
     manipulate! do |img|
-      img.auto_orient
+      img.auto_orient if img.respond_to?(:auto_orient)
       img = yield(img) if block_given?
       img
     end

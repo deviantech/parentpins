@@ -1,4 +1,4 @@
-class Pin < ActiveRecord::Base
+class Pin < ActiveRecord::Base  
   extend Searchable
   attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id
 
@@ -6,6 +6,9 @@ class Pin < ActiveRecord::Base
   REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
 
   mount_uploader :image, PinImageUploader
+
+  extend FriendlyId
+  friendly_id :uuid
 
   belongs_to :user
   belongs_to :via,              :class_name => 'User'
@@ -28,6 +31,7 @@ class Pin < ActiveRecord::Base
   validate :url_format, :not_previously_pinned, :on => :create
   
   before_update   :update_board_images_on_change
+  before_create   :set_uuid
   after_create    :update_board_add_image
   before_destroy  :update_board_remove_image
   before_destroy  :clean_redis
@@ -130,6 +134,10 @@ class Pin < ActiveRecord::Base
   end
     
   protected
+  
+  def set_uuid
+    self.uuid ||= UUIDTools::UUID.timestamp_create().to_s
+  end
   
   def apply_base64_image(string)
     return false unless string.match(/base64,?/)

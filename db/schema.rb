@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130126235939) do
+ActiveRecord::Schema.define(:version => 20130127020833) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -77,28 +77,30 @@ ActiveRecord::Schema.define(:version => 20130126235939) do
     t.string   "name"
     t.string   "kind"
     t.string   "url"
-    t.decimal  "price",              :precision => 10, :scale => 2
+    t.decimal  "price",                            :precision => 10, :scale => 2
     t.integer  "user_id"
     t.integer  "board_id"
     t.integer  "category_id"
     t.integer  "age_group_id"
     t.integer  "via_id"
-    t.datetime "created_at",                                                       :null => false
-    t.datetime "updated_at",                                                       :null => false
+    t.datetime "created_at",                                                                     :null => false
+    t.datetime "updated_at",                                                                     :null => false
     t.string   "description"
     t.string   "image"
     t.integer  "original_poster_id"
-    t.integer  "comments_count",                                    :default => 0
+    t.integer  "comments_count",                                                  :default => 0
     t.string   "domain"
     t.string   "via_url"
     t.integer  "repinned_from_id"
-    t.integer  "repin_count",                                       :default => 0
+    t.integer  "repin_count",                                                     :default => 0
+    t.string   "uuid",               :limit => 36
   end
 
   add_index "pins", ["age_group_id"], :name => "index_pins_on_age_group_id"
   add_index "pins", ["board_id"], :name => "index_pins_on_board_id"
   add_index "pins", ["category_id"], :name => "index_pins_on_category_id"
   add_index "pins", ["user_id"], :name => "index_pins_on_user_id"
+  add_index "pins", ["uuid"], :name => "index_pins_on_uuid", :unique => true
   add_index "pins", ["via_id"], :name => "index_pins_on_via_id"
 
   create_table "users", :force => true do |t|

@@ -5,6 +5,7 @@ gem 'rails', '3.2.11'
 gem 'mysql2'
 gem 'redis'
 gem 'redis-namespace'
+gem 'uuidtools'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -23,7 +24,6 @@ end
 
 group :development do
   gem 'thin'
-  gem 'mini_magick'  
   gem 'git'
   gem 'capistrano', :require => false
   gem 'rvm-capistrano', :require => false
@@ -49,18 +49,10 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
 
-# Used for carrerwave uploads. NOTE that this requires libvips, with either of:
-#   apt-get install libvips-dev
-#   brew install --use-llvm vips
-# And add to zsh profile:
-# =>  export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/X11/lib/pkgconfig
 gem 'carrierwave'
+gem 'mini_magick'
 gem 'mime-types'
 
-group :production do
-  gem 'ruby-vips'
-  gem 'carrierwave-vips'
-end
 
 
 
