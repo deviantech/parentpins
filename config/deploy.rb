@@ -152,3 +152,13 @@ end
 
 # Abort deployment if mismatch between local and remote git repositories
 after 'deploy:update_code', 'conditional:ensure_latest_git'
+
+
+# ===========
+# = Symlink =
+# ===========
+after 'deploy:create_symlink', 'create_app_symlinks'
+
+task :create_app_symlinks do
+  run "ln -nfs #{shared_path}/uploads #{current_path}/public/uploads"
+end
