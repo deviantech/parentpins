@@ -72,9 +72,9 @@ module ApplicationHelper
     
     case params[:controller]
     # full_width also available here but currently depricated due to front end UI support
-    when 'pins'     then params[:action] == 'index' ? background_class_names : ''
-    when 'search'   then background_class_names
-    when 'profiles' then 'profile'
+    when 'pins'                 then params[:action] == 'index' ? background_class_names : ''
+    when 'search'               then background_class_names
+    when 'profile', 'profiles'  then 'profile'
     when 'boards'
       %w(index).include?(params[:action]) ? background_class_names : nil
     when 'pins'

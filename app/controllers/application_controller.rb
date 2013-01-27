@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
   def support_ajax_pagination(custom_layout = nil)
     # Note that if we render(@results) directly, the format gets confused and Rails won't find our templates
     respond_to do |format|
-      format.html { @profile ? render(:layout => 'profiles') : render }
+      format.html { @profile ? render(:layout => 'profile') : render }
       format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
     end
   end

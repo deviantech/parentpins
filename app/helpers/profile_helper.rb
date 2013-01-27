@@ -1,4 +1,4 @@
-module ProfilesHelper
+module ProfileHelper
 
   def profile_nav_link(action)
     string = action.to_s.titleize

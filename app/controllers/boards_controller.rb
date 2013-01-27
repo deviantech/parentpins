@@ -61,7 +61,7 @@ class BoardsController < ApplicationController
   end
 
   def set_layout
-    @profile ? 'profiles' : 'application'
+    @profile ? 'profile' : 'application'
   end
 
 end

@@ -5,5 +5,5 @@
     <span><%= pluralize follower.followers_count, 'Follower', 'Followers' %></span>
     <span><%= follower.following_count %> Following</span>
   <% end %>
-  <%= render 'profiles/follow_buttons', :to_follow => follower, :in_list => true %>
+  <%= render 'profile/follow_buttons', :to_follow => follower, :in_list => true %>
 </li>

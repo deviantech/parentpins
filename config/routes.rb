@@ -1,6 +1,6 @@
 ParentPins::Application.routes.draw do
   # Devise edit path redirect to profile/account edit
-  match "users/edit" => redirect('/profiles/edit')
+  match "users/edit" => redirect('/profile/edit')
   devise_for :users
 
   resources :pins do
@@ -25,7 +25,7 @@ ParentPins::Application.routes.draw do
 
   resources :boards, :only => [:index]
   
-  resources :profiles do
+  resources :profile do
     resources :boards
     member do
       get 'activity'
