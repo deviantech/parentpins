@@ -74,7 +74,7 @@ function initAjaxPagination(paginationButton) {
           // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
           $newItems.show();
         }
-        $resultsHolder.masonry('appended', $newItems, true);
+        if ($resultsHolder.hasClass('masonry')) $resultsHolder.masonry('appended', $newItems, true);
       });
       
       // Allow another load to happen

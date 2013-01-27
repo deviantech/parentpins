@@ -1,12 +1,12 @@
 $(document).ready(function() {      
   // Masonry layout a la pinterest
-  $('#pins').masonry({
+  $('.masonry').masonry({
      columnWidth: 50,
      itemSelector: '.pin',
      isAnimatedFromBottom: true,
      isFitWidth: true
   }).imagesLoaded(function() {
-     $('#pins').masonry('reload');
+     $('.masonry').masonry('reload');
   });
   
   // Pin actions

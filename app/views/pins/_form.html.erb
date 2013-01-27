@@ -1,14 +1,4 @@
 <div class="field">
-  <%= f.label :name, 'Pin Title' %>
-  <%= f.text_field :name, :placeholder => 'Pin Title' %>
-</div>
-
-<div class="field">
-  <%= f.label :description, 'Description...' %>
-  <%= f.text_area :description, :placeholder => "First few sentences please, this Pin will link to the full article" %>        
-</div>
-
-<div class="field">
   <%= f.label :kind, 'Type of Pin' %>
   <%= f.select :kind, select_options(Pin::VALID_TYPES) %>
 </div>
@@ -21,6 +11,16 @@
 <div class="field">
   <%= f.label :age_group_id, "Select an Age Group" %>
   <%= f.select :age_group_id, select_options(AgeGroup.all) %>
+</div>
+
+<div class="field">
+  <%= f.label :name, 'Pin Title' %>
+  <%= f.text_field :name, :placeholder => 'Pin Title' %>
+</div>
+
+<div class="field">
+  <%= f.label :description, 'Description...' %>
+  <%= f.text_area :description, :placeholder => "First few sentences please, this Pin will link to the full article" %>        
 </div>
 
 <div class="field">
