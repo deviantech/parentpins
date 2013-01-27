@@ -1,5 +1,5 @@
 // Configurable
-Global.loadNextPageIfCloseThan = 300; 
+Global.loadNextPageIfCloserThan = 300; 
 Global.useInfinitePagination = true;
 
 $(document).ready(function() {
@@ -88,7 +88,7 @@ function initAjaxPagination(paginationButton) {
     $(window).on('scroll resize', considerInfiniteScrolling);
   }
 
-  // See how much of .ajax-pagination is still below the viewport. If less than Global.loadNextPageIfCloseThan, start loading more
+  // See how much of .ajax-pagination is still below the viewport. If less than Global.loadNextPageIfCloserThan, start loading more
   function considerInfiniteScrolling() {
     if (currentlyConsidering || ajaxDonePaginating) return;
     
@@ -97,7 +97,7 @@ function initAjaxPagination(paginationButton) {
     var viewportHeight  = $(window).height();
     var remainingDist   = pageHeight - scrollPos - viewportHeight;
 
-    if (remainingDist < Global.loadNextPageIfCloseThan) {
+    if (remainingDist < Global.loadNextPageIfCloserThan) {
       currentlyConsidering = true;
       loadNextPage( $('.load_more_button') );
     }
