@@ -103,7 +103,7 @@ function initPinForm() {
   
     if (name == 'board_id') {
       if ($field[0].tagName == 'SELECT' && $field.val().length) { // Existing board
-        return 'onto <a href="/profile/'+'a'+'/board/' + $field.val() + '">' + $field.find('option:selected').text() + '</a>';
+        return 'onto <a href="/profile/'+$field.data('username')+'/board/' + $field.val() + '">' + $field.find('option:selected').text() + '</a>';
       }
       // Name of a not-yet-created board
       var boardName = $boardName.val().length ? $boardName.val() : 'New Board';
