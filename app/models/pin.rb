@@ -1,9 +1,9 @@
 class Pin < ActiveRecord::Base  
   extend Searchable
-  attr_accessible :kind, :name, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id
+  attr_accessible :kind, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id
 
   VALID_TYPES = %w(idea product article)
-  REPIN_ATTRIBUTES = %w(kind name price url age_group_id category_id image)
+  REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image)
 
   mount_uploader :image, PinImageUploader
 
@@ -25,7 +25,7 @@ class Pin < ActiveRecord::Base
   accepts_nested_attributes_for :board
   
   before_validation :copy_board_settings,       :on => :create
-  validates_presence_of :user, :name, :board, :category, :age_group
+  validates_presence_of :user, :description, :board, :category, :age_group
   validates_inclusion_of :kind, :in => VALID_TYPES
   validates_length_of :description, :maximum => 255, :allow_blank => true
   validate :url_format, :not_previously_pinned, :on => :create
@@ -64,7 +64,6 @@ class Pin < ActiveRecord::Base
     # params[:url] is always the URL it was pinned from
     # params[:link], if present, means the image linking to a new page. Show the new page instead (seems to be Pinterest's logic)
     pin = user.pins.new({
-      :name => params[:title],
       :description => params[:description] || params[:title],
       :url => params[:link] ? params[:link] : params[:url],
       :via_url => params[:link] ? params[:url] : nil

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130127020833) do
+ActiveRecord::Schema.define(:version => 20130127212000) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(:version => 20130127020833) do
   add_index "friendly_id_slugs", ["sluggable_type"], :name => "index_friendly_id_slugs_on_sluggable_type"
 
   create_table "pins", :force => true do |t|
-    t.string   "name"
     t.string   "kind"
     t.string   "url"
     t.decimal  "price",                            :precision => 10, :scale => 2
