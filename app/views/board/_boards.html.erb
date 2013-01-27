@@ -9,7 +9,7 @@
   </div>
 <% else %>
   <ul class="boards ajax-pagination">
-    <%= render @boards %>
+    <%= render :partial => 'board/board', :collection => @boards %>
   </ul>
   <div class="clearfix"></div>
   <%= pagination_link %>

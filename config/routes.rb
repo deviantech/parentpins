@@ -23,10 +23,10 @@ ParentPins::Application.routes.draw do
 
   match '/pins/category/:category_id' => 'pins#index',  :as => 'pins_category'
 
-  resources :boards, :only => [:index]
-  
+  get '/boards' => 'board#index', :as => :boards
+  get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
   resources :profile do
-    resources :boards
+    resources :board
     member do
       get 'activity'
       get 'pins'

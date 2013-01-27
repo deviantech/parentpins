@@ -32,7 +32,7 @@
 <div class="board-fields">
   <% @pin.build_board if @pin.board.blank? || !@pin.board.new_record? %>
   <%= f.fields_for :board do |b| %>
-    <%= render 'boards/form', :f => b %>
+    <%= render 'board/form', :f => b %>
   <% end %>
 </div>
 

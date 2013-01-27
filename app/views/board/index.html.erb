@@ -2,13 +2,13 @@
   <h1><span><%= @profile.name %>'s</span> Boards List</h1>
 
   <div class="clearfix"></div>
-  <%= render 'boards/boards' %>
+  <%= render 'board/boards' %>
 <% else %>
   <div class="wrapper">
       <div class="content board_wide">
         <h1>Trending Boards<% if @category %> :: <%= @category.name %><% end %></h1>
     
-        <%= render 'boards/boards' %>
+        <%= render 'board/boards' %>
       </div>
   
       <div class="clearfix"></div>

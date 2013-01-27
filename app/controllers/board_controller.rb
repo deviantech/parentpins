@@ -1,4 +1,4 @@
-class BoardsController < ApplicationController
+class BoardController < ApplicationController
   before_filter :authenticate_user!,  :except => [:index, :show]
   before_filter :find_my_board,       :only   => [:edit, :update, :destroy]
   before_filter :try_getting_user,    :only   => [:index, :show]
