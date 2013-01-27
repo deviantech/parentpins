@@ -27,16 +27,5 @@
     <%= render 'shared/footer' %>
     <%= javascript_include_tag "application" %>
     <%= yield :footer_js %>
-    <script>
-      $("#message_toggle").click(function () {
-        $("#more_comments").toggle("slow");
-        $("#comment_form_wrapper").toggle("slow");
-      });
-    </script>
-    <script>
-      $("#show_pin_toggle").click(function () {
-        $("#show_pin").toggle("slow");
-      });
-    </script>
 </body>
 </html>

@@ -39,6 +39,12 @@ $(document).ready(function() {
     });
   });
   
+  // Comments on board/show page
+  $("#message_toggle").click(function() {
+    $("#more_comments").toggle("slow");
+    $("#comment_form_wrapper").toggle("slow");
+  });
+  
   // Comment Button
   $('.comment_button').click(function(e) {
     $this = $(this);

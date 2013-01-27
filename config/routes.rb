@@ -5,7 +5,6 @@ ParentPins::Application.routes.draw do
 
   resources :pins do
     member do 
-      post 'add_comment'
       post 'like'
       post 'unlike'
     end
@@ -38,6 +37,8 @@ ParentPins::Application.routes.draw do
       post 'unfollow'
     end
   end
+  
+  resource :comments, :only => [:create, :destroy]
   
   
   root :to => 'pins#index'

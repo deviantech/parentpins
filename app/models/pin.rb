@@ -20,7 +20,7 @@ class Pin < ActiveRecord::Base
   belongs_to  :repinned_from,    :class_name => 'Pin',    :counter_cache => :repin_count
   has_many    :repins,           :class_name => 'Pin',    :foreign_key => 'repinned_from_id'
   
-  has_many :comments, :dependent => :destroy
+  has_many :comments, :dependent => :destroy, :as => :commentable
 
   accepts_nested_attributes_for :board
   

@@ -1,4 +1,6 @@
-<%= form_for Comment.new, :url => add_comment_pin_path(commentable) do |f| %>
+<%= form_for Comment.new do |f| %>
+  <%= f.hidden_field :commentable_type, :value => commentable.try(:class).try(:name) %>
+  <%= f.hidden_field :commentable_id, :value => commentable.try(:id) %>
   <%= link_to image_tag(current_user.avatar.v30.url, :alt => "#{current_user.name}'s avatar"), profile_path(current_user), :title => current_user.name %>
   <%= f.text_area :body, :placeholder => 'Add a comment...', :maxlength => 10000 %>
   <%= f.submit 'Comment', :class => "Button WhiteButton Button11 grid_comment_button", :style => 'display: inline-block' %>

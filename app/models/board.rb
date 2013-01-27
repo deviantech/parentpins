@@ -5,6 +5,7 @@ class Board < ActiveRecord::Base
   belongs_to :user
   belongs_to :category
   has_many :pins, :dependent => :destroy, :after_add => :set_cover_from_pin, :before_remove => :update_cover_before_pin_removed, :inverse_of => :board
+  has_many :comments, :dependent => :destroy, :as => :commentable
   
   attr_protected :id, :created_at, :updated_at, :slug
 

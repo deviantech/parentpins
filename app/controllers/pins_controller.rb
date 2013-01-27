@@ -1,7 +1,7 @@
 class PinsController < ApplicationController
   before_filter :authenticate_user!,      :except => [:index, :show]
   before_filter :find_current_users_pin,  :only => [:edit, :update, :destroy]
-  before_filter :find_any_pin,            :only => [:show, :add_comment, :like, :unlike]
+  before_filter :find_any_pin,            :only => [:show, :like, :unlike]
   before_filter :set_filters,             :only => [:index]
   respond_to :html, :js
   
@@ -43,16 +43,7 @@ class PinsController < ApplicationController
     redirect_to profile_board_path(current_user, @pin.board), :notice => 'Removed Pin'
     @pin.destroy
   end
-  
-  def add_comment
-    if @comment.save
-      flash[:notice] = "Added comment"
-    else
-      flash[:error] = "Unable to save comment"
-    end
-    redirect_to :back
-  end
-  
+    
   def like
     current_user.like(@pin)
   end
@@ -66,8 +57,6 @@ class PinsController < ApplicationController
   
   def find_any_pin
     @pin = Pin.find(params[:id])
-    @comment = current_user.comments.new(params[:comment])
-    @comment.pin = @pin # Don't use pin.comments.new, because then empty comment shows up when viewing pin.comments
   end
   
   def find_current_users_pin

@@ -30,7 +30,7 @@
   </div>
   <% if user_signed_in? && !pin.new_record? %>
     <div class="comment">
-      <%= render 'shared/comment_form', :commentable => pin %>
+      <%= render 'comments/form', :commentable => pin %>
     </div>
   <% end %>
 </li>

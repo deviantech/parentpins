@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130127212000) do
+ActiveRecord::Schema.define(:version => 20130127212547) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -24,10 +24,11 @@ ActiveRecord::Schema.define(:version => 20130127212000) do
     t.text     "description"
     t.integer  "category_id"
     t.integer  "user_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.string   "cover"
     t.string   "slug"
+    t.integer  "comments_count", :default => 0
   end
 
   add_index "boards", ["category_id"], :name => "index_boards_on_category_id"
@@ -45,12 +46,13 @@ ActiveRecord::Schema.define(:version => 20130127212000) do
   create_table "comments", :force => true do |t|
     t.text     "body"
     t.integer  "user_id"
-    t.integer  "pin_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "commentable_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "commentable_type"
   end
 
-  add_index "comments", ["pin_id"], :name => "index_comments_on_pin_id"
+  add_index "comments", ["commentable_type", "commentable_id"], :name => "index_comments_on_commentable_type_and_commentable_id"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "feedbacks", :force => true do |t|
