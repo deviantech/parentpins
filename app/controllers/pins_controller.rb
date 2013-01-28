@@ -6,12 +6,11 @@ class PinsController < ApplicationController
   respond_to :html, :js
   
   def index
-    # TODO: include user or else cache username
-    paginate_pins Pin.trending
+    paginate_pins Pin.includes(:user).trending
   end
-      
-  def new    
-    # If a source ID is passed, allow repinning
+  
+  # New or, if source_id passed, repin
+  def new
     @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
   end
   
@@ -31,6 +30,7 @@ class PinsController < ApplicationController
   end
   
   def update
+    conditionally_remove_nested_attributes(:pin, :board)
     if @pin.update_attributes(params[:pin])
       redirect_to profile_board_path(current_user, @pin.board), :notice => 'Saved changes to pin'
     else

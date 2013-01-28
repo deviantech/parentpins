@@ -6,7 +6,7 @@ class BoardController < ApplicationController
   layout :set_layout
 
   def index
-    paginate_boards @profile ? @profile.boards : Board.trending    
+    paginate_boards @profile ? @profile.boards : Board.includes([:user]).trending    
   end
 
   def show
