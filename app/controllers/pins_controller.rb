@@ -1,7 +1,7 @@
 class PinsController < ApplicationController
   before_filter :authenticate_user!,      :except => [:index, :show]
   before_filter :find_current_users_pin,  :only => [:edit, :update, :destroy]
-  before_filter :find_any_pin,            :only => [:show, :like, :unlike]
+  before_filter :find_any_pin,            :only => [:like, :unlike]
   before_filter :set_filters,             :only => [:index]
   respond_to :html, :js
   
@@ -23,6 +23,7 @@ class PinsController < ApplicationController
   end
   
   def show
+    @pin = Pin.includes([:user, :comments]).find(params[:id])
   end
     
   def edit

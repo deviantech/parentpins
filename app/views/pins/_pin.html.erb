@@ -1,4 +1,4 @@
-<li class="pin js-pin <%= dom_id(pin) %>">
+<li class="pin pin-context <%= dom_id(pin) %>">
   <% unless pin.new_record? %>
     <%= render 'pins/actions', :pin => pin %>
   <% end %>

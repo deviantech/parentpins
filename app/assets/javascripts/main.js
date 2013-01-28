@@ -40,7 +40,7 @@ $(document).ready(function() {
   });
     
   // Pins comment Button (in page or in modal)
-  $('.js-pin .comment_button').click(function(e) {
+  $('.pin-context .comment_button').click(function(e) {
     $this = $(this);
     var focusable;
     

@@ -1,5 +1,5 @@
 <div class="<%= modal_class %>">
-  <div class="js-pin pinly <%= dom_id(@pin) %>">
+  <div class="pin-context pinly <%= dom_id(@pin) %>">
     <div class="pin_type"><%= @pin.kind.to_s.titleize %></div>
 
     <div class="attribute">
@@ -42,7 +42,7 @@
       <% end %>
 
       <div class="comments" id="pinly_comment">
-        <%= render @pin.comments %>
+        <%= render :partial => 'pins/comment', :collection => @pin.comments %>
         <% if user_signed_in?%>
           <div class="comment_form">
             <%= form_for Comment.new(params[:comment]) do |f| %>
