@@ -1,3 +1,5 @@
+AUTH = YAML.load_file( File.join(Rails.root, 'config', 'auth.yml') ).with_indifferent_access
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -205,7 +207,7 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :facebook, 'APP_ID', 'APP_SECRET', :scope => 'email', :client_options => {:ssl => {:ca_path => '/etc/ssl/certs'}}
+  config.omniauth :facebook, AUTH[:facebook][:key], AUTH[:facebook][:secret], :scope => 'email', :client_options => {:ssl => {:ca_path => '/etc/ssl/certs'}}
 
   # Note -- for heroku, use this instead
     # client_options => {:ssl => {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}}

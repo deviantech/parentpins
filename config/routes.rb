@@ -1,7 +1,8 @@
 ParentPins::Application.routes.draw do
   # Devise edit path redirect to profile/account edit
   match "users/edit" => redirect('/profile/edit')
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks" }
+  
 
   resources :pins do
     member do 

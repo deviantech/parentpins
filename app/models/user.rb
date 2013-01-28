@@ -51,6 +51,29 @@ class User < ActiveRecord::Base
   end
 
 
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+        user.email = data["email"] if user.email.blank?
+        user.username = data["username"] if user.name.blank?
+      end
+    end
+  end
+  
+  def self.find_for_facebook_oauth(auth, signed_in_resource = nil)
+    user = signed_in_resource
+    user ||= User.where(:provider => auth.provider, :uid => auth.uid).first
+    user ||= User.find_by_email(auth.info.email)
+    user ||= User.create({
+      :name       => auth.extra.raw_info.name,
+      :email      => auth.info.email,
+      :password   => Devise.friendly_token[0,20]
+    })
+    
+    user.update_attributes(:uid => auth.uid, :provider => auth.provider)
+    return user
+  end
+  
 
   # ==============================
   # = REDIS: Following/Followers =
