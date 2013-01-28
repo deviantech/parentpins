@@ -39,7 +39,7 @@ ParentPins::Application.routes.draw do
     end
   end
   
-  resource :comments, :only => [:create, :destroy]
+  resources :comments, :only => [:create, :destroy]
   
   
   root :to => 'pins#index'

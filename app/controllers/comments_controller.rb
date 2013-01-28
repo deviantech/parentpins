@@ -13,8 +13,8 @@ class CommentsController < ApplicationController
   end
   
   def destroy
-    current_user.comments.find_by_id(params[:id]).try(:destroy)
-    render :nothing => true
+    @comment = current_user.comments.find_by_id(params[:id])
+    @comment.try(:destroy)
   end
   
 end

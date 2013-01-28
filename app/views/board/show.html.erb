@@ -12,7 +12,7 @@
 
 
 <% if current_user == @profile %>
-  <div class="controls">
+  <div class="board-controls">
     <%= link_to 'Edit', edit_profile_board_path(current_user, @board), :class => "btn sec_action edit_button ajax" %>
   </div>
 <% end %>
