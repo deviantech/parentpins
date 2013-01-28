@@ -1,5 +1,12 @@
 module ApplicationHelper
 
+  def absolute_url(url)
+    return url if url.starts_with?(/http/i)
+    url = [host, url].join('/').gsub(/\/{2,}/, '/')
+    url = "http://#{url}" unless url.starts_with?(/http/i)
+    url
+  end
+
   def share_pin_on_fb_link(pin)
     opts = {
       :s => 100,
@@ -10,7 +17,7 @@ module ApplicationHelper
       }
     }
     
-    url = "http://www.facebook.com/sharer.php?#{opts.to_param}&p[images][0]=#{URI.escape(pin.image.v192.url)}"
+    url = "http://www.facebook.com/sharer.php?#{opts.to_param}&p[images][0]=#{URI.escape(absolute_url(pin.image.v192.url))}"
     # NOTE: if add image, give is the js-new-window-popup class too
     link_to 'Share on FB', url, :data => {:height => 217, :width => 548}, :class => 'js-new-window-popup btn sec_action'
   end
