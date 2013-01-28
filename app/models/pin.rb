@@ -48,6 +48,8 @@ class Pin < ActiveRecord::Base
   scope :pinned_by, lambda {|uids|
     where({:user_id => uids})
   }
+  scope :repinned, where('repinned_from_id IS NOT NULL')
+  scope :not_repinned, where('repinned_from_id IS NULL')
   
   scope :with_image, where('image <> ""')
   
@@ -57,7 +59,7 @@ class Pin < ActiveRecord::Base
 
   def self.trending
     # TODO: implement some sort of trending logic if kind/category aren't provided
-    newest_first
+    newest_first.not_repinned
   end
   
   def self.from_bookmarklet(user, params)
