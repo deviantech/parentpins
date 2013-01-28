@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130127212547) do
+ActiveRecord::Schema.define(:version => 20130128234733) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20130127212547) do
     t.string   "cover"
     t.string   "slug"
     t.integer  "comments_count", :default => 0
+    t.integer  "pins_count",     :default => 0
   end
 
   add_index "boards", ["category_id"], :name => "index_boards_on_category_id"

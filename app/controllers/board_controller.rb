@@ -1,8 +1,8 @@
 class BoardController < ApplicationController
   before_filter :authenticate_user!,  :except => [:index, :show, :comments]
-  before_filter :try_getting_user,    :only   => [:index, :show, :comments]
+  before_filter :try_getting_user,    :only   => [:index, :show, :comments, :follow, :unfollow]
   before_filter :find_my_board,       :only   => [:edit, :update, :destroy]
-  before_filter :find_profile_board,  :only   => [:show, :comments]
+  before_filter :find_profile_board,  :only   => [:show, :comments, :follow, :unfollow]
   before_filter :set_filters,         :only   => [:show, :index]
   layout :set_layout
 

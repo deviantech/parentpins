@@ -31,7 +31,6 @@ ParentPins::Application.routes.draw do
     get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
     get "/profile/:profile_id/board/:id/comments" => 'board#comments', :as => :profile_board_comments
     resources :profile do
-      resources :board
       member do
         get 'activity'
         get 'pins'
@@ -40,6 +39,12 @@ ParentPins::Application.routes.draw do
         get 'following'
         post 'follow'
         post 'unfollow'
+      end
+      resources :board do
+        member do
+          post 'follow'
+          post 'unfollow'
+        end
       end
     end
   end

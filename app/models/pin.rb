@@ -13,7 +13,7 @@ class Pin < ActiveRecord::Base
   belongs_to :user
   belongs_to :via,              :class_name => 'User'
   belongs_to :original_poster,  :class_name => 'User'
-  belongs_to :board,            :inverse_of => :pins
+  belongs_to :board,            :inverse_of => :pins,     :counter_cache => :pins_count
   belongs_to :category
   belongs_to :age_group
   

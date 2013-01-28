@@ -166,7 +166,7 @@ class User < ActiveRecord::Base
     Rails.redis.sadd(obj.redis_name__followers,     self.id)
   end
 
-  def unfollow(user)
+  def unfollow(obj)
     return nil if obj.blank? ||
       (obj.is_a?(User) && obj.id == self.id) ||
       (obj.is_a?(Board) && self.boards.include?(obj))
