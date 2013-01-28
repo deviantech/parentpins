@@ -3,7 +3,7 @@ class PopupController < ApplicationController
   
   def pin
     unless user_signed_in?
-      session[:user_return_to] = url_for(params)
+      session[:user_return_to_from_pin] = session[:user_return_to] = url_for(params)
       redirect_to(popup_login_path) and return 
     end
     
@@ -11,6 +11,7 @@ class PopupController < ApplicationController
   end
   
   def create
+    session.delete(:user_return_to_from_pin) # Clean up session
     conditionally_remove_nested_attributes(:pin, :board)
     @pin = current_user.pins.new(params[:pin])
     if @pin.save
@@ -21,6 +22,9 @@ class PopupController < ApplicationController
   end
   
   def login
+    if user_signed_in?
+      redirect_to session.delete(:user_return_to_from_pin) and return
+    end
     session[:popup_login] = true # On login error, redirect back here rather than normal sessions/new path
     render 'devise/sessions/new', :layout => 'popup'
   end
