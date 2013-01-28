@@ -5,7 +5,7 @@ class ProfileController < ApplicationController
   before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board, :boards]
   
   def show
-    redirect_to :action => @profile == current_user ? 'activity' : 'boards'
+    redirect_to @profile == current_user ? activity_profile_path(@profile) : profile_boards_path(@profile)
   end
   
   def activity    
