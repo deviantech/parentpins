@@ -75,9 +75,9 @@ class User < ActiveRecord::Base
     return user
   end
   
-  # Include pins by follower_user_ids or on following_board_ids, unique
+  # Include pins by follower_user_ids or on boards_following_ids, unique
   def activity
-    Pin.where(['user_id = ? OR board_id = ?', following_user_ids, following_board_ids])
+    Pin.where(['user_id = ? OR board_id = ?', users_following_ids, boards_following_ids])
   end
 
   # ==============================
@@ -96,8 +96,8 @@ class User < ActiveRecord::Base
   end
 
   def following_users_even_indirectly
-    uids = following_users_ids
-    uids += Board.where(:id => following_board_ids).select('DISTINCT(user_id)')
+    uids = users_following_ids
+    uids += Board.where(:id => boards_following_ids).select('DISTINCT(user_id)')
     User.where(:id => uids.uniq)
   end
   
@@ -107,11 +107,11 @@ class User < ActiveRecord::Base
     Rails.redis.smembers(redis_name__followers)
   end
   
-  def following_users_ids
+  def users_following_ids
     Rails.redis.smembers(redis_name__following_users)
   end
   
-  def following_board_ids
+  def boards_following_ids
     Rails.redis.smembers(redis_name__following_boards)
   end
   
