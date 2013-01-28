@@ -60,10 +60,10 @@ class User < ActiveRecord::Base
     end
   end
   
-  def self.find_for_facebook_oauth(auth, signed_in_resource = nil)
+  def self.find_for_oauth(auth, signed_in_resource = nil)
     user = signed_in_resource
     user ||= User.where(:provider => auth.provider, :uid => auth.uid).first
-    user ||= User.find_by_email(auth.info.email)
+    user ||= (auth.info.email.blank? ? nil : User.find_by_email(auth.info.email))
     user ||= User.create({
       :name       => auth.extra.raw_info.name,
       :email      => auth.info.email,
