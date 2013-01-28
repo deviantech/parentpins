@@ -75,6 +75,10 @@ class User < ActiveRecord::Base
     return user
   end
   
+  # Include pins by follower_user_ids or on following_board_ids, unique
+  def activity
+    Pin.where(['user_id = ? OR board_id = ?', following_user_ids, following_board_ids])
+  end
 
   # ==============================
   # = REDIS: Following/Followers =
@@ -88,6 +92,10 @@ class User < ActiveRecord::Base
     User.where(:id => following_ids)
   end
   
+  def following_plus_board_owners
+    following + User.where(:id => Board.where(:id => following_board_ids).select(:id).uniq)
+  end
+  
   def follower_ids
     Rails.redis.smembers(redis_name__followers)
   end
@@ -95,6 +103,11 @@ class User < ActiveRecord::Base
   def following_ids
     Rails.redis.smembers(redis_name__following)
   end
+  
+  def following_board_ids
+    Rails.redis.smembers(redis_name__following_boards)
+  end
+  
   
   def following?(user)
     user = User.find_by_id(user) unless user.is_a?(User)

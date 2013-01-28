@@ -45,9 +45,6 @@ class Pin < ActiveRecord::Base
   scope :in_age_group, lambda {|groups|
     groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
   }
-  scope :pinned_by, lambda {|uids|
-    where({:user_id => uids})
-  }
   scope :repinned, where('repinned_from_id IS NOT NULL')
   scope :not_repinned, where('repinned_from_id IS NULL')
   

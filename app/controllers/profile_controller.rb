@@ -9,7 +9,7 @@ class ProfileController < ApplicationController
   end
   
   def activity    
-    paginate_pins Pin.pinned_by(@following)
+    paginate_pins @profile.activity
   end
   
   def pins

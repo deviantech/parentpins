@@ -6,4 +6,7 @@ development:
   facebook:
     key: ***REMOVED***
     secret: ***REMOVED***
-    
+test:
+  facebook:
+    key: ***REMOVED***
+    secret: ***REMOVED***

@@ -29,7 +29,12 @@ group :development do
   gem 'rvm-capistrano', :require => false
   gem 'capistrano-ext', :require => false
   gem 'capistrano_colors', :require => false
-  gem 'capistrano-conditional', :git => 'git://github.com/deviantech/capistrano-conditional.git', :require => false  
+  gem 'capistrano-conditional', :git => 'git://github.com/deviantech/capistrano-conditional.git', :require => false
+end
+
+group :test do
+  gem 'factory_girl_rails'
+  gem 'ffaker'
 end
 
 gem 'jquery-rails'
