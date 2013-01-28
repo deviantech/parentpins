@@ -1,0 +1,13 @@
+var $holder = $('#more_comments ul.comments');
+var results = "<%= escape_javascript(render(:partial => 'board/comment', :collection => @comments)) %>";
+
+<% if @comments.total_pages > params[:page].to_i %>
+  results += "<%= escape_javascript( link_to('Load More', profile_board_comments_path(@board.user, @board, :page => params[:page].to_i + 1), :class => 'btn action tertiary_action load_more_comments_button', :remote => true) ) %>";
+  $holder.find('.load_more_comments_button').remove();
+<% end %>
+
+<% if params[:page].to_i == 1 %>
+  $holder.html(results);
+<% else %>
+  $holder.append(results);
+<% end %>

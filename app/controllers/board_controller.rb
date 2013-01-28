@@ -1,7 +1,8 @@
 class BoardController < ApplicationController
-  before_filter :authenticate_user!,  :except => [:index, :show]
+  before_filter :authenticate_user!,  :except => [:index, :show, :comments]
+  before_filter :try_getting_user,    :only   => [:index, :show, :comments]
   before_filter :find_my_board,       :only   => [:edit, :update, :destroy]
-  before_filter :try_getting_user,    :only   => [:index, :show]
+  before_filter :find_profile_board,  :only   => [:show, :comments]
   before_filter :set_filters,         :only   => [:show, :index]
   layout :set_layout
 
@@ -10,7 +11,6 @@ class BoardController < ApplicationController
   end
 
   def show
-    @board = @profile.boards.find(params[:id])
     paginate_pins @board.pins
   end
 
@@ -45,11 +45,22 @@ class BoardController < ApplicationController
     @board.destroy
     redirect_to profile_boards_path(current_user), :notice => 'Removed Board'
   end
+  
+  def comments
+    params[:page] ||= 1
+    @comments = @board.comments.page(params[:page])
+  end
 
   protected
 
   def find_my_board
     @board = current_user.boards.find(params[:id])
+  end
+  
+  def find_profile_board
+    @board = @profile.boards.find(params[:id])
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to profile_path(@profile), :notice => 'Unable to find board'
   end
 
   def try_getting_user

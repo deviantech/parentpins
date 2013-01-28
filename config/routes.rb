@@ -25,6 +25,7 @@ ParentPins::Application.routes.draw do
 
   get '/boards' => 'board#index', :as => :boards
   get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
+  get "/profile/:profile_id/board/:id/comments" => 'board#comments', :as => :profile_board_comments
   resources :profile do
     resources :board
     member do

@@ -1,5 +1,5 @@
 <div class="board_comments">
-  <a href="#" id="message_toggle" class="btn sec_action comment_button right">
+  <a href="#" id="message_toggle" class="btn sec_action comment_button right comment-pagination-init">
     <% if @board.comments_count.zero? %>
       Add first comment!
     <% elsif @board.comments_count == 1 %>
@@ -15,13 +15,24 @@
       <%= render :partial => 'comment', :object => @board.comments.first, :locals => {:first => true} %>
     </ul>
   <% end %>
+  
   <% if @board.comments_count > 1 %>
     <div id="more_comments">
       <ul class="comments">
-        <%= render :partial => 'comment', :collection => @board.comments.slice(1, @board.comments.length) %>
-        <li>Paginate here</li>
+        <%= link_to 'Load More', profile_board_comments_path(@board.user, @board), :class => "btn action tertiary_action load_more_comments_button", :remote => true %>
       </ul>
     </div>
   <% end %>  
 </div>
 
+<% content_for :footer_js do %>
+<script type="text/javascript" charset="utf-8">
+  $('comment-pagination-init').click(function() {
+    $('.load_more_comments_button').trigger('click');
+    return false;
+  });
+  $(document).on('click', '.load_more_comments_button', function(e) {
+    $("<%= escape_javascript(image_tag('ui/loader.gif', :alt => 'Loading', :class => 'loader_icon')) %>").insertBefore( $(e.target) );
+  });
+</script>
+<% end %>

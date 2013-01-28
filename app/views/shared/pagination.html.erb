@@ -1,1 +1,3 @@
-<%= render @results %>
+<% @results.each do |r| %>
+  <%= render_paginated_result(r) %>
+<% end %>

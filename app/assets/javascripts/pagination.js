@@ -2,14 +2,19 @@
 Global.loadNextPageIfCloserThan = 300; 
 Global.useInfinitePagination = true;
 
+
+// Usage: needs a .ajax-pagination wrapper and an a.load_more_button linking to the first page of pagination
 $(document).ready(function() {
-  if ($('.ajax-pagination').length && $('.load_more_button').length) {
-    if (Global.useInfinitePagination) $('.load_more_button').hide(); // If no JS, show as fallback. If JS, not needed
-    initAjaxPagination( $('.load_more_button') );
+  var $btn = $('.ajax-pagination').siblings('.load_more_button.for-ajax-pagination');
+  if ($btn.length) {
+    if (Global.useInfinitePagination) $btn.hide(); // If no JS, show as fallback. If JS, not needed
+    initAjaxPagination( $btn );
   }
 });
  
 function initAjaxPagination(paginationButton) {
+  if (Global.ajaxPaginationInitted) return;
+  Global.ajaxPaginationInitted = true;
   var nextAjaxPage = null;
   var ajaxDonePaginating = false;
   var lastPaginationAjax = null;
@@ -30,7 +35,7 @@ function initAjaxPagination(paginationButton) {
     }
   
     $btn.fadeOut();
-    $('.loader_icon').hide(); // If any were animating nicely, just get rid of them
+    $btn.siblings('.loader_icon').hide(); // If any were animating nicely, just get rid of them
     var $paginationLoader = $('<img src="/assets/ui/loader.gif" alt="Loading" class="loader_icon"/>').hide().insertAfter($btn).fadeIn();
 
     if (nextAjaxPage) {
@@ -74,7 +79,9 @@ function initAjaxPagination(paginationButton) {
           // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
           $newItems.show();
         }
-        if ($resultsHolder.hasClass('masonry')) $resultsHolder.masonry('appended', $newItems, true);
+        if ($resultsHolder.hasClass('masonry')) {
+          $resultsHolder.masonry('appended', $newItems, true);
+        }
       });
       
       // Allow another load to happen

@@ -1,4 +1,5 @@
 class Comment < ActiveRecord::Base
+  default_scope order('id DESC')
   attr_accessible :body, :commentable_id, :commentable_type, :user_id
   
   belongs_to :user

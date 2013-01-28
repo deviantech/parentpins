@@ -1,5 +1,15 @@
 module ApplicationHelper
 
+  def render_paginated_result(r)
+    if r.is_a?(Board)
+      render :partial => 'board/board', :object => r
+    elsif r.is_a?(Comment)
+      render :partial => 'board/comment', :object => r
+    else
+      render r
+    end
+  end
+
   def host
     ActionMailer::Base.default_url_options[:host]
   end
@@ -16,7 +26,7 @@ module ApplicationHelper
     n = 1 if n.zero?
     n = n + 1
     next_page_link = url_for( params.merge(:page => n) )
-    link_to 'Load More', next_page_link, :class => "btn action load_more_button tertiary_action", :'data-next-page' => n
+    link_to 'Load More', next_page_link, :class => "btn action load_more_button for-ajax-pagination tertiary_action", :'data-next-page' => n
   end
 
   def include_javascript_for_modal(js)

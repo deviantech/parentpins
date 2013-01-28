@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :only => [:create, :destroy]
   
   def create
     @comment = current_user.comments.new(params[:comment])
