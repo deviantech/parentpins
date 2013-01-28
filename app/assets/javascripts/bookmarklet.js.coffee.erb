@@ -51,6 +51,127 @@ do(document = document, jQuery = window.jQuery) ->
         
   # Close popup if any are open
   initBookmarkletWithjQuery = ($) ->
+
+    closeBookmarklet = ->
+      $('#'+popupName).fadeOut ->
+        $(this).remove()
+      return false
+
+    addImage = (img) ->
+      if !Global.imageBase
+        console.log('Attempting to add image before template has been processed')
+      else
+        if `!(img.src in Global.potentials)` # No duplicates
+          Global.potentials[img.src] = img
+          Global.imageBase.find('#noPotentialImages').hide();
+          added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase )
+    
+  
+    isImageBigEnough = (data) ->
+      data.width && data.width >= minImageWidth && data.height && data.height >= minImageHeight
+  
+  
+    # Given one or more versions of the same image, continue processing with at most ONE of the versions
+    evaluateImageSet = (images...) ->
+      mapping = {}
+      sizes = []
+
+      for img in images
+        do (img) ->
+          # If images are the same size, it doesn't matter which we choose, so OK to use dictionary here
+          data = imgToData(img)
+          mapping[data.area] = data
+          sizes.push(data.area)
+    
+      # Grab largest
+      biggest = mapping[ Math.max.apply(Math, sizes) ]    
+      if isImageBigEnough(biggest)
+        addImage(biggest)
+
+
+    inTestBed = (toTest, fnWhenLoaded) ->
+      $toTest = $(toTest)
+      $toTest.imagesLoaded ->
+        fnWhenLoaded && fnWhenLoaded()
+      $toTest.appendTo(Global.imageTestbed) 
+  
+    startEvaluatingPotentialImages = ->
+      evaluatePotentialImages()
+      # TODO: if we want to check again when ajax completes...
+      # $(document).bind('ajaxComplete', evaluatePotentialImages)
+    
+    evaluatePotentialImages = ->
+      allImages = $("img:not('.nonPinnable')")
+  
+      # For every image, if it's in a link to another image, use the linked one instead. Otherwise, add to considering list if img is large enough
+      for img in allImages
+        do (img) ->
+          $img = $(img)
+          src = $img.attr('src') || $img.data('src')
+          if src # Some google images results don't have a src set
+            imgExt = src.match(/\.\w+?$/)
+            link = $img.parents('a').first().attr('href')
+      
+            # If small image linking to larger image with same extension, use larger image instead
+            if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
+              linked = new Image()
+              linked.src = link
+              inTestBed linked, ->
+                evaluateImageSet(img, linked)
+            
+            else
+              if $img.is(':visible') 
+                evaluateImageSet(img)
+              else 
+                inTestBed img, ->
+                  evaluateImageSet(img)
+                   
+    # Convert image object to a hash containing the relevant keys
+    imgToData = (img) ->
+      $img = $(img)
+      height = $img.height()  || 0
+      width  = $img.width()   || 0
+      area   = height * width
+    
+      return {
+        src:    $img.attr('src') || $img.data('src'),
+        link:   $img.parents('a').first().attr('href'),
+        height: height,
+        width:  width,
+        area:   area
+      }
+
+    ensureDefinedAndLimited = (str, limit) ->
+      return '' if (!str? || typeof(str) == 'undefined' || str == 'undefined')
+      return str.substr(0, limit) + '...' if (str.length > limit)
+      return str
+
+
+    switchToPinView = (e) ->
+      e.preventDefault()
+      potential = $(e.currentTarget)
+  
+      args = [
+        ['url',         '' + window.location],
+        ['media',       potential.find('img').attr('src')],
+        ['title',       ensureDefinedAndLimited(document.title, 100)],
+        ['description', ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)]
+      ]
+        
+      # If image was in a link, pass the link as well
+      args.push(['link', potential.data('link')]) if potential.data('link').length
+    
+      # Submit via POST (open pin window, then submit a form to it)
+      popupWindowName = popupName + 'PinWindow';
+      theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( Global.bookmarkletBase )
+      pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
+      pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
+      theForm.submit()
+      pinWindow.focus() if (window.focus)    
+      return false    
+
+
+    # Now that everything's been defined and wrapped in jQuery, start running things
     if ($('#'+popupName).length)
       closeBookmarklet()
     else
@@ -60,127 +181,6 @@ do(document = document, jQuery = window.jQuery) ->
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
       Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
       startEvaluatingPotentialImages()
-
-  closeBookmarklet = ->
-    $('#'+popupName).fadeOut ->
-      $(this).remove()
-    return false
-
-
-
-  addImage = (img) ->
-    if !Global.imageBase
-      console.log('Attempting to add image before template has been processed')
-    else
-      if `!(img.src in Global.potentials)` # No duplicates
-        Global.potentials[img.src] = img
-        Global.imageBase.find('#noPotentialImages').hide();
-        added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase )
-    
-  
-  isImageBigEnough = (data) ->
-    data.width && data.width >= minImageWidth && data.height && data.height >= minImageHeight
-  
-  
-  # Given one or more versions of the same image, continue processing with at most ONE of the versions
-  evaluateImageSet = (images...) ->
-    mapping = {}
-    sizes = []
-
-    for img in images
-      do (img) ->
-        # If images are the same size, it doesn't matter which we choose, so OK to use dictionary here
-        data = imgToData(img)
-        mapping[data.area] = data
-        sizes.push(data.area)
-    
-    # Grab largest
-    biggest = mapping[ Math.max.apply(Math, sizes) ]    
-    if isImageBigEnough(biggest)
-      addImage(biggest)
-
-
-  inTestBed = (toTest, fnWhenLoaded) ->
-    $toTest = $(toTest)
-    $toTest.imagesLoaded ->
-      fnWhenLoaded && fnWhenLoaded()
-    $toTest.appendTo(Global.imageTestbed) 
-  
-  startEvaluatingPotentialImages = ->
-    evaluatePotentialImages()
-    # TODO: if we want to check again when ajax completes...
-    # $(document).bind('ajaxComplete', evaluatePotentialImages)
-    
-  evaluatePotentialImages = ->
-    allImages = $("img:not('.nonPinnable')")
-  
-    # For every image, if it's in a link to another image, use the linked one instead. Otherwise, add to considering list if img is large enough
-    for img in allImages
-      do (img) ->
-        $img = $(img)
-        src = $img.attr('src') || $img.data('src')
-        if src # Some google images results don't have a src set
-          imgExt = src.match(/\.\w+?$/)
-          link = $img.parents('a').first().attr('href')
-      
-          # If small image linking to larger image with same extension, use larger image instead
-          if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
-            linked = new Image()
-            linked.src = link
-            inTestBed linked, ->
-              evaluateImageSet(img, linked)
-            
-          else
-            if $img.is(':visible') 
-              evaluateImageSet(img)
-            else 
-              inTestBed img, ->
-                evaluateImageSet(img)
-                   
-  # Convert image object to a hash containing the relevant keys
-  imgToData = (img) ->
-    $img = $(img)
-    height = $img.height()  || 0
-    width  = $img.width()   || 0
-    area   = height * width
-    
-    return {
-      src:    $img.attr('src') || $img.data('src'),
-      link:   $img.parents('a').first().attr('href'),
-      height: height,
-      width:  width,
-      area:   area
-    }
-
-  ensureDefinedAndLimited = (str, limit) ->
-    return '' if (!str? || typeof(str) == 'undefined' || str == 'undefined')
-    return str.substr(0, limit) + '...' if (str.length > limit)
-    return str
-
-
-  switchToPinView = (e) ->
-    e.preventDefault()
-    potential = $(e.currentTarget)
-  
-    args = [
-      ['url',         '' + window.location],
-      ['media',       potential.find('img').attr('src')],
-      ['title',       ensureDefinedAndLimited(document.title, 100)],
-      ['description', ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)]
-    ]
-        
-    # If image was in a link, pass the link as well
-    args.push(['link', potential.data('link')]) if potential.data('link').length
-    
-    # Submit via POST (open pin window, then submit a form to it)
-    popupWindowName = popupName + 'PinWindow';
-    theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( Global.bookmarkletBase )
-    pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
-    pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
-    theForm.submit()
-    pinWindow.focus() if (window.focus)    
-    return false    
-
 
   prepForBookmarklet(jQuery);
   null
