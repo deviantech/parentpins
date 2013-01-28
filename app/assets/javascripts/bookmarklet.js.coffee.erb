@@ -3,6 +3,7 @@
 //= require templates/bookmarklet/form
 //= require templates/bookmarklet/popup-placeholder
 //= require jquery-imagesloaded-min.module
+
   
 # TODO - how to not mess with calling page's jquery version?
 # TODO - how to wrap template includes in our bigger function to protect it from including page's content?
@@ -39,12 +40,12 @@ do(document = document, jQuery = window.jQuery) ->
 
   # Just to be sure $ is available and not in compatibility mode on the host site
   weHavejQuery = ->
-    includeBookmarkletStyles()
+    includeBookmarkletStyles(jQuery)
     # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with
     require('jquery-imagesloaded-min');
     initBookmarkletWithjQuery(jQuery)
   
-  includeBookmarkletStyles = ->
+  includeBookmarkletStyles = ($) ->
     return if ($('link#'+popupName+'CSS').length)
     $('head').append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />')
         
