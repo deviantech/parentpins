@@ -1,4 +1,4 @@
-<li class="<%= 'recent_comment' if defined?(first) %>">
+<li class="<%= 'recent_comment' if defined?(first) %> <%= dom_id(comment) %>" data-comment-id="<%= comment.id %>">
   <%= link_to image_tag(comment.user.avatar.v50, :alt => 'Avatar'), profile_path(comment.user), :class => 'avatar' %>
   <div class="body">
     <div class="user_info">

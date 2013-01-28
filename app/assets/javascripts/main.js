@@ -38,15 +38,9 @@ $(document).ready(function() {
       }
     });
   });
-  
-  // Comments on board/show page
-  $("#message_toggle").click(function() {
-    $("#more_comments").is(':visible') ? $("#more_comments").slideUp("slow") : $("#more_comments").slideDown("slow");
-    $("#comment_form_wrapper").is(':visible') ? $("#comment_form_wrapper").slideUp("slow") : $("#comment_form_wrapper").slideDown("slow");
-  });
-  
-  // Comment Button
-  $('.comment_button').click(function(e) {
+    
+  // Pins comment Button (in page or in modal)
+  $('.js-pin .comment_button').click(function(e) {
     $this = $(this);
     var focusable;
     

@@ -1,13 +1,34 @@
 var $holder = $('#more_comments ul.comments');
-var results = "<%= escape_javascript(render(:partial => 'board/comment', :collection => @comments)) %>";
+var $results = $("<%= escape_javascript(render(:partial => 'board/comment', :collection => @comments)) %>");
 
-<% if @comments.total_pages > params[:page].to_i %>
-  results += "<%= escape_javascript( link_to('Load More', profile_board_comments_path(@board.user, @board, :page => params[:page].to_i + 1), :class => 'btn action tertiary_action load_more_comments_button', :remote => true) ) %>";
-  $holder.find('.load_more_comments_button').remove();
+
+// Remove any duplicates (e.g. from teaser comment shown on page load)
+var toRemove = []; // Can't remove inline, must be wrapped in a container element first
+$results.each(function() {
+  var $li = $(this);
+  if ($('.board_comments li.comment_' + $li.data('comment-id')).length) toRemove.push($li.data('comment-id'));
+});
+
+
+$('#more_comments .load_more_comments_button').remove();
+$results.hide();
+<% if params[:page].to_i == 1 %>
+  $holder.html($results);
+<% else %>
+  $results.insertBefore( $holder.find('.loader_icon') );
 <% end %>
 
-<% if params[:page].to_i == 1 %>
-  $holder.html(results);
-<% else %>
-  $holder.append(results);
+// Do actual removing from the holder
+$.each(toRemove, function() {
+  $holder.find('li.comment_'+this).remove();
+});
+
+$results.slideDown();
+
+$('#more_comments .loader_icon').slideUp(function() {
+  $(this).remove();
+});
+
+<% if @comments.total_pages > params[:page].to_i %>
+  $holder.append( $("<%= escape_javascript( link_to('Load More', profile_board_comments_path(@board.user, @board, :page => params[:page].to_i + 1), :class => 'btn action tertiary_action load_more_comments_button', :remote => true) ) %>") );
 <% end %>

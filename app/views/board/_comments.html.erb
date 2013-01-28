@@ -1,5 +1,5 @@
 <div class="board_comments">
-  <a href="#" id="message_toggle" class="btn sec_action comment_button right comment-pagination-init">
+  <a href="#" id="message_toggle" class="btn sec_action comment_button right">
     <% if @board.comments_count.zero? %>
       Add first comment!
     <% elsif @board.comments_count == 1 %>
@@ -26,13 +26,21 @@
 </div>
 
 <% content_for :footer_js do %>
-<script type="text/javascript" charset="utf-8">
-  $('comment-pagination-init').click(function() {
-    $('.load_more_comments_button').trigger('click');
-    return false;
-  });
-  $(document).on('click', '.load_more_comments_button', function(e) {
-    $("<%= escape_javascript(image_tag('ui/loader.gif', :alt => 'Loading', :class => 'loader_icon')) %>").insertBefore( $(e.target) );
-  });
-</script>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+  
+      $("#message_toggle").click(function() {
+        $("#more_comments").is(':visible') ? $("#more_comments").slideUp("slow") : $("#more_comments").slideDown("slow");
+        $("#comment_form_wrapper").is(':visible') ? $("#comment_form_wrapper").slideUp("slow") : $("#comment_form_wrapper").slideDown("slow");
+        
+        $('.load_more_comments_button').trigger('click');
+        return false;
+      });
+
+      $(document).on('click', '.load_more_comments_button', function(e) {
+        $("<%= escape_javascript(image_tag('ui/loader.gif', :alt => 'Loading', :class => 'loader_icon')) %>").insertBefore( $(e.target) );
+      });
+  
+    });
+  </script>
 <% end %>
