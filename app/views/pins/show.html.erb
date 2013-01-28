@@ -3,7 +3,8 @@
     <div class="pin_type"><%= @pin.kind.to_s.titleize %></div>
 
     <div class="attribute">
-      <%= avatar_link(@pin.user) %>      
+      <%= avatar_link(@pin.user) %>
+      <%= share_pin_on_fb_link(@pin) %>
       <div class="attribute_info">
         <p>
           <%= link_to @pin.user.name, profile_path(@pin.user) %>

@@ -1,5 +1,20 @@
 module ApplicationHelper
 
+  def share_pin_on_fb_link(pin)
+    opts = {
+      :s => 100,
+      :p => {
+        :title    => "ParentPins.com: #{pin.board.category.name} > #{pin.age_group.name}",
+        :url      => pin_url(pin),
+        :summary  => %Q{"#{pin.user.name}'s Pin in the board "#{pin.board.name}" on ParentPins.com},
+      }
+    }
+    
+    url = "http://www.facebook.com/sharer.php?#{opts.to_param}&p[images][0]=#{URI.escape(pin.image.v192.url)}"
+    # NOTE: if add image, give is the js-new-window-popup class too
+    link_to 'Share on FB', url, :data => {:height => 217, :width => 548}, :class => 'js-new-window-popup btn sec_action'
+  end
+
   def render_paginated_result(r)
     if r.is_a?(Board)
       render :partial => 'board/board', :object => r
