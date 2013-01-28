@@ -45,6 +45,18 @@ class Board < ActiveRecord::Base
     end
   end
 
+  # ======================================
+  # = Users can follow individual boards =
+  # ======================================
+  
+  def followers_count
+    Rails.redis.scard(redis_name__followers)
+  end
+  
+  def self.redis_name__followers
+    "b:#{self.id}:followers"
+  end
+
   protected
   
   def update_pin_settings

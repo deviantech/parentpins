@@ -10,7 +10,7 @@
 
   <div class="followers_list">
     <ul class="users">
-      <% @profile.following.each do |user| %>
+      <% @profile.following_users_even_indirectly.each do |user| %>
         <%= render 'follower', :follower => user %>
       <% end %>
     </ul>

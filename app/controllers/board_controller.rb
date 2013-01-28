@@ -50,6 +50,16 @@ class BoardController < ApplicationController
     params[:page] ||= 1
     @comments = @board.comments.page(params[:page])
   end
+  
+  def follow
+    current_user.follow(@board) if user_signed_in?
+    render :nothing => true
+  end
+  
+  def unfollow
+    current_user.unfollow(@board) if user_signed_in?
+    render :nothing => true
+  end
 
   protected
 
