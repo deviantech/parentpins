@@ -2,7 +2,8 @@
 //= require templates/bookmarklet/potential
 //= require templates/bookmarklet/form
 //= require templates/bookmarklet/popup-placeholder
-//= require jquery-imagesloaded-min.module
+//= require bookmarklet/jquery-imagesloaded-min.module
+//= require bookmarklet/jquery-helpers.module
 
   
 # TODO - how to not mess with calling page's jquery version?
@@ -42,7 +43,7 @@ do(document = document, jQuery = window.jQuery) ->
   weHavejQuery = ->
     includeBookmarkletStyles(jQuery)
     # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with
-    require('jquery-imagesloaded-min');
+    require('bookmarklet/jquery-imagesloaded-min');
     initBookmarkletWithjQuery(jQuery)
   
   includeBookmarkletStyles = ($) ->
@@ -170,6 +171,17 @@ do(document = document, jQuery = window.jQuery) ->
       pinWindow.focus() if (window.focus)    
       return false    
 
+    pingGoogleAnalytics = ->
+      require('bookmarklet/jquery-helpers')
+      <% if Rails.env.production? %>
+      _gaq = _gaq || []
+      _gaq.push(['_setAccount', 'UA-37989907-1'])
+      _gaq.push(['_setDomainName', 'bookmarklet.parentpins.com'])
+      _gaq.push(['_trackPageview'])
+      ga_src = `('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'`
+      jQuery.externalScript(ga_src)
+      <% end %>
+      
 
     # Now that everything's been defined and wrapped in jQuery, start running things
     if ($('#'+popupName).length)
@@ -181,6 +193,7 @@ do(document = document, jQuery = window.jQuery) ->
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
       Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
       startEvaluatingPotentialImages()
+      pingGoogleAnalytics()
 
   prepForBookmarklet(jQuery);
   null
