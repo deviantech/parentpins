@@ -1,3 +1,9 @@
-facebook:
-  key: ***REMOVED***
-  secret: ***REMOVED***
+production:
+  facebook:
+    key: ***REMOVED***
+    secret: ***REMOVED***
+development:
+  facebook:
+    key: ***REMOVED***
+    secret: ***REMOVED***
+    

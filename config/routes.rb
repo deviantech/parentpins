@@ -25,18 +25,22 @@ ParentPins::Application.routes.draw do
   match '/pins/category/:category_id' => 'pins#index',  :as => 'pins_category'
 
   get '/boards' => 'board#index', :as => :boards
-  get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
-  get "/profile/:profile_id/board/:id/comments" => 'board#comments', :as => :profile_board_comments
-  resources :profile do
-    resources :board
-    member do
-      get 'activity'
-      get 'pins'
-      get 'likes'
-      get 'followers'
-      get 'following'
-      post 'follow'
-      post 'unfollow'
+  
+  # Allow periods in URL (e.g. facebook username is kali.donovan)
+  scope :profile_id => /[^\/]*/, :id => /[^\/]*/ do
+    get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
+    get "/profile/:profile_id/board/:id/comments" => 'board#comments', :as => :profile_board_comments
+    resources :profile do
+      resources :board
+      member do
+        get 'activity'
+        get 'pins'
+        get 'likes'
+        get 'followers'
+        get 'following'
+        post 'follow'
+        post 'unfollow'
+      end
     end
   end
   

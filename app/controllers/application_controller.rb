@@ -19,10 +19,10 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(user)
-    if user.sign_in_count == 1
+    if session[:user_return_to_from_pin].blank? && user.sign_in_count == 1
       activity_profile_path(user, :step_2 => true)
     else
-      request.env['omniauth.origin'] || stored_location_for(user) || activity_profile_path(user)
+      session[:user_return_to_from_pin] || stored_location_for(user) || activity_profile_path(user)
     end
   end
 

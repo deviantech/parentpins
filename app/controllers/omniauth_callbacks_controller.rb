@@ -24,7 +24,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to new_user_registration_url
     else
       sign_in @user, :event => :authentication # this will throw if @user is not activated
-      set_flash_message(:notice, :success, :kind => kind) if is_navigational_format?
+      set_flash_message(:notice, :success, :kind => kind)
       redirect_to after_sign_in_path_for(@user)
     end
   end

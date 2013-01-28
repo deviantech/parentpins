@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   friendly_id :username
   
   validates_uniqueness_of :username, :allow_blank => false
-  validates_format_of :username, :with => /\A[a-z0-9]+\z/i
+  validates_format_of :username, :with => /\A[a-z0-9\.\-\_]+\z/i
   validates_numericality_of :kids, :allow_blank => true
   validate :valid_username
   before_destroy :clean_redis
@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
     user ||= User.where(:provider => auth.provider, :uid => auth.uid).first
     user ||= (auth.info.email.blank? ? nil : User.find_by_email(auth.info.email))
     user ||= User.create({
-      :name       => auth.extra.raw_info.name,
+      :username   => auth.extra.raw_info.username,
       :email      => auth.info.email,
       :password   => Devise.friendly_token[0,20]
     })
