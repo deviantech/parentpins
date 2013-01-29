@@ -6,9 +6,16 @@
   Board: <%= @board.name %>
 </h1>
 
-<% unless @board.description.blank? %>
-  <div class="board_description"><%= @board.description %></div>
-<% end %>
+
+<div class="board_description">
+  <%= @board.description.blank? ? 'No description provided.' : @board.description %>
+</div>
+
+<div class="board_stats">
+  <%= pluralize @board.pins_count, 'pin', 'pins' %>
+  /
+  <%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %>
+</div>
 
 
 <% if user_signed_in? %>

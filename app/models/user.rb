@@ -90,15 +90,15 @@ class User < ActiveRecord::Base
     User.where(:id => follower_ids)
   end
 
-  def following_count
-    # TODO - make this more efficient?
-    following_users_even_indirectly.count
-  end
-
-  def following_users_even_indirectly
+  # TODO: make uses of this more efficient 
+  def followers_even_indirectly
     uids = users_following_ids
     uids += Board.where(:id => boards_following_ids).select('DISTINCT(user_id)')
     User.where(:id => uids.uniq)
+  end
+  
+  def following_only_users_count
+    User.where(:id => Rails.redis.smembers(redis_name__following_users))
   end
   
   # ids
@@ -158,7 +158,7 @@ class User < ActiveRecord::Base
     
   def follow_user(obj)
     Rails.redis.sadd(redis_name__following_users, obj.id)
-    Rails.redis.sadd(user.redis_name__followers,  self.id)
+    Rails.redis.sadd(obj.redis_name__followers,  self.id)
   end
   
   def follow_board(obj)
@@ -180,7 +180,7 @@ class User < ActiveRecord::Base
   
   def unfollow_user(obj)
     Rails.redis.srem(redis_name__following_users, obj.id)
-    Rails.redis.srem(user.redis_name__followers,  obj.id)
+    Rails.redis.srem(obj.redis_name__followers,   self.id)
   end
 
   def unfollow_board(obj)

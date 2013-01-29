@@ -1,5 +1,5 @@
 <% if params[:context] == current_user.id.to_s %>
-  updateProfileCounters({following: <%= current_user.following_count %>, followers: <%= current_user.followers_count %>});
+  updateProfileCounters({following: <%= current_user.following_only_users_count %>, followers: <%= current_user.followers_count %>});
 <% elsif params[:context] == @profile.id.to_s %>
-  updateProfileCounters({following: <%= @profile.following_count %>, followers: <%= @profile.followers_count %>});
+  updateProfileCounters({following: <%= @profile.following_only_users_count %>, followers: <%= @profile.followers_count %>});
 <% end %>

@@ -49,6 +49,10 @@ class Board < ActiveRecord::Base
   # = Users can follow individual boards =
   # ======================================
   
+  def followers_even_indirectly_count
+    Rails.redis.sunion(redis_name__followers, user.redis_name__followers).count
+  end
+  
   def followers_count
     Rails.redis.scard(redis_name__followers)
   end

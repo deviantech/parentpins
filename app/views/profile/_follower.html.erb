@@ -3,7 +3,7 @@
     <%= image_tag(follower.avatar.v50.url) %>
     <%= follower.name %>
     <span><%= pluralize follower.followers_count, 'Follower', 'Followers' %></span>
-    <span><%= follower.following_count %> Following</span>
+    <span><%= follower.following_only_users_count %> Following</span>
   <% end %>
   <%= render 'profile/follow_buttons', :to_follow => follower, :in_list => true %>
 </li>

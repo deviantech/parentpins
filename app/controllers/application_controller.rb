@@ -13,8 +13,8 @@ class ApplicationController < ActionController::Base
       :pins       => @profile.pins.count,
       :boards     => @profile.boards.count,
       :likes      => @profile.likes_count,
-      :followers  => @profile.followers_count,
-      :following   => @profile.following_count
+      :followers  => @profile.followers_even_indirectly.count,
+      :following   => @profile.following_only_users_count
     }
   end
 

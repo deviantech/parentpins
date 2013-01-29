@@ -25,7 +25,7 @@ class ProfileController < ApplicationController
   end
   
   def following
-    @following = @profile.following_users_even_indirectly
+    @following = @profile.followers_even_indirectly
   end
     
   def edit
