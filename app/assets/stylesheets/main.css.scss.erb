@@ -167,17 +167,35 @@ a {
   display: block;
   position: absolute;
   top: 0;
-  left: 10px;
+  left: 0;
   text-align: center;
   text-decoration: none;
   color: #E55799;
   font-family:times;
   font-size:24px;
   font-weight:600;
-  padding:14px 10px 16px;
+  padding:14px 10px 16px 55px;
   margin:0 10px 0 0;
+  &:before {
+    content:"\e014";
+    position:absolute;
+    top:4px;
+    left:0;
+    height:50px;
+    width:50px;
+    text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
+    font-family: 'pinli';
+  	speak: none;
+  	font-style: normal;
+  	font-weight: normal;
+    color: #E55799;
+  	font-size:50px;
+  	line-height: 1;
+  	-webkit-font-smoothing: antialiased; }
   &:hover {
-    color:#000; }
+    color:#000;
+    &:before {
+      color:#000; } }
   span {
     font-weight:100; } }
 
@@ -258,7 +276,7 @@ a {
 
 .nav_main {
   float: left;
-  margin: 0 0 0 145px;
+  margin: 0 0 0 200px;
   padding: 0;
   li {
     float: left; }
