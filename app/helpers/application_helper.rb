@@ -96,7 +96,7 @@ module ApplicationHelper
   end
   
   def background_class_names
-    "custom background_cover"
+    "custom"
   end
   
   def body_class
