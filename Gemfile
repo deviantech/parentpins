@@ -32,7 +32,7 @@ group :development do
 end
 
 group :test do
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', :platform => :ruby_19
   gem 'ffaker'
 end
 
