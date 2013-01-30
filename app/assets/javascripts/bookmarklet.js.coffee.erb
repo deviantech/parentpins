@@ -66,8 +66,8 @@ do(document = document, jQuery = window.jQuery) ->
         if `!(img.src in Global.potentials)` # No duplicates
           Global.potentials[img.src] = img
           Global.imageBase.find('#noPotentialImages').hide();
-          # Max-height will prevent getting too big, but without this firefox will leave box with no height 
-          added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase ).height( img.height )
+          # Max-height will prevent getting too big, but without this firefox will leave box with no height
+          added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase ).height( img.scaledHeight )
 
     
   
@@ -136,13 +136,17 @@ do(document = document, jQuery = window.jQuery) ->
       height = $img.height()  || 0
       width  = $img.width()   || 0
       area   = height * width
+      
+      # What would height be if width was 192?
+      scaledHeight = width == 0 ? 0 : ((192 / width) * height)
     
       return {
         src:    $img.attr('src') || $img.data('src'),
         link:   $img.parents('a').first().attr('href'),
         height: height,
         width:  width,
-        area:   area
+        area:   area,
+        scaledHeight: scaledHeight
       }
 
     ensureDefinedAndLimited = (str, limit) ->
