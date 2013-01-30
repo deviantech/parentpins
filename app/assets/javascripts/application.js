@@ -22,5 +22,5 @@
 //= require app/scrollToTop
 //= require main
 //= require pagination
-//= require google-analytics
+//= require app/google-analytics
 //= require lte-ie7

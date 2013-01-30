@@ -13,4 +13,5 @@
 //= require jquery
 //= require app/helpers
 //= require add-pin
-//= require add-pin-in-popup
+//= require popup/add-pin-in-popup
+//= require popup/google-analytics
