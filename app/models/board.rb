@@ -30,8 +30,12 @@ class Board < ActiveRecord::Base
   end
   
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
-  def thumbnails
-    pins.newest_first.limit(4).collect{ |p| p.image.v55.url }
+  def thumbnails(n = 4)
+    urls = pins.newest_first.limit(n).collect{ |p| p.image.v55.url }
+    (n - urls.length).times do
+      urls += [Pin.new.image.v55.url]
+    end
+    urls
   end
   
   def set_cover_from_pin(pin)
