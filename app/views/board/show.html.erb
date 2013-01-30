@@ -12,6 +12,8 @@
     <%= pluralize @board.pins_count, 'pin', 'pins' %>
     /
     <%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %>
+    <br>
+    Category: <strong><%= @board.category.name %></strong>
     <% if user_signed_in? %>
       <div class="board-controls">
         <% if current_user == @profile %>
@@ -23,6 +25,7 @@
     <% end %>
   </div>
   <%= @board.description.blank? ? 'No description provided.' : @board.description %>
+  <div class="clearfix"></div>
 </div>
 
 

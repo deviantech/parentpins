@@ -8,9 +8,10 @@
       <%= options_for_select([['All Age Groups', '']] + select_options(AgeGroup.all), @age_group.try(:id)) %>
     </select>
   <% end %>
-  
-  <select name="category">
-    <%= options_for_select([['All Categories', '']] + select_options(Category.all), @category.try(:id)) %>
-  </select>
-  
+
+  <% unless defined?(@board) %>
+    <select name="category">
+      <%= options_for_select([['All Categories', '']] + select_options(Category.all), @category.try(:id)) %>
+    </select>
+  <% end %>
 </div>

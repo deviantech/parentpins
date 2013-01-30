@@ -27,12 +27,12 @@ class ApplicationController < ActionController::Base
   end
 
   def paginate_pins(base_scope)
-    @results = @pins = base_scope.by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
+    @results = @pins = base_scope.includes(:age_group).by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
     support_ajax_pagination
   end
 
   def paginate_boards(base_scope)
-    @results = @boards = base_scope.in_category(@category).page(params[:page])
+    @results = @boards = base_scope.includes(:category).in_category(@category).page(params[:page])
     support_ajax_pagination
   end
 

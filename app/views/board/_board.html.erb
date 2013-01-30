@@ -22,7 +22,10 @@
       <% end %>
     </div>
     <div class="description">
-      <p><%= board.description.blank? ? 'No description provided' : board.description.truncate(100, :separator => ' ') %></p>
+      <p>
+        <strong><%= board.category.name %></strong>:
+        <%= board.description.blank? ? 'No description provided' : board.description.truncate(100, :separator => ' ') %>
+      </p>
     </div>
   </div>
 </li>
