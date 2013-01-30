@@ -17,6 +17,7 @@ class Board < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :user_id
   
   after_save :update_pin_settings
+  before_destroy :clean_redis
   
   scope :in_category, lambda {|cat|
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
@@ -70,6 +71,13 @@ class Board < ActiveRecord::Base
       pin.send(:copy_board_settings)
       pin.save
     end
+  end
+
+  def clean_redis
+    User.where(:id => directly_followed_by_ids).find_each do |u|
+      u.unfollow(self)
+    end
+    Rails.redis.del(redis_name__followed_by)
   end
     
 end

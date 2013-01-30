@@ -283,15 +283,16 @@ class User < ActiveRecord::Base
 
   def clean_redis
     # Clear self from other objects' redis entries
-    following.each {|u| unfollow(u) }
-    followers.each {|u| u.unfollow(self) }
+    User.where(:id => redis_name__following_users).find_each    {|u| unfollow(u) }
+    Board.where(:id => redis_name__following_boards).find_each  {|b| unfollow(b) }
+    directly_followed_by_ids.each {|u| u.unfollow(self) }
     likes.each {|l| unlike(l)}
     
     # Remove my redis objects
     Rails.redis.del(redis_name__categories)
+    Rails.redis.del(redis_name__followed_by)
     Rails.redis.del(redis_name__following_users)
     Rails.redis.del(redis_name__following_boards)
-    Rails.redis.del(redis_name__followed_by)
     Rails.redis.del(redis_name__likes)
   end
   
