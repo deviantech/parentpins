@@ -13,3 +13,4 @@
 //= require jquery
 //= require app/helpers
 //= require add-pin
+//= require add-pin-in-popup
