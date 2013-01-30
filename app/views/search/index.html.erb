@@ -15,7 +15,7 @@
     <% if @results.blank? %>
       <div class="empty-results">No <%= @kind.pluralize %> to show.</div>
     <% else %>
-      <ul class="masonry ajax-pagination timeline<%= ' followed_by_list user_results' if @kind = 'user' %>" id="pins">
+      <ul class="masonry ajax-pagination timeline<%= ' user_list user_results' if @kind = 'user' %>" id="pins">
         <%= render @results %>
       </ul>
       

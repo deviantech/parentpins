@@ -48,7 +48,7 @@ and (max-device-width : 1024px) {
   .content h1 {margin:0 0 10px 30px;}
   .profile .content #pins {margin-left:30px !important;}
   .nav_profile a {font-size:16px;padding:14px 10px 18px 48px;}
-  .followed_by_list {margin: 20px 0 0 30px;width: 240px;}
+  .user_list {margin: 20px 0 0 30px;width: 240px;}
   .profile .follow_list #pins {margin-left:280px !important;width:260px;}
   .follow_list .users li:hover .follow_in_list {display:none;}
   .profile .content #pins.edit_preview_pin {margin-left:500px !important;}

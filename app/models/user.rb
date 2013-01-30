@@ -84,12 +84,10 @@ class User < ActiveRecord::Base
   # = REDIS: Following/Followers =
   # ==============================
   
-  # objects
+  # Hard to decide what to show for counts. Most efficient to only show those directly following, but
+  # on the "follows" page we had to show all (else you can never see the boards you follow), so on the
+  # "followed_by" page we had to follow suit to remain consistent.
   
-  def followed_by
-    User.where(:id => followed_by_ids)
-  end
-
   # TODO: make uses of this more efficient   
   def following_even_indirectly
     @following_even_indirectly ||= begin
@@ -98,9 +96,22 @@ class User < ActiveRecord::Base
       User.where(:id => uids.uniq)
     end
   end
-  
-  def following_only_users_count
-    User.where(:id => Rails.redis.smembers(redis_name__following_users))
+
+  def following_even_indirectly_count
+    following_even_indirectly.count
+  end
+
+  def followed_by_even_indirectly
+    @followed_by_even_indirectly ||= begin
+      uids = followed_by_ids
+      uids += boards.collect {|b| b.directly_followed_by_ids}
+      User.where(:id => uids.flatten.uniq)
+    end
+  end
+
+  def followed_by_even_indirectly_count
+    followed_by_even_indirectly.count
+    Rails.redis.scard(redis_name__followed_by)
   end
   
   # ids
@@ -191,12 +202,8 @@ class User < ActiveRecord::Base
   end
 
   # counters
-
-  def followed_by_count
-    Rails.redis.scard(redis_name__followed_by)
-  end
   
-  def following_only_users_count
+  def following_even_indirectly_count
     Rails.redis.scard(redis_name__following_users)
   end
   

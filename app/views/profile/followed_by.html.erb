@@ -1,15 +1,13 @@
 <h1><span>&nbsp;</span><%= @profile.name %>'s Followers</h1>
   
-<% if @profile.followed_by_count.zero? %>
+<% if @profile.followed_by_even_indirectly_count.zero? %>
   <div class="empty_pins">
     <p><%= @profile.name %> isn't currently being followed by anyone.</p>
   </div>
 <% else %>
-  <div class="followed_by_list">
+  <div class="user_list">
     <ul class="users">
-      <% @profile.followed_by.each do |user| %>
-        <%= render 'users/user', :user => user %>
-      <% end %>
+      <%= render @profile.followed_by %>
     </ul>
   </div>
 <% end %>

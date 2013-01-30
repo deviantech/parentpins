@@ -1,5 +1,5 @@
 <% if params[:context] == current_user.id.to_s %>
-  updateProfileCounters({following: <%= current_user.following_only_users_count %>, followed_by: <%= current_user.followed_by_count %>});
+  updateProfileCounters({following: <%= current_user.following_even_indirectly_count %>, followed_by: <%= current_user.followed_by_even_indirectly_count %>});
 <% elsif params[:context] == @profile.id.to_s %>
-  updateProfileCounters({following: <%= @profile.following_only_users_count %>, followed_by: <%= @profile.followed_by_count %>});
+  updateProfileCounters({following: <%= @profile.following_even_indirectly_count %>, followed_by: <%= @profile.followed_by_even_indirectly_count %>});
 <% end %>

@@ -1,15 +1,18 @@
-<h1><span>&nbsp;</span><%= @profile.name %> <%= @profile.following_even_indirectly.count.zero? ? "isn't Following Anyone" : "is Following #{pluralize(@profile.following_even_indirectly.count, 'User', 'Users')}" %></h1>
+<% count = @profile.following_even_indirectly_count %>
+<h1>
+  <span>&nbsp;</span>
+  <%= @profile.name %> 
+  <%= count.zero? ? "isn't Following Anyone" : "is Following #{pluralize(count, 'User', 'Users')}" %>
+</h1>
 
-<% if @profile.following_even_indirectly.count.zero? %>  
+<% if count.zero? %>  
   <div class="empty_pins">
     <p>Followed users and boards will appear here.</p>
   </div>
 <% else %>
-  <div class="followed_by_list">
+  <div class="user_list">
     <ul class="users">
-      <% @profile.following_even_indirectly.each do |user| %>
-        <%= render 'users/user', :user => user %>
-      <% end %>
+      <%= render @profile.following_even_indirectly %>
     </ul>
   </div>
 <% end %>

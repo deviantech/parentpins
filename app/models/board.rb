@@ -53,8 +53,8 @@ class Board < ActiveRecord::Base
     Rails.redis.sunion(redis_name__followed_by, user.redis_name__followed_by).count
   end
   
-  def followed_by_count
-    Rails.redis.scard(redis_name__followed_by)
+  def directly_followed_by_ids
+    Rails.redis.smembers(redis_name__followed_by)
   end
   
   def redis_name__followed_by
