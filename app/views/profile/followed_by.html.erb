@@ -7,7 +7,7 @@
 <% else %>
   <div class="user_list">
     <ul class="users">
-      <%= render @profile.followed_by %>
+      <%= render @profile.followed_by_even_indirectly %>
     </ul>
   </div>
 <% end %>

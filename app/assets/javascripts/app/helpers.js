@@ -81,6 +81,7 @@ function updateProfileCounters(data) {
     if (target.length) {
       target.find('.counter').html(data[key]);
       var label = capitalize(key);
+      if (label == 'Followed_by') label = 'Followers';
       if (key != 'following') {
         if (data[key] == 1) {
           if (label.substr(label.length-1, 1) == 's') label = label.substr(0, label.length - 1);

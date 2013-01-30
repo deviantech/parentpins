@@ -111,7 +111,6 @@ class User < ActiveRecord::Base
 
   def followed_by_even_indirectly_count
     followed_by_even_indirectly.count
-    Rails.redis.scard(redis_name__followed_by)
   end
   
   # ids
