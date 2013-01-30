@@ -24,6 +24,17 @@ body.background_cover {
     background:rgba(255, 255, 255, 0.6); } }
 
 
+/* Mixins */
+
+@mixin pinli-font {
+  font-family:'pinli';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased; 
+}
+
 /* typography */
 
 p {
@@ -144,17 +155,12 @@ a {
       text-decoration:none; }
     &:before {
       content: "\e00e";
-      font-family:'pinli';
+    	@include pinli-font;
       position: absolute;
       bottom:-1px;
       left: 6px;
       color: #fff;
       font-size: 28px;
-    	speak: none;
-    	font-style: normal;
-    	font-weight: normal;
-    	line-height: 1;
-    	-webkit-font-smoothing: antialiased;
       height: 28px;
       width: 28px; } } }
 
@@ -185,14 +191,9 @@ a {
     height:50px;
     width:50px;
     text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
-    font-family: 'pinli';
-  	speak: none;
-  	font-style: normal;
-  	font-weight: normal;
     color: #E55799;
   	font-size:50px;
-  	line-height: 1;
-  	-webkit-font-smoothing: antialiased; }
+  	@include pinli-font; }
   &:hover {
     color:#000;
     &:before {
@@ -433,20 +434,16 @@ a {
     padding: 8px 10px 0 50px;
     margin: 10px 0 0 0;
     &:before {
-      font-family: 'pinli';
+  	  @include pinli-font;
       content: "\e012";
       position: absolute;
       top: 8px;
       left: 20px;
       height: 30px;
       width: 40px;
-    	speak: none;
-    	font-style: normal;
-    	font-weight: normal;
     	color:#000;
     	font-size:15px;
-    	line-height: 1;
-    	-webkit-font-smoothing: antialiased; } }
+    	line-height: 1; } }
   .bio {
     font-family: "times new roman", times, georgia, serif;
       font-size: 18px;
@@ -520,14 +517,8 @@ a {
     border-top: 1px solid #F88EBF;
     &:after {
       content: "";
-      font-family: 'pinli';
-    	speak: none;
-    	font-style: normal;
-    	font-weight: normal;
     	color:#fff;
     	font-size:15px;
-    	line-height: 1;
-    	-webkit-font-smoothing: antialiased;
       position: absolute;
       top:15px;
       left: 20px;
@@ -696,14 +687,9 @@ a {
 }
 .sec_action:before {
   content: "";
-  font-family: 'pinli';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
 	color:#222;
 	font-size:15px;
-	line-height: 1;
-	-webkit-font-smoothing: antialiased;
+	@include pinli-font;
   position: absolute;
   top: 6px;
   left: 6px;
