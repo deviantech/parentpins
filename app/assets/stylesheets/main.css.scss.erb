@@ -114,6 +114,7 @@ a {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
     padding: 5px 10px 5px 26px;
     font-size: 13px;
+    margin:2px;
     &:hover {
       background-color: #F7F7F7; } }
   &.load_more_button, &.load_more_comments_button {
@@ -668,9 +669,8 @@ a {
     padding: 20px 20px 6px;
     position: absolute;
     width: 182px;
-    height: 70px;
     position: absolute;
-    top: -100px;
+    top: -130px;
     left: 0;
     z-index: 2;
     -webkit-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
@@ -679,7 +679,7 @@ a {
     -o-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
     transition: left .2s ease-in-out, top .2s ease-in-out .2s; }
   &:hover .actions {
-    top: -11px; } }
+    top: 0; } }
 .pin-context {
   .comment-controls {
     font-size: 11px;
@@ -719,9 +719,10 @@ a {
 .edit_button:before {
   content:"\e011";
   font-size:13px; }
-
-.repin_button, .edit_button {
-  margin-right: 10px; }
+  
+.fb_button:before {
+  content:"\e00d";
+  font-size:13px; }
 
 .comment_button {
   &:before {
@@ -1435,7 +1436,8 @@ input:focus[placeholder], textarea:focus[placeholder] {
   .content h1 {
     color:#fff;
     text-shadow:0 1px 0 #000;
-    border-bottom:none; }
+    border-bottom:none;
+    margin-left:50px; }
   .wrapper {
     margin-top:-75px; } }
 
