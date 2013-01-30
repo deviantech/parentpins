@@ -9,6 +9,9 @@
   overflow-y:scroll;
   z-index:10000;
   font-family:helvetica,sans-serif;
+  a {
+    text-decoration: none;
+  }
   #ppHeader {
     position: fixed;
     height: 40px;
@@ -61,6 +64,7 @@
         position: relative;
         opacity: 0.8;
         max-height: 192px;
+        min-height: 50px;
         width: 192px;
         img {
           width: 192px;

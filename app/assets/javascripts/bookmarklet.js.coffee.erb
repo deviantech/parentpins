@@ -2,8 +2,6 @@
 //= require templates/bookmarklet/potential
 //= require templates/bookmarklet/form
 //= require templates/bookmarklet/popup-placeholder
-//= require bookmarklet/jquery-imagesloaded-min.module
-//= require bookmarklet/jquery-helpers.module
 
   
 # TODO - how to not mess with calling page's jquery version?
@@ -20,6 +18,8 @@ do(document = document, jQuery = window.jQuery) ->
   pinBaseUrl = '//<%= host %><%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
   popupHeight = 640
   popupWidth = 640
+  # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
+  appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
   
   # Our "global" to share variables within nested coffeescript
   Global = Global || {potentials: []}
@@ -35,20 +35,21 @@ do(document = document, jQuery = window.jQuery) ->
           done = true;
           jQuery = window.jQuery
           weHavejQuery()
-      document.getElementsByTagName("head")[0].appendChild(script)
+      appendTarget.appendChild(script)
     else
       weHavejQuery()
 
   # Just to be sure $ is available and not in compatibility mode on the host site
   weHavejQuery = ->
     includeBookmarkletStyles(jQuery)
-    # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with
-    require('bookmarklet/jquery-imagesloaded-min');
+    # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with.
+    # Note that we were using the sprockets-commonjs gem to include via .module.js, but 1) this is more direct in this case, and 2) it through odd errors only on http://piccsy.com/2012/03/twins-2l9ffupx/
+    `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'bookmarklet', 'jquery-imagesloaded-min.js') ) %>`
     initBookmarkletWithjQuery(jQuery)
   
   includeBookmarkletStyles = ($) ->
     return if ($('link#'+popupName+'CSS').length)
-    $('head').append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />')
+    $(appendTarget).append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />')
         
   # Close popup if any are open
   initBookmarkletWithjQuery = ($) ->
@@ -65,7 +66,9 @@ do(document = document, jQuery = window.jQuery) ->
         if `!(img.src in Global.potentials)` # No duplicates
           Global.potentials[img.src] = img
           Global.imageBase.find('#noPotentialImages').hide();
-          added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase )
+          # Max-height will prevent getting too big, but without this firefox will leave box with no height 
+          added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase ).height( img.height )
+
     
   
     isImageBigEnough = (data) ->
@@ -169,19 +172,7 @@ do(document = document, jQuery = window.jQuery) ->
       pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
       theForm.submit()
       pinWindow.focus() if (window.focus)    
-      return false    
-
-    pingGoogleAnalytics = ->
-      require('bookmarklet/jquery-helpers')
-      <% if Rails.env.production? %>
-      _gaq = _gaq || []
-      _gaq.push(['_setAccount', 'UA-37989907-2'])
-      _gaq.push(['_setDomainName', 'bookmarklet.parentpins.com'])
-      _gaq.push(['_trackPageview'])
-      ga_src = `('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'`
-      jQuery.externalScript(ga_src)
-      <% end %>
-      
+      return false      
 
     # Now that everything's been defined and wrapped in jQuery, start running things
     if ($('#'+popupName).length)
@@ -193,7 +184,6 @@ do(document = document, jQuery = window.jQuery) ->
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
       Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
       startEvaluatingPotentialImages()
-      pingGoogleAnalytics()
 
   prepForBookmarklet(jQuery);
   null
