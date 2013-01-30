@@ -731,7 +731,7 @@ a {
 
 .board-controls a {
   position: absolute;
-  right: 45px;
+  right: 5px;
   top: -50px; }
 
 .price {
@@ -1307,7 +1307,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
 
 
 .profile .set_filters {
-  margin: 10px 20px 10px 50px;
+  margin: 10px 0 10px 50px;
   width: auto;
   background:rgba(0, 0, 0, 0.02); }
 .set_filters {
@@ -1381,6 +1381,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
         -moz-border-radius: 50%;
         -webkit-border-radius: 50%;
         border-radius: 50%; }
+      a {
+        text-decoration:none; 
+        padding:0; }
       &:hover img {
         border: 3px solid #CD2479;
         top: 2px;
@@ -1437,7 +1440,15 @@ input:focus[placeholder], textarea:focus[placeholder] {
     color:#fff;
     text-shadow:0 1px 0 #000;
     border-bottom:none;
-    margin-left:50px; }
+    margin-left:50px;
+    min-height:65px;
+    a {
+      text-decoration:none;
+      text-shadow:0 1px 0 rgba(255, 255, 255, 0.4);
+      img {
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        border-radius: 50%; } } }
   .wrapper {
     margin-top:-75px; } }
 
@@ -1596,16 +1607,22 @@ input:focus[placeholder], textarea:focus[placeholder] {
 
 .board {
   .timeline {
-    background: none; }
-  .board_description {
-    font-size:13px;
-    font-weight:100;
-    background:rgba(255,255,255,0.8);
-    padding:10px 20px;
-    -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); } }
+    background: none; } }
 
+.board_description {
+  font-size:13px;
+  font-weight:100;
+  background:rgba(255,255,255,0.8);
+  padding:10px 20px;
+  margin:0 0 0 50px;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
+.board_stats {
+  float:right;
+  padding:0 10px;
+  color: #888888;
+  font-size: 13px; }
 
 .footer_wrapper {
 background: transparent;
@@ -1713,7 +1730,7 @@ h1, h2 {
 .board_comments {
   padding:10px;
   max-width:900px;
-  margin:0 auto;
+  margin:0 0 0 50px;
   background:rgba(255, 255, 255, 0.5);
   -moz-border-radius: 0 0 4px 4px;
   -webkit-border-radius: 0 0 4px 4px;

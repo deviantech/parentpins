@@ -8,14 +8,15 @@
 
 
 <div class="board_description">
+  <div class="board_stats">
+    <%= pluralize @board.pins_count, 'pin', 'pins' %>
+    /
+    <%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %>
+  </div>
   <%= @board.description.blank? ? 'No description provided.' : @board.description %>
 </div>
 
-<div class="board_stats">
-  <%= pluralize @board.pins_count, 'pin', 'pins' %>
-  /
-  <%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %>
-</div>
+
 
 
 <% if user_signed_in? %>
