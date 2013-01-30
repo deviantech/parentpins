@@ -106,8 +106,8 @@ module ApplicationHelper
     # full_width also available here but currently depricated due to front end UI support
     when 'pins'                 then params[:action] == 'index' ? background_class_names : ''
     when 'search'               then background_class_names
-    when 'profile', 'profiles'  then 'profile'
-    when 'boards'
+    when 'profile'              then 'profile'
+    when 'board'
       %w(index).include?(params[:action]) ? background_class_names : nil
     when 'pins'
       params[:action] == 'index' ? 'custom' : nil
