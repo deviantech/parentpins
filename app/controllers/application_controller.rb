@@ -10,11 +10,11 @@ class ApplicationController < ActionController::Base
     return true unless @profile 
     
     @profile_counters = {
-      :pins       => @profile.pins.count,
-      :boards     => @profile.boards.count,
-      :likes      => @profile.likes_count,
-      :followers  => @profile.followers_even_indirectly.count,
-      :following   => @profile.following_only_users_count
+      :pins         => @profile.pins.count,
+      :boards       => @profile.boards.count,
+      :likes        => @profile.likes_count,
+      :followed_by  => @profile.followed_by_count,
+      :following    => @profile.following_only_users_count
     }
   end
 

@@ -1,19 +1,15 @@
-<% if @profile.following_only_users_count.zero? %>
-  <h1><span><%= @profile.name %></span> isn't following anyone yet</h1>
-  
+<h1><span>&nbsp;</span><%= @profile.name %> <%= @profile.following_even_indirectly.count.zero? ? "isn't Following Anyone" : "is Following #{pluralize(@profile.following_even_indirectly.count, 'User', 'Users')}" %></h1>
+
+<% if @profile.following_even_indirectly.count.zero? %>  
   <div class="empty_pins">
     <p>Followed users and boards will appear here.</p>
   </div>
-  
 <% else %>
-  <h1><span><%= @profile.name %></span> is following <%= pluralize @profile.following_only_users_count, 'other user', 'other users' %>. Their recent activity:</h1>
-
-  <div class="followers_list">
+  <div class="followed_by_list">
     <ul class="users">
-      <% @profile.following_only_users.each do |user| %>
-        <%= render 'follower', :follower => user %>
+      <% @profile.following_even_indirectly.each do |user| %>
+        <%= render 'users/user', :user => user %>
       <% end %>
     </ul>
   </div>
-
 <% end %>

@@ -50,15 +50,15 @@ class Board < ActiveRecord::Base
   # ======================================
   
   def followers_even_indirectly_count
-    Rails.redis.sunion(redis_name__followers, user.redis_name__followers).count
+    Rails.redis.sunion(redis_name__followed_by, user.redis_name__followed_by).count
   end
   
-  def followers_count
-    Rails.redis.scard(redis_name__followers)
+  def followed_by_count
+    Rails.redis.scard(redis_name__followed_by)
   end
   
-  def redis_name__followers
-    "b:#{self.id}:followers"
+  def redis_name__followed_by
+    "b:#{self.id}:followed_by"
   end
 
   protected

@@ -35,7 +35,7 @@ ParentPins::Application.routes.draw do
         get 'activity'
         get 'pins'
         get 'likes'
-        get 'followers'
+        get 'followed_by'
         get 'following'
         post 'follow'
         post 'unfollow'

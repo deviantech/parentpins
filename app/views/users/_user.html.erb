@@ -2,7 +2,8 @@
   <%= link_to profile_path(user) do %>
     <%= image_tag user.avatar.v50 %>
     <%= user.name %>
-    <span><%= pluralize user.followers_count, 'Follower', 'Followers' %></span>
+    <span><%= pluralize user.followed_by_count, 'Follower', 'Followers' %></span>
     <span><%= user.following_only_users_count %> Following</span>
   <% end %>
+  <%= render 'profile/follow_buttons', :to_follow => user, :in_list => true %>
 </li>

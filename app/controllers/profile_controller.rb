@@ -2,7 +2,7 @@ class ProfileController < ApplicationController
   before_filter :authenticate_user!,  :only => [:edit, :update, :activity]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
-  before_filter :set_filters,         :only => [:pins, :likes, :followers, :following, :board, :boards]
+  before_filter :set_filters,         :only => [:pins, :likes, :followed_by, :following, :board, :boards]
   
   def show
     redirect_to @profile == current_user ? activity_profile_path(@profile) : profile_boards_path(@profile)
@@ -20,12 +20,10 @@ class ProfileController < ApplicationController
     paginate_pins Pin.where(:id => @profile.likes)
   end
   
-  def followers
-    @followers = @profile.followers
+  def followed_by
   end
   
   def following
-    @following = @profile.followers_even_indirectly
   end
     
   def edit

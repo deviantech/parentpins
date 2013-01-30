@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
   
   # Include pins by follower_user_ids or on boards_following_ids, unique
   def activity
-    Pin.where(['user_id = ? OR board_id = ?', users_following_ids, boards_following_ids])
+    Pin.where(['user_id IN (?) OR board_id IN (?)', users_following_ids, boards_following_ids])
   end
 
   # ==============================
@@ -86,15 +86,17 @@ class User < ActiveRecord::Base
   
   # objects
   
-  def followers
-    User.where(:id => follower_ids)
+  def followed_by
+    User.where(:id => followed_by_ids)
   end
 
-  # TODO: make uses of this more efficient 
-  def followers_even_indirectly
-    uids = users_following_ids
-    uids += Board.where(:id => boards_following_ids).select('DISTINCT(user_id)')
-    User.where(:id => uids.uniq)
+  # TODO: make uses of this more efficient   
+  def following_even_indirectly
+    @following_even_indirectly ||= begin
+      uids = users_following_ids
+      uids += Board.where(:id => boards_following_ids).select('DISTINCT(user_id)')
+      User.where(:id => uids.uniq)
+    end
   end
   
   def following_only_users_count
@@ -103,8 +105,8 @@ class User < ActiveRecord::Base
   
   # ids
   
-  def follower_ids
-    Rails.redis.smembers(redis_name__followers)
+  def followed_by_ids
+    Rails.redis.smembers(redis_name__followed_by)
   end
   
   def users_following_ids
@@ -141,7 +143,7 @@ class User < ActiveRecord::Base
     user = User.find_by_id(user) unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
-    Rails.redis.sismember(redis_name__followers, user.id)
+    Rails.redis.sismember(redis_name__followed_by, user.id)
   end
   
   def follow(obj)
@@ -158,12 +160,12 @@ class User < ActiveRecord::Base
     
   def follow_user(obj)
     Rails.redis.sadd(redis_name__following_users, obj.id)
-    Rails.redis.sadd(obj.redis_name__followers,  self.id)
+    Rails.redis.sadd(obj.redis_name__followed_by,  self.id)
   end
   
   def follow_board(obj)
     Rails.redis.sadd(redis_name__following_boards,  obj.id)
-    Rails.redis.sadd(obj.redis_name__followers,     self.id)
+    Rails.redis.sadd(obj.redis_name__followed_by,     self.id)
   end
 
   def unfollow(obj)
@@ -180,18 +182,18 @@ class User < ActiveRecord::Base
   
   def unfollow_user(obj)
     Rails.redis.srem(redis_name__following_users, obj.id)
-    Rails.redis.srem(obj.redis_name__followers,   self.id)
+    Rails.redis.srem(obj.redis_name__followed_by,   self.id)
   end
 
   def unfollow_board(obj)
     Rails.redis.srem(redis_name__following_boards,  obj.id)
-    Rails.redis.srem(obj.redis_name__followers,     self.id)
+    Rails.redis.srem(obj.redis_name__followed_by,     self.id)
   end
 
   # counters
 
-  def followers_count
-    Rails.redis.scard(redis_name__followers)
+  def followed_by_count
+    Rails.redis.scard(redis_name__followed_by)
   end
   
   def following_only_users_count
@@ -245,8 +247,8 @@ class User < ActiveRecord::Base
     "u:#{self.id}:categories"
   end
   
-  def redis_name__followers
-    "u:#{self.id}:followers"
+  def redis_name__followed_by
+    "u:#{self.id}:followed_by"
   end
   
   def redis_name__following_users
@@ -282,7 +284,7 @@ class User < ActiveRecord::Base
     Rails.redis.del(redis_name__categories)
     Rails.redis.del(redis_name__following_users)
     Rails.redis.del(redis_name__following_boards)
-    Rails.redis.del(redis_name__followers)
+    Rails.redis.del(redis_name__followed_by)
     Rails.redis.del(redis_name__likes)
   end
   
