@@ -181,13 +181,13 @@ a {
   font-family:times;
   font-size:24px;
   font-weight:600;
-  padding:14px 10px 16px 55px;
+  padding:14px 10px 16px 65px;
   margin:0 10px 0 0;
   &:before {
     content:"\e014";
     position:absolute;
     top:4px;
-    left:0;
+    left:10px;
     height:50px;
     width:50px;
     text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
@@ -306,14 +306,14 @@ a {
   .add {
     background-color: #e5579a;
     text-shadow: 0 1px 0 rgba(255,255,255, 0.3);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#7DE07C', endColorstr = '#20A41E');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#7DE07C', endColorstr = '#20A41E')";
-    background-image: -moz-linear-gradient(top, #7DE07C, #20A41E);
-    background-image: -ms-linear-gradient(top, #7DE07C, #20A41E);
-    background-image: -o-linear-gradient(top, #7DE07C, #20A41E);
-    background-image: -webkit-gradient(linear, center top, center bottom, from(#7DE07C), to(#20A41E));
-    background-image: -webkit-linear-gradient(top, #7DE07C, #20A41E);
-    background-image: linear-gradient(top, #7DE07C, #20A41E); 
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#57D656', endColorstr = '#0A8708');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#57D656', endColorstr = '#0A8708')";
+    background-image: -moz-linear-gradient(top, #57D656, #0A8708);
+    background-image: -ms-linear-gradient(top, #57D656, #0A8708);
+    background-image: -o-linear-gradient(top, #57D656, #0A8708);
+    background-image: -webkit-gradient(linear, center top, center bottom, from(#57D656), to(#0A8708));
+    background-image: -webkit-linear-gradient(top, #57D656, #0A8708);
+    background-image: linear-gradient(top, #57D656, #0A8708);
     border-right:1px solid rgba(255, 255, 255, 0.36); }
   .add_pins {
     border: none;
@@ -517,6 +517,7 @@ a {
     border-top: 1px solid #F88EBF;
     &:after {
       content: "";
+      @include pinli-font;
     	color:#fff;
     	font-size:15px;
       position: absolute;
@@ -715,10 +716,10 @@ a {
     content:"\e001";}
   margin-top: 10px; }
 
-.board-controls a {
-  position: absolute;
-  right: 5px;
-  top: -50px; }
+.board-controls {
+  display:inline;
+  a {
+    text-decoration:none; } }
 
 .price {
   background: #f9f9f9;
@@ -1232,6 +1233,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
     h1 {
       color:#000 !important;
       background:none !important;
+      margin:0 0 10px 0 !important;
+      padding:0 0 10px 0 !important;
+      min-height:auto !important;
       text-shadow:0 1px 0 #fff !important;
       border-bottom: 1px dashed #C2C2C2 !important; } }
   &.wide {
@@ -1421,7 +1425,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
     text-shadow:0 1px 0 #000;
     border-bottom:none;
     margin-left:50px;
-    min-height:65px;
+    min-height:63px;
     a {
       text-decoration:none;
       text-shadow:0 1px 0 rgba(255, 255, 255, 0.4);
