@@ -4,5 +4,11 @@
   _gaq.push(['_setDomainName', 'parentpins.com']);
   _gaq.push(['_trackPageview']);
   ga_src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-  $.externalScript(ga_src);
+  $.externalScript(ga_src).done(function(script, textStatus) {
+    if (typeof _gat != 'undefined') {
+      console.log('Okay. GA file loaded.');
+    } else {
+      console.log('Problem. GA file not loaded.');
+    }
+  });
 <% end %>
