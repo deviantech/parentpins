@@ -32,8 +32,12 @@ body.background_cover {
 	font-style: normal;
 	font-weight: normal;
 	line-height: 1;
-	-webkit-font-smoothing: antialiased; 
-}
+	-webkit-font-smoothing: antialiased; }
+
+@mixin circular {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%; }
 
 /* site wide general */
 
@@ -474,18 +478,14 @@ a {
     margin: 20px auto 5px auto;
     height: 120px;
     width: 120px;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
+    @include circular;
     -webkit-box-shadow: 0 3px 5px #F1F1F1;
     -moz-box-shadow: 0 3px 5px #F1F1F1;
     box-shadow: 0 3px 5px #F1F1F1;
     &:hover {
       border:4px solid #fff; }
     img {
-      -moz-border-radius: 50%;
-      -webkit-border-radius: 50%;
-      border-radius: 50%; } } 
+      @include circular; } } 
   .follow,.unfollow {
     position:absolute;
     top:5px;
@@ -981,20 +981,25 @@ ul.boards {
     &:hover {
       color: #000;
       text-decoration: underline; } } }
-  h4 a {
-    color: #8C7E7E;
-    font-size: 11px;
-    line-height: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    &:hover {
-      color: #b6457a;
-      text-decoration: underline; }
-    img {
-      height: 20px;
-      margin-right: 5px;
-      vertical-align: bottom;
-      width: 20px; } } 
+  h4 {
+    color: #888888;
+    font-weight: 100;
+    a {
+      color: #8C7E7E;
+      font-size: 11px;
+      line-height: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      @include circular;
+      &:hover {
+        color: #b6457a;
+        text-decoration: underline; }
+      img {
+        height: 20px;
+        margin-right: 5px;
+        vertical-align: bottom;
+        width: 20px;
+        @include circular; } } } 
   .description {
     margin: 10px 0 5px;
     p {
@@ -1367,9 +1372,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
         left: 0;
         border-right: 1px solid #fff;
         border-bottom: 1px solid #fff;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%; }
+        @include circular; }
       a {
         text-decoration:none; 
         padding:0; }
@@ -1435,9 +1438,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
       text-decoration:none;
       text-shadow:0 1px 0 rgba(255, 255, 255, 0.4);
       img {
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%; } } }
+        @include circular; } } }
   .wrapper {
     margin-top:-75px; } }
 
@@ -1507,9 +1508,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
           display: inline-block;
           vertical-align: middle;
           margin-top:-1px;
-          -moz-border-radius: 50%;
-          -webkit-border-radius: 50%;
-          border-radius: 50%;
+          @include circular;
           border-right: 1px solid rgba(255, 255, 255, 0.4);
           border-bottom: 1px solid rgba(255, 255, 255, 0.4); } } }
     .timeline li {
@@ -1574,7 +1573,6 @@ input:focus[placeholder], textarea:focus[placeholder] {
 /* layout grid */
 
 .header_wrapper {
-  background:url("/assets/patterns/black_linen_v2.png") repeat scroll 0 0 transparent;
   background:rgba(255, 255, 255, 0.5);
   margin: 0 0 20px;
   border-bottom: 1px dashed #D7D7D7;
@@ -1758,15 +1756,11 @@ h1, h2 {
         position:absolute;
         top:5px;
         left:5px;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%; 
+        @include circular;
         border:3px solid #E55799; 
         img {
           display:block;
-          -moz-border-radius: 50%;
-          -webkit-border-radius: 50%;
-          border-radius: 50%; } } 
+          @include circular; } } 
       .body {
         margin:0 0 0 75px; 
         position:relative;
@@ -1831,9 +1825,7 @@ h1, h2 {
     padding: 10px;
     overflow:hidden;
     a {
-      -moz-border-radius: 50%;
-      -webkit-border-radius: 50%;
-      border-radius: 50%;
+      @include circular;
       display:block;
       height:30px;
       width:30px;
@@ -1858,9 +1850,7 @@ h1, h2 {
         display:inline-block;  
         height:30px;
         width:30px;    
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%; } }
+        @include circular; } }
     label {
       font-weight:100;
       color:#777;
