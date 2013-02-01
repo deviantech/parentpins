@@ -658,6 +658,22 @@ a {
   box-shadow: 0 0 4px rgba(0,0,0,0.2) inset;
   p {
     font-size: 14px; } }
+    
+.profile .empty-results {
+  position:relative;
+  padding:80px 20px 20px;
+  margin:40px 0 0 60px;
+  border:1px solid #EAEAEA;
+  &:before {
+    position:absolute;
+    content:"\e014";
+    top:20px;
+    left:350px;
+    color:#B4B4B4;
+    font-size:70px;
+    @include pinli-font; }
+  h2 {
+    color:#B4B4B4; } }
 
 .about_content {
   margin: 20px 40px; }
@@ -1709,8 +1725,26 @@ textarea {
   background: #FFF;
   display: block;
   margin: 40px 25px;
+  padding:80px 20px 20px;
+  position:relative;
   text-align: center;
-}
+  border:1px solid #EAEAEA;
+  h2 {
+    color:#B4B4B4;
+    position:relative;
+    display:block;
+    width:180px;
+    margin:0 auto;
+    &:before {
+      position:absolute;
+      content:"\e014";
+      top:-60px;
+      left:55px;
+      color:#B4B4B4;
+      font-size:70px;
+      @include pinli-font; } } }
+
+
 h1, h2 {
   span.action {
     font-size: 13px;
