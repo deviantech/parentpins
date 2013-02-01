@@ -1,3 +1,16 @@
+/* mixins */
+
+@mixin ellipsizer {
+  text-overflow: ellipsis;
+  white-space:nowrap;
+  width:100%;
+  overflow:hidden; }
+  
+@mixin circular {
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%; }
+
 /* modal */
 
 .modal_overlay {
@@ -42,7 +55,10 @@
     float: right;
     font-size: 12px;
     padding: 4px 8px;
-    position: relative; }
+    position: relative;
+    top:-10px;
+    border:1px solid #222;
+    border-top:none; }
   .btn.action {
     position:relative;
     float:none; }
@@ -58,7 +74,10 @@
       top: 5px;
       left: 3px;
       height: 50px;
-      width: 50px; }
+      width: 50px;
+      @include circular;
+      img {
+        @include circular; } }
     .fb_button {
       display:none; } }
   .attribute_info {
@@ -88,16 +107,23 @@
       a {
         font-style:normal;
         font-size: 12px; } } }
-  h2 {
-    color: #222;
-    font-size: 18px;
+  .title {
+    color: #999;
+    font-size: 13px;
     margin: 0;
     padding: 0;
+    @include ellipsizer;
     a {
-      color: #222;
       text-decoration: none;
+      font-size: 18px;
       &:hover {
         color: #E55799; } } }
+  .action {
+    font-size:13px;
+    a {
+      text-decoration:none;
+      &:hover {
+      text-decoration:underline; } } }
   p {
     margin:0 0 8px 0; }
   .image_link {
@@ -129,7 +155,31 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27); }
     img {
       display: block;
-      margin: 0 auto; } }
+      margin: 0 auto; } 
+    &:hover:before {
+      content:"View this pin in a new tab";
+      display:block;
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:500px;
+      height:auto;
+      font-size: 22px;
+      font-weight: 400;
+      text-align:center;
+      text-shadow:0 -1px 0 #000000;
+      padding:15px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+      background-color:rgba(255,255,255,0.3);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'rgba(0, 0, 0, 0.6)', endColorstr = 'rgba(0, 0, 0, 0.9)');
+      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'rgba(0, 0, 0, 0.6)', endColorstr = 'rgba(0, 0, 0, 0.9)')";
+      background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
+      background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
+      background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
+      background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.9)));
+      background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9));
+      background-image: linear-gradient(top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.9)); } }
   .stats {
     color: #999;
     font-size: 12px;
@@ -153,14 +203,34 @@
     border-top:1px dashed #ddd;
     margin:0 -10px;
     padding:10px; 
+    .comment_form {
+      .avatar_link {
+        top:5px;
+        left:0;
+        height: 40px;
+        width: 40px;
+        @include circular;
+        img {
+          @include circular; } } }
     .comment {
       background:#fff;
       margin:0 0 10px 0;
       position:relative;
+      min-height: 60px;
+      overflow: visible;
+      border-bottom: 1px solid #F5F5F5;
+      .comment-controls {
+        color:#BEBEBE; }
       .avatar_link {
         position:absolute;
-        top:0;
-        left:0; } 
+        top:5px;
+        left:0;
+        display: block;
+        height: 40px;
+        width: 40px;
+        @include circular;
+        img {
+          @include circular; } }
       .user_info {
         padding-left:60px;
         font-size:13px;
@@ -181,7 +251,11 @@
       -moz-border-radius: 3px;
       -webkit-border-radius: 3px;
       border-radius: 3px;
-      resize: none; } 
+      resize: none;
+      &:focus {
+        background-color: #EDF6FF !important;
+        border-color: blue;
+        color: #000000; } } 
     .comment_button {
       padding:8px 10px 6px 25px;
       top:-6px; } } }

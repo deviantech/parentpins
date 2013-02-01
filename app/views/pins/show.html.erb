@@ -19,12 +19,12 @@
     </div>
 
     <div class="detail">
-      <h2>
-        <%= link_to@pin.url, @pin.url %>
-        <% if current_user == @pin.user %>
-          <span class="action">[ <%= link_to 'edit', edit_pin_path(@pin), :class => 'ajax' %> ]</span>
-        <% end %>
+      <h2 class="title">
+        <%= link_to@pin.url, @pin.url, :title => 'link out to site' %>
       </h2>
+      <% if current_user == @pin.user %>
+        <span class="action right"><%= link_to 'edit', edit_pin_path(@pin), :class => 'ajax edit' %></span>
+      <% end %>
       <%= render 'pins/stats', :pin => @pin %>
       <%= render 'pins/actions', :pin => @pin %>
       <%= link_to @pin.url, :class => 'image_link' do %>
