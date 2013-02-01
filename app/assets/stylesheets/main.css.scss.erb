@@ -331,7 +331,33 @@ a {
     width:70px !important;
     a {
       padding:20px 0;
-      color:#fff; } }
+      color:#fff; }
+    .bookmarklet a {
+      position:relative;
+      &:hover:before {
+        position:absolute;
+        display:block;
+        width:100px;
+        top:0;
+        left:-110px;
+        color:#fff;
+        font-size:12px;
+        font-weight:bold;
+        text-align:center;
+        background:#000;
+        padding:4px 2px;
+        content:"drag to your bookmarks bar"; }
+      &:hover:after {
+        content:"";
+        background:none;
+        position:absolute;
+        height:0;
+        width:0;
+        border-left:6px solid #000;
+        border-top:6px solid transparent;
+        border-bottom:6px solid transparent;
+        top:10px;
+        left:-6px; } } }
   .profile_link, .add_pins {
     border: none;
     text-align: center;
