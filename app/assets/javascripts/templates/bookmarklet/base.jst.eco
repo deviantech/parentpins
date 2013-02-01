@@ -1,6 +1,6 @@
 <div id="<%= @popupName %>" class="ppBookmarkletOverlay">
   <div id="ppHeader">
-    ParentPins
+    <a href="http://www.parentpins.com" target="_blank" id="ppLogo">ParentPins</a>
     <a href="#" id="ppClose">Cancel</a>
   </div>
   <div id="ppBookmarkletContentWrapper">

@@ -20,14 +20,14 @@
 
     <div class="detail">
       <h2 class="title">
-        <%= link_to@pin.url, @pin.url, :title => 'link out to site' %>
+        <%= link_to@pin.url, @pin.url, :title => 'link out to site', :target => '_blank' %>
       </h2>
       <% if current_user == @pin.user %>
         <span class="action right"><%= link_to 'edit', edit_pin_path(@pin), :class => 'ajax edit' %></span>
       <% end %>
       <%= render 'pins/stats', :pin => @pin %>
       <%= render 'pins/actions', :pin => @pin %>
-      <%= link_to @pin.url, :class => 'image_link' do %>
+      <%= link_to @pin.url, :target => '_blank', :class => 'image_link' do %>
       <% if @pin.price %>
       <div class="price"><%= number_to_currency @pin.price %></div>
       <% end %>
