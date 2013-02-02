@@ -80,6 +80,19 @@ class User < ActiveRecord::Base
     Pin.where(['user_id IN (?) OR board_id IN (?)', users_following_ids, boards_following_ids])
   end
 
+  # ===============================
+  # = REDIS: last board pinned to =
+  # ===============================
+
+  def last_board_pinned_to_id
+    Rails.redis.get(redis_name__last_board).to_i
+  end
+  
+  def set_last_board_pinned_to_id(id)
+    Rails.redis.set(redis_name__last_board, id)
+  end
+
+
   # ==============================
   # = REDIS: Following/Followers =
   # ==============================
@@ -268,6 +281,10 @@ class User < ActiveRecord::Base
   def redis_name__likes
     "u:#{self.id}:likes"
   end
+  
+  def redis_name__last_board
+    "u:#{self.id}:last_board"
+  end
 
   protected
   
@@ -293,6 +310,7 @@ class User < ActiveRecord::Base
     Rails.redis.del(redis_name__following_users)
     Rails.redis.del(redis_name__following_boards)
     Rails.redis.del(redis_name__likes)
+    Rails.redis.del(redis_name__last_board)
   end
   
 end

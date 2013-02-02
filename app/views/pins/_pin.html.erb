@@ -27,7 +27,7 @@
         <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
       </span>
       <br/>
-      Age Group: <strong><%= pin.age_group.name %></strong>
+      Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
     </p>
   </div>
   <% if user_signed_in? && !pin.new_record? %>

@@ -32,7 +32,7 @@ class Pin < ActiveRecord::Base
   
   before_update   :update_board_images_on_change
   before_create   :set_uuid
-  after_create    :update_board_add_image
+  after_create    :update_board_add_image, :track_board_last_pinned_to
   before_destroy  :update_board_remove_image
   before_destroy  :clean_redis
   
@@ -67,6 +67,13 @@ class Pin < ActiveRecord::Base
       :url => params[:link] ? params[:link] : params[:url],
       :via_url => params[:link] ? params[:url] : nil
     })
+  end
+  
+  def user_id=(uid)
+    super
+    self.board_id ||= User.find(uid).last_board_pinned_to_id
+  rescue ActiveRecord::RecordNotFound => e
+    true
   end
   
   def remote_image_url=(str)
@@ -131,6 +138,7 @@ class Pin < ActiveRecord::Base
     "p:#{self.id}:liked_by"
   end
     
+  
   protected
   
   def set_uuid
@@ -190,6 +198,10 @@ class Pin < ActiveRecord::Base
   
   def update_board_remove_image
     board.try(:update_cover_before_pin_removed, self)
+  end
+
+  def track_board_last_pinned_to
+    user.set_last_board_pinned_to_id(board_id)
   end
   
   def clean_redis
