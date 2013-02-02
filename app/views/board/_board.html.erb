@@ -2,8 +2,7 @@
   <h3><%= link_to board.name, profile_board_path(board.user, board) %></h3>
   <h4>
     <%= link_to pins_profile_path(board.user) do %>
-      <%= image_tag board.user.avatar.v50.url, :alt => "#{board.user.name}'s avatar" %>
-      <%= board.user.name %>
+      <%= image_tag board.user.avatar.v50.url, :alt => "#{board.user.name}'s avatar" %><%= board.user.name %>
     <% end %>
   </h4>
   <h4>

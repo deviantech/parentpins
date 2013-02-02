@@ -1,6 +1,28 @@
+@font-face {
+  font-family: 'pinli';
+	src:url('/fonts/pinli.eot');
+	src:url('/fonts/pinli.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/pinli.svg#pinli') format('svg'),
+  url('/fonts/pinli.woff') format('woff'),
+  url('/fonts/pinli.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal; }
+
 html {
   background: url("/assets/patterns/debut_light.png") repeat scroll 0 0 white;
 }
+
+/* Mixins */
+
+@mixin pinli-font {
+  font-family:'pinli';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased; 
+}
+
 #popup_wrapper {
   margin: 20px;
   width: 600px;
@@ -50,7 +72,90 @@ html {
     img {
       border: 1px solid rgba(255, 255, 255, 0.8);
       display: block;
-      margin: 0 0 10px 0; } } }
+      margin: 0 0 10px 0; } }  
+  &.narrow {
+    margin: 60px auto; 
+    h1 {      
+      color: #444;
+      font-family: georgia,times,serif;
+      font-size: 22px;
+      font-weight: normal;
+      color:#000;
+      background:none;
+      margin:0 0 10px 0;
+      padding:0 0 10px 0;
+      min-height:auto;
+      text-shadow:0 1px 0 #fff;
+      text-align:center;
+      border-bottom: 1px dashed #C2C2C2; } } }
+
+.form .field.checkbox {
+  overflow:hidden;
+  input {
+    display:block;
+    width:20px;
+    float:left; }
+  label {
+    float:left; } }
+    
+.buttons {
+  clear: both;
+  font-size: 13px;
+  padding: 10px;
+  p {
+    margin:0 0 5px 0; }
+  a {
+    text-decoration: none;
+    color:#E55799;
+    &:hover {
+      text-decoration: underline; } } }
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  position: relative;
+  padding: 9px 12px 6px 12px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0, 0, 0, 0.15)');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0,0,0,0.15)')";
+  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+  background-image: -ms-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+  background-image: -webkit-gradient(linear, center top, center bottom, from(transparent), to(rgba(0, 0, 0, 0.15)));
+  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+  background-image: linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  &.btn_facebook {
+    background-color: #3c5a97;
+    border: 1px solid #3c5a97;
+    position: relative;
+    font-weight: bold;
+    margin: 0 auto;
+    color: #fff;
+    font-size: 18px;
+    display: block;
+    width: 240px;
+    position: relative;
+    &:hover {
+      background-color:#658AD9;
+      text-decoration:none; }
+    &:before {
+      content: "\e00e";
+    	@include pinli-font;
+      position: absolute;
+      bottom:-1px;
+      left: 6px;
+      color: #fff;
+      font-size: 28px;
+      height: 28px;
+      width: 28px; } } }
 
 form .field {
   padding: 10px 10px 5px;
@@ -185,3 +290,9 @@ input.btn {
     font-weight: bold;
     color:#fff; } 
 }
+.board-fields {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid #DDDDDD;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px; }
