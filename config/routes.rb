@@ -62,4 +62,9 @@ ParentPins::Application.routes.draw do
   
   match '/search/:kind' => 'search#index'
   match '/search' => 'search#redirect_by_kind'
+  
+  #remove after roadie is configured. temp paths only 
+  match '/email_unlock_instructions' => 'front#email_unlock_instructions'
+  match '/email_confirmation_instructions' => 'front#email_confirmation_instructions'
+  match '/email_password_reset' => 'front#email_password_reset'
 end
