@@ -1,6 +1,6 @@
 class PopupController < ApplicationController
   protect_from_forgery :except => [:pin]
-  before_filter :absolutize_params, :only => [:pin]
+  before_filter :clean_params, :only => [:pin]
   
   def pin
     unless user_signed_in?
@@ -34,7 +34,8 @@ class PopupController < ApplicationController
   protected
   
   # Handle receiving local links from bookmarklet
-  def absolutize_params
+  def clean_params
+    [:description, :title].each {|k| clean_encoding(params[k])}
     [:media, :link].each {|k| absolutize_param(k) }
   end
   
@@ -45,4 +46,12 @@ class PopupController < ApplicationController
     params[key] = URI.join(URI.escape(params[:url]), URI.escape(params[key]))
   end
 
+  # Prevent errors from "invalid byte sequence in UTF-8" coming from external sources
+  def clean_encoding(str)
+    if String.method_defined?(:encode) # Skip before Ruby 1.9
+      str.encode!('UTF-16', 'UTF-8', :invalid => :replace, :replace => '')
+      str.encode!('UTF-8', 'UTF-16')
+    end
+  end
+  
 end

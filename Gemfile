@@ -64,4 +64,6 @@ gem 'mime-types'
 
 gem 'friendly_id'
 
+
+# No longer needed on modern Ruby
 gem 'system_timer', :platform => :ruby_18
