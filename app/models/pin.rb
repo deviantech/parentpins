@@ -61,7 +61,7 @@ class Pin < ActiveRecord::Base
   
   def self.from_bookmarklet(user, params)
     # params[:url] is always the URL it was pinned from
-    # params[:link], if present, means the image linking to a new page. Show the new page instead (seems to be Pinterest's logic)
+    # params[:link], if present, means the image was linking to a new page. Show the new page instead (seems to be Pinterest's logic)
     pin = user.pins.new({
       :description => params[:description] || params[:title],
       :url => params[:link] ? params[:link] : params[:url],

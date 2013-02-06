@@ -182,7 +182,6 @@ do(document = document, jQuery = window.jQuery) ->
     if ($('#'+popupName).length)
       closeBookmarklet()
     else
-      console.log($().jquery)
       Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
       Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent')
       Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
