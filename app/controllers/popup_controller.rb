@@ -35,9 +35,14 @@ class PopupController < ApplicationController
   
   # Handle receiving local links from bookmarklet
   def absolutize_params
-    # TODO - link as well
-    return true if params[:media].blank? || params[:media].match(/^https?/i) || params[:media].match(/base64/i)
-    params[:media] = URI.join(URI.escape(params[:url]), URI.escape(params[:media]))
+    [:media, :link].each {|k| absolutize_param(k) }
+  end
+  
+  def absolutize_param(key)
+    return true if params[key].blank? || params[key].match(/^https?/i)
+    return true if key == :media && params[key].match(/base64/i)
+    
+    params[key] = URI.join(URI.escape(params[:url]), URI.escape(params[key]))
   end
 
 end
