@@ -71,7 +71,7 @@ GEM
     debugger-linecache (1.1.2)
       debugger-ruby_core_source (>= 1.1.1)
     debugger-ruby_core_source (1.1.5)
-    devise (2.1.2)
+    devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
@@ -174,7 +174,7 @@ GEM
       thor (>= 0.14.6, < 2.0)
     rake (10.0.3)
     rbx-require-relative (0.0.9)
-    rdoc (3.12)
+    rdoc (3.12.1)
       json (~> 1.4)
     redis (3.0.2)
     redis-namespace (1.2.1)
@@ -235,7 +235,7 @@ DEPENDENCIES
   carrierwave
   coffee-rails (~> 3.2.1)
   debugger
-  devise
+  devise (~> 2.2.3)
   eco
   factory_girl_rails
   ffaker
