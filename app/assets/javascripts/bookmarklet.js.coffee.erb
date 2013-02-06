@@ -11,7 +11,7 @@ do(document = document, jQuery = window.jQuery) ->
   # Config
   popupName = 'ParentPinBookmarklet'
   cssUrl = '//<%= host %>/assets/bookmarklet.css'
-  minJQversion = '1.6.0'
+  minJQversion = '1.7.0'
   desiredJQversion = '1.8.2'
   minImageWidth = 192
   minImageHeight = 150
@@ -182,11 +182,12 @@ do(document = document, jQuery = window.jQuery) ->
     if ($('#'+popupName).length)
       closeBookmarklet()
     else
-      Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet);
-      Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent');
+      console.log($().jquery)
+      Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
+      Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent')
       Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
-      Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'});
+      Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
       startEvaluatingPotentialImages()
 
   prepForBookmarklet(jQuery);
