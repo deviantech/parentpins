@@ -16,7 +16,9 @@
       <div class="empty-results">No <%= @kind.pluralize %> to show.</div>
     <% else %>
       <ul class="masonry ajax-pagination timeline<%= ' user_list user_results' if @kind = 'user' %>" id="pins">
-        <%= render @results %>
+        <% @results.each do |r| %>
+          <%= render :partial => partial_for_class(r), :object => r %>
+        <% end %>
       </ul>
       
       <div class="clearfix"></div>

@@ -1,5 +1,15 @@
 module ApplicationHelper
 
+  # Unfortunately since renaming e.g. boards -> board in routes.rb, we can no longer naively do "render @boards"
+  def partial_for_class(m)
+    case m
+    when User   then 'users/user'
+    when Board  then 'board/board'
+    when Pin    then 'pins/pin'
+    else m
+    end
+  end
+  
   def absolute_url(url)
     return url if url.starts_with?(/http/i)
     url = [host, url].join('/').gsub(/\/{2,}/, '/')
