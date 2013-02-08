@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <div class="content board board_wide">
+  <div class="content board_wide">
     <h1>
       Search Results 
       <% unless params[:q].blank? %>
@@ -8,14 +8,14 @@
       (<%= @results.count %>)
     </h1>
     
-    <h3 class="search_navigation">
+    <div class="search_navigation">
       <%= search_links ['pins', 'boards', 'users'] %>
-    </h3>
+    </div>
     
     <% if @results.blank? %>
       <div class="empty-results">No <%= @kind.pluralize %> to show.</div>
     <% else %>
-      <ul class="masonry ajax-pagination timeline<%= ' user_list user_results' if @kind = 'user' %>" id="pins">
+      <ul class="ajax-pagination masonry <%= 'timeline' if @Kind == 'pins' %> <%= 'user_list timeline user_results' if @kind = 'users' %> <%= 'boards' if @kind = 'boards' %>" >
         <% @results.each do |r| %>
           <%= render :partial => partial_for_class(r), :object => r %>
         <% end %>
