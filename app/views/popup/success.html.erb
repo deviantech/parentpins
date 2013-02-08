@@ -5,5 +5,6 @@
   <div class="buttons">
     <%= link_to "View Pin", pin_url(@pin) %>
     <%= share_pin_on_fb_link(@pin) %>
+    <%= link_to_function 'Close Window', 'window.close()', :class => 'js-ignore' %>
   </div>
 </div>
