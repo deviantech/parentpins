@@ -18,6 +18,8 @@ module ApplicationHelper
   end
 
   def share_pin_on_fb_link(pin)
+    return '' unless pin.board.category && pin.age_group
+    
     opts = {
       :s => 100,
       :p => {
