@@ -40,11 +40,12 @@ $(document).ready(function() {
   });
     
   // Pins comment Button (in page or in modal)
-  $('.pin-context .comment_button').click(function(e) {
+  $(document).on('click', '.comment_button', function(e) {
     $this = $(this);
+    if ($this.parents('.pin-context').length == 0) return;
     var focusable;
-    
-    if ($this.parents('.modal_overlay').length) {
+          
+    if ($this.parents('.modal_overlay').length) { // If in modal
       focusable = $this.parents('.modal_overlay').find('.comment_form textarea').first();
       $this.parents('.modal_overlay').scrollTo(focusable);
     } else {
