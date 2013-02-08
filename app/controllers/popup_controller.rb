@@ -11,12 +11,16 @@ class PopupController < ApplicationController
     @pin = params[:pin] ? Pin.new(params[:pin]) : Pin.from_bookmarklet(current_user, params)
   end
   
+  def success
+    @pin = Pin.first
+  end
+  
   def create
     session.delete(:user_return_to_from_pin) # Clean up session
     conditionally_remove_nested_attributes(:pin, :board)
     @pin = current_user.pins.new(params[:pin])
     if @pin.save
-      render :text => %Q{<script type="text/javascript" charset="utf-8">window.close();</script>}
+      render 'success'
     else
       render 'pin'
     end

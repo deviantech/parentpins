@@ -15,3 +15,4 @@
 //= require add-pin
 //= require popup/add-pin-in-popup
 //= require popup/google-analytics
+//= require popup/success

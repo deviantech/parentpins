@@ -95,17 +95,7 @@ $(document).ready(function() {
       window.location = urlPossiblyReplacingParam(window.location + '', $select.attr('name'), $select.val());
     }
   });
-  
-  // Automatically pop up popup window links
-  $(document).on('click', '.js-new-window-popup', function(e) {
-    e.preventDefault();
-    var link = $(this);
-    if (link[0].tagName != 'A') link = link.parents('a');
     
-    var newPopupWindow = window.open(link.attr('href'), 'newPopupWindow', "menubar=no,status=no,toolbar=no,location=no,width="+link.data('width')+",height="+link.data('height'));
-    if (window.focus) newPopupWindow.focus();
-  });
-  
   // Add custom trucation
   $(document).on('click', 'a.view-more', function(e) {
     e.preventDefault();
@@ -128,4 +118,6 @@ $(document).ready(function() {
     }
   });
   
+  // As a function because shared with popup.js
+  handlePopupWindows();
 });

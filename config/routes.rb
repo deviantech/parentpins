@@ -13,9 +13,12 @@ ParentPins::Application.routes.draw do
 
   get "/pins/:source_id/repin" => "pins#new", :as => 'repin'
   
-  match  "/popup/pins/new"    => "popup#pin",     :as => 'bookmarklet_popup'
-  match  "/popup/pins/create" => "popup#create",  :as => 'pin_from_popup'
-  match  "/popup/login"       => "popup#login",   :as => 'popup_login'
+  match  "/popup/pins/new"      => "popup#pin",     :as => 'bookmarklet_popup'
+  match  "/popup/pins/create"   => "popup#create",  :as => 'pin_from_popup'
+  match  "/popup/login"         => "popup#login",   :as => 'popup_login'
+  if Rails.env.development?
+    match  "/popup/pins/success" => "popup#success"
+  end
   
   # Pretty URLs for pin subtypes
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
