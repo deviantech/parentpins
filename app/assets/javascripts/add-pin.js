@@ -23,11 +23,11 @@ function initPinForm() {
     }, 5);
   });
   
-  $pinForm.on('change', '#pin_kind', setPriceVisibility);
+  $pinForm.on('change', 'input[name="pin[kind]"]', setPriceVisibility);
   setPriceVisibility();
   
   function setPriceVisibility() {
-    if ($pinForm.find('#pin_kind').val() == 'product') {
+    if ($pinForm.find('input[name="pin[kind]"]:checked').val() == 'product') {
       $pinForm.find('.field-price').removeClass('hidden').slideDown();
       $('#pin_price').trigger('change');
     } else {
