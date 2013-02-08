@@ -27,7 +27,7 @@ class Pin < ActiveRecord::Base
   before_validation :copy_board_settings,       :on => :create
   validates_presence_of :user, :description, :board, :category, :age_group
   validates_inclusion_of :kind, :in => VALID_TYPES
-  validates_length_of :description, :maximum => 255, :allow_blank => true
+  validates_length_of :description, :maximum => 1024, :allow_blank => true
   validate :url_format, :not_previously_pinned, :on => :create
   
   before_update   :update_board_images_on_change

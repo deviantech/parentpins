@@ -9,6 +9,8 @@ $(document).ready(function() {
      $('.masonry').masonry('reload');
   });
   
+  applyTruncationTo('.pin-context .description', 200);
+  
   // Pin actions
   function getContainingClassNameForPinAction(btn) {
     var classList;
@@ -102,6 +104,26 @@ $(document).ready(function() {
     if (window.focus) newPopupWindow.focus();
   });
   
-  
+  // Add custom trucation
+  $(document).on('click', 'a.view-more', function(e) {
+    e.preventDefault();
+    var wrapper = $(e.target).parent();
+    if (wrapper.data('original-text')) {
+      if (!wrapper.data('short-text')) wrapper.data('short-text', wrapper.html());
+      var longer = wrapper.data('original-text') + ' ' + '<a href="#" class="view-less">(less)</a>';
+      wrapper.html(longer);
+      wrapper.parents('.masonry').masonry('reload');
+    }
+  });
+
+  $(document).on('click', 'a.view-less', function(e) {
+    e.preventDefault();
+    var wrapper = $(e.target).parent();
+    if (wrapper.data('short-text')) {
+      wrapper.html( wrapper.data('short-text') );
+      $.scrollTo(wrapper.parents('.masonry-brick'));
+      wrapper.parents('.masonry').masonry('reload');
+    }
+  });
   
 });

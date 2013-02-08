@@ -94,6 +94,18 @@ function updateProfileCounters(data) {
   }
 }
 
+function applyTruncationTo(selector, length) {
+  $(selector).each(function() {
+    $this = $(this);
+    if ($this.text().length > length) {
+      more = '<a href="#" class="view-more">(more)</a>';
+      if (!$this.data('original-text')) $this.data('original-text', $this.text());
+      $this.text( $this.text().substr(0, length) );
+      $this.html( $this.html() + '&hellip; ' + more);
+    }
+  });
+}
+
 // http://railsapps.github.com/rails-javascript-include-external.html
 jQuery.externalScript = function(url, options) {
   // allow user to set any option except for dataType, cache, and url
