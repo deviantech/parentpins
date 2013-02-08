@@ -34,12 +34,7 @@ class ProfileController < ApplicationController
       sign_in(@profile, :bypass => true)
       redirect_to activity_profile_path(@profile), :notice => "Updated profile"
     else
-      if params[:from] == 'step_2'
-        activity
-        render 'activity'
-      else
-        render 'edit'
-      end
+      render 'edit'
     end
   end
     

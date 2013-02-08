@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   
   validates_uniqueness_of :username, :allow_blank => false
   validates_format_of :username, :with => /\A[a-z0-9\.\-\_]+\z/i
-  validates_numericality_of :kids, :allow_blank => true
+  validates_numericality_of :kids, :allow_blank => true, :message => 'must be a number'
   validate :valid_username
   before_destroy :clean_redis
 
