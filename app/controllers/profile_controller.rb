@@ -2,7 +2,7 @@ class ProfileController < ApplicationController
   before_filter :authenticate_user!,  :only => [:edit, :update, :activity]
   before_filter :get_profile
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
-  before_filter :set_filters,         :only => [:pins, :likes, :followed_by, :following, :board, :boards]
+  before_filter :set_filters,         :only => [:pins, :likes, :followed_by, :following]
   
   def show
     redirect_to @profile == current_user ? activity_profile_path(@profile) : profile_boards_path(@profile)

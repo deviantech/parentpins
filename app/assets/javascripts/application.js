@@ -15,6 +15,8 @@
 //= require spinners.min.js
 //= require jquery.masonry
 //= require jquery.scrollTo
+//= require app/modernizr
+//= require app/jquery-sortable
 //= require bootstrap/alerts
 //= require app/helpers
 //= require app/flash

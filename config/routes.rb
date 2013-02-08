@@ -16,7 +16,7 @@ ParentPins::Application.routes.draw do
   match  "/popup/pins/new"      => "popup#pin",     :as => 'bookmarklet_popup'
   match  "/popup/pins/create"   => "popup#create",  :as => 'pin_from_popup'
   match  "/popup/login"         => "popup#login",   :as => 'popup_login'
-  if Rails.env.development?
+  if Rails.env.development? # TODO: remove this once styled
     match  "/popup/pins/success" => "popup#success"
   end
   
@@ -48,6 +48,7 @@ ParentPins::Application.routes.draw do
           post 'follow'
           post 'unfollow'
         end
+        post 'sort', :on => :collection
       end
     end
   end

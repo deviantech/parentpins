@@ -14,6 +14,14 @@ class BoardController < ApplicationController
     paginate_pins @board.pins
   end
 
+  def sort
+    # Might get odd results if not all boards are passed (e.g. duplicate positions), but it's nothing mission critical
+    current_user.boards.each do |b|
+      b.update_attribute :position, params[:boards].index(b.id.to_s).to_i + 1
+    end
+    render :nothing => true
+  end
+
   def new
     @board = current_user.boards.new(params[:board])
   end

@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password
   
-  has_many :boards,       :order => 'name ASC',     :dependent => :destroy
+  has_many :boards,       :order => 'position ASC',     :dependent => :destroy
   has_many :pins,         :dependent => :destroy
   has_many :pins_via_me,                            :class_name => 'Pin',   :foreign_key => 'via_id'
   has_many :pins_originally_from_me,                :class_name => 'Pin',   :foreign_key => 'originally_from_id'
