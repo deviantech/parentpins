@@ -22,7 +22,7 @@ do(document = document, jQuery = window.jQuery) ->
   appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
   
   # Our "global" to share variables within nested coffeescript
-  Global = Global || {potentials: []}
+  Global = Global || {potentials: {}}
 
   prepForBookmarklet = ->
     # check prior inclusion and version
@@ -43,7 +43,7 @@ do(document = document, jQuery = window.jQuery) ->
   weHavejQuery = ->
     includeBookmarkletStyles(jQuery)
     # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with.
-    # Note that we were using the sprockets-commonjs gem to include via .module.js, but 1) this is more direct in this case, and 2) it through odd errors only on http://piccsy.com/2012/03/twins-2l9ffupx/
+    # Note that we were using the sprockets-commonjs gem to include via .module.js, but 1) this is more direct in this case, and 2) it threw odd errors only on http://piccsy.com/2012/03/twins-2l9ffupx/
     `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'bookmarklet', 'jquery-imagesloaded-min.js') ) %>`
     initBookmarkletWithjQuery(jQuery)
   
@@ -51,7 +51,7 @@ do(document = document, jQuery = window.jQuery) ->
     return if ($('link#'+popupName+'CSS').length)
     $(appendTarget).append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />')
         
-  # Close popup if any are open
+  # Now we have jQuery, let's get started
   initBookmarkletWithjQuery = ($) ->
 
     closeBookmarklet = ->
@@ -59,30 +59,28 @@ do(document = document, jQuery = window.jQuery) ->
         $(this).remove()
       return false
 
-    addImage = (img) ->
+    # Once it's been evaluated, add this image (actually, image data)
+    addImage = (data) ->
       if !Global.imageBase
         console.log('Attempting to add image before template has been processed')
       else
-        if `!(img.src in Global.potentials)` # No duplicates
-          Global.potentials[img.src] = img
+        if `!(data.src in Global.potentials)` # No duplicates
+          Global.potentials[data.src] = data
           Global.imageBase.find('#noPotentialImages').hide();
           # Max-height will prevent getting too big, but without this firefox will leave box with no height
-          added = $( JST['templates/bookmarklet/potential']({image: img}) ).appendTo( Global.imageBase ).height( img.scaledHeight )
+          added = $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( Global.imageBase ).height( data.scaledHeight )
 
-    
-  
     isImageBigEnough = (data) ->
       data.width && data.width >= minImageWidth && data.height && data.height >= minImageHeight
-  
-  
-    # Given one or more versions of the same image, continue processing with at most ONE of the versions
+    
+    # Given one or more versions of the same image, continue processing with at most ONE of the versions (largest)
     evaluateImageSet = (images...) ->
       mapping = {}
       sizes = []
 
       for img in images
         do (img) ->
-          # If images are the same size, it doesn't matter which we choose, so OK to use dictionary here
+          # If images are the same size, it doesn't matter which we choose, so OK to use hash here
           data = imgToData(img)
           mapping[data.area] = data
           sizes.push(data.area)
@@ -93,6 +91,7 @@ do(document = document, jQuery = window.jQuery) ->
         addImage(biggest)
 
 
+    # Some images need to be inserted into the DOM in order to load properly... hence our image test bed
     inTestBed = (toTest, fnWhenLoaded) ->
       $toTest = $(toTest)
       $toTest.imagesLoaded ->
@@ -175,7 +174,8 @@ do(document = document, jQuery = window.jQuery) ->
       pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
       pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
       theForm.submit()
-      pinWindow.focus() if (window.focus)    
+      pinWindow.focus() if (window.focus)
+      closeBookmarklet() # Once selected an image, close bookmarklet overlay
       return false      
 
     # Now that everything's been defined and wrapped in jQuery, start running things
