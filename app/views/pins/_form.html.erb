@@ -10,7 +10,7 @@
 </div>
 
 <div class="field field-price<%= ' hidden' unless @pin.kind == 'product' %>">
-  <%= f.label :price, 'Price' %>
+  <%= f.label :price, 'Price <span>(optional)</span>'.html_safe %>
   <%= f.text_field :price, :placeholder => "$0.00" %>
 </div>
 
