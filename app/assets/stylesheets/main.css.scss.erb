@@ -8,20 +8,26 @@
 	font-weight: normal;
 	font-style: normal; }
 
-body {height:100%;}
 html{
   height:100%;
   background:#fff url(/assets/patterns/debut_light.png) 0 0 repeat;}
   
-body.background_cover {
-  background-clip:border-box;
-  background-color:transparent;
-  background-position: bottom left;
-  background-repeat:no-repeat;
-  background-attachment:fixed;
-  background-image:url(/assets/backgrounds/1.png);
-  .footer_wrapper {
-    background:rgba(255, 255, 255, 0.6); } }
+
+body {
+  height:100%;
+  background:transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
+  font-size:14px;
+  line-height:18px;
+  font-family:"Helvetica Neue", Helvetica, sans-serif;
+  &.background_cover {
+    background-clip:border-box;
+    background-color:transparent;
+    background-position: bottom left;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-image:url(/assets/backgrounds/1.png);
+    .footer_wrapper {
+      background:rgba(255, 255, 255, 0.6); } } }
 
 
 /* Mixins */
@@ -48,7 +54,9 @@ body.background_cover {
 /* typography */
 
 p {
-  font-size: 13px; }
+   font-size: 1em; /* 14px */ 
+   line-height: 1.2857em; /* 18px */ 
+   margin: 0 0 1.2857em 0; }
 
 a {
   color: #1D58AA;
@@ -188,7 +196,8 @@ a {
   text-decoration: none;
   color: #E55799;
   font-family:times;
-  font-size:24px;
+  font-size: 1.7143em; /* 24px */ 
+  line-height: 1.5em; /* 36px */
   font-weight:600;
   padding:14px 10px 16px 65px;
   margin:0 10px 0 0;
@@ -214,10 +223,10 @@ a {
   text-indent: 0; }
 
 .search {
-  width:260px;
+  width:240px;
   float:left;
   overflow:hidden;
-  padding:14px 10px 0 10px;
+  padding:.9em .9em 0;
   input {
     display: block;
     width: 170px;
@@ -248,7 +257,8 @@ a {
   a {
     display: block;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 1.1429em;
+    line-height:1.125em;
     padding: 20px 25px;
     font-weight: 400;
     &:hover {
@@ -331,7 +341,9 @@ a {
     width:70px !important;
     a {
       padding:20px 0;
-      color:#fff; }
+      color:#fff;
+      font-size: 1.1429em;
+      line-height:1.125em; }
     .bookmarklet a {
       position:relative;
       &:hover:before {
@@ -370,7 +382,7 @@ a {
       display: none;
       background: #fff;
       position: absolute;
-      top: 61px;
+      top: 56px;
       left: 0;
       margin: 0;
       padding: 0;
@@ -457,6 +469,7 @@ a {
   box-shadow: 0 2px 3px rgba(34, 25, 25, 0.3);
   h2 {
     font-size: 22px;
+    line-height:1em;
     color: #444;
     font-weight: normal;
     font-family: georgia,times,serif;
@@ -625,6 +638,7 @@ a {
     span {
       display: block;
       font-size: 18px;
+      line-height:2em;
       margin: 0;
       padding: 0; } }
   h2 {
@@ -693,7 +707,7 @@ a {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); } }
 
 .pin {
-  font-size: 11px;
+  font-size:12px;
   color: #000;
   font-family: "helvetica neue",arial,sans-serif;
   overflow: hidden;
@@ -803,7 +817,8 @@ a {
 
 .pin {
   .description {
-    margin: 10px 0 0 0;
+    line-height: 1.5em;
+    margin: 10px 0 5px;
     strong {
       color: #E5579A;
       position: relative; }
@@ -887,7 +902,7 @@ a {
   overflow: hidden;
   word-wrap: break-word;
   color: #AD9C9C;
-  line-height: 14.85px;
+  line-height: 15.85px;
   margin: 10px; }
 
 .comment .details {
@@ -996,16 +1011,17 @@ ul.boards {
     height:280px; }
   h3, h4 {
     overflow: hidden;
-    padding: 5px 15px;
+    padding: 5px 15px 5px;
     margin: 0;
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 13px;
+    font-size: 16px;
+    line-height:18px;
     background:rgba(255, 255, 255, 0.8); }
   h3 {
-    height: 20px;
     padding-bottom: 0;
+    padding-top:10px;
     font-family: palatino,"palatino linotype","book antiqua",serif;
     a {
       color: #584D4D;
@@ -1016,11 +1032,13 @@ ul.boards {
       text-decoration: none;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.64);
     &:hover {
-      color: #000;
+      color: #b6457a;
       text-decoration: underline; } } }
   h4 {
     color: #888888;
-    font-weight: 100;
+    font-weight: normal;
+    font-size: 0.8571em; /* 12px */
+    line-height: 1.5em; /* 18px */
     a {
       color: #8C7E7E;
       font-size: 11px;
@@ -1039,9 +1057,13 @@ ul.boards {
         @include circular; } } } 
   .description {
     margin: 10px 0 5px;
+    font-size: 12px;
+    line-height: 18px;
     p {
       padding:0 10px;
       margin:0;
+      font-size: 12px;
+      line-height: 18px;
       height:60px; } } }
 
 .link {
@@ -1156,17 +1178,19 @@ form .field {
   padding: 10px 10px 15px;
   p, label {
     color: #333;
-    font-size: 13px;
+    font-size: 1.1429em; /* 16px */
+    line-height: 1.125em; /* 18px */
     margin: 0 0 4px 0;
     padding: 0; }
   label {
     clear:both;
-    display:block; }
+    display:block;
+    font-size: 1.1429em; /* 16px */
+    line-height: 1.125em; /* 18px */ }
   label.radio_opt {
     clear: none;
     display: inline-block;
-    margin-right: 5px;
-    width: 70px;
+    margin-right: 1em;
     input {
       width: auto;
       display: inline-block;
@@ -1279,8 +1303,10 @@ input:focus[placeholder], textarea:focus[placeholder] {
     margin: 60px auto; 
     h1 {
       color:#000 !important;
+      font-size: 2.1429em; /* 30px */ 
+      line-height: 1.2em; /* 36px */
       background:none !important;
-      margin:0 0 10px 0 !important;
+      margin:0.6em 0 0.6em !important;
       padding:0 0 10px 0 !important;
       min-height:auto !important;
       text-shadow:0 1px 0 #fff !important;
@@ -1290,7 +1316,11 @@ input:focus[placeholder], textarea:focus[placeholder] {
     width:620px;
     h1 {
       color:#000 !important;
+      font-size: 2.1429em; /* 30px */ 
+      line-height: 1.2em; /* 36px */
+      margin:0.6em 0 0.6em !important;
       background:none !important;
+      min-height:auto !important;
       text-shadow:0 1px 0 #fff !important;
       border-bottom: 1px dashed #C2C2C2 !important; }
     .section {
@@ -1299,15 +1329,17 @@ input:focus[placeholder], textarea:focus[placeholder] {
       margin:0 14px;
       h3 {
         background: transparent;
-        font-size: 18px;
+        font-size: 1.7143em; /* 24px */ 
+        line-height: 0.5em; /* 12px */ 
+        margin: 0.75em;
         font-weight: 400;
-        margin: 0 0 10px;
+        min-height:auto;
+        height:auto;
         overflow: visible; } 
       label span {
         display:block;
-        font-weight:100;
         color:#555;font-size: 13px;
-            padding: 2px 0; } } }
+        padding: 2px 0; } } }
   &.signup:after {
     content: "";
     display: block;
@@ -1344,12 +1376,12 @@ input:focus[placeholder], textarea:focus[placeholder] {
 
 
 .profile .set_filters {
-  margin: 10px 0 0 50px;
+  margin: .5em .5em 0 45px;
   width: auto; }
 .set_filters {
   display: block;
   font-size: 13px;
-  margin: 10px 10px 0;
+  margin: .5em .5em 0 1em;
   overflow: hidden;
   padding: 8px 10px;
   select {
@@ -1414,7 +1446,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
         @include circular; }
       a {
         text-decoration:none; 
-        padding:0; }
+        padding:0;
+        &:hover {
+          color:#000; } }
       &:hover img {
         border: 3px solid #CD2479;
         top: 2px;
@@ -1422,7 +1456,6 @@ input:focus[placeholder], textarea:focus[placeholder] {
     span {
       color: #444;
       display: block;
-      font-weight:100;
       font-size:13px;
       opacity: 1;
       -webkit-transition: all 0.4s ease-in-out;
@@ -1521,10 +1554,11 @@ input:focus[placeholder], textarea:focus[placeholder] {
   .content {
     width:100%;
     h1 {
-      margin: 0;
+      font-size: 2.5714em; /* 36px */ 
+      line-height: 1em; /* 36px */ 
       background:rgba(0,0,0,0.8);
       color:#fff;
-      padding:5px 0 5px 20px;
+      padding:.5em 0 .5em 1em;
       margin:-20px 0 0;
       .user {
         text-align: left;
