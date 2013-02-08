@@ -52,6 +52,8 @@ $(document).ready(function() {
       $this.parents('.modal_overlay').scrollTo(focusable);
     } else {
       focusable = $this.parents('li.pin').find('.comment textarea').first();
+      focusable.parents('.comment').toggle();
+      focusable.parents('.masonry').masonry('reload');
       $.scrollTo( $this.parents('li.pin') );
     }
     focusable.focus();
