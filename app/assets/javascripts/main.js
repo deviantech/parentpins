@@ -120,4 +120,26 @@ $(document).ready(function() {
   
   // As a function because shared with popup.js
   handlePopupWindows();
+  
+  // Handle sorting on boards page
+  if ($('.sortable-wrapper ul').length) {
+    var toSortWrapper = $('.sortable-wrapper');
+    var toSort = toSortWrapper.find('ul');
+    if (Modernizr.draganddrop) {
+      toSort.find('li').each(function() {
+        if ($(this).find('.handle').length == 0) $(this).prepend('<div class="handle"><span>Drag to Reorder</span></div>');
+      });
+      
+      toSort.sortable({
+        items: 'li',
+        handle: '.handle',
+        forcePlaceholderSize: true
+      }).bind('sortupdate', function(e, ui) {
+        var ids = toSort.find('li').map(function() { return $(this).data('sort-id'); });
+        $.post(toSortWrapper.data('sortable-endpoint'), $.param({boards: jQuery.makeArray(ids)}));
+      });
+    }
+  }
+  
+      
 });

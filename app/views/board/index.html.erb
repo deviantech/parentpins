@@ -2,23 +2,14 @@
   <h1><span><%= @profile.name %>'s</span> Boards List</h1>
 
   <div class="clearfix"></div>
-  <%= render 'board/boards' %>
-  
-  <% content_for :footer_js do %>
-    <script type="text/javascript" charset="utf-8">
-      $(document).ready(function(){
-        if (Modernizr.draganddrop) {
-          $('ul.boards').sortable({
-            items: 'li',
-            forcePlaceholderSize: true
-          }).bind('sortupdate', function(e, ui) {
-            var ids = $('ul.boards').find('li.board').map(function() { return $(this).attr('id').replace(/board_/, ''); });
-            $.post("<%= sort_profile_board_index_path(@profile) %>", $.param({boards: jQuery.makeArray(ids)}));
-          })
-        }
-       });
-    </script>
-  <% end %>
+    <% if @profile == current_user %>
+      <div class="sortable-wrapper" data-sortable-endpoint="<%= sort_profile_board_index_path(@profile) %>">
+    <% else %>
+      <div>
+    <% end %>
+    <%= render 'board/boards' %>
+  </div>
+    
 <% else %>
   <div class="wrapper">
       <div class="content board_wide">

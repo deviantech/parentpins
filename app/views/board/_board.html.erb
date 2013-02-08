@@ -1,4 +1,4 @@
-<li class="board" id="<%= dom_id(board) %>">
+<li class="board" data-sort-id="<%= board.id %>">
   <h3><%= link_to board.name, profile_board_path(board.user, board) %></h3>
   <% unless @profile %>
     <h4>
