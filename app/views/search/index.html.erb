@@ -15,7 +15,7 @@
     <% if @results.blank? %>
       <div class="empty-results">No <%= @kind.pluralize %> to show.</div>
     <% else %>
-      <ul class="ajax-pagination masonry <%= 'timeline' if @Kind == 'pins' %> <%= 'user_list timeline user_results' if @kind = 'users' %> <%= 'boards' if @kind = 'boards' %>" >
+      <ul class="ajax-pagination masonry <%= search_classes_by_kind %>">
         <% @results.each do |r| %>
           <%= render :partial => partial_for_class(r), :object => r %>
         <% end %>
