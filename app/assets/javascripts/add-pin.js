@@ -28,10 +28,12 @@ function initPinForm() {
   
   function setPriceVisibility() {
     if ($pinForm.find('input[name="pin[kind]"]:checked').val() == 'product') {
-      $pinForm.find('.field-price').removeClass('hidden').slideDown();
+      var pf = $pinForm.find('.field-price');
+      if (pf.hasClass('hidden')) pf.hide().removeClass('hidden');
+      pf.slideDown();
       $('#pin_price').trigger('change');
     } else {
-      $pinForm.find('.field-price').slideUp();
+      $pinForm.find('.field-price:visible').slideUp();
       $outletBase.find('.bind-price').addClass('hidden');
     }
   }
@@ -43,7 +45,12 @@ function initPinForm() {
   var $pinBoard = $pinForm.find('#pin_board_id');
   var $boardFields = $pinForm.find('.board-fields');
   function setBoardFieldVisibility() {
-    $pinBoard.val() == '' ? $boardFields.slideDown() : $boardFields.slideUp();
+    if ($pinBoard.val() == '') {
+      if ($boardFields.hasClass('hidden')) $boardFields.hide().removeClass('hidden');
+      $boardFields.slideDown();
+    } else {
+      $boardFields.slideUp();
+    }
   }
   $pinForm.on('change', '#pin_board_id', setBoardFieldVisibility);
   
