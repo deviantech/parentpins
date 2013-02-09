@@ -325,7 +325,37 @@ ul li .handle {
   margin: 0 0 0 200px;
   padding: 0;
   li {
-    float: left; }
+    float:left;
+    position:relative; }
+  li.drop_down {
+    ul {
+      display: none;
+      background: #fff;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      margin: 0;
+      padding: 0;
+      z-index: 3;
+      width: 160px;
+      -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5); }
+    &:hover ul {
+      display: block; }
+    ul li {
+      display: block;
+      float: none;
+      a {
+        display: block;
+        float: none;
+        color:#E55799;
+        text-shadow:none;
+        padding: 6px 10px;
+        text-align: left;
+        font-size: 13px; 
+        &:hover {
+          color:#fff; } } } }
   a {
     color: #000;
     text-shadow: 0 -1px 0 rgba(255,255,255, 0.8); } }
