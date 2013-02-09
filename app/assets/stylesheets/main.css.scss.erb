@@ -950,15 +950,17 @@ li.pin-context {
 
 .attribution .image_link, .comment .image_link {
   float: left;
-  margin: 10px;
+  margin: 11px 10px 10px;
   height: 30px;
   width: 30px;
   display: block;
   border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff; }
+  border-bottom: 1px solid #fff;
+  @include circular; }
 
 .attribution .image_link img, .comment .image_link img {
-  display: block; }
+  display: block;
+  @include circular; }
 
 .attribution .details {
   max-width: 260px;
@@ -2098,4 +2100,3 @@ ul.errors {
   border:1px solid #CD1212;
   color:#C10000;
   background:#FFF1F1; }
-    
