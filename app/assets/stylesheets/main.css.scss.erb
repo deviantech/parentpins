@@ -1673,32 +1673,44 @@ input:focus[placeholder], textarea:focus[placeholder] {
 /* flash messaging */
 
 #flash {
-  margin: -20px 0 20px 0; }
+  margin: 0; }
 
 .flashmsg {
   position: relative;
   width: auto;
   background: blue;
   text-align: center;
-  font-size: 16px;
-  padding: 10px 0;
+  font-size: 24px;
+  line-height:24px;
+  padding: 20px 0;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   border-bottom:1px dashed #D7D7D7;
   .close {
-    color: #222222;
-    font-size: 26px;
-    padding: 5px;
+    color: #fff;
+    font-size: 30px;
+    font-weight:bold;
+    padding: 0 4px 2px;
     position: absolute;
     right: 20px;
-    top: 0;
+    top: 14px;
+    height:30px;
+    width:25px;
+    @include circular;
+    background:#222;
     &:hover {
       cursor: pointer; } }
   &.success {
-    background: #97E8B4; }
+    background: #D2FFE2;
+    border-bottom: 2px solid #00D34B;
+    border-top: 4px solid #00D34B; }
   &.error {
-    background: #FF7A90; }
+    background: #FECFD7;
+    border-bottom: 2px solid #B02C42;
+    border-top: 4px solid #B02C42; }
   &.alert {
-    background: #FFFEDE; } }
+    background: #FFFEDE;
+    border-bottom: 2px solid #EAE100;
+    border-top: 4px solid #EAE100; } }
 
 /* footer styles */
 
