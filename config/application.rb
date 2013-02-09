@@ -63,10 +63,10 @@ module ParentPins
     # Set host for use elsewhere
     host = if Rails.env.production?  then 'www.parentpins.com'
         elsif Rails.env.staging?     then 'staging.parentpins.com'
-        else                              'localhost:3000'
+        else                              'localhost'
         end
 
     # Set base host for emails
-    config.action_mailer.default_url_options = { :host => host }
+    config.action_mailer.default_url_options = { :host => host, :port => (Rails.env.production? || Rails.env.staging?) ? 80 : 3000 }
   end
 end
