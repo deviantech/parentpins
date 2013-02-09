@@ -732,28 +732,6 @@ ul li .handle {
     -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); } }
 
-.pin {
-  font-size:12px;
-  color: #000;
-  font-family: "helvetica neue",arial,sans-serif;
-  overflow: hidden;
-  .actions {
-    display: block;
-    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.5);
-    padding: 20px 20px 6px;
-    position: absolute;
-    width: 182px;
-    position: absolute;
-    top: -130px;
-    left: 0;
-    z-index: 2;
-    -webkit-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    -moz-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    -ms-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    -o-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    transition: left .2s ease-in-out, top .2s ease-in-out .2s; }
-  &:hover .actions {
-    top: 0; } }
 .pin-context {
   .comment-controls {
     font-size: 11px;
@@ -832,11 +810,6 @@ li.pin-context {
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27); }
 
-.pin_image {
-  display: block;
-  margin: 0 auto;
-  width: 192px;
-  height: auto; }
 
 .pin_image_holder {
   height:100px;
@@ -850,6 +823,35 @@ li.pin-context {
 }
 
 .pin {
+  font-size:12px;
+  color: #000;
+  font-family: "helvetica neue",arial,sans-serif;
+  overflow: hidden;
+  .actions {
+    display: block;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.5);
+    padding: 10px 10px 6px;
+    position: absolute;
+    width: 202px;
+    position: absolute;
+    top: -130px;
+    left: 0;
+    z-index: 2;
+    -webkit-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    -moz-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    -ms-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    -o-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    transition: left .2s ease-in-out, top .2s ease-in-out .2s; }
+  &:hover .actions {
+    top: 0; }
+  .image_link {
+    display:block;
+    margin:-15px 0 0 -15px;
+    .pin_image {
+      display: block;
+      margin: 0 auto;
+      width: 222px;
+      height: auto; } }
   .description {
     line-height: 1.5em;
     margin: 10px 0 5px;
@@ -862,43 +864,43 @@ li.pin-context {
       &:before {
         content: "";
         position: absolute;
-        bottom: 20px;
-        left: 5px;
+        top:25px;
+        left: -2px;
         display: block;
         background: #000;
         color: #fff;
-        text-align: center;
+        text-align: left;
         font-size: 12px;
         font-weight:400;
         line-height: 17px;
-        padding: 4px 10px;
-        width: 160px; }
+        padding: 4px 10px 6px;
+        width: 178px; }
       &:after {
         content: "";
         position: absolute;
-        bottom: 14px;
+        top:15px;
         left: 5px;
         display: block;
         width: 0;
         height: 0;
-        border-top: 10px solid #000;
+        border-bottom: 10px solid #000;
         border-right: 10px solid transparent;
         border-left: 10px solid transparent; } }
     .kind.article:hover:before {
-      content: "Pinned from a blog, top 10 list, writer, etc."; }
+      content: "Pinned from a blog, top 10 list, writer, blogger, etc."; }
     .kind.product:hover:before {
-      content: "Pinned from an online store, ParentPin Store, or just a cool product for sale."; }
+      content: "Pinned from an online store or just a cool product for sale."; }
     .kind.gift:hover:before {
-      content: "Pinned from an online store, ParentPin Store, and would make a great gift."; }
+      content: "Pinned from an online store and would make a great gift."; }
     .kind.idea:hover:before {
-      content: "Just generally a cool idea for Parents."; }
+      content: "Just generally a cool idea for Parents and Kids."; }
     a {
       text-decoration: none;
       color: #222;
       &:hover {
         color: #000; } } }
   .stats {
-    margin: 10px 0 5px 0;
+    margin: 6px 0 5px;
     color: #8C7E7E;
     overflow: hidden;
     span {
@@ -1099,7 +1101,9 @@ ul.boards {
       margin:0;
       font-size: 12px;
       line-height: 18px;
-      height:60px; } } }
+      height:60px; }
+    .view-more, .view-less {
+      color:#E5579A; } } }
 
 .link {
   position: absolute;
