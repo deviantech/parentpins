@@ -49,11 +49,17 @@ function capitalize(word) {
 }
 
 function urlPlusParamString(url, paramString) {
-  return (url + (url.indexOf('?') == -1 ? '?' : '&') + paramString).
+  // Note that this strips off any anchor tags
+  var anchor = url.match(/#.*/);
+  if (anchor) url = url.replace(anchor, '');
+
+  var newURL = (url + (url.indexOf('?') == -1 ? '?' : '&') + paramString).
     replace(/&&+/, '&').
     replace(/\?\?+/, '?').
     replace(/\?&/, '?').
     replace(/[\?&]$/, '');
+    
+  return newURL + (anchor ? anchor[0] : '');
 }
 
 function urlPossiblyReplacingParam(url, param, value) {

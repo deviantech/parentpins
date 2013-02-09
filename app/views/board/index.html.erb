@@ -3,8 +3,13 @@
 
   <% if @profile == current_user %>
     <div class="page-controls">
-      <%= link_to 'Reorder Boards', '#', :class => 'start-sorting', 'data-endpoint' => sort_profile_board_index_path(@profile), 'data-sort' => 'ul.boards' %>
-      <%= link_to 'Stop Reordering', '#', :class => 'stop-sorting', 'data-sort' => 'ul.boards' %>
+      <% if params[:category].blank? %>
+        <%= link_to 'Reorder Boards', '#', :class => 'start-sorting', 'data-endpoint' => sort_profile_board_index_path(@profile), 'data-sort' => 'ul.boards' %>
+        <%= link_to 'Stop Reordering', '#', :class => 'stop-sorting', 'data-sort' => 'ul.boards' %>
+      <% else %>
+        <%= link_to 'Remove filters', profile_boards_path(@profile) %>
+        to reorder boards
+      <% end %>
     </div>
   <% end %>
   
