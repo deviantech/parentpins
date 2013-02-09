@@ -1,14 +1,16 @@
 <% if @profile %>
   <h1><span><%= @profile.name %>'s</span> Boards List</h1>
 
+  <% if @profile == current_user %>
+    <div class="page-controls">
+      <%= link_to 'Reorder Boards', '#', :class => 'start-sorting', 'data-endpoint' => sort_profile_board_index_path(@profile), 'data-sort' => 'ul.boards' %>
+      <%= link_to 'Stop Reordering', '#', :class => 'stop-sorting', 'data-sort' => 'ul.boards' %>
+    </div>
+  <% end %>
+  
+
   <div class="clearfix"></div>
-    <% if @profile == current_user %>
-      <div class="sortable-wrapper" data-sortable-endpoint="<%= sort_profile_board_index_path(@profile) %>">
-    <% else %>
-      <div>
-    <% end %>
-    <%= render 'board/boards' %>
-  </div>
+  <%= render 'board/boards' %>
     
 <% else %>
   <div class="wrapper">

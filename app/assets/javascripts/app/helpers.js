@@ -130,3 +130,35 @@ function handlePopupWindows() {
     if (window.focus) newPopupWindow.focus();
   });
 }
+
+function startSorting(toSort, url) {
+  if (!Modernizr.draganddrop) {
+    alert("Sorry, it looks like the browser you're using is too old to support drag/drop reordering!");
+    return false;
+  }
+
+  if (toSort.hasClass('js-sorting')) {
+    toSort.sortable('enable');
+    toSort.find('.handle').slideDown();
+  } else {
+    toSort.addClass('js-sorting');
+    toSort.find('li').each(function() {
+      if ($(this).find('.handle').length == 0) $('<div class="handle"><span>Drag to Reorder</span></div>').hide().prependTo( $(this) ).slideDown();
+    });
+    
+    toSort.sortable({
+      items: 'li',
+      handle: '.handle',
+      forcePlaceholderSize: true
+    }).bind('sortupdate', function(e, ui) {
+      var ids = toSort.find('li').map(function() { return $(this).data('sort-id'); });
+      $.post(url, $.param({boards: jQuery.makeArray(ids)}));
+    });
+  }
+  
+  return true;
+}
+function stopSorting(toSort) {
+  toSort.sortable('disable');
+  toSort.find('.handle').slideUp();
+}

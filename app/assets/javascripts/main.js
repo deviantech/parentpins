@@ -122,24 +122,19 @@ $(document).ready(function() {
   handlePopupWindows();
   
   // Handle sorting on boards page
-  if ($('.sortable-wrapper ul').length) {
-    var toSortWrapper = $('.sortable-wrapper');
-    var toSort = toSortWrapper.find('ul');
-    if (Modernizr.draganddrop) {
-      toSort.find('li').each(function() {
-        if ($(this).find('.handle').length == 0) $(this).prepend('<div class="handle"><span>Drag to Reorder</span></div>');
-      });
-      
-      toSort.sortable({
-        items: 'li',
-        handle: '.handle',
-        forcePlaceholderSize: true
-      }).bind('sortupdate', function(e, ui) {
-        var ids = toSort.find('li').map(function() { return $(this).data('sort-id'); });
-        $.post(toSortWrapper.data('sortable-endpoint'), $.param({boards: jQuery.makeArray(ids)}));
-      });
+  $(document).on('click', 'a.start-sorting', function(e) {
+    e.preventDefault();
+    var toSort = $( $(this).data('sort') );
+    var endpoint = $(this).data('endpoint');
+    if (startSorting(toSort, endpoint)) {
+      $(this).hide().siblings('a.stop-sorting').show();
     }
-  }
+  });
   
+  $(document).on('click', 'a.stop-sorting', function(e) {
+    var toSort = $( $(this).data('sort') );
+    stopSorting(toSort);
+    $(this).hide().siblings('a.start-sorting').show();
+  });
       
 });
