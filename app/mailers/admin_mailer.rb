@@ -1,5 +1,5 @@
 class AdminMailer < BaseMailer
-  layout 'base_mailer'
+  layout 'admin_mailer'
   
   def new_feedback(fid)
     @feedback = Feedback.find(fid)

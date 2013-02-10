@@ -1,6 +1,7 @@
 class AddFamilyCategory < ActiveRecord::Migration
   def up
-    Category.create(:name => "Family")
+    # Actually age group is wanted, not Category
+    AgeGroup.create(:name => "Family")
   end
 
   def down
