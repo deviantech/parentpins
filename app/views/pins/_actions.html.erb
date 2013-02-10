@@ -14,5 +14,9 @@
     <a class="btn sec_action like_button <%= 'hidden' if does_like %>" href="#" data-url="<%= like_pin_path(pin) %>">Like</a>
   
     <a class="btn sec_action comment_button" href="#pinly_comment">Comment</a>
+    
+  <% else %>
+    <a class="btn sec_action like_button" href="/users/sign_up">Like</a>
+    
   <% end %>
 </div>

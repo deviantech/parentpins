@@ -158,7 +158,23 @@ html {
       color: #fff;
       font-size: 28px;
       height: 28px;
-      width: 28px; } } }
+      width: 28px; } }
+  &:active {
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; }
+  &.sec_action {
+    background-color: #F8F8F8;
+    border: 1px solid #C6C6C6;
+    color: #222;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+    padding: 5px 10px 5px;
+    font-size: 13px;
+    margin:2px;
+    &:hover {
+      background-color: #F7F7F7;
+      text-decoration:none;
+      background-image: none; } } }
 
 form .field {
   padding: 10px 10px 5px;
@@ -299,3 +315,63 @@ input.btn {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px; }
+  
+.success-wrapper {
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.63);
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+  padding: 0 0 60px 0;
+  text-align: center;
+  width: 300px;
+  position:relative;
+  h2 {
+    font-family: georgia, times, serif;
+    font-size: 34px;
+    font-weight: normal;
+    text-align:center;
+    margin: 0;
+    padding: 15px 0;
+    background: #D2FFE2;
+    border-bottom: 1px solid #00D34B;
+    -moz-border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
+    border-radius: 4px 4px 0 0;
+    position:relative; }
+  .message {
+    position:relative;
+    margin:90px 0 0 0;
+    &:before {
+      position:absolute;
+      content:"\e014";
+      top:-76px;
+      left:110px;
+      color:#61A97B;
+      font-size:70px;
+      @include pinli-font; } }
+  span {
+    display:block; 
+    font-size:18px;
+    line-height:36px;
+    a {
+      text-decoration:none;
+      color:#E5579A;
+      &:hover {
+        color:#000;
+        text-decoration:underline; } } }
+  .close_window {
+    position:absolute;
+    bottom:0;
+    left:0;
+    padding:10px;
+    border-top:1px solid #ddd;
+    background:#f9f9f9;
+    display:block;
+    width:280px;
+  }
+}
+

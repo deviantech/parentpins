@@ -325,7 +325,37 @@ ul li .handle {
   margin: 0 0 0 200px;
   padding: 0;
   li {
-    float: left; }
+    float:left;
+    position:relative; }
+  li.drop_down {
+    ul {
+      display: none;
+      background: #fff;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      margin: 0;
+      padding: 0;
+      z-index: 3;
+      width: 160px;
+      -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5); }
+    &:hover ul {
+      display: block; }
+    ul li {
+      display: block;
+      float: none;
+      a {
+        display: block;
+        float: none;
+        color:#E55799;
+        text-shadow:none;
+        padding: 6px 10px;
+        text-align: left;
+        font-size: 13px; 
+        &:hover {
+          color:#fff; } } } }
   a {
     color: #000;
     text-shadow: 0 -1px 0 rgba(255,255,255, 0.8); } }
@@ -732,28 +762,6 @@ ul li .handle {
     -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); } }
 
-.pin {
-  font-size:12px;
-  color: #000;
-  font-family: "helvetica neue",arial,sans-serif;
-  overflow: hidden;
-  .actions {
-    display: block;
-    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.5);
-    padding: 20px 20px 6px;
-    position: absolute;
-    width: 182px;
-    position: absolute;
-    top: -130px;
-    left: 0;
-    z-index: 2;
-    -webkit-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    -moz-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    -ms-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    -o-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
-    transition: left .2s ease-in-out, top .2s ease-in-out .2s; }
-  &:hover .actions {
-    top: 0; } }
 .pin-context {
   .comment-controls {
     font-size: 11px;
@@ -832,11 +840,6 @@ li.pin-context {
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27); }
 
-.pin_image {
-  display: block;
-  margin: 0 auto;
-  width: 192px;
-  height: auto; }
 
 .pin_image_holder {
   height:100px;
@@ -850,6 +853,35 @@ li.pin-context {
 }
 
 .pin {
+  font-size:12px;
+  color: #000;
+  font-family: "helvetica neue",arial,sans-serif;
+  overflow: hidden;
+  .actions {
+    display: block;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.5);
+    padding: 10px 10px 6px;
+    position: absolute;
+    width: 202px;
+    position: absolute;
+    top: -130px;
+    left: 0;
+    z-index: 2;
+    -webkit-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    -moz-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    -ms-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    -o-transition: left .2s ease-in-out, top .2s ease-in-out .2s;
+    transition: left .2s ease-in-out, top .2s ease-in-out .2s; }
+  &:hover .actions {
+    top: 0; }
+  .image_link {
+    display:block;
+    margin:-15px 0 0 -15px;
+    .pin_image {
+      display: block;
+      margin: 0 auto;
+      width: 222px;
+      height: auto; } }
   .description {
     line-height: 1.5em;
     margin: 10px 0 5px;
@@ -862,43 +894,43 @@ li.pin-context {
       &:before {
         content: "";
         position: absolute;
-        bottom: 20px;
-        left: 5px;
+        top:25px;
+        left: -2px;
         display: block;
         background: #000;
         color: #fff;
-        text-align: center;
+        text-align: left;
         font-size: 12px;
         font-weight:400;
         line-height: 17px;
-        padding: 4px 10px;
-        width: 160px; }
+        padding: 4px 10px 6px;
+        width: 178px; }
       &:after {
         content: "";
         position: absolute;
-        bottom: 14px;
+        top:15px;
         left: 5px;
         display: block;
         width: 0;
         height: 0;
-        border-top: 10px solid #000;
+        border-bottom: 10px solid #000;
         border-right: 10px solid transparent;
         border-left: 10px solid transparent; } }
     .kind.article:hover:before {
-      content: "Pinned from a blog, top 10 list, writer, etc."; }
+      content: "Pinned from a blog, top 10 list, writer, blogger, etc."; }
     .kind.product:hover:before {
-      content: "Pinned from an online store, ParentPin Store, or just a cool product for sale."; }
+      content: "Pinned from an online store or just a cool product for sale."; }
     .kind.gift:hover:before {
-      content: "Pinned from an online store, ParentPin Store, and would make a great gift."; }
+      content: "Pinned from an online store and would make a great gift."; }
     .kind.idea:hover:before {
-      content: "Just generally a cool idea for Parents."; }
+      content: "Just generally a cool idea for Parents and Kids."; }
     a {
       text-decoration: none;
       color: #222;
       &:hover {
         color: #000; } } }
   .stats {
-    margin: 10px 0 5px 0;
+    margin: 6px 0 5px;
     color: #8C7E7E;
     overflow: hidden;
     span {
@@ -918,15 +950,17 @@ li.pin-context {
 
 .attribution .image_link, .comment .image_link {
   float: left;
-  margin: 10px;
+  margin: 11px 10px 10px;
   height: 30px;
   width: 30px;
   display: block;
   border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff; }
+  border-bottom: 1px solid #fff;
+  @include circular; }
 
 .attribution .image_link img, .comment .image_link img {
-  display: block; }
+  display: block;
+  @include circular; }
 
 .attribution .details {
   max-width: 260px;
@@ -1099,7 +1133,9 @@ ul.boards {
       margin:0;
       font-size: 12px;
       line-height: 18px;
-      height:60px; } } }
+      height:60px; }
+    .view-more, .view-less {
+      color:#E5579A; } } }
 
 .link {
   position: absolute;
@@ -1639,32 +1675,44 @@ input:focus[placeholder], textarea:focus[placeholder] {
 /* flash messaging */
 
 #flash {
-  margin: -20px 0 20px 0; }
+  margin: 0; }
 
 .flashmsg {
   position: relative;
   width: auto;
   background: blue;
   text-align: center;
-  font-size: 16px;
-  padding: 10px 0;
+  font-size: 24px;
+  line-height:24px;
+  padding: 20px 0;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   border-bottom:1px dashed #D7D7D7;
   .close {
-    color: #222222;
-    font-size: 26px;
-    padding: 5px;
+    color: #fff;
+    font-size: 30px;
+    font-weight:bold;
+    padding: 0 4px 2px;
     position: absolute;
     right: 20px;
-    top: 0;
+    top: 14px;
+    height:30px;
+    width:25px;
+    @include circular;
+    background:#222;
     &:hover {
       cursor: pointer; } }
   &.success {
-    background: #97E8B4; }
+    background: #D2FFE2;
+    border-bottom: 2px solid #00D34B;
+    border-top: 4px solid #00D34B; }
   &.error {
-    background: #FF7A90; }
+    background: #FECFD7;
+    border-bottom: 2px solid #B02C42;
+    border-top: 4px solid #B02C42; }
   &.alert {
-    background: #FFFEDE; } }
+    background: #FFFEDE;
+    border-bottom: 2px solid #EAE100;
+    border-top: 4px solid #EAE100; } }
 
 /* footer styles */
 
@@ -2045,5 +2093,10 @@ h1, h2 {
         -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; } } } }
     
-    
-    
+ul.errors {
+  margin:0;
+  padding:10px;
+  list-style:none;
+  border:1px solid #CD1212;
+  color:#C10000;
+  background:#FFF1F1; }

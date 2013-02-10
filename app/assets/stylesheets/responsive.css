@@ -24,28 +24,30 @@ and (max-device-width : 1024px) {
   body {font-size:1.2em;}
   .header_wrapper {width:100% !important;min-width:0;}
   .header {width:766px !important;min-width:0;}
-  .logo {left:0;}
+  .logo {left:0;font-size:24px;}
   .header li a {padding:20px 10px;}
-  .search {width:190px;padding-right:0;}
+  .search {width:190px;padding:0.6em 0 0 0.6em;}
   .search input {width:120px;}
+  .nav_login {font-size:14px;}
   .nav_login .add_pins {width:60px !important;}
-  .nav_login .profile_link, .nav_login .add_pins {width:140px;}
+  .nav_login .profile_link, .nav_login .add_pins {width:100px;}
   .nav_login .profile_link ul, .nav_login .add_pins ul {width:140px;}
   .nav_login .profile_link ul li a, .nav_login .add_pins ul li a {font-size:16px;}
+  .nav_login .profile_link ul {right:0;left:auto;}
   .sub_header_wrapper .sub_header:before {width:830px;}
   .wrapper {width:760px !important;}
   .content {width:560px;}
   .content.board_wide {width:760px !important;}
   .wrapper.general .content {width:740px;padding:0 10px;}
   .set_filters {position:relative;margin:0 0 0 10px;right:0;top:0;}
-  .profile .set_filters {position:absolute;right:5px;top:10px;}
+  .profile .set_filters {}
   .cat_filter {padding:20px 0px 0 40px;}
   .cat_filter p {padding:0 0 25px;}
   ul.boards {margin:10px 0;}
   ul.boards li {margin:15px 10px 10px 0;}
   .profile ul.boards li {margin:15px 10px 10px 0;}
   .form.signup:after{left:-232px;}
-  .content h1 {margin:0 0 10px 30px;}
+  .content h1 {margin:0 0 10px 30px;line-height: 0.6em;}
   .profile .content #pins {margin-left:30px !important;}
   .nav_profile a {font-size:16px;padding:14px 10px 18px 48px;}
   .user_list {margin: 20px 0 0 30px;width: 240px;}
@@ -53,6 +55,7 @@ and (max-device-width : 1024px) {
   .follow_list .users li:hover .follow_in_list {display:none;}
   .profile .content #pins.edit_preview_pin {margin-left:500px !important;}
   .form.pin_form:after {right:-220px;}
+  .profile .content #pin-preview.edit_preview_pin {margin-left: 530px !important;}
 }
 
 /* iPads (landscape) ----------- */

@@ -2,14 +2,16 @@
   <div class="header">
     <a href="/" class="logo ir">Parent<span>Pins</span></a>
     <ul class="nav_main">
-      <li>
+      <li class="drop_down">
         <%= nav_link 'Trending', pins_path, :also_accept => '/' %>
+        <ul>
+          <li><%= nav_link 'Articles', articles_path %></li>
+          <li><%= nav_link 'Ideas', articles_path %></li>
+          <li><%= nav_link 'Products', articles_path %></li>
+        </ul>
       </li>
       <li>
         <%= nav_link 'Boards', boards_path %>
-      </li>
-      <li>
-        <%= nav_link 'Articles', articles_path %>
       </li>
     </ul>
     <%= form_tag '/search', :class => 'search' do %>
