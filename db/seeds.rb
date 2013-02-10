@@ -11,6 +11,6 @@
 end
 
 
-(%w(Activities Education Health Disabilities Crafts Media Books Babies Food Products Sports Holidays Photography Pregnancy Cuteness) + ['Parenting Advice', 'Funny / Humor']).each do |n|
+(%w(Activities Education Health Disabilities Crafts Media Books Babies Family Food Products Sports Holidays Photography Pregnancy Cuteness) + ['Parenting Advice', 'Funny / Humor']).each do |n|
   Category.create(:name => n)
 end
