@@ -9,7 +9,7 @@ $(document).ready(function() {
      $('.masonry').masonry('reload');
   });
   
-  applyTruncationTo('.pin-context .description', 200);
+  applyTruncationTo('.pin-context .description span', 200);
   
   // Pin actions
   function getContainingClassNameForPinAction(btn) {
@@ -107,7 +107,7 @@ $(document).ready(function() {
       wrapper.parents('.masonry').masonry('reload');
     }
   });
-
+  
   $(document).on('click', 'a.view-less', function(e) {
     e.preventDefault();
     var wrapper = $(e.target).parent();
