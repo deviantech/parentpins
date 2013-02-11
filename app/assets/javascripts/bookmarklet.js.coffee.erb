@@ -56,9 +56,15 @@ do(document = document, jQuery = window.jQuery) ->
   initBookmarkletWithjQuery = ($) ->
 
     closeBookmarklet = ->
+      $(document).off 'keyup', closeBookmarkletIfEscapePressed
       $('#'+popupName).fadeOut ->
         $(this).remove()
       return false
+    
+    closeBookmarkletIfEscapePressed = (e) ->
+      closeBookmarklet() if e.keyCode == 27
+        
+    $(document).on 'keyup', closeBookmarkletIfEscapePressed  
 
     # Once it's been evaluated, add this image (actually, image data)
     addImage = (data) ->
