@@ -3,7 +3,7 @@ $(document).ready(function() {
   $('.masonry').masonry({
      columnWidth: 50,
      itemSelector: 'li',
-     isAnimatedFromBottom: true,
+     isAnimated: !Modernizr.csstransitions,
      isFitWidth: true
   }).imagesLoaded(function() {
      $('.masonry').masonry('reload');
