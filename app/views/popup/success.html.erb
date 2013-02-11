@@ -5,6 +5,6 @@
   <div class="buttons">
     <%= link_to "View Pin", pin_url(@pin), :class => 'btn sec_action' %>
     <%= share_pin_on_fb_link(@pin) %>
-    <%= link_to_function 'Close Window', 'window.close()', :class => 'js-ignore close_window' %>
+    <%= link_to_function %Q{Close Window <span class="countdown">(10)</span>}.html_safe, 'window.close()', :class => 'js-ignore close_window' %>
   </div>
 </div>

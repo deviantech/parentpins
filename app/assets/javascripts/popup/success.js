@@ -14,5 +14,14 @@ $(document).ready(function(){
       $('a').attr('target', '_blank');
     }
 
+    // Automatically close success window in 10 seconds
+    var seconds = 0;
+    var secondsToClose = 10;
+    setInterval(function() {
+      seconds = seconds + 1;
+      var down = secondsToClose - seconds;
+      $('a.close_window .countdown').html( (down < 1) ? '&nbsp;' : "("+ down +")" );
+      if (down <= 0) window.close();
+    }, 1000);
   }  
 });
