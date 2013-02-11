@@ -2,7 +2,7 @@ $(document).ready(function() {
   // Masonry layout a la pinterest
   $('.masonry').masonry({
      columnWidth: 50,
-     itemSelector: '.pin',
+     itemSelector: 'li',
      isAnimatedFromBottom: true,
      isFitWidth: true
   }).imagesLoaded(function() {
