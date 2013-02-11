@@ -126,7 +126,7 @@ function initPinForm() {
         $pinImage.removeClass('hidden');
       
         if ($('#pin_image_cache').val() == '') {
-          $pinImage.attr('src', '/assets/fallback/pin_image/v192_default.jpg');
+          $pinImage.attr('src', '/assets/fallback/pin_image/v222_default.jpg');
         } else {
           $pinImage.attr('src', $pinImage.data('original-src'));
         }      

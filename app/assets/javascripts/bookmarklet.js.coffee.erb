@@ -13,6 +13,7 @@ do(document = document, jQuery = window.jQuery) ->
   cssUrl = '//<%= host %>/assets/bookmarklet.css'
   minJQversion = '1.7.0'
   desiredJQversion = '1.8.2'
+  imgDisplayWidth = 192
   minImageWidth = 192
   minImageHeight = 150
   pinBaseUrl = '//<%= host %><%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
@@ -136,8 +137,8 @@ do(document = document, jQuery = window.jQuery) ->
       width  = $img.width()   || 0
       area   = height * width
       
-      # What would height be if width was 192?
-      scaledHeight = width == 0 ? 0 : ((192 / width) * height)
+      # What would height be if width was imgDisplayWidth?
+      scaledHeight = width == 0 ? 0 : ((imgDisplayWidth / width) * height)
     
       return {
         src:    $img.attr('src') || $img.data('src'),
