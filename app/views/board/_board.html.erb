@@ -24,8 +24,8 @@
     </div>
     <div class="description">
       <p>
-        <strong><%= board.category.name %></strong>:
-        <%= board.description.blank? ? 'No description provided' : board.description.truncate(100, :separator => ' ') %>
+        <strong><%= board.category.name %></strong>
+        <span class="<%= 'truncate-me' unless board.description.blank? %>">: <%= board.description.blank? ? 'No description provided' : board.description %></span>
       </p>
     </div>
   </div>

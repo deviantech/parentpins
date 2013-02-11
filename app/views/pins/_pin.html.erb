@@ -9,7 +9,7 @@
   <p class="description">
     <a href="<%= url_for(pin) %>" class="ajax">
       <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
-      <span class="bind-description"><%= pin.description %></span>
+      <span class="bind-description truncate-me"><%= pin.description %></span>
     </a>
   </p>
   <%= render 'pins/stats', :pin => pin %>

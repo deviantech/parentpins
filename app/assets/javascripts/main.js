@@ -9,7 +9,9 @@ $(document).ready(function() {
      $('.masonry').masonry('reload');
   });
   
-  applyTruncationTo('.pin-context .description span', 200);
+  // TODO - replace character-based truncation with line-based
+  applyTruncationTo('li.pin .description span.truncate-me', 200);
+  applyTruncationTo('li.board .description span.truncate-me', 15);
   
   // Pin actions
   function getContainingClassNameForPinAction(btn) {
@@ -104,6 +106,7 @@ $(document).ready(function() {
       if (!wrapper.data('short-text')) wrapper.data('short-text', wrapper.html());
       var longer = wrapper.data('original-text') + ' ' + '<a href="#" class="view-less">(less)</a>';
       wrapper.html(longer);
+      window.kt = wrapper;
       wrapper.parents('.masonry').masonry('reload');
     }
   });
