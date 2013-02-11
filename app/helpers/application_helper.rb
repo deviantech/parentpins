@@ -17,7 +17,7 @@ module ApplicationHelper
     url
   end
 
-  def share_pin_on_fb_link(pin)
+  def share_pin_via_fb_link(pin)
     return '' unless pin.board.category && pin.age_group
     
     opts = {
@@ -34,6 +34,15 @@ module ApplicationHelper
     link_to 'Share on FB', url, :data => {:height => 217, :width => 548}, :class => 'js-new-window-popup btn sec_action fb_button'
   end
 
+  def share_pin_via_email_link(pin)
+    opts = {
+      :subject  => 'Check out this Pin',
+      :body     => "#{absolute_url(url_for(pin))}\n\n#{pin.description}"
+    }
+    
+    link_to 'Share via Email', "mailto:?#{opts.to_param.gsub('+', '%20')}", :class => 'btn sec_action email_button modal_only'
+  end
+  
   def render_paginated_result(r)
     if r.is_a?(Board)
       render :partial => 'board/board', :object => r

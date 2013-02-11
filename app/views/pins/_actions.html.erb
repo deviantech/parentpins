@@ -1,5 +1,6 @@
 <div class="actions">
-  <%= share_pin_on_fb_link(pin) %>
+  <%= share_pin_via_fb_link(pin) %>
+  <%= share_pin_via_email_link(pin) %>
   
   <% if user_signed_in? %>  
     <% if pin.user_id == current_user.id %>

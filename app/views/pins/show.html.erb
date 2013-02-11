@@ -4,7 +4,7 @@
 
     <div class="attribute">
       <%= avatar_link(@pin.user) %>
-      <%= share_pin_on_fb_link(@pin) %>
+      <%= share_pin_via_fb_link(@pin) %>
       <div class="attribute_info">
         <p>
           <%= link_to @pin.user.name, profile_path(@pin.user) %>
