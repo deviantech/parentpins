@@ -101,7 +101,7 @@ class Pin < ActiveRecord::Base
       pin.repinned_from = source
       pin.via = source.user unless source.user == user
       pin.user = user
-      pin.board_id ||= user.boards.first.try(:id)
+      pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
       
       if pin.board # If just created board from scratch
         pin.board.user_id ||= user.id
@@ -177,7 +177,7 @@ class Pin < ActiveRecord::Base
   def not_previously_pinned
     return true unless board
     return true if board.pins.where(:url => self.url).where(:image => image.filename).empty?
-    errors.add :base, "You've already pinned this on this board!"
+    errors.add :base, "You've already pinned that item on this particular board!"
   end
 
   def update_board_images_on_change

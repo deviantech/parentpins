@@ -5,5 +5,5 @@
   $('.modal_overlay').scrollTo(0);
 <% else %>
   Global.closeModal();
-  Global.addFlashMsg('Added new pin: <%= escape_javascript(@pin.name) %>');
+  Global.addFlashMsg('Added new pin to <strong><%= escape_javascript(@pin.board.name) %></strong>');
 <% end %>
