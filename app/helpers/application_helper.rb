@@ -40,7 +40,7 @@ module ApplicationHelper
       :body     => "#{absolute_url(url_for(pin))}\n\n#{pin.description}"
     }
     
-    link_to 'Share via Email', "mailto:?#{opts.to_param.gsub('+', '%20')}", :class => 'btn sec_action email_button modal_only'
+    link_to 'Email This', "mailto:?#{opts.to_param.gsub('+', '%20')}", :class => 'btn sec_action email_button modal_only'
   end
   
   def render_paginated_result(r)
