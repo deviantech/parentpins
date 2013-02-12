@@ -118,7 +118,7 @@ do(document = document, jQuery = window.jQuery) ->
         do (img) ->
           $img = $(img)
           src = $img.attr('src') || $img.data('src')
-          if src # Some google images results don't have a src set
+          if src && !$img.attr('nopin') # Some google images results don't have a src set, allow blocking pins on specific images
             imgExt = src.match(/\.\w+?$/)
             link = $img.parents('a').first().attr('href')
       
@@ -138,7 +138,7 @@ do(document = document, jQuery = window.jQuery) ->
                    
     # Convert image object to a hash containing the relevant keys
     imgToData = (img) ->
-      $img = $(img)
+      $img   = $(img)
       height = $img.height()  || 0
       width  = $img.width()   || 0
       area   = height * width
@@ -185,16 +185,25 @@ do(document = document, jQuery = window.jQuery) ->
       closeBookmarklet() # Once selected an image, close bookmarklet overlay
       return false      
 
+    beginIfAllowed = ->
+      if $('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length
+        msg = $('meta[name="pinning"][content="nopin"]').first().attr('description') || $('meta[name="pinterest"][content="nopin"]').first().attr('description')
+        msg = msg || "This site doesn't allow pinning to external websites. Please contact the owner with any questions."
+        alert(msg)
+      else
+        Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
+        Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent')
+        Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
+        # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
+        Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
+        startEvaluatingPotentialImages()
+      
+
     # Now that everything's been defined and wrapped in jQuery, start running things
     if ($('#'+popupName).length)
-      closeBookmarklet()
+      closeBookmarklet() # Already open? Close
     else
-      Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
-      Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent')
-      Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
-      # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
-      Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
-      startEvaluatingPotentialImages()
+      beginIfAllowed()
 
   prepForBookmarklet(jQuery);
   null
