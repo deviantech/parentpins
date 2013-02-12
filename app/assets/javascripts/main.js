@@ -11,7 +11,7 @@ $(document).ready(function() {
   
   // TODO - replace character-based truncation with line-based
   applyTruncationTo('li.pin .description span.truncate-me', 200);
-  applyTruncationTo('li.board .description span.truncate-me', 15);
+  applyTruncationTo('li.board .description span.truncate-me', 12);
   
   // Pin actions
   function getContainingClassNameForPinAction(btn) {
