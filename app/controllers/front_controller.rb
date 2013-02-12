@@ -2,5 +2,16 @@ class FrontController < ApplicationController
   caches_page :about, :legal, :privacy
   
   def contact
-  end  
+  end
+  
+  def login_first
+    if user_signed_in?
+      redirect_to :back
+    else
+      session[:user_return_to] = request.referer
+      flash[:error] = "You'll need to log in before accessing that resource"
+      redirect_to new_user_session_path
+    end
+  end
+  
 end
