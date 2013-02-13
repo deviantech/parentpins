@@ -23,19 +23,16 @@ class Board < ActiveRecord::Base
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
   }
   scope :newest_first, order('id DESC')
+  scope :with_pins, where('pins_count > 0')
   
   def self.trending
     # TODO: implement some sort of trending logic
-    newest_first
+    newest_first.with_pins
   end
   
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
-  def thumbnails(n = 4)
-    urls = pins.newest_first.limit(n).collect{ |p| p.image.v55.url }
-    (n - urls.length).times do
-      urls += [Pin.new.image.v55.url]
-    end
-    urls
+  def thumbnail_urls(n = 4)
+    pins.newest_first.limit(n).collect{ |p| p.image.v55.url }
   end
   
   def set_cover_from_pin(pin)

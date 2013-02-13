@@ -18,7 +18,7 @@
       <%= image_tag board.cover.url, :class => 'board_image' %>
     </div>
     <div class="thumbs">
-      <% board.thumbnails.each do |src| %>
+      <% thumbnails_for_board(board).each do |src| %>
         <%= image_tag src, :class => 'board_image' %>
       <% end %>
     </div>

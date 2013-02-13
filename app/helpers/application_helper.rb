@@ -1,5 +1,13 @@
 module ApplicationHelper
 
+  def thumbnails_for_board(b, n = 4)
+    urls = b.thumbnail_urls(n)
+    (n - urls.length).times do
+      urls.push asset_path('fallback/pin_image/v55_missing.jpg')
+    end
+    urls
+  end
+
   # Unfortunately since renaming e.g. boards -> board in routes.rb, we can no longer naively do "render @boards"
   def partial_for_class(m)
     case m
