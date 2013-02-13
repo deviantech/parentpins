@@ -135,6 +135,7 @@ $(document).ready(function() {
   });
   
   $(document).on('click', 'a.stop-sorting', function(e) {
+    e.preventDefault();
     var toSort = $( $(this).data('sort') );
     stopSorting(toSort);
     $(this).hide().siblings('a.start-sorting').show();
