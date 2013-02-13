@@ -178,7 +178,7 @@ do(document = document, jQuery = window.jQuery) ->
       # Submit via POST (open pin window, then submit a form to it)
       popupWindowName = popupName + 'PinWindow';
       theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( Global.bookmarkletBase )
-      pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no')
+      pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no,directories=no,scrollbars=yes')      
       pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
       theForm.submit()
       pinWindow.focus() if (window.focus)
