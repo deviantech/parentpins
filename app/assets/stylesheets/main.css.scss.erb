@@ -355,6 +355,8 @@ ul li .handle {
         text-align: left;
         font-size: 13px; 
         &:hover {
+          color:#fff; }
+        &.marker {
           color:#fff; } } } }
   a {
     color: #000;
@@ -810,7 +812,8 @@ li.pin-context {
   
 .email_button:before {
   content:"\e015";
-  font-size:13px; }
+  font-size:13px;
+  top:8px; }
 
 .comment_button {
   &:before {
@@ -1081,7 +1084,7 @@ ul.boards {
     float: left;
     display: block;
     width: 222px;
-    margin: 15px 15px 10px 15px;
+    margin: 15px 0 10px;
     -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
     -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
     box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
@@ -1587,7 +1590,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
 
 .profile {
   ul.boards li {
-    margin: 15px 15px 10px 15px; }
+    margin: 15px 0 10px; }
   .content #pins {
     margin-left: 50px !important; } 
   .content h1 {

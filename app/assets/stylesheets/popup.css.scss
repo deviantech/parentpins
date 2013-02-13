@@ -11,6 +11,9 @@
 html {
   background: url("/assets/patterns/debut_light.png") repeat scroll 0 0 white;
 }
+body {
+  overflow:scroll;
+}
 
 /* Mixins */
 
