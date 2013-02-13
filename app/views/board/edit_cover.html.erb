@@ -1,0 +1,31 @@
+<div class="<%= modal_class %>">
+  <div class="wrapper profile">
+
+    <div class="content board board_wide">
+      <%= form_for(@board, :url => profile_board_path(@board.user, @board), :html => {:class => 'form narrow edit_board'}) do |f| %>
+        <%= hidden_field_tag :via %>
+        <h1>Edit Cover Image</h1>
+        
+        <% if @board.pins.with_image.blank? %>
+          <p>Once you add pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
+        <% else %>
+          <h2>TODO: implement image selection</h2>
+          <ul>
+            <% @board.pins.with_image.each do |pin| %>
+              <li><%= pin.image.v222.url %></li>
+            <% end %>
+          </ul>
+        <% end %>
+        
+        <div class="submit">
+          <%= f.submit 'Save Board', :class => 'btn tertiary_action' %>
+        </div>
+                
+      <% end %>
+    
+    </div>
+
+    <div class="clearfix"></div>
+
+  </div>
+</div>

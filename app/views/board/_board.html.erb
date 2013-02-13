@@ -13,7 +13,11 @@
     <%= pluralize board.followers_even_indirectly_count, 'follower', 'followers' %>
   </h4>
   <div class="holder">
-    <%= link_to '', profile_board_path(board.user, board), :class => 'link' %>
+    <% if board.user == current_user %>
+      <%= link_to '', edit_cover_profile_board_path(board.user, board), :class => "link to-edit-cover ajax" %>
+    <% else %>
+      <%= link_to '', profile_board_path(board.user, board), :class => "link" %>
+    <% end %>
     <div class="cover">
       <%= image_tag board.cover.url, :class => 'board_image' %>
     </div>

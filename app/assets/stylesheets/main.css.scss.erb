@@ -1152,48 +1152,53 @@ ul.boards {
       line-height: 18px; }
     .view-more, .view-less {
       color:#E5579A; } } }
-
-.link {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 207px;
-  width: 222px;
-  display: block;
-  opacity: 0;
-  z-index: 1;
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    opacity: 1;
-    &:before {
-      content: "View this board";
-      display: block;
-      position: absolute;
-      top: 60px;
-      left: 21px;
-      padding: 10px;
-      width: 160px;
-      height: 18px;
-      background-color: #e5579a;
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479');
-      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479')";
-      background-image: -moz-linear-gradient(top, #e5579a, #cd2479);
-      background-image: -ms-linear-gradient(top, #e5579a, #cd2479);
-      background-image: -o-linear-gradient(top, #e5579a, #cd2479);
-      background-image: -webkit-gradient(linear, center top, center bottom, from(#e5579a), to(#cd2479));
-      background-image: -webkit-linear-gradient(top, #e5579a, #cd2479);
-      background-image: linear-gradient(top, #e5579a, #cd2479);
-      text-align: center;
-      color: #fff;
-      font-size: 15px;
-      font-weight: bold;
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-      -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
-      -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
-      box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
-      -moz-border-radius: 6px;
-      -webkit-border-radius: 6px;
-      border-radius: 6px; } } }
+.board {
+  .link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 207px;
+    width: 222px;
+    display: block;
+    opacity: 0;
+    z-index: 1;
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      opacity: 1;
+      &:before {
+        content: "View this board";
+        display: block;
+        position: absolute;
+        top: 60px;
+        left: 21px;
+        padding: 10px;
+        width: 160px;
+        height: 18px;
+        background-color: #e5579a;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479');
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479')";
+        background-image: -moz-linear-gradient(top, #e5579a, #cd2479);
+        background-image: -ms-linear-gradient(top, #e5579a, #cd2479);
+        background-image: -o-linear-gradient(top, #e5579a, #cd2479);
+        background-image: -webkit-gradient(linear, center top, center bottom, from(#e5579a), to(#cd2479));
+        background-image: -webkit-linear-gradient(top, #e5579a, #cd2479);
+        background-image: linear-gradient(top, #e5579a, #cd2479);
+        text-align: center;
+        color: #fff;
+        font-size: 15px;
+        font-weight: bold;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+        -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
+        -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
+        -moz-border-radius: 6px;
+        -webkit-border-radius: 6px;
+        border-radius: 6px; } } }
+  .link.to-edit-cover:hover:before {
+    content: "Edit Cover Image";
+  }
+}
+        
 
 .holder {
   overflow: hidden;
