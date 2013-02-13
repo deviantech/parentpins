@@ -95,6 +95,16 @@ module ApplicationHelper
   def modal_class
     params[:via] == 'ajax' ? 'modal_overlay' : nil
   end
+  
+  # Render inline if in modal, else in footer
+  def modal_footer_js(&block)
+    if params[:via] == 'ajax'
+      block.call
+    else
+      content_for :footer_js, &block
+      ''
+    end
+  end
 
   def select_options(collection)
     collection.collect do |item|

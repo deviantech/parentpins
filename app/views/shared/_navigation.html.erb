@@ -19,7 +19,7 @@
       <%= hidden_field_tag 'kind', @kind %>
       <button class="btn search_button primary">Go</button>
     <% end %>
-    <ul class="nav_login">
+    <ul class="nav_login">      
       <% if user_signed_in? %>
         <li class="add_pins">
           <%= link_to '+ Add', '#', :class => "add" %>

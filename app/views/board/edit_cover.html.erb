@@ -2,19 +2,22 @@
   <div class="wrapper profile">
 
     <div class="content board board_wide">
-      <%= form_for(@board, :url => profile_board_path(@board.user, @board), :html => {:class => 'form narrow edit_board'}) do |f| %>
+      <%= form_for(@board, :url => profile_board_path(@board.user, @board), :html => {:class => 'form narrow set_board_cover'}) do |f| %>
         <%= hidden_field_tag :via %>
         <h1>Edit Cover Image</h1>
         
         <% if @board.pins.with_image.blank? %>
           <p>Once you add pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
         <% else %>
-          <h2>TODO: implement image selection</h2>
-          <ul>
-            <% @board.pins.with_image.each do |pin| %>
-              <li><%= pin.image.v222.url %></li>
-            <% end %>
-          </ul>
+          <div id="board-cover-image-slides">
+            <div class="slides_container">
+              <% @board.pins.with_image.each do |pin| %>
+                <div><%= image_tag(pin.image.v222.url) %></div>
+              <% end %>
+            </div>
+            <a href="#" class="prev"><%= image_tag 'ui/slides/arrow-prev.png', :alt => 'Previous' %></a>
+            <a href="#" class="next"><%= image_tag 'ui/slides/arrow-next.png', :alt => 'Next' %></a>
+          </div>
         <% end %>
         
         <div class="submit">
@@ -29,3 +32,15 @@
 
   </div>
 </div>
+
+<% modal_footer_js do %>
+  <%= stylesheet_link_tag 'page-specific/slides' %>
+  <%= javascript_include_tag 'app/page-specific/slides.jquery' %>
+  <script type="text/javascript" charset="utf-8">
+    $('#board-cover-image-slides').slides({
+			preload: true,
+			preloadImage: "<%= image_path('ui/slides/loading.gif') %>",
+			autoHeight: true
+		});
+  </script>
+<% end %>

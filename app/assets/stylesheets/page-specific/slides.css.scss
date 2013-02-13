@@ -1,0 +1,91 @@
+/*
+	Slideshow
+*/
+#board-cover-image-slides {
+	z-index:100;
+	position: relative;
+	margin: 10px auto;
+	margin-bottom: 40px;
+	background: #EEE;
+	width: 222px;
+	border: 10px solid #FFF;
+  /*
+  	Slides container
+  	Important:
+  	Set the width of your slides container
+  	Set to display none, prevents content flash
+  */
+
+  .slides_container {
+    min-height: 60px;
+  	width:222px;
+  	overflow:hidden;
+  	position:relative;
+  	display:none;
+
+  /*
+  	Each slide
+  	Important:
+  	Set the width of your slides
+  	If height not specified height will be set by the slide content
+  	Set to display block
+  */
+
+    div {
+    	width:222px;
+    	display:block;
+    	img { display:block; height: auto; margin: 0 auto;}
+    }
+  }
+  
+  /*
+  	Next/prev buttons
+  */
+
+  .next, .prev {
+  	position:absolute;
+  	top:50px;
+  	width:24px;
+  	height:43px;
+  	display:block;
+  	z-index:101;
+  }
+  .prev {
+	  left:-34px;
+  }
+  .next {
+  	right:-34px;
+  }
+
+  /*
+  	Pagination
+  */
+
+  .pagination {
+  	margin:26px auto 0;
+  	width:252px;
+  	position: relative;
+  	top: 24px;
+  }
+
+  .pagination li {
+  	float:left;
+  	margin:0 1px;
+  	list-style:none;
+  }
+
+  .pagination li a {
+  	display:block;
+  	width:12px;
+  	height:0;
+  	padding-top:12px;
+  	background-image:url(asset-path('ui/slides/pagination.png', 'image'));
+  	background-position:0 0;
+  	float:left;
+  	overflow:hidden;
+  }
+
+  .pagination li.current a {
+  	background-position:0 -12px;
+  }
+}
