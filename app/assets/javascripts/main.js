@@ -140,5 +140,5 @@ $(document).ready(function() {
     stopSorting(toSort);
     $(this).hide().siblings('a.start-sorting').show();
   });
-      
+  
 });
