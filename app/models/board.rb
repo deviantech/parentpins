@@ -33,7 +33,7 @@ class Board < ActiveRecord::Base
   
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
   def thumbnail_urls(n = 4)
-    pins.newest_first.not_cover_image_source.limit(n).collect{ |p| p.image.v55.url }
+    pins.newest_first.not_ids(cover_source_id || 0).limit(n).collect{ |p| p.image.v55.url }
   end
   
   def set_cover_source(sid)

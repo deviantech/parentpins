@@ -51,7 +51,7 @@ class Pin < ActiveRecord::Base
   scope :with_image, where('image <> ""')
   
   scope :newest_first, order('id DESC')
-  scope :not_cover_image_source, where('1=1') #TODO: implement me
+  scope :not_ids, lambda {|ids| where(['id NOT IN (?)', Array(ids)]) }
   
   default_scope newest_first
 
