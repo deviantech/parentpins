@@ -9,7 +9,7 @@ class FrontController < ApplicationController
       redirect_to :back
     else
       session[:user_return_to] = request.referer
-      flash[:error] = "You'll need to log in before accessing that resource"
+      flash[:error] = "Please log in to continue"
       redirect_to new_user_session_path
     end
   end
