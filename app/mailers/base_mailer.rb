@@ -1,3 +1,3 @@
 class BaseMailer < ActionMailer::Base
-  default from: "info@parentpins.com"
+  default :from => "info@parentpins.com"
 end
