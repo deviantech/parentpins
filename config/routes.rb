@@ -49,6 +49,7 @@ ParentPins::Application.routes.draw do
           post 'follow'
           post 'unfollow'
           get  'edit_cover'
+          put 'update_cover'
         end
         post 'sort', :on => :collection
       end

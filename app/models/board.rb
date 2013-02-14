@@ -4,7 +4,8 @@ class Board < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :category
-  has_many :pins, :dependent => :destroy, :after_add => :set_cover_from_pin, :before_remove => :update_cover_before_pin_removed, :inverse_of => :board
+  belongs_to :cover_source, :class_name => 'Pin'
+  has_many :pins, :dependent => :destroy, :after_add => :auto_set_cover_from_pin, :before_remove => :update_cover_before_pin_removed, :inverse_of => :board
   has_many :comments, :dependent => :destroy, :as => :commentable
   
   attr_protected :id, :created_at, :updated_at, :slug
@@ -35,11 +36,26 @@ class Board < ActiveRecord::Base
     pins.newest_first.not_cover_image_source.limit(n).collect{ |p| p.image.v55.url }
   end
   
-  def set_cover_from_pin(pin)
-    update_attribute :cover, pin.image
+  def set_cover_source(sid)
+    if source = pins.find_by_id(sid)
+      update_attributes(:cover => source.image, :cover_source_id => source.id)
+    else
+      auto_set_cover_from_pin(pins.first)
+    end
+  end
+  
+  def auto_set_cover_from_pin(pin)
+    return true unless cover_source_id.blank?
+    if pin && pin.image
+      update_attribute :cover, pin.image
+    else
+      update_attribute :remove_cover, true
+    end
   end
   
   def update_cover_before_pin_removed(pin)
+    return true unless cover_source_id.blank? || cover_source_id == pin.try(:id)
+    
     if next_pin = pins.with_image.newest_first.where(['id <> ?', pin.try(:id)]).first
       update_attribute :cover, next_pin.image
     else

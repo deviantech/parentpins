@@ -1,18 +1,20 @@
+<%= stylesheet_link_tag 'page-specific/slides' %>
 <div class="<%= modal_class %>">
   <div class="wrapper profile">
 
     <div class="content board board_wide">
-      <%= form_for(@board, :url => profile_board_path(@board.user, @board), :html => {:class => 'form narrow set_board_cover'}) do |f| %>
+      <%= form_for(@board, :url => update_cover_profile_board_path(@board.user, @board), :remote => true, :html => {:class => 'form narrow set_board_cover'}) do |f| %>
         <%= hidden_field_tag :via %>
+        <%= f.hidden_field :cover_source_id %>
         <h1>Edit Cover Image</h1>
         
         <% if @board.pins.with_image.blank? %>
           <p>Once you add pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
         <% else %>
           <div id="board-cover-image-slides">
-            <div class="slides_container">
+            <div class="slides_container" style="display:none;">
               <% @board.pins.with_image.each do |pin| %>
-                <div><%= image_tag(pin.image.v222.url) %></div>
+                <div data-source-id="<%= pin.id %>" class="single_slide <%= 'current_source' if pin.id == @board.cover_source_id %>"><%= image_tag(pin.image.v222.url) %></div>
               <% end %>
             </div>
             <a href="#" class="prev"><%= image_tag 'ui/slides/arrow-prev.png', :alt => 'Previous' %></a>
@@ -21,7 +23,7 @@
         <% end %>
         
         <div class="submit">
-          <%= f.submit 'Save Board', :class => 'btn tertiary_action' %>
+          <%= f.submit 'Set Cover', :class => 'btn tertiary_action' %>
         </div>
                 
       <% end %>
@@ -34,13 +36,22 @@
 </div>
 
 <% modal_footer_js do %>
-  <%= stylesheet_link_tag 'page-specific/slides' %>
   <%= javascript_include_tag 'app/page-specific/slides.jquery' %>
   <script type="text/javascript" charset="utf-8">
+    // Set initial value to first-shown slide (if one is already set, we'll start with that slide instead)
+    if ($('#board_cover_source_id').val() == '') $('#board_cover_source_id').val( $('.slides_control div').first().data('source-id') );
+    $('.slides_container').show(); // Help give time for images to load before UI updated
+  
+    var initial = $('.slides_container .single_slide.current_source') ? $('.slides_container .single_slide').index( $('.slides_container .single_slide.current_source') ) + 1 : 1;
     $('#board-cover-image-slides').slides({
 			preload: true,
 			preloadImage: "<%= image_path('ui/slides/loading.gif') %>",
-			autoHeight: true
+			autoHeight: true,
+			start: initial,
+			animationComplete: function(idx) {
+			  var current = $( $('.slides_control .single_slide')[idx - 1]);
+			  $('#board_cover_source_id').val( current.data('source-id') );
+      }
 		});
   </script>
 <% end %>

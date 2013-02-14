@@ -22,7 +22,8 @@
   	overflow:hidden;
   	position:relative;
   	display:none;
-
+    margin-bottom: -25px;
+    
   /*
   	Each slide
   	Important:
@@ -63,9 +64,10 @@
 
   .pagination {
   	margin:26px auto 0;
-  	width:252px;
+  	width:222px;
   	position: relative;
-  	top: 24px;
+  	top: 22px;
+  	padding: 0px;
   }
 
   .pagination li {
@@ -89,3 +91,6 @@
   	background-position:0 -12px;
   }
 }
+
+.slides_container .single_slide img { display:none; }
+.slides_container .slide_control .single_slide img { display:block; }

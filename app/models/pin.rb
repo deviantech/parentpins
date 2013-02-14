@@ -189,12 +189,12 @@ class Pin < ActiveRecord::Base
     end
     
     if future = Board.find_by_id(board_id)
-      future.set_cover_from_pin(self)
+      future.auto_set_cover_from_pin(self)
     end
   end
 
   def update_board_add_image
-    board.try(:set_cover_from_pin, self)
+    board.try(:auto_set_cover_from_pin, self)
   end
   
   def update_board_remove_image
