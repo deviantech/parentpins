@@ -1,7 +1,11 @@
 # Define global functions
 Global.closeModal = -> 
+  if $('#ajax-modal-target:visible').hasClass('update-history')
+    if History.getState().data.from
+      History.replaceState(null, null, History.getState().data.from);
   $('#ajax-modal-target:visible').fadeOut ->
-    $(this).empty().show();
+    $(this).removeClass('update-history').empty().show();
+  
 
 Global.updateModalContents = (html) ->
   $('#ajax-modal-target:visible .modal_overlay').html(html)
@@ -20,6 +24,12 @@ $ajax = $('#ajax-modal-target').length || $('<div id="ajax-modal-target"></div>'
 # Catch clicks on ajax links
 $(document).on 'click', 'a.ajax', (e) ->
   $ajax.html('<div class="ajax-loader"><img src="/assets/ui/loader.gif" alt="Loading" class="loader_icon"/></div>').fadeIn()
+  if $(this).hasClass('update-history')
+    $ajax.addClass('update-history')
+    History.replaceState({from: window.location + ''}, null, $(this).attr('href'));
+  else
+    $ajax.removeClass('update-history')
+    
   url = urlPlusParamString($(this).attr('href'), 'via=ajax')
   $ajax.load(url)
   e.preventDefault()

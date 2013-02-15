@@ -16,7 +16,6 @@
 //= require jquery.masonry
 //= require jquery.scrollTo
 //= require jquery.history
-//= require app/enable-history
 //= require app/modernizr
 //= require app/jquery-sortable
 //= require bootstrap/alerts

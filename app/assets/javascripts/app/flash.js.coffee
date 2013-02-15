@@ -8,3 +8,4 @@ Global.addFlashMsg = (msg, name) ->
     </div>
   """  
   $(content).hide().appendTo(box).slideDown()
+  Global.closeModal()
