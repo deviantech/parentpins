@@ -153,7 +153,7 @@ a {
     width: 140px; }
   &.tertiary_action {
     background-color: #E55799;
-    border: 1px solid #DC5493;
+    border: 1px solid #CF3B7F;
     position: relative;
     font-weight: bold; }
   &.btn_facebook {
@@ -216,7 +216,7 @@ ul li .handle {
   display: block;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 410px;
   text-align: center;
   text-decoration: none;
   color: #E55799;
@@ -224,7 +224,7 @@ ul li .handle {
   font-size: 1.7143em; /* 24px */ 
   line-height: 1.5em; /* 36px */
   font-weight:600;
-  padding:14px 10px 16px 65px;
+  padding:14px 10px 8px 65px;
   margin:0 10px 0 0;
   &:before {
     content:"\e014";
@@ -273,7 +273,7 @@ ul li .handle {
     transition: all 0.4s ease-in-out;
     &:focus {
       background:#fff;
-      width:170px;
+      width:320px;
       -webkit-transition: all 0.4s ease-in-out;
       -moz-transition: all 0.4s ease-in-out;
       -o-transition: all 0.4s ease-in-out;
@@ -318,7 +318,7 @@ ul li .handle {
 
 .nav_main {
   float: left;
-  margin: 0 0 0 200px;
+  margin: 0 0 0 1em;
   padding: 0;
   li {
     float:left;
@@ -350,7 +350,6 @@ ul li .handle {
         border-top:5px solid #E55799; } } }
   a {
     color: #000;
-    background:rgba(255,255,255,0.4);
     text-shadow: 0 1px 0 rgba(255,255,255, 0.8);
     border-left: 1px solid #FFFFFF;
     border-right: 1px solid #D7D7D7; }
@@ -378,7 +377,7 @@ ul li .handle {
       border-right:5px solid transparent;
       border-top:5px solid #000; }
     &:hover:before {
-      border-top:5px solid #E55799; } }      
+      border-top:5px solid #E55799; } }
   .marker {
     &:before {
       border-top:5px solid #FFCFE5; }
@@ -1446,6 +1445,78 @@ input:focus[placeholder], textarea:focus[placeholder] {
       display: block;
       font-size:14px;
       padding:2px; } } }
+ 
+.set_filters_two {
+  padding:1em;
+  width:504px;
+  margin: 0 auto 10px auto;
+  display:block;
+  clear:both;
+  height:auto;
+  overflow:hidden;
+  span {
+    float:left;
+    margin:0 20px 0 0;
+    padding:8px 0 0 0;
+    font-family:georgia, times, serif;
+    font-size:13px; }
+  ol {
+    list-style:none;
+    margin:0;
+    padding:0; 
+    display:block;
+    font-size:14px;
+    .last {
+      margin-right:0; }
+    li { 
+      display:block;
+      width:140px;
+      margin:0 1em 0 0;
+      float:left;
+      position:relative;
+      a {
+        text-decoration:none;
+        font-weight:normal; 
+        display:block;
+        color:#e55799;
+        padding:.5em; }
+      .selected {
+        position:relative;
+        border:1px solid #eee;
+        &:before {
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-top: 5px solid #000000;
+          content: "";
+          height: 0;
+          position: absolute;
+          right: 10px;
+          top: 15px;
+          width: 0; } }
+      ol {
+        display:none;
+        margin:0;
+        padding:0;
+        width:140px;
+        li {
+          float:none;
+          display:block; 
+          a {
+            font-weight:normal;
+            background:#fff;
+            color:#e55799;
+            font-size:13px; 
+            &:hover {
+              color:#fff;
+              background:#e55799; } } } }  
+      &:hover {
+          ol {
+          display:block;
+          -webkit-transition: all 0.4s ease-in-out;
+          -moz-transition: all 0.4s ease-in-out;
+          -o-transition: all 0.4s ease-in-out;
+          transition: all 0.4s ease-in-out; } }
+} } } 
     
 .cat_main {
   padding: 10px 0 0 0;
@@ -1616,8 +1687,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
       font-weight: normal;
       margin: 0 auto;
       width:980px;
-      padding: 0 0 0.5em 1em;
+      padding: 0 1em 0.5em;
       border-bottom: 1px dashed #D0D0D0;
+      text-align:center;
       .user {
         text-align: left;
         text-decoration: none;
@@ -1717,9 +1789,13 @@ input:focus[placeholder], textarea:focus[placeholder] {
 
 .header_wrapper {
   background:#fff;
+  background:rgba(230, 87, 153, 0.04);
   margin: 0 0 20px;
   border-bottom: 2px solid #E55799;
-  min-width:1020px; }
+  min-width:1020px;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.07);
+  -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.07); }
 
 .header {
   margin: 0 auto;

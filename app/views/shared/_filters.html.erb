@@ -1,17 +1,58 @@
-<div class="set_filters">
-  <% if defined?(@pins) %>
-    <select name="kind" data-base-url-if-blank="<%= params[:controller] == 'pins' && params[:action] == 'index' ? '/pins' : '' %>">
-      <%= options_for_select [['All Pin Types', '']] + select_options(Pin::VALID_TYPES), @kind %>
-    </select>
+<% if false %>
+  <div class="set_filters">
+    <% if defined?(@pins) %>
+      <select name="kind" data-base-url-if-blank="<%= params[:controller] == 'pins' && params[:action] == 'index' ? '/pins' : '' %>">
+        <%= options_for_select [['All Pin Types', '']] + select_options(Pin::VALID_TYPES), @kind %>
+      </select>
   
-    <select name="age_group">
-      <%= options_for_select([['All Age Groups', '']] + select_options(AgeGroup.all), @age_group.try(:id)) %>
-    </select>
-  <% end %>
+      <select name="age_group">
+        <%= options_for_select([['All Age Groups', '']] + select_options(AgeGroup.all), @age_group.try(:id)) %>
+      </select>
+    <% end %>
 
-  <% unless defined?(@board) %>
-    <select name="category">
-      <%= options_for_select([['All Categories', '']] + select_options(Category.all), @category.try(:id)) %>
-    </select>
-  <% end %>
+    <% unless defined?(@board) %>
+      <select name="category">
+        <%= options_for_select([['All Categories', '']] + select_options(Category.all), @category.try(:id)) %>
+      </select>
+    <% end %>
+  </div>
+<% end %>
+
+
+<div class="set_filters_two">
+  <span>Filter:</span>
+  <ol>
+    <li>
+      <a href="#" class="selected">All Pin Types</a>
+      <ol>
+        <li><a href="#">Idea</a></li>
+        <li><a href="#">Product</a></li>
+        <li><a href="#">Article</a></li>
+      </ol>
+    </li>
+    <li>
+      <a href="#" class="selected">All Age Groups</a>
+      <ol>
+        <li><a href="#">Expecting</a></li>
+        <li><a href="#">Infants</a></li>
+        <li><a href="#">Toddlers</a></li>
+        <li><a href="#">Kids</a></li>
+        <li><a href="#">Tweens</a></li>
+        <li><a href="#">Teens</a></li>
+        <li><a href="#">Family</a></li>
+      </ol>
+    </li>
+    <li class="last">
+      <a href="#" class="selected">All Categories</a>
+      <ol>
+        <li><a href="#">Activities</a></li>
+        <li><a href="#">Advice</a></li>
+        <li><a href="#">Babies</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Crafts</a></li>
+        <li><a href="#">Cuteness</a></li>
+        <li><a href="#">Decor</a></li>
+      </ol>
+    </li>
+  </ol>
 </div>
