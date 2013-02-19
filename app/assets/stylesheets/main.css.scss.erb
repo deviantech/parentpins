@@ -352,16 +352,17 @@ ul li .handle {
     color: #000;
     text-shadow: 0 1px 0 rgba(255,255,255, 0.8);
     border-left: 1px solid #FFFFFF;
-    border-right: 1px solid #D7D7D7; }
+    border-right: 1px solid rgba(0, 0, 0, 0.09); }
   .login {
     border-right: 1px solid #E3E3E3; }
   .signup {
     border-left: 1px solid rgba(255,255,255,0.4);
-    border-right: 1px solid #D7D7D7; }
+    border-right: 1px solid rgba(0, 0, 0, 0.09); }
   .add {
     color:#000 !important;
     text-shadow: 0 1px 0 rgba(255,255,255, 0.3);
-    border-right:1px solid #D7D7D7; } }
+    border-right:1px solid rgba(0, 0, 0, 0.09);
+    border-left:1px solid rgba(0, 0, 0, 0.09); } }
       
 .header li.drop_down {
   .main_link {
@@ -1452,8 +1453,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
   margin: 0 auto 10px auto;
   display:block;
   clear:both;
-  height:auto;
-  overflow:hidden;
+  position:relative;
+  height:12px;
+  z-index:3;
   span {
     float:left;
     margin:0 20px 0 0;
@@ -1498,6 +1500,11 @@ input:focus[placeholder], textarea:focus[placeholder] {
         margin:0;
         padding:0;
         width:140px;
+        position:absolute;
+        top:30px;
+        -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
         li {
           float:none;
           display:block; 
@@ -1618,6 +1625,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
       margin:0 0 0 65px;
       &:hover {
         color:#000; } } } }
+
+#pins {
+  z-index:2; }
 
 /* page modifier styles */
 
