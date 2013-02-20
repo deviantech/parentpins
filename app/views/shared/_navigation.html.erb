@@ -3,8 +3,8 @@
     <a href="/" class="logo ir">Parent<span>Pins</span></a>
     <ul class="nav_main">
       <li class="drop_down">
-        <%= nav_link 'Trending', pins_path, :also_accept => '/', :class => 'main_link' %>
-        <ul>
+        <%= nav_link 'Trending', pins_path, :also_accept => '/' %>
+        <ul class="inner">
           <li><%= nav_link 'Articles', articles_path %></li>
           <li><%= nav_link 'Ideas', ideas_path %></li>
           <li><%= nav_link 'Products', products_path %></li>
@@ -14,8 +14,8 @@
         <%= nav_link 'Boards', boards_path %>
       </li>
       <li class="drop_down">
-        <a href="/about.html" class="main_link" >About</a>
-        <ul>
+        <a href="/about.html">About</a>
+        <ul class="inner">
           <li><%= nav_link 'FAQs', articles_path %></li>
           <li><a href="/legal.html">Terms of Service</a></li>
           <li><a href="/privacy.html">Privacy</a></li>
@@ -31,16 +31,16 @@
     <ul class="nav_login">      
       <% if user_signed_in? %>
         <li class="drop_down">
-          <%= link_to '+ Add', '#', :class => "add main_link" %>
-          <ul>
+          <%= link_to '+ Add', '#', :class => "add" %>
+          <ul class="inner">
             <li><%= link_to '+ Pin', new_pin_path, :class => 'ajax' %></li>
             <li><%= link_to '+ Board', new_profile_board_path(current_user), :class => 'ajax' %></li>
             <li class="bookmarklet"><%= bookmarklet_link %></li>
           </ul>
         </li>
         <li class="drop_down">
-          <%= link_to "Hi, #{current_user.username.titleize}", activity_profile_path(current_user), :class => 'main_link' %>
-          <ul>
+          <%= link_to "Hi, #{current_user.username.titleize}", activity_profile_path(current_user) %>
+          <ul class="inner">
             <li><%= link_to 'Activity', activity_profile_path(current_user) %></li>
             <li><%= link_to 'Pins', pins_profile_path(current_user) %></li>
             <li><%= link_to 'Likes', likes_profile_path(current_user) %></li>
