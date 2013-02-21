@@ -13,14 +13,9 @@
       <li>
         <%= nav_link 'Boards', boards_path %>
       </li>
-      <li class="drop_down">
-        <a href="/about.html">About</a>
-        <ul class="inner">
-          <li><%= nav_link 'FAQs', articles_path %></li>
-          <li><a href="/legal.html">Terms of Service</a></li>
-          <li><a href="/privacy.html">Privacy</a></li>
-          <li><a href="/feedback/new">Contact Us</a></li>
-        </ul>
+      <li>
+        <%# TODO: replace this with actual featured content functionality  %>
+        <%= nav_link 'Featured', boards_path %>
       </li>
     </ul>
     <%= form_tag '/search', :class => 'search' do %>
@@ -28,7 +23,16 @@
       <%= hidden_field_tag 'kind', @kind %>
       <button class="btn search_button primary"></button>
     <% end %>
-    <ul class="nav_login">      
+    <ul class="nav_login">    
+      <li class="drop_down">
+        <a href="/about.html">About</a>
+        <ul class="inner">
+          <li><a href="/faq.html">FAQs</a></li>
+          <li><a href="/legal.html">Terms of Service</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/feedback/new">Contact Us</a></li>
+        </ul>
+      </li>  
       <% if user_signed_in? %>
         <li class="drop_down">
           <%= link_to '+ Add', '#', :class => "add" %>

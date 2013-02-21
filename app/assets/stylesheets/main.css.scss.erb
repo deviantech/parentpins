@@ -240,7 +240,6 @@ ul li .handle {
   font-weight:600;
   padding:14px 10px 8px 65px;
   margin:0 10px 0 0;
-  z-index: 100;
   background: $headerBG;
   &:before {
     content:"\e014";
@@ -346,6 +345,7 @@ ul li .handle {
   padding: 20px 25px;
   margin-top: 0px;
   margin-right: 0px;
+  @include rounded(0px);
 }
 
 .nav_main {
@@ -378,11 +378,6 @@ ul li .handle {
 }
       
 .header li.drop_down {
-  .marker {
-    &:before {
-      border-top:5px solid #FFCFE5; }
-    &:hover:before {
-      border-top:5px solid #E55799; } }
   ul {
     display: none;
     background: #fff;
@@ -1347,7 +1342,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
       padding:0 0 10px 0 !important;
       min-height:auto !important;
       text-shadow:0 1px 0 #fff !important;
-      border-bottom: 1px dashed #C2C2C2 !important;
+      border-bottom: 1px solid #E0E0E0 !important;
       span {
         line-height:1.2em; } } }
   &.wide {
@@ -1361,7 +1356,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
       background:none !important;
       min-height:auto !important;
       text-shadow:0 1px 0 #fff !important;
-      border-bottom: 1px dashed #C2C2C2 !important;
+      border-bottom: 1px solid #E0E0E0 !important;
       span {
         line-height:1.2em; } }
     .section {
@@ -1403,8 +1398,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
       top: 45px;
       right: -260px; } } 
   .submit {
-    border-top: 1px dashed #c2c2c2;
-    padding-top:10px;
+    border-top: 1px solid #E0E0E0;
+    padding-top:15px;
+    margin-bottom: -15px;
     .btn {
       color: #FFF;
       display: block;
@@ -1477,16 +1473,15 @@ input:focus[placeholder], textarea:focus[placeholder] {
         padding:.5em; }
       .selected {
         position:relative;
-        border:1px solid #eee;
-        &:before {
+        &:after {
           border-left: 5px solid transparent;
           border-right: 5px solid transparent;
-          border-top: 5px solid #000000;
+          border-top: 5px solid #CCC;
           content: "";
           height: 0;
-          position: absolute;
-          right: 10px;
-          top: 15px;
+          position: relative;
+          right: -7px;
+          top: 11px;
           width: 0; } }
       ol {
         display:none;

@@ -1,15 +1,14 @@
 module PinsHelper
 
   def pins_index_header
-    str = ''
-    str = "Recently Pinned #{@kind.pluralize.titleize}" if @kind
+    return "Trending: Parenting Articles, Ideas, & Products" unless @kind || @category
+    
+    str = "Trending#{':' unless @category && !@kind} "
+    str += "#{@kind.pluralize.titleize}" if @kind
 
     if @category
-      str += @kind ? ': ' : 'Recent Pins Under: '
-      str += @category.name
+      str += " under #{@category.name}"
     end
-    
-    str = "Trending Parenting Articles, Ideas, Products, & More" if str.blank?
     
     return str
   end
