@@ -7,16 +7,20 @@
   <% end %>
 </h1>
 
-<% if @profile_counters[:following].zero? %>
-  <div class="empty_pins">
-    <p>Here are a few pins to get you excited about all the wonderful ideas here on ParentPins. Check out a few boards, follow other pinners, or start pinning things you like.</p>
-    <p>
-      Get the ParentPin Bookmarklet to start ParentPinning from any site on the web -- just drag the following link to your bookmarks bar:
-      <%= bookmarklet_link %>
-    </p>
+<% if @profile_counters[:following].zero? || @pins.blank? %>
+  <div class="empty-results">
+    <% if @profile == current_user %>
+      <h2>You haven't followed anyone with pins yet!</h2>
+      <p>
+        To find users you'd like to follow (and have their pins populate this page), 
+        check out a few of our <%= link_to 'trending boards', boards_path %> or <%= link_to 'featured users', featured_path %>.
+      </p>
+    <% else %>
+      <h2><%= @profile.name %> hasn't followed anyone yet.</h2>
+    <% end %>
   </div>
+<% else %>
+  <%= render 'pins/pins' %>
 <% end %>
-
-<%= render 'pins/pins' %>
 
 <%= render 'signup_step_2' if params[:step_2] %>

@@ -13,7 +13,7 @@ class ProfileController < ApplicationController
   end
   
   def pins
-    paginate_pins @profile_counters[:pins].zero? ? Pin.trending : @profile.pins
+    paginate_pins @profile.pins
   end
   
   def likes
