@@ -3,9 +3,11 @@
 
 <% if @boards.blank? %>
   <div class="empty-results">
-    <h2>Create your first board.</h2>
-    <p>You can create boards for any parenting topic to help other parents learn what interests you.</p>
-    <p><%= link_to 'Add your first board', new_profile_board_path(current_user), :class => 'ajax btn large primary' %></p>
+    <h2>No boards to show.</h2>
+    <% if @profile && @profile == current_user %>
+      <p>You can create boards for any parenting or child-related topic and specify a ParentPins category for each board.</p>
+      <p><%= link_to 'Add your first board', new_profile_board_path(current_user), :class => 'ajax btn large primary' %></p>
+    <% end %>
   </div>
 <% else %>
   <ul class="boards masonry ajax-pagination">

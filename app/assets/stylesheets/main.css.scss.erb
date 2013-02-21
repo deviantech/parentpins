@@ -59,6 +59,18 @@ $headerBG: #F3ECEF;
   box-shadow: #{$a} #{$b} #{$c} #{$color};
 }
 
+@mixin page-header {
+  color: #444;
+  font-family: georgia,times,serif;
+  font-size: 1.5714em;
+  line-height: 1em; /* 36px */ 
+  font-weight: normal;
+  margin: 0 auto;
+  padding: 0 1em 0.5em;
+  border-bottom: 1px solid #E0E0E0;
+  text-align:center;
+}
+
 /* site wide general */
 
 .right {float:right;}
@@ -1623,20 +1635,13 @@ input:focus[placeholder], textarea:focus[placeholder] {
   ul.boards li {
     margin: 15px 0 10px; }
   .content #pins {
-    margin-left: 50px !important; } 
+    margin-left: 50px !important; }
   .content h1 {
-    color:#fff;
-    text-shadow:0 1px 0 #000;
-    border-bottom:none;
-    margin-left:50px;
-    min-height:63px;
-    a {
-      text-decoration:none;
-      text-shadow:0 1px 0 rgba(255, 255, 255, 0.4);
-      img {
-        @include circular; } } }
+    @include page-header;
+    margin-left: 15px;
+  }
   .wrapper {
-    margin-top:-75px; } }
+    margin-top:15px; } }
 
 .full_width {
   .wrapper {
@@ -1678,16 +1683,8 @@ input:focus[placeholder], textarea:focus[placeholder] {
   .content {
     width:100%;
     h1 {
-      color: #444;
-      font-family: georgia,times,serif;
-      font-size: 1.5714em;
-      line-height: 1em; /* 36px */ 
-      font-weight: normal;
-      margin: 0 auto;
+      @include page-header;
       width:980px;
-      padding: 0 1em 0.5em;
-      border-bottom: 1px solid #E0E0E0;
-      text-align:center;
       .user {
         text-align: left;
         text-decoration: none;
@@ -1910,16 +1907,21 @@ textarea {
     color:#B4B4B4;
     position:relative;
     display:block;
-    width:180px;
-    margin:0 auto;
+    margin:0px auto;
+    margin-bottom: 15px;
     &:before {
-      position:absolute;
       content:"\e014";
-      top:-60px;
-      left:55px;
+      display: block;
       color:#B4B4B4;
       font-size:70px;
-      @include pinli-font; } } }
+      margin-bottom: 15px;
+      margin-top: -55px;
+      @include pinli-font; } } 
+  p {
+    margin: 20px 100px;
+    color: #666;
+  }
+}
 
 
 h1, h2 {
