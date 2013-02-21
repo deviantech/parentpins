@@ -30,6 +30,9 @@ ParentPins::Application.routes.draw do
 
   get '/boards' => 'board#index', :as => :boards
   
+  # TODO: implement this page
+  get '/featured' => 'featured#index'
+  
   # Allow periods in URL (e.g. facebook username is kali.donovan)
   scope :profile_id => /[^\/]*/, :id => /[^\/]*/ do
     get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards

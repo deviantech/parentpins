@@ -7,8 +7,13 @@
 </h1>
 
 <% if @profile.following_even_indirectly_count.zero? %>  
-  <div class="empty_pins">
-    <p>Followed users and boards will appear here.</p>
+  <div class="empty-results">
+    <% if @profile == current_user %>
+      <h2>You haven't followed anyone yet!</h2>
+      <p>Find folks to follow by checking out our <%= link_to 'trending boards', boards_path %> page or some of ParentPin's <%= link_to 'featured pinners', featured_path %>.</p>
+    <% else %>
+      <h2><%= @profile.name %> hasn't followed anyone yet.</h2>
+    <% end %>
   </div>
 <% else %>
   <div class="user_list">

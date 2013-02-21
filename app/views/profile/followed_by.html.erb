@@ -7,8 +7,13 @@
 </h1>
   
 <% if @profile.followed_by_even_indirectly_count.zero? %>
-  <div class="empty_pins">
-    <p><%= @profile.name %> isn't currently being followed by anyone.</p>
+  <div class="empty-results">
+    <% if @profile == current_user %>
+      <h2>Nobody is following you yet.</h2>
+      <p>Keep pinning great content and you'll have followers in no time!</p>
+    <% else %>
+      <h2><%= @profile.name %> isn't being followed by anyone yet.</h2>
+    <% end %>
   </div>
 <% else %>
   <div class="user_list">
