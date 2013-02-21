@@ -1,4 +1,10 @@
-<h1><span><%= @profile.name %>'s</span>Recent Pins</h1>
+<h1>
+  <% if current_user == @profile %>
+    Your Recent Pins
+  <% else %>
+    <%= @profile.name %>'s Recent Pins
+  <% end %>
+</h1>
 
 <% if @profile_counters[:pins].zero? %>
   <div class="empty_pins">

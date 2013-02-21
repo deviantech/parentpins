@@ -1,4 +1,10 @@
-<h1><span>&nbsp;</span><%= @profile.name %>'s Followers</h1>
+<h1>
+  <% if current_user == @profile %>
+    People Following You
+  <% else %>
+    People Following <%= @profile.name %>
+  <% end %>
+</h1>
   
 <% if @profile.followed_by_even_indirectly_count.zero? %>
   <div class="empty_pins">

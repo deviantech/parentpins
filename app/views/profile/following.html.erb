@@ -1,11 +1,12 @@
-<% count = @profile.following_even_indirectly_count %>
 <h1>
-  <span>&nbsp;</span>
-  <%= @profile.name %> 
-  <%= count.zero? ? "isn't Following Anyone" : "is Following #{pluralize(count, 'User', 'Users')}" %>
+  <% if current_user == @profile %>
+    People You Are Following
+  <% else %>
+    People <%= @profile.name %> Is Following
+  <% end %>
 </h1>
 
-<% if count.zero? %>  
+<% if @profile.following_even_indirectly_count.zero? %>  
   <div class="empty_pins">
     <p>Followed users and boards will appear here.</p>
   </div>
