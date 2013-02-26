@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   scope :newest_first, order('id DESC')
 
   def name
-    username.to_s.titleize
+    username.to_s.capitalize
   end
 
 
