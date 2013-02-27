@@ -1,12 +1,13 @@
 $(document).ready(function() {      
   // Masonry layout a la pinterest
   $('.masonry').masonry({
-     columnWidth: 50,
-     itemSelector: 'li',
-     isAnimated: !Modernizr.csstransitions,
-     isFitWidth: true
+    columnWidth: 10,
+    gutterWidth: 6,
+    itemSelector: 'li',
+    isAnimated: !Modernizr.csstransitions,
+    isFitWidth: true
   }).imagesLoaded(function() {
-     $('.masonry').masonry('reload');
+    $(this).masonry('reload');
   });
   
   // TODO - replace character-based truncation with line-based
