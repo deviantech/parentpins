@@ -12,10 +12,10 @@
           <li><%= profile_nav_link :activity %></li>
         <% end %>
         <li><%= profile_nav_link :pins %></li>
-        <li><%= profile_nav_link :likes %></li>
         <li><%= profile_nav_link :boards %></li>
-        <li><%= profile_nav_link :followed_by %></li>
+        <li><%= profile_nav_link :likes %></li>
         <li><%= profile_nav_link :following %></li>
+        <li><%= profile_nav_link :followed_by %></li>
       </ul>
 
       <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
