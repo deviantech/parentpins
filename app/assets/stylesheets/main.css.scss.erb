@@ -34,6 +34,7 @@ body {
 $headerBG: #F3ECEF;
 $themeCOLOR: #E55799;
 /* $themeCOLOR: #277A11; */
+$themeCOLORLight: lighten( $themeCOLOR, 36% );
 
 /* Mixins */
 
@@ -1779,7 +1780,7 @@ body.profile {
 /* layout grid */
 
 .header_wrapper {
-  background: $headerBG;
+  background: $themeCOLORLight;
   margin: 0 0 20px;
   min-width:1020px;
   @include boxshadow(0, 2px, 4px, rgba(0, 0, 0, 0.27));
