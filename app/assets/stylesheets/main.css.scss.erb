@@ -32,6 +32,8 @@ body {
 
 /* Variables */
 $headerBG: #F3ECEF;
+$themeCOLOR: #E55799;
+/* $themeCOLOR: #277A11; */
 
 /* Mixins */
 
@@ -76,6 +78,7 @@ $headerBG: #F3ECEF;
 .right {float:right;}
 .left {float:left;}
 .clear {clear:both;}
+a:focus {outline:none;}
 
 /* typography */
 
@@ -86,7 +89,7 @@ p {
 
 a {
   color: #1D58AA;
-  color: #E55799;
+  color: $themeCOLOR;
   &:hover {
     text-decoration: none; } }
     
@@ -98,12 +101,14 @@ a {
   text-decoration: none;
   text-align: center;
   position: relative;
-  padding: 9px 12px 6px 12px;
+  padding: 6px 12px;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-  font-size: 14px;
+  font-size: 15px;
+  line-height:24px;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
+  background-color:$themeCOLOR;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0, 0, 0, 0.15)');
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0,0,0,0.15)')";
   background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
@@ -156,8 +161,8 @@ a {
     -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; }
   &.primary {
-    background-color: #E55799;
-    border: 1px solid #E55799;
+    background-color: $themeCOLOR;
+    border: 1px solid $themeCOLOR;
     position: relative;
     font-weight: bold;
     color:#fff; }
@@ -178,7 +183,7 @@ a {
     display: block;
     width: 140px; }
   &.tertiary_action {
-    background-color: #E55799;
+    background-color: $themeCOLOR;
     border: 1px solid #CF3B7F;
     position: relative;
     font-weight: bold; }
@@ -245,7 +250,7 @@ ul li .handle {
   left: 416px;
   text-align: center;
   text-decoration: none;
-  color: #E55799;
+  color: $themeCOLOR;
   font-family:times;
   font-size: 1.7143em; /* 24px */ 
   line-height: 45px;
@@ -261,7 +266,7 @@ ul li .handle {
     height:50px;
     width:50px;
     text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
-    color: #E55799;
+    color: $themeCOLOR;
   	font-size:42px;
   	@include pinli-font; }
   &:hover {
@@ -328,7 +333,7 @@ ul li .handle {
     padding: 9px 12px;
     margin-right: 6px;
     margin-top: 6px;
-    font-weight: 300;
+    font-weight: normal;
     @include rounded(5px);
     &:hover {
       background:transparent;
@@ -353,7 +358,9 @@ ul li .handle {
       background-image: -webkit-linear-gradient(top, #e5579a, #FF8FC7);
       background-image: linear-gradient(top, #e5579a, #FF8FC7);
       color: #fff;
-      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4); } } }
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+      &:before {
+        border-top:4px solid #fff !important; } } } }
 .header ul.inner li a {
   padding: 20px 25px;
   margin-top: 0px;
@@ -399,11 +406,11 @@ ul li .handle {
       content:"";
       height:0;
       width:0;
-      border-top:5px solid #333;
-      border-left:5px solid transparent;
-      border-right:5px solid transparent;
+      border-top:4px solid #333;
+      border-left:4px solid transparent;
+      border-right:4px solid transparent;
       right:5px;
-      top:18px; } }
+      top:17px; } }
   ul {
     display: none;
     background: #fff;
@@ -425,15 +432,16 @@ ul li .handle {
     a {
       display: block;
       float: none;
-      color:#E55799;
+      color:$themeCOLOR;
       text-shadow:none;
+      font-weight:400;
       padding: 6px 10px;
       text-align: left;
       font-size: 13px; 
       line-height:18px;
       &:hover {
         color:#FFF;          
-        background-color: #e5579a;
+        background-color: $themeCOLOR;
         @include rounded(0px);
       }
       &.marker {
@@ -444,7 +452,7 @@ ul li .handle {
 .sub_header_wrapper {
   background: none repeat scroll 0 0 #F7F7F7;
   border-bottom:1px solid #D9D9D9;
-  margin-top: -20px;
+  margin-top: -36px;
   width: 100%;
   height:160px;
   overflow:hidden;
@@ -473,8 +481,8 @@ ul li .handle {
       color:#fff;
       text-shadow:0 -1px 0 #000;
       position:absolute;
-      top:30px;
-      left:18px; } 
+      top:48px;
+      left:186px; } 
     &:hover a.hover_link {
       display:block; } }
   .cover_photo {
@@ -492,7 +500,7 @@ ul li .handle {
   // background: transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
   background:#F8F8F8;
   @include rounded(4px);
-  @include boxshadow(2px, 2px, 10px, rgba(34, 25, 25, 0.4));
+  @include boxshadow(0px, 3px, 6px, rgba(0, 0, 0, 0.15));
   h2 {
     font-size: 24px;
     line-height:30px;
@@ -501,7 +509,7 @@ ul li .handle {
     font-family: georgia,times,serif;
     text-align: center;
     padding: 0;
-    margin: 0 0 12px 0; }
+    margin: 0; }
   &:hover h2 {
     color: #000; }
   p {
@@ -541,9 +549,9 @@ ul li .handle {
       font-weight:bold;
       color:#888; } }
   .avatar {
-    border: 4px solid #cd2479;
+    border: 4px solid $themeCOLOR;
     display: block;
-    margin: 20px auto 5px auto;
+    margin: 0 auto 5px;
     height: 120px;
     width: 120px;
     @include circular;
@@ -555,14 +563,15 @@ ul li .handle {
     img {
       @include circular; } } 
   .follow,.unfollow {
-    position:absolute;
-    top:5px;
-    left:5px;
     text-decoration:none;
-    font-size:14px; } }
+    text-align:center;
+    display:block;
+    font-size:13px;
+    line-height:18px;
+    margin:0; } }
 
 .nav_profile {
-  margin: 0;
+  margin: 6px 0 0 0;
   padding: 0;
   border-top: 1px solid #AB0653;
   li {
@@ -570,23 +579,23 @@ ul li .handle {
   a {
     display: block;
     position: relative;
-    background-color: #e5579a;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479');
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479')";
-    background-image: -moz-linear-gradient(top, #e5579a, #cd2479);
-    background-image: -ms-linear-gradient(top, #e5579a, #cd2479);
-    background-image: -o-linear-gradient(top, #e5579a, #cd2479);
-    background-image: -webkit-gradient(linear, center top, center bottom, from(#e5579a), to(#cd2479));
-    background-image: -webkit-linear-gradient(top, #e5579a, #cd2479);
-    background-image: linear-gradient(top, #e5579a, #cd2479);
+    background-color: $themeCOLOR;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'rgba(255,255,255,0.2)', endColorstr = 'rgba(255,255,255,0)');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'rgba(255,255,255,0.2)', endColorstr = 'rgba(255,255,255,0)')";
+    background-image: -moz-linear-gradient(top, rgba(255,255,255,0.2), rgba(255,255,255,0));
+    background-image: -ms-linear-gradient(top, rgba(255,255,255,0.2), rgba(255,255,255,0));
+    background-image: -o-linear-gradient(top, rgba(255,255,255,0.2), rgba(255,255,255,0));
+    background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0.2)), to(rgba(255,255,255,0)));
+    background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.2), rgba(255,255,255,0));
+    background-image: linear-gradient(top, rgba(255,255,255,0.2), rgba(255,255,255,0));
     color: #fff;
     font-size: 14px;
     font-weight: bold;
     text-decoration: none;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 1);
     padding: 12px 6px 12px 48px;
-    border-bottom: 1px solid #AB0653;
-    border-top: 1px solid #F88EBF;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.33);
+    border-top: 1px solid rgba(255, 255, 255, 0.34);
     &:after {
       content: "";
       @include pinli-font;
@@ -612,16 +621,17 @@ ul li .handle {
   .following:after {
     content:"\e00c"; }
   a:hover {
-    background: #e5579a;
+    background: $themeCOLOR;
     color: #222;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
     &:hover:after {
       color:#000; } }
   .active {
-    background: #B42366;
+    background: $themeCOLOR;
     -webkit-box-shadow: 10px 0 9px rgba(0, 0, 0, 0.2) inset;
     -moz-box-shadow: 10px 0 9px rgba(0, 0, 0, 0.2) inset;
     box-shadow: 10px 0 9px rgba(0, 0, 0, 0.2) inset;
+    border-top:1px solid rgba(0, 0, 0, 0.15);
     &:before {
       content: "";
       position: absolute;
@@ -629,11 +639,11 @@ ul li .handle {
       width: 0;
       top: 15px;
       right: -10px;
-      border-left: 10px solid #B42366;
+      border-left: 10px solid $themeCOLOR;
       border-top: 10px solid transparent;
       border-bottom: 10px solid transparent; }
     &:hover:before {
-      border-left: 10px solid #e5579a; }
+      border-left: 10px solid $themeCOLOR; }
     &:hover:after {
       color:#000; } }
   a:active {
@@ -692,7 +702,7 @@ ul li .handle {
 .profile .empty-results {
   position:relative;
   padding:80px 20px 20px;
-  margin:40px 0 0 60px;
+  margin:42px 60px 0 60px;
   border:1px solid #EAEAEA;
   h2 {
     color:#B4B4B4; } }
@@ -851,7 +861,7 @@ li.pin-context {
     line-height: 1.5em;
     margin: 10px 0 5px;
     strong {
-      color: #E5579A;
+      color: $themeCOLOR;
       position: relative; }
     a:hover strong {
       text-decoration: none; }
@@ -1034,7 +1044,7 @@ ul.boards {
     float: left;
     display: block;
     width: 222px;
-    margin: 15px 12px 10px 0;
+    margin: 12px 12px 10px 0;
     -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
     -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
     box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
@@ -1101,7 +1111,7 @@ ul.boards {
       font-size: 12px;
       line-height: 18px; }
     .view-more, .view-less {
-      color:#E5579A; } } }
+      color:$themeCOLOR; } } }
 .board {
   .link {
     position: absolute;
@@ -1124,7 +1134,7 @@ ul.boards {
         padding: 10px;
         width: 160px;
         height: 18px;
-        background-color: #e5579a;
+        background-color: $themeCOLOR;
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479');
         -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479')";
         background-image: -moz-linear-gradient(top, #e5579a, #cd2479);
@@ -1434,8 +1444,8 @@ input:focus[placeholder], textarea:focus[placeholder] {
     float:left;
     margin:0 20px 0 0;
     padding:8px 0 0 0;
-    font-family:georgia, times, serif;
-    font-size:13px; }
+    font-size:13px;
+    color:#666; }
   ol {
     list-style:none;
     margin:0;
@@ -1454,7 +1464,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
         text-decoration:none;
         font-weight:normal; 
         display:block;
-        color:#e55799;
+        color:$themeCOLOR;
         padding:.5em; }
       .selected {
         position:relative;
@@ -1484,11 +1494,11 @@ input:focus[placeholder], textarea:focus[placeholder] {
           a {
             font-weight:normal;
             background:#fff;
-            color:#e55799;
+            color:$themeCOLOR;
             font-size:13px; 
             &:hover {
               color:#fff;
-              background:#e55799; } } } }  
+              background:$themeCOLOR; } } } }  
       &:hover {
           ol {
           display:block;
@@ -1532,14 +1542,12 @@ input:focus[placeholder], textarea:focus[placeholder] {
       position: relative;
       background-color: #fff;
       width: 192px;
-      margin: 10px 0 14px 6px;
+      margin: 12px 6px;
       list-style: none;
       padding: 15px 15px 10px;
-      -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-      -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      @include boxshadow(0px, 3px, 6px, rgba(0, 0, 0, 0.15));
       &:hover {
-        color: #E55799; }
+        color: $themeCOLOR; }
       img {
         display:block;
         float:left;
@@ -1547,7 +1555,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
         -moz-border-radius: 30px;
         -webkit-border-radius: 30px;
         border-radius: 30px;
-        border:3px solid #cd2479; }
+        border:3px solid $themeCOLOR; }
       a {
         text-decoration:none; 
         padding:0;
@@ -1606,13 +1614,13 @@ input:focus[placeholder], textarea:focus[placeholder] {
 
 body.profile {
   ul.boards li {
-    margin: 15px 0 10px; }
+    margin: 12px 12px 10px 0; }
   .wrapper.profile {
     width: auto;
   }
   .info {
     position: fixed;
-    top: 102px;
+    top: 78px;
     left: 10px;
     overflow: visible;
   }
@@ -1623,6 +1631,7 @@ body.profile {
   }
   .content {
     width: 100%;
+    min-height:430px;
     h1 {
       @include page-header;
     }
@@ -1655,7 +1664,7 @@ body.profile {
         border-radius: 6px;
         &:hover {
           color: #fff;
-          background: #E55799;
+          background: $themeCOLOR;
           text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4); }
         img {
           display: inline-block;
@@ -1689,7 +1698,7 @@ body.profile {
         border-radius: 12px;
         &:hover {
           color: #fff;
-          background: #E55799;
+          background: $themeCOLOR;
           text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4); }
         img {
           margin-right:5px;
@@ -1715,7 +1724,7 @@ body.profile {
 /* flash messaging */
 
 #flash {
-  margin: 0; }
+  margin: -24px 0 12px 0; }
 
 .flashmsg {
   position: relative;
@@ -1743,16 +1752,13 @@ body.profile {
       cursor: pointer; } }
   &.success {
     background: #D2FFE2;
-    border-bottom: 2px solid #00D34B;
-    border-top: 4px solid #00D34B; }
+    border-bottom: 2px solid #00D34B; }
   &.error {
     background: #FECFD7;
-    border-bottom: 2px solid #B02C42;
-    border-top: 4px solid #B02C42; }
+    border-bottom: 2px solid #B02C42; }
   &.alert {
     background: #FFFEDE;
-    border-bottom: 2px solid #EAE100;
-    border-top: 4px solid #EAE100; } }
+    border-bottom: 2px solid #EAE100; } }
 
 /* footer styles */
 
@@ -1766,7 +1772,7 @@ body.profile {
   a {
     padding: 10px;
     text-decoration: none;
-    color: #E55799;
+    color: $themeCOLOR;
     &:hover {
       text-decoration: underline; } } }
 
@@ -1925,7 +1931,7 @@ h1, h2 {
     display: inline-block;
     color:#999;
     a {
-      color: #E55799;
+      color: $themeCOLOR;
       text-decoration:none;
       &:hover {
         text-decoration:underline;
@@ -1948,7 +1954,7 @@ h1, h2 {
   color:#999;
   .marker {
     font-weight: bold;
-    color: #E55799; } }
+    color: $themeCOLOR; } }
 
 /* Board Comments */
 
@@ -1993,7 +1999,7 @@ h1, h2 {
         top:5px;
         left:5px;
         @include circular;
-        border:3px solid #E55799; 
+        border:3px solid $themeCOLOR; 
         img {
           display:block;
           @include circular; } } 
@@ -2065,12 +2071,12 @@ h1, h2 {
       display:block;
       height:30px;
       width:30px;
-      border: 3px solid #E55799;
+      border: 3px solid $themeCOLOR;
       position:relative;
       float:left;
       &:after {
         border-bottom: 7px solid transparent;
-        border-left: 7px solid #E55799;
+        border-left: 7px solid $themeCOLOR;
         border-top: 7px solid transparent;
         content: "";
         height: 0;
@@ -2111,8 +2117,8 @@ h1, h2 {
       margin: 0 10px 0 20px;
       resize: none; }
     input {
-      background-color: #E55799;
-      border: 1px solid #E55799;
+      background-color: $themeCOLOR;
+      border: 1px solid $themeCOLOR;
       font-weight: bold;
       color:#fff;
       float:right;
