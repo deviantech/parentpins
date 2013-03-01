@@ -3,7 +3,7 @@
     <a href="/" class="logo ir">Parent<span>Pins</span></a>
     <ul class="nav_main">
       <li class="drop_down">
-        <%= nav_link 'Trending', pins_path, :also_accept => '/' %>
+        <%= nav_link 'Trending', pins_path, :also_accept => '/', :class => 'top' %>
         <ul class="inner">
           <li><%= nav_link 'Articles', articles_path %></li>
           <li><%= nav_link 'Ideas', ideas_path %></li>
@@ -24,7 +24,7 @@
     <% end %>
     <ul class="nav_login">    
       <li class="drop_down">
-        <a href="/about.html">About</a>
+        <a href="/about.html" class="top">About</a>
         <ul class="inner">
           <li><a href="/faq.html">FAQs</a></li>
           <li><a href="/legal.html">Terms of Service</a></li>
@@ -34,7 +34,7 @@
       </li>  
       <% if user_signed_in? %>
         <li class="drop_down">
-          <%= link_to '+ Add', '#', :class => "add" %>
+          <%= link_to '+ Add', '#', :class => "add top" %>
           <ul class="inner">
             <li><%= link_to '+ Pin', new_pin_path, :class => 'ajax' %></li>
             <li><%= link_to '+ Board', new_profile_board_path(current_user), :class => 'ajax' %></li>
@@ -42,7 +42,7 @@
           </ul>
         </li>
         <li class="drop_down">
-          <%= link_to "Hi, #{current_user.username.titleize}", activity_profile_path(current_user) %>
+          <%= link_to "Hi, #{current_user.username.titleize}", activity_profile_path(current_user), :class => 'top' %>
           <ul class="inner">
             <li><%= link_to 'Activity', activity_profile_path(current_user) %></li>
             <li><%= link_to 'Pins', pins_profile_path(current_user) %></li>
