@@ -1,22 +1,22 @@
 @font-face {
   font-family: 'pinli';
-	src:url('/fonts/pinli.eot');
-	src:url('/fonts/pinli.eot?#iefix') format('embedded-opentype'),
-  url('/fonts/pinli.svg#pinli') format('svg'),
-  url('/fonts/pinli.woff') format('woff'),
-  url('/fonts/pinli.ttf') format('truetype');
+	src:url('<%= asset_path '/fonts/pinli.eot' %>');
+	src:url('<%= asset_path '/fonts/pinli.eot?#iefix' %>') format('embedded-opentype'),
+  url('<%= asset_path '/fonts/pinli.svg#pinli' %>') format('svg'),
+  url('<%= asset_path '/fonts/pinli.woff' %>') format('woff'),
+  url('<%= asset_path '/fonts/pinli.ttf' %>') format('truetype');
 	font-weight: normal;
 	font-style: normal; }
 
 html{
   height:100%;
-  background:#fff url(/assets/patterns/debut_light.png) 0 0 repeat;}
+  background:#fff url(<%= asset_path '/patterns/debut_light.png' %>) 0 0 repeat;}
   
 
 body {
   padding-top: 71px;
   height:100%;
-  background:transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
+  background:transparent url(<%= asset_path '/patterns/debut_light.png' %>) 0 0 repeat;
   font-size:14px;
   line-height:18px;
   font-family:"Helvetica Neue", Helvetica, sans-serif;
@@ -26,7 +26,7 @@ body {
     background-position: bottom left;
     background-repeat:no-repeat;
     background-attachment:fixed;
-    background-image:url(/assets/backgrounds/1.png);
+    background-image:url(<%= asset_path '/backgrounds/1.png' %>);
     .footer_wrapper {
       background:rgba(255, 255, 255, 0.6); } } }
 
@@ -498,7 +498,6 @@ ul li .handle {
   width: 195px;
   padding: 0 0 30px 0;
   padding-top: 15px;
-  // background: transparent url(/assets/patterns/debut_light.png) 0 0 repeat;
   background:#F8F8F8;
   @include rounded(4px);
   @include boxshadow(0px, 3px, 6px, rgba(0, 0, 0, 0.15));
@@ -1401,7 +1400,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
     content: "";
     display: block;
     position: absolute;
-    background: transparent url(/assets/ui/signup_note.png) 0 0 no-repeat;
+    background: transparent url(<%= asset_path 'ui/signup_note.png' %>) 0 0 no-repeat;
     height: 210px;
     width: 235px;
     top: 45px;
@@ -1413,7 +1412,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
       content: "";
       display: block;
       position: absolute;
-      background: transparent url(/assets/ui/pin_preview_note.png) 0 0 no-repeat;
+      background: transparent url(<%= asset_path 'ui/pin_preview_note.png' %>) 0 0 no-repeat;
       height: 210px;
       width: 235px;
       top: 45px;
