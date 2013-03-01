@@ -1,58 +1,38 @@
-<% if false %>
-  <div class="set_filters">
-    <% if defined?(@pins) %>
-      <select name="kind" data-base-url-if-blank="<%= params[:controller] == 'pins' && params[:action] == 'index' ? '/pins' : '' %>">
-        <%= options_for_select [['All Pin Types', '']] + select_options(Pin::VALID_TYPES), @kind %>
-      </select>
-  
-      <select name="age_group">
-        <%= options_for_select([['All Age Groups', '']] + select_options(AgeGroup.all), @age_group.try(:id)) %>
-      </select>
-    <% end %>
-
-    <% unless defined?(@board) %>
-      <select name="category">
-        <%= options_for_select([['All Categories', '']] + select_options(Category.all), @category.try(:id)) %>
-      </select>
-    <% end %>
-  </div>
-<% end %>
-
-
-<div class="set_filters_two">
+<div class="set_filters">
   <span>Filter:</span>
   <ol>
-    <li>
-      <a href="#" class="selected">All Pin Types</a>
-      <ol>
-        <li><a href="#">Idea</a></li>
-        <li><a href="#">Product</a></li>
-        <li><a href="#">Article</a></li>
-      </ol>
-    </li>
-    <li>
-      <a href="#" class="selected">All Age Groups</a>
-      <ol>
-        <li><a href="#">Expecting</a></li>
-        <li><a href="#">Infants</a></li>
-        <li><a href="#">Toddlers</a></li>
-        <li><a href="#">Kids</a></li>
-        <li><a href="#">Tweens</a></li>
-        <li><a href="#">Teens</a></li>
-        <li><a href="#">Family</a></li>
-      </ol>
-    </li>
-    <li class="last">
-      <a href="#" class="selected">All Categories</a>
-      <ol>
-        <li><a href="#">Activities</a></li>
-        <li><a href="#">Advice</a></li>
-        <li><a href="#">Babies</a></li>
-        <li><a href="#">Books</a></li>
-        <li><a href="#">Crafts</a></li>
-        <li><a href="#">Cuteness</a></li>
-        <li><a href="#">Decor</a></li>
-      </ol>
-    </li>
+    <% if defined?(@pins) %>
+      <li>
+        <a href="#" class="selected"><%= @kind.try(:titleize) || 'All Pin Types' %></a>
+        <ol>
+          <li><%= link_to 'All Pin Types', url_for(params.merge(:kind => nil)), :class => @kind.blank? ? 'current' : '' %></li>
+          <% Pin::VALID_TYPES.each do |kind| %>
+            <li><%= link_to kind.titleize, url_for(params.merge(:kind => kind)), :class => @kind == kind ? 'current' : '' %></li>
+          <% end %>
+        </ol>
+      </li>
+
+      <li class="<%= 'last' if defined?(@board) %>">
+        <a href="#" class="selected"><%= @age_group.try(:name) || 'All Age Groups' %></a>
+        <ol>
+          <li><%= link_to 'All Age Groups', url_for(params.merge(:age_group => nil)), :class => @age_group.blank? ? 'current' : '' %></li>
+          <% AgeGroup.all.each do |age| %>
+            <li><%= link_to age.name, url_for(params.merge(:age_group => age.id)), :class => @age_group.try(:id) == age.id ? 'current' : '' %></li>
+          <% end %>
+        </ol>
+      </li>
+    <% end %>
+    
+    <% unless defined?(@board) %>
+      <li class="last">
+        <a href="#" class="selected"><%= @category.try(:name) || 'All Categories' %></a>
+        <ol>
+          <li><%= link_to 'All Categories', url_for(params.merge(:category => nil)), :class => @category.blank? ? 'current' : '' %></li>
+          <% Category.all.each do |cat| %>
+            <li><%= link_to cat.name, url_for(params.merge(:category => cat.id)), :class => @category.try(:id) == cat.id ? 'current' : '' %></li>
+          <% end %>
+        </ol>
+      </li>
+    <% end %>
   </ol>
 </div>

@@ -1,14 +1,6 @@
 $(document).ready(function() {      
   // Masonry layout a la pinterest
-  $('.masonry').masonry({
-    columnWidth: 10,
-    gutterWidth: 6,
-    itemSelector: 'li',
-    isAnimated: !Modernizr.csstransitions,
-    isFitWidth: true
-  }).imagesLoaded(function() {
-    $(this).masonry('reload');
-  });
+  applyMasonry();
   
   // TODO - replace character-based truncation with line-based
   applyTruncationTo('li.pin .description span.truncate-me', 200);
@@ -78,25 +70,6 @@ $(document).ready(function() {
         $(this).addClass('hidden');
       }
     });
-  });
-    
-  // Set filters
-  $('.set_filters').on('change', function(e) {
-    $select = $(e.target);
-    
-    if ($select.data('base-url-if-blank')) {
-      // Adding support to handle pretty URLs, e.g. /pins if not kind set, but /products if kind is 'product'
-      var baseURL;
-      if ($select.val()) {
-        baseURL = '/' + $select.val() + 's';
-      } else {
-        baseURL = $select.data('base-url-if-blank');
-      }
-      window.location = urlReplacingPathKeepingParams(baseURL);
-    } else {
-      // Normal, update URL components but don't worry about base URL changing
-      window.location = urlPossiblyReplacingParam(window.location + '', $select.attr('name'), $select.val());
-    }
   });
     
   // Add custom trucation

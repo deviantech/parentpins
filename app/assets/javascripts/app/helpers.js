@@ -177,3 +177,15 @@ function stopSorting(toSort) {
     if (toSort.hasClass('masonry')) toSort.masonry('reload');
   });
 }
+
+function applyMasonry() {
+  $('.masonry').masonry({
+    columnWidth: 10,
+    gutterWidth: 6,
+    itemSelector: 'li',
+    isAnimated: !Modernizr.csstransitions,
+    isFitWidth: true
+  }).imagesLoaded(function() {
+    $(this).masonry('reload');
+  });  
+}
