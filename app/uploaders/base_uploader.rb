@@ -7,11 +7,12 @@ class BaseUploader < CarrierWave::Uploader::Base
   # include CarrierWave::RMagick
   # include CarrierWave::Vips
   include CarrierWave::MiniMagick
-
   include CarrierWave::MimeTypes
+  include Piet::CarrierWaveExtension
   process :set_content_type
   process :fix_exif_rotation
   process :strip
+  process :optimize
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   include Sprockets::Helpers::RailsHelper

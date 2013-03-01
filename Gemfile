@@ -58,6 +58,7 @@ gem 'omniauth-twitter'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'mime-types'
+gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
 
 
 
