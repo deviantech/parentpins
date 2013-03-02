@@ -11,6 +11,10 @@
     <%= pluralize board.pins_count, 'pin', 'pins' %>
     /
     <%= pluralize board.followers_even_indirectly_count, 'follower', 'followers' %>
+    
+    <% if user_signed_in? && current_user != board.user %>
+      <%= render "/board/follow_buttons", :board => board %>
+    <% end %>
   </h4>
   <div class="holder">
     <% if board.user == current_user %>
