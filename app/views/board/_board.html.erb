@@ -10,11 +10,7 @@
   <h4>
     <%= pluralize board.pins_count, 'pin', 'pins' %>
     /
-    <%= pluralize board.followers_even_indirectly_count, 'follower', 'followers' %>
-    
-    <% if user_signed_in? && current_user != board.user %>
-      <%= render "/board/follow_buttons", :board => board %>
-    <% end %>
+    <%= pluralize board.followers_even_indirectly_count, 'follower', 'followers' %>    
   </h4>
   <div class="holder">
     <% if board.user == current_user %>
@@ -37,4 +33,9 @@
       </p>
     </div>
   </div>
+  <% if user_signed_in? && current_user != board.user %>
+    <div class="follow_holder">
+      <%= render "/board/follow_buttons", :board => board %>
+    </div>
+  <% end %>
 </li>
