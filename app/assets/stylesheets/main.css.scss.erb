@@ -66,8 +66,8 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
 @mixin page-header {
   color: #444;
   font-family: georgia,times,serif;
-  font-size: 1.5714em;
-  line-height: 1em; /* 36px */ 
+  font-size: 20px;
+  line-height: 24px;
   font-weight: normal;
   margin: 0 auto;
   padding: 0 24px 12px;
@@ -1684,6 +1684,10 @@ body.profile {
     h1 {
       @include page-header;
       width:980px;
+      .count {
+        font-size:13px;
+        line-height:18px;
+        display:inline; }
       .user {
         text-align: left;
         text-decoration: none;
@@ -1949,12 +1953,22 @@ h1, h2 {
   display: none;
 }
 .search_navigation {
-  padding:.6em 2.5em;
-  background:#fff;
-  color:#999;
+  padding:3px 12px;
+  color:#ddd;
+  margin:0 auto;
+  display:block;
+  width:240px;
   .marker {
     font-weight: bold;
-    color: $themeCOLOR; } }
+    color: $themeCOLOR; }
+  a {
+    font-size:17px;
+    line-height:24px;
+    padding:6px 12px;
+    text-decoration:none;
+    &:hover {
+      color:#000;
+      text-decoration:underline; } } }
 
 /* Board Comments */
 
