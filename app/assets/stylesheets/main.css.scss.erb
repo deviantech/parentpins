@@ -9,8 +9,7 @@
 	font-style: normal; }
 
 html{
-  height:100%;
-  background:#fff url(<%= asset_path 'patterns/debut_light.png' %>) 0 0 repeat;}
+  height:100%;}
   
 
 body {
@@ -1111,7 +1110,10 @@ ul.boards {
       font-size: 12px;
       line-height: 18px; }
     .view-more, .view-less {
-      color:$themeCOLOR; } } }
+      color:$themeCOLOR;
+      text-decoration:none;
+      &:hover {
+        text-decoration:underline; } } } }
 .board {
   .link {
     position: absolute;
@@ -1811,7 +1813,16 @@ body.profile {
 
 .board {
   .timeline {
-    background: none; } }
+    background: none; }
+  .follow_holder {
+    text-align:center; 
+    padding:0 0 12px 0;
+    font-size:13px;
+    line-height:18px; 
+    a {
+      text-decoration:none;
+      &:hover {
+        text-decoration:underline; } } } }
 
 .board_description {
   font-size:13px;
