@@ -1,8 +1,53 @@
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen 
 and (min-device-width : 320px) 
-and (max-device-width : 480px) {
-/* Styles */
+and (max-device-width : 480px)  {
+  body {padding-top:0;}
+  .header_wrapper {width:100% !important;min-width:9px;position:relative;top:auto;left:auto;}
+  .header {width:320px !important;position:relative;}
+  .header .clearfix {border-top:1px solid #fff;}
+  .logo {position:relative;left:auto;font-size:24px;padding:9px 0 0 48px;margin:0 auto;}
+  .logo:before{font-size:36px;line-height:36px;top:11px;}
+  .header li a {font-size:15px;line-height:24px;margin-top:0;-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;}
+  .header li.drop_down .top:before {right:7px;top:20px;}
+  .nav_main {float:none;}
+  .search {width:300px;padding:3px 0 0 9px;float:none;}
+  .search input {width:238px;}
+  .search input:focus {width:238px;}
+  .nav_login {font-size:14px;float:none;}
+  .nav_login .add_pins {width:60px !important;}
+  .nav_login .profile_link, .nav_login .add_pins {width:100px;}
+  .nav_login .profile_link ul, .nav_login .add_pins ul {width:140px;}
+  .nav_login .profile_link ul li a, .nav_login .add_pins ul li a {font-size:16px;}
+  .nav_login .profile_link ul {right:0;left:auto;}
+  .sub_header_wrapper {display:none;}
+  .wrapper {min-width:300px !important;max-width:300px !important;width:auto !important;}
+  .general {padding-top:36px;}
+  .content {width:auto !important;}
+  .content.board_wide {width:760px !important;}
+  .wrapper.general .content {width:740px;padding:0 10px;}
+  .set_filters {position:relative;margin:0 12px 48px;right:auto;top:auto;width:auto;}
+  .profile .set_filters {margin:0 auto 24px auto;}
+  .cat_filter {padding:20px 0px 0 40px;}
+  .cat_filter p {padding:0 0 25px;}
+  ul.boards {margin:10px 0;}
+  ul.boards li {margin:15px 10px 10px 0;}
+  .profile ul.boards li {margin:15px 10px 10px 0;}
+  .profile .info {margin:0 !important;float:none;}
+  body.profile .profile_content_wrapper {margin-top:36px;}
+  .form.signup:after{left:-232px;}
+  .content h1 {margin:0 auto 12px auto;}
+  .custom .content h1 {width:100%;margin-top:24px;padding:0 0 12px 0;}
+  .profile .content #pins {}
+  .nav_profile a {font-size:16px;padding:14px 10px 18px 48px;}
+  .user_list {margin: 20px 0 0 30px;width: 240px;}
+  .profile .follow_list #pins {margin-left:280px !important;width:260px;}
+  .follow_list .users li:hover .follow_in_list {display:none;}
+  .profile .content #pins.edit_preview_pin {margin-left:500px !important;}
+  .form.pin_form:after {right:-220px;}
+  .profile .content #pin-preview.edit_preview_pin {margin-left: 530px !important;}
+  .modal_overlay {padding-top:96px;}
+  .empty-results .primary {margin-bottom:24px;}
 }
 
 /* Smartphones (landscape) ----------- */
