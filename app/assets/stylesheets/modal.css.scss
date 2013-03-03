@@ -42,8 +42,8 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
 .pinly {
   position: static;
   width: 500px;
-  padding: 10px;
-  margin: 20px auto;
+  padding: 10px 10px 12px 10px;
+  margin: 24px auto;
   background: #fff;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -55,16 +55,18 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   -o-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
   .pin_type {
-    background: none repeat scroll 0 0 #656565;
+    background: none repeat scroll 0 0 #4E4E4E;
     color: #FFFFFF;
     display: block;
     float: right;
-    font-size: 12px;
-    padding: 4px 8px;
+    font-size: 13px;
+    line-height:18px;
+    padding: 3px 9px;
     position: relative;
     top:-10px;
     border:1px solid #222;
-    border-top:none; }
+    border-top:none;
+    text-shadow:0 -1px 0 rgba(0,0,0,0.9); }
   .btn.action {
     position:relative;
     float:none; }
@@ -108,7 +110,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     a {
       text-decoration: none;
       font-size: 17px;
-      line-height: 20px;
+      line-height: 24px;
       &:hover {
         color: #222; } }
     p {
@@ -116,7 +118,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       margin: 0;
       color: #999;
       font-size: 12px;
-      line-height:24px; }
+      line-height:18px; }
     span {
       padding: 0;
       margin: 0;
@@ -131,13 +133,14 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   .title {
     color: #999;
     font-size: 13px;
-    line-height:24px;
+    line-height:18px;
     margin: 0;
-    padding: 0 0 2px 0;
+    padding: 0 0 3px 0;
     @include ellipsizer;
     a {
       text-decoration: none;
-      font-size: 18px;
+      font-size: 17px;
+      line-height:24px;
       &:hover {
         color: #000; } } }
   .action {
@@ -147,14 +150,19 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       &:hover {
       text-decoration:underline; } } }
   p {
-    margin:0 0 8px 0; }
+    margin:0 0 12px 0;
+    font-size:13px;
+    line-height:18px; }
   .image_link {
     display: block;
     overflow: hidden;
     width: 520px;
     background: #f9f9f9;
-    margin:0 -10px 10px;
+    margin:0 -10px 12px;
     position:relative;
+    -moz-border-radius: 3px 3px 0 0;
+    -webkit-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
     .price {
       background: #f9f9f9;
       padding: 5px 10px;
@@ -177,7 +185,10 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.27); }
     img {
       display: block;
-      margin: 0 auto; } 
+      margin: 0 auto;
+      -moz-border-radius: 3px 3px 0 0;
+      -webkit-border-radius: 3px 3px 0 0;
+      border-radius: 3px 3px 0 0; } 
     &:hover:before {
       content:"View this pin in a new tab";
       display:block;
@@ -224,7 +235,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     background:#fff;
     border-top:1px dashed #ddd;
     margin:0 -10px;
-    padding:10px; 
+    padding:12px; 
     .comment_form {
       position:relative;
       .avatar_link {

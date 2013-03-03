@@ -32,6 +32,7 @@ body {
 /* Variables */
 $headerBG: #F3ECEF;
 $themeCOLOR: #E55799;
+$themeLinkCOLOR: #E55799;
 /* $themeCOLOR: #277A11; */
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
 
@@ -756,7 +757,7 @@ li.pin-context {
 	font-size:15px;
 	@include pinli-font;
   position: absolute;
-  top: 6px;
+  top: 9px;
   left: 6px;
   height: 18px;
   width: 18px; }
@@ -778,7 +779,7 @@ li.pin-context {
 .email_button:before {
   content:"\e015";
   font-size:13px;
-  top:8px; }
+  top:10px; }
 
 .comment_button {
   &:before {
@@ -852,11 +853,17 @@ li.pin-context {
     display:block;
     margin:-15px 0 0 -15px;
     width:222px;
+    -moz-border-radius: 3px 3px 0 0;
+    -webkit-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
     .pin_image {
       display: block;
       margin: 0 auto;
       width: 222px;
-      height: auto; } }
+      height: auto;
+      -moz-border-radius: 3px 3px 0 0;
+      -webkit-border-radius: 3px 3px 0 0;
+      border-radius: 3px 3px 0 0; } }
   .description {
     line-height: 1.5em;
     margin: 10px 0 5px;
