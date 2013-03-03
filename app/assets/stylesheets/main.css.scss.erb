@@ -427,7 +427,7 @@ ul li .handle {
     box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5); }
   &:hover ul {
     display: block; }
-  ul li {
+  li {
     display: block;
     float: none;
     a {
@@ -446,7 +446,37 @@ ul li .handle {
         @include rounded(0px);
       }
       &.marker {
-        color:#fff; } } } }
+        color:#fff; } } } 
+  .bookmarklet {
+    position:relative;
+    border-top:1px solid #ddd;
+    &:hover {
+      &:before {
+        content:"Drag this link to your bookmarks bar";
+        position:absolute;
+        top:0;
+        right:166px;
+        width:140px;
+        display:block;
+        font-size:12px;
+        line-height:18px;
+        color:#fff;
+        background:#000;
+        padding:6px;
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px; }
+      &:after {
+        content:"";
+        position:absolute;
+        top:5px;
+        right:161px;
+        width:0;
+        height:0;
+        display:block;
+        border-left:5px solid #000;
+        border-top:5px solid transparent;
+        border-bottom:5px solid transparent; } } } }
 
 /* sub header cover photo */
 
@@ -1043,7 +1073,39 @@ li.pin-context {
   &.boards {
     width: 1000px; }
   &.general .content {
-    width: 1020px; } }
+    width: 1020px;
+    p {
+      line-height:18px;
+      font-size:13px; }
+    ul, ol {
+      font-size:15px;
+      line-height:24px;
+      margin:0 0 6px 36px;
+      padding: 0;
+      list-style:none;
+      li {
+        display:block;
+        padding: 0 0 6px 0; }
+      a {
+        text-decoration:none;
+        &:hover {
+          text-decoration:underline;
+          color:#000; } } }
+    h2 {
+      font-size:17px;
+      line-height:24px;
+      font-weight:bold;
+      margin:48px 0 12px 0; }
+    dl {
+      font-size:13px;
+      line-height:18px;
+      dt {
+        font-size:17px;
+        line-height:24px;
+        font-weight:bold;
+        margin:48px 0 12px 0; }
+      dd {
+        margin:0 0 0 24px; } } } }
 
 ul.boards {
   margin: 10px;
