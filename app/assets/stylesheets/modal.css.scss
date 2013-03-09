@@ -19,7 +19,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
 /* modal */
 
 .modal_overlay {
-  padding-top: 60px;
+  padding: 0;
   background: rgba(255,255,255,0.9);
   display: block;
   height: 100%;
@@ -32,18 +32,18 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   .board_wide {
     padding-top:20px; }
   .profile.wrapper {
-    margin-top: 0px;
+    padding-top: 60px;
     width:820px; }
   .form h1 {
     margin:10px 0 0 0;
-    min-height:auto; }
-}
+    min-height:auto;
+    width:auto; } }
 
 .pinly {
   position: static;
   width: 500px;
   padding: 10px 10px 12px 10px;
-  margin: 24px auto;
+  margin: 72px auto 24px auto;
   background: #fff;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -225,7 +225,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     .actions {
       padding: 10px 10px 20px 30px;
       position: absolute;
-      top: 42px;
+      top: 30px;
       left: 510px;
       width: 118px;
       background: transparent; }
