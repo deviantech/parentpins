@@ -109,6 +109,7 @@ and (max-device-width : 1024px) {
   .profile .content #pin-preview.edit_preview_pin {margin-left: 530px !important;}
   .modal_overlay {padding-top:96px;}
   .empty-results .primary {margin-bottom:24px;}
+  .modal_overlay {margin-left:-42px;padding-right:42px;}
 }
 
 /* iPads (landscape) ----------- */
