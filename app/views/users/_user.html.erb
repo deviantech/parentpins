@@ -5,5 +5,5 @@
     <span><%= pluralize user.followed_by_even_indirectly_count, 'Follower', 'Followers' %></span>
     <span><%= user.following_even_indirectly_count %> Following</span>
   <% end %>
-  <%= render 'profile/follow_buttons', :to_follow => user, :in_list => true %>
+  <div class="follow_section"><%= render 'profile/follow_buttons', :to_follow => user, :in_list => true %></div>
 </li>
