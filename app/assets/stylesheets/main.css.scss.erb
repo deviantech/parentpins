@@ -32,6 +32,8 @@ body {
 /* Variables */
 $headerBG: #F3ECEF;
 $themeCOLOR: #E55799;
+$themeCOLOR: #7DBA00;
+$themeCOLOR: #76A613;
 $themeLinkCOLOR: #E55799;
 /* $themeCOLOR: #277A11; */
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
@@ -185,7 +187,7 @@ a {
     width: 140px; }
   &.tertiary_action {
     background-color: $themeCOLOR;
-    border: 1px solid #CF3B7F;
+    border: 1px solid $themeCOLOR;
     position: relative;
     font-weight: bold; }
   &.btn_facebook {
@@ -349,15 +351,15 @@ ul li .handle {
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; 
     }
     &.marker {
-      background-color: #FF8FC7;
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#FF8FC7');
-      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#FF8FC7')";
-      background-image: -moz-linear-gradient(top, #e5579a, #FF8FC7);
-      background-image: -ms-linear-gradient(top, #e5579a, #FF8FC7);
-      background-image: -o-linear-gradient(top, #e5579a, #FF8FC7);
-      background-image: -webkit-gradient(linear, center top, center bottom, from(#e5579a), to(#FF8FC7));
-      background-image: -webkit-linear-gradient(top, #e5579a, #FF8FC7);
-      background-image: linear-gradient(top, #e5579a, #FF8FC7);
+      background-color: $themeCOLOR;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'rgba(255,255,255,0)', endColorstr = 'rgba(255,255,255,0.2)');
+      -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'rgba(255,255,255,0)', endColorstr = 'rgba(255,255,255,0.2)')";
+      background-image: -moz-linear-gradient(top, rgba(255,255,255,0), rgba(255,255,255,0.2));
+      background-image: -ms-linear-gradient(top, rgba(255,255,255,0), rgba(255,255,255,0.2));
+      background-image: -o-linear-gradient(top, rgba(255,255,255,0), rgba(255,255,255,0.2));
+      background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(255,255,255,0)), to(rgba(255,255,255,0.2)));
+      background-image: -webkit-linear-gradient(top, rgba(255,255,255,0), rgba(255,255,255,0.2));
+      background-image: linear-gradient(top, rgba(255,255,255,0), rgba(255,255,255,0.2));
       color: #fff;
       text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
       &:before {
@@ -604,7 +606,7 @@ ul li .handle {
 .nav_profile {
   margin: 6px 0 0 0;
   padding: 0;
-  border-top: 1px solid #AB0653;
+  border-top: 1px solid $themeCOLOR;
   li {
     list-style: none; }
   a {
@@ -850,7 +852,10 @@ li.pin-context {
   display:inline;
   a {
     text-decoration:none;
-    font-size:18px; } }
+    font-size:18px;
+    &:hover {
+      text-decoration:underline;
+      color:#000; } } }
 
 .price {
   background: #f9f9f9;
@@ -1520,14 +1525,16 @@ input:focus[placeholder], textarea:focus[placeholder] {
       top: 45px;
       right: -260px; } } 
   .submit {
-    border-top: 1px solid #E0E0E0;
+    border-top: 1px solid $themeCOLOR;
     padding-top:15px;
     margin-bottom: -15px;
     .btn {
       color: #FFF;
       display: block;
       margin: 0 auto 20px auto;
-      font-size: 18px; } } }
+      padding:12px 12px 9px;
+      font-size: 18px;
+      line-height:24px; } } }
 
 
 .set_filters {
@@ -1734,9 +1741,13 @@ body.profile {
     min-height:430px;
     h1 {
       @include page-header;
-    }
+      a {text-decoration:none;
+        &:hover {
+          text-decoration:underline;
+          color:#000; } }
+      .user, img {
+        @include circular; } }
     #pin-preview.edit_preview_pin {
-      margin-left: 570px !important;
       min-height:820px; }
   }
   .wrapper {
@@ -2331,13 +2342,13 @@ code {
   display:inline-block;
   margin:0 20px 60px;
   position:relative;
-  a {text-decoration:none;
-    &:hover {
-      text-decoration:underline;
-      color:#000; } }
   .user {
     width:240px;
     text-align:center;
+    a {text-decoration:none;
+      &:hover {
+        text-decoration:underline;
+        color:#000; } }
     .avatar {
       display:block;
       height:120px;
@@ -2351,7 +2362,8 @@ code {
         @include circular; } }
     .user_link {
       font-size: 17px;
-      line-height: 24px; }
+      line-height: 24px;
+      font-weight:bold; }
     .description {
       font-size:13px;
       line-height:18px;
