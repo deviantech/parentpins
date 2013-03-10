@@ -15,9 +15,9 @@
       
       <% else %>
         <% if @profile == current_user %>
-          <h2>You haven't pinned anything yet!</h2>
+          <h2>No pins here yet!</h2>
           <p>Get started by creating a board and then checking out some of the <%= link_to 'trending pins', pins_path %> or <%= link_to 'featured users', featured_path %> to see what great content has already been added to ParentPins.</p>
-          <p>To ParentPin something you found on the web, first drag the <%= bookmarklet_link %> link to your bookmarks bar and then use that to ParentPin content from any site.</p>
+          <p>To ParentPin something you found on the web, first drag this <%= bookmarklet_link %> link to your bookmarks bar and then use that to ParentPin content from any site.</p>
           <p>
             <%= link_to 'Create a Board', new_profile_board_path(current_user), :class => 'ajax btn large primary' %>
             <%= link_to 'Add a Pin', new_pin_path, :class => 'ajax btn large primary' %>
