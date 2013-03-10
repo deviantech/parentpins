@@ -64,7 +64,8 @@ and (max-width : 320px) {
 
 /* iPads (portrait and landscape) ----------- */
 @media only screen 
-and (max-width : 1024px) {
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) {
   body {padding-top:97px;}
   .header_wrapper {width:100% !important;min-width:0;}
   .header {min-width:766px !important;max-width:1008px !important;width:auto !important;}
@@ -74,6 +75,7 @@ and (max-width : 1024px) {
   .logo:before{font-size:36px;line-height:36px;top:6px;}
   .header li a {font-size:15px;line-height:24px;margin-top:0;-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;}
   .header li.drop_down .top:before {right:7px;top:20px;}
+  .header li.drop_down .bookmarklet:hover:before {content:"Press and hold to add to your bookmarks";}
   .search {width:190px;padding:3px 0 0 3px;}
   .search input {width:120px;}
   .nav_login {font-size:14px;}
