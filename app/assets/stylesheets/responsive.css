@@ -64,11 +64,11 @@ and (max-width : 320px) {
 
 /* iPads (portrait and landscape) ----------- */
 @media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) {
+and (max-width : 1024px) {
   body {padding-top:97px;}
   .header_wrapper {width:100% !important;min-width:0;}
-  .header {min-width:766px !important;max-width:970px !important;width:auto !important;}
+  .header {min-width:766px !important;max-width:1008px !important;width:auto !important;}
+  .nav_wrapper {background:#f9f9f9;border-top:1px solid #ddd;}
   .header .clearfix {border-top:1px solid #fff;}
   .logo {position:relative;left:auto;font-size:24px;padding-left:48px;margin:0 auto;}
   .logo:before{font-size:36px;line-height:36px;top:6px;}
@@ -88,28 +88,35 @@ and (max-device-width : 1024px) {
   .general {padding-top:36px;}
   .content {width:560px;}
   .content.board_wide {width:760px !important;}
-  .wrapper.general .content {width:740px;padding:0 10px;}
+  .wrapper.general .content {min-width:740px;max-width:1000px;width:auto;padding:0 10px 0 24px;}
   .set_filters {position:relative;margin:0 auto 24px auto;right:auto;top:auto;}
   .profile .set_filters {margin:0 auto 24px auto;}
   .cat_filter {padding:20px 0px 0 40px;}
   .cat_filter p {padding:0 0 25px;}
-  ul.boards {margin:10px 0;}
-  ul.boards li {margin:15px 10px 10px 0;}
+  ul.boards {margin:10px;padding:0 0 0 10px;}
+  ul.boards li {margin:15px 5px 10px 0;}
   .profile ul.boards li {margin:15px 10px 10px 0;}
   .form.signup:after{left:-232px;}
   .content h1 {margin:0 auto 12px auto;}
   .custom .content h1 {width:100%;margin-top:24px;padding:0 0 12px 0;}
-  .profile .content #pins {margin-left:30px !important;}
+  .profile .content #pins {margin-left:30px !important;width: auto !important;min-width: 500px !important;max-width: 1000px;}
   .nav_profile a {font-size:16px;padding:14px 10px 18px 48px;}
-  .user_list {margin: 20px 0 0 30px;width: 240px;}
+  .user_list {margin: 20px 0 0 30px;width: auto;max-width: 750px;min-width: 500px;}
   .profile .follow_list #pins {margin-left:280px !important;width:260px;}
   .follow_list .users li:hover .follow_in_list {display:none;}
   .profile .content #pins.edit_preview_pin {margin-left:500px !important;}
   .form.pin_form:after {right:-220px;}
-  .profile .content #pin-preview.edit_preview_pin {margin-left: 530px !important;}
-  .modal_overlay {padding-top:96px;}
+  .profile .content #pin-preview.edit_preview_pin {margin-left: 530px !important;margin-top: 60px;}
   .empty-results .primary {margin-bottom:24px;}
-  .modal_overlay {margin-left:-42px;padding-right:42px;}
+  .modal_overlay {margin-left:-42px;padding-right:42px;overflow:scroll;}
+  .modal_overlay .board_wide {padding-top: 50px;}
+  .feat_carousel {width:auto;max-width:1000px;min-width:600px;}
+  .wrapper.general h1 {margin:0 0 10px 20px;}
+  .custom .content .timeline li {margin:10px 0 14px 10px;}
+  .profile .content #pin-preview.edit_preview_pin {margin-left: 0px !important;}
+  .form.pin_form {left:60px;}
+  .form.wide {width:600px;}
+  .form.wide .section {width:270px;}
 }
 
 /* iPads (landscape) ----------- */
