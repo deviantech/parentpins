@@ -30,8 +30,13 @@
       Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
     </p>
   </div>
+  <% if pin.comments_count > 0 %>
+    <% pin.comments.limit(4).each do |comment| %>
+      <div class="comment"><%= comment.body %></div>
+    <% end %>
+  <% end %>
   <% if user_signed_in? && !pin.new_record? %>
-    <div class="comment">
+    <div class="comment_form">
       <%= render 'comments/form', :commentable => pin %>
     </div>
   <% end %>
