@@ -1,5 +1,20 @@
 module ApplicationHelper
 
+  def display_teacher_info(user)
+    return 'Not a teacher' unless user.teacher?
+    base = [content_tag(:strong, "#{h user.name} is a teacher")]
+
+    unless user.teacher_subject.blank?
+      base << "Subject: #{h user.teacher_subject}"
+    end
+    
+    unless user.teacher_grade.blank?
+      base << "Grade: #{h user.teacher_grade}"
+    end
+    
+    base.join("<br>").html_safe
+  end
+
   def thumbnails_for_board(b, n = 4)
     urls = b.thumbnail_urls(n)
     (n - urls.length).times do
