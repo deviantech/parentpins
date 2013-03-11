@@ -21,7 +21,7 @@
 	* @theme page
 	*/
 	body, #backgroundTable{
-		/*@editable*/ background-color:#fcfcfc;
+		/*@editable*/ background-color:#f9f9f9;
 	}
 
 	/**
@@ -123,7 +123,7 @@
 	*/
 	#templateHeader{
 		/*@editable*/ background-color:#FFFFFF;
-		/*@editable*/ border-bottom:0;
+		/*@editable*/ border-bottom:1px solid #eee;
 	}
 
 	/**
@@ -202,10 +202,11 @@
 	.templateButton{
 		-moz-border-radius:3px;
 		-webkit-border-radius:3px;
-		/*@editable*/ background-color:#f13895;
+		/*@editable*/ background-color:#76A613;
 		/*@editable*/ border:0;
 		border-collapse:separate !important;
 		border-radius:3px;
+		color:#fff !important;
 	}
 
 	/**
@@ -238,8 +239,8 @@
 	* @theme footer
 	*/
 	#templateFooter{
-		/*@editable*/ background-color:#FFFFFF;
-		/*@editable*/ border-top:0;
+		/*@editable*/ background-color:#F9F9F9;
+		/*@editable*/ border-top:1px solid #ddd;
 	}
 
 	/**
@@ -278,7 +279,7 @@
 	* @theme footer
 	*/
 	#utility{
-		/*@editable*/ background-color:#FFFFFF;
+		/*@editable*/ background-color:none;
 		/*@editable*/ border:0;
 	}
 

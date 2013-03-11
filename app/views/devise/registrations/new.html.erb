@@ -20,6 +20,20 @@
         <%= f.password_field :password, :placeholder => 'Create Password' %>
       </div>
 
+      <div class="field checkbox">
+        <label for="user_is_teacher">Are you a teacher?</label>
+        <input id="user_is_teacher" type="checkbox" value="1" name="user[is_teacher]">
+      </div>
+      
+      <!-- if is_teacher checked, display the next two .field divs -->
+      <div class="field">
+        <input type="text" value="" size="30" placeholder="Grade level" name="user[grade_level]" id="user_grade_level">
+      </div>
+      <div class="field">
+        <input type="text" value="" size="30" placeholder="Subject you teach" name="user[subject]" id="user_subject">
+      </div>
+      
+
       <div class="submit">
         <%= f.submit "Create Your Account", :class => 'btn tertiary_action' %>
       </div>

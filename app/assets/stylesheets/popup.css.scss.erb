@@ -8,6 +8,12 @@
 	font-weight: normal;
 	font-style: normal; }
 
+/* variables */
+$themeCOLOR: #76A613;
+$themeLinkCOLOR: #2886B4;
+$themeCOLORLight: lighten( $themeCOLOR, 36% );
+
+
 html {
   background: url("/assets/patterns/debut_light.png") repeat scroll 0 0 white;
 }
@@ -70,7 +76,7 @@ body {
   -webkit-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
   -moz-box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
   box-shadow: 0 2px 3px rgba(0, 10, 10, 0.38);
-  margin-left: 240px;
+  margin-left: 234px;
   width:338px;
   padding: 10px;
   .hidden {
@@ -308,8 +314,8 @@ input.btn {
     -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; }
   &.tertiary_action {
-    background-color: #E55799;
-    border: 1px solid #E55799;
+    background-color: $themeCOLOR;
+    border: 1px solid $themeCOLOR;
     position: relative;
     font-weight: bold;
     color:#fff; } 
@@ -364,7 +370,7 @@ input.btn {
     line-height:36px;
     a {
       text-decoration:none;
-      color:#E5579A;
+      color:$themeCOLOR;
       &:hover {
         color:#000;
         text-decoration:underline; } } }
@@ -385,3 +391,14 @@ input.btn {
   }
 }
 
+.errors {
+  color: #D00000;
+  list-style: none outside none;
+  margin: 0;
+  padding: 12px;
+  font-size:15px;
+  line-height:18px;
+  background:#FFEBEB;
+  border:1px solid #FFD3D3;
+  li {
+    padding:0 0 12px 0; } }
