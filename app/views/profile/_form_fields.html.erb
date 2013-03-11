@@ -6,3 +6,36 @@
   <p>Write something about yourself...</p>
   <%= f.text_area :bio, :placeholder => "Ex: I'm always checking out ParentPins for great ideas on healthy, kid-friendly recipes..." %>
 </div>
+
+<div class="field checkbox">
+  <p>Are you a teacher?</p>
+  <%= f.check_box :teacher %>
+  <%= f.label :teacher, "Yup" %>
+</div>
+
+<div class="teacher-fields <%= 'hidden' unless f.object.teacher? %>">
+  <div class="field">
+    <%= f.text_field :teacher_grade, :placeholder => 'Grade level' %>
+  </div>
+  <div class="field">
+    <%= f.text_field :teacher_subject, :placeholder => 'Subject you teach' %>
+  </div>
+</div>
+
+<% content_for :footer_js do %>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+      function updateTeacherUI() {
+        var fields = $('.teacher-fields');
+        if ($('#user_teacher').is(':checked')) {
+          fields.hasClass('hidden') ? fields.hide().removeClass('hidden').slideDown() : fields.slideDown();
+        } else {
+          fields.slideUp();
+        }
+      }
+      
+      updateTeacherUI();
+      $('#user_teacher').change(updateTeacherUI);
+    });
+  </script>
+<% end %>

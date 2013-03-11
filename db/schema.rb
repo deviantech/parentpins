@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130301221924) do
+ActiveRecord::Schema.define(:version => 20130311201226) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -42,6 +43,8 @@ ActiveRecord::Schema.define(:version => 20130301221924) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "categories", ["name"], :name => "index_categories_on_name", :unique => true
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -105,9 +108,9 @@ ActiveRecord::Schema.define(:version => 20130301221924) do
   add_index "pins", ["via_id"], :name => "index_pins_on_via_id"
 
   create_table "users", :force => true do |t|
-    t.string   "username",               :default => "", :null => false
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "username",               :default => "",    :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -116,14 +119,17 @@ ActiveRecord::Schema.define(:version => 20130301221924) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "provider"
     t.string   "uid"
     t.string   "avatar"
     t.string   "cover_image"
     t.integer  "kids"
     t.text     "bio"
+    t.boolean  "teacher",                :default => false
+    t.string   "teacher_grade"
+    t.string   "teacher_subject"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
