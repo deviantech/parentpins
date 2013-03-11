@@ -43,7 +43,7 @@
           </ul>
         </li>
         <li class="drop_down">
-          <%= link_to "#{current_user.username.titleize}", activity_profile_path(current_user), :class => 'top username' %>
+          <%= link_to truncate(current_user.username.titleize, :length => 13), activity_profile_path(current_user), :class => 'top username' %>
           <ul class="inner">
             <li><%= link_to 'Activity', activity_profile_path(current_user) %></li>
             <li><%= link_to 'Pins', pins_profile_path(current_user) %></li>
