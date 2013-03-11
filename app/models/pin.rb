@@ -89,8 +89,9 @@ class Pin < ActiveRecord::Base
       nil
     end
     
-    the_pin = if source
-      pin = Pin.new
+    pin = Pin.new
+    
+    if source
       REPIN_ATTRIBUTES.each do |k|
         pin.send("#{k}=", source.send(k))
       end
@@ -101,19 +102,20 @@ class Pin < ActiveRecord::Base
       
       pin.repinned_from = source
       pin.via = source.user unless source.user == user
-      pin.user = user
-      pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
-      
-      if pin.board # If just created board from scratch
-        pin.board.user_id ||= user.id
-      end
-      
-      pin
     else
-      user.pins.new(other_params)
+      # user.pins.new(other_params) somehow doesn't allow creating new boards
+      pin.attributes = other_params
+    end
+
+    pin.user = user
+        
+    if pin.board # If just created board from scratch
+      pin.board.user_id ||= user.id
+    else
+      pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
     end
     
-    [source, the_pin]
+    [source, pin]
   end
   
   # ===========================================================
