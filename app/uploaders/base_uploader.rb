@@ -12,7 +12,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   process :set_content_type
   process :fix_exif_rotation
   process :strip
-  process :optimize
+  # process :optimize
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
   include Sprockets::Helpers::RailsHelper
