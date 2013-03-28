@@ -21,7 +21,7 @@
       <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
       
       <% if @profile.teacher? %>
-        <p class="teacher_info">
+        <p class="teacher_info teacher_icon">
           <%= display_teacher_info @profile %>
         </p>
       <% end %>
