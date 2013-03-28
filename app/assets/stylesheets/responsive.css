@@ -160,3 +160,23 @@ only screen and (-webkit-min-device-pixel-ratio : 1.5),
 only screen and (min-device-pixel-ratio : 1.5) {
 /* Styles */
 }
+
+/* Samsung Note 2 (landscape) ----------- */
+@media only screen 
+and (min-device-width : 1280px) 
+and (max-device-width : 720px) 
+and (orientation : landscape) {
+  body {padding-top:0;}
+  .header_wrapper {position:relative;}
+  .wrapper {width:1280px;}
+}
+
+/* Samsung Note 2 (portrait) ----------- */
+@media only screen 
+and (min-device-width : 720px) 
+and (max-device-width : 1280px) 
+and (orientation : portrait) {
+  body {padding-top:0;}
+  .header_wrapper {position:relative;}
+  .wrapper {width:720px;}
+}
