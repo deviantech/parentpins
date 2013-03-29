@@ -24,7 +24,7 @@
     <% end %>
     
     <% unless defined?(@board) %>
-      <li class="last">
+      <li class="last categories">
         <a href="#" class="selected"><%= @category.try(:name) || 'All Categories' %></a>
         <ol>
           <li><%= link_to 'All Categories', url_for(params.merge(:category => nil)), :class => @category.blank? ? 'current' : '' %></li>

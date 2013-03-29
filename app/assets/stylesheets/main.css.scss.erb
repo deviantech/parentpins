@@ -544,8 +544,8 @@ ul li .handle {
     padding: 0 10px 0 25px; }
   .kid_count {
     position: relative;
-    padding: 8px 10px 0 50px;
-    margin: 10px 0 0 0;
+    padding: 8px 10px 8px 50px;
+    margin: 10px 0;
     &:before {
   	  @include pinli-font;
       content: "\e012";
@@ -636,13 +636,13 @@ ul li .handle {
       height: 30px;
       width: 30px; } }
   .pins:after {
-    content:"\e000"; }
+    content:"\e001"; }
   .activity:after {
-    content:"\e003"; }
+    content:"\e004"; }
   .recent:after {
     content:"\e000"; }
   .likes:after {
-    content:"\e005"; }
+    content:"\e006"; }
   .boards:after {
     content:"\e00f"; }
   .followed_by:after {
@@ -821,10 +821,10 @@ li.pin-context {
   width: 18px; }
 
 .repin_button:before {
-  content:"\e000"; }
+  content:"\e001"; }
 
 .like_button:before {
-  content:"\e005"; }
+  content:"\e006"; }
 
 .edit_button:before {
   content:"\e011";
@@ -841,7 +841,7 @@ li.pin-context {
 
 .comment_button {
   &:before {
-    content:"\e001";}
+    content:"\e003";}
   margin-top: 10px; }
 
 .board-controls {
@@ -1383,9 +1383,49 @@ form .field {
   input {
     display:block;
     width:20px;
-    float:left; }
+    float:left !important; }
   label {
-    float:left; } }
+    float:left !important;
+    clear:none; } }
+.form .field.teacher p {
+  position:relative;
+  padding-left:22px;
+  &:before {
+    position:absolute;
+    @include pinli-font;
+    content:"\e017";
+    top:0;
+    left: 0;
+    color: #000;
+    font-size: 18px;
+    height: 28px;
+    width: 28px;} }
+    
+.teacher_icon {
+  position:relative;
+  padding-left:22px;
+  &:before {
+    position:absolute;
+    @include pinli-font;
+    content:"\e017";
+    top:0;
+    left: 0;
+    color: #000;
+    font-size: 18px;
+    height: 28px;
+    width: 28px;} }
+    
+.teacher_info {
+  padding: 8px 10px 8px 50px !important;
+  margin: 10px 0;
+  border-top:1px solid #ddd;
+  border-bottom:1px solid #ddd;
+  font-size:13px;
+  line-height:18px;
+  background:#d6ecff;}
+.teacher_info.teacher_icon:before {
+  top:10px;
+  left:20px;}
 
 .delete:hover {color:red;}
 
@@ -1616,6 +1656,16 @@ input:focus[placeholder], textarea:focus[placeholder] {
           -o-transition: all 0.4s ease-in-out;
           transition: all 0.4s ease-in-out; } }
 } } } 
+
+.set_filters .categories ol {
+  width:300px;
+  left:-180px;
+  background:#fff;
+  overflow:hidden;}
+.set_filters .categories li {
+  width:100px;
+  float:left;
+  margin:0;}
     
 .cat_main {
   padding: 10px 0 0 0;
@@ -2262,7 +2312,7 @@ h1, h2 {
         content: "";
         height: 0;
         position: absolute;
-        right: -9px;
+        right: -8px;
         top: 9px;
         width: 0; }
       &:hover {
