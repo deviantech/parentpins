@@ -12,6 +12,8 @@ class BaseUploader < CarrierWave::Uploader::Base
   process :set_content_type
   process :fix_exif_rotation
   process :strip
+  
+  # TODO: run piet gem's optimizations via resque eventually - https://github.com/albertbellonch/piet
   # process :optimize
 
   # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
