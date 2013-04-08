@@ -9,3 +9,9 @@ Global.addFlashMsg = (msg, name) ->
   """  
   $(content).hide().appendTo(box).slideDown()
   Global.closeModal()
+
+# Close bookmarklet flash message specially
+closeBookmarkletFlash = ->
+  $.post("/mark/got_bookmarklet")
+
+$('.flashmsg.alert-bookmarklet').on 'click', '[data-dismiss="alert"]', closeBookmarkletFlash

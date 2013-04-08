@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
   before_filter :authenticate_user!,  :only => [:edit, :update, :activity]
-  before_filter :get_profile
+  before_filter :get_profile,         :except => [:got_bookmarklet]
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :set_filters,         :only => [:pins, :likes, :followed_by, :following]
   
@@ -45,6 +45,11 @@ class ProfileController < ApplicationController
   def unfollow
     current_user.unfollow(@profile) if user_signed_in?
     render 'follow'
+  end
+  
+  def got_bookmarklet
+    current_user.update_attribute(:got_bookmarklet, true) if user_signed_in?
+    render(:nothing => true)
   end
   
   protected

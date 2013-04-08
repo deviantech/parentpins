@@ -1,3 +1,7 @@
+<% if user_signed_in? && !current_user.got_bookmarklet? %>
+  <% flash[:bookmarklet] = "Drag this link to your toolbar to pin images from other sites: #{bookmarklet_link}".html_safe %>
+<% end %>
+
 <div id="flash" class="<%= 'hidden' if flash.blank? %>">
   <% unless flash.blank? %>    
     <% flash.each do |name, msg| %>
