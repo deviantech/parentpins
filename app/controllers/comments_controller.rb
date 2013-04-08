@@ -4,9 +4,7 @@ class CommentsController < ApplicationController
   def create
     @comment = current_user.comments.new(params[:comment])
     
-    if @comment.save
-      flash[:notice] = "Added comment"
-    else
+    unless @comment.save
       flash[:error] = "Unable to save comment"
     end
     redirect_to :back

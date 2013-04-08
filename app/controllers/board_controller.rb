@@ -86,7 +86,7 @@ class BoardController < ApplicationController
   def find_profile_board
     @board = @profile.boards.find(params[:id])
   rescue ActiveRecord::RecordNotFound => e
-    redirect_to profile_path(@profile), :notice => 'Unable to find board'
+    redirect_to profile_path(@profile)
   end
 
   def try_getting_user
