@@ -10,6 +10,10 @@
         
         <% if @board.pins.with_image.blank? %>
           <p>Once you add pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
+          
+          <div class="submit">
+            <%= f.button 'Close', :class => 'btn tertiary_action', :onclick => "Global.closeModal();return false;" %>
+          </div>
         <% else %>
           <div id="board-cover-image-slides">
             <div class="slides_container" style="display:none;">
@@ -20,12 +24,11 @@
             <a href="#" class="prev"><%= image_tag 'ui/slides/arrow-prev.png', :alt => 'Previous' %></a>
             <a href="#" class="next"><%= image_tag 'ui/slides/arrow-next.png', :alt => 'Next' %></a>
           </div>
-        <% end %>
-        
-        <div class="submit">
-          <%= f.submit 'Set Cover', :class => 'btn tertiary_action' %>
-        </div>
-                
+          
+          <div class="submit">
+            <%= f.submit 'Set Cover', :class => 'btn tertiary_action' %>
+          </div>
+        <% end %>        
       <% end %>
     
     </div>
