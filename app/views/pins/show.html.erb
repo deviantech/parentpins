@@ -22,9 +22,6 @@
       <h2 class="title">
         <%= link_to @pin.url, @pin.url, :title => 'link out to site', :target => '_blank', :rel => 'nofollow' %>
       </h2>
-      <% if current_user == @pin.user %>
-        <span class="action right"><%= link_to 'edit', edit_pin_path(@pin), :class => 'ajax edit' %></span>
-      <% end %>
       <%= render 'pins/stats', :pin => @pin %>
       <%= render 'pins/actions', :pin => @pin %>
       <%= link_to @pin.url, :target => '_blank', :rel => 'nofollow', :class => 'image_link' do %>
