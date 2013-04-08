@@ -189,3 +189,10 @@ function applyMasonry() {
     $(this).masonry('reload');
   });  
 }
+
+function viewAllComments(link) {
+  var div = $(link).parents('.comment');
+  div.hide();
+  div.siblings('.comment').removeClass('hidden');
+  div.parents('.masonry').masonry('reload');
+}

@@ -46,8 +46,8 @@ $(document).ready(function() {
       focusable = $this.parents('.modal_overlay').find('.comment_form textarea').first();
       $this.parents('.modal_overlay').scrollTo(focusable);
     } else {
-      focusable = $this.parents('li.pin').find('.comment textarea').first();
-      focusable.parents('.comment').toggle();
+      focusable = $this.parents('li.pin').find('.comment_form textarea').first();
+      focusable.parents('.comment_form').toggle();
       focusable.parents('.masonry').masonry('reload');
       $.scrollTo( $this.parents('li.pin') );
     }
@@ -55,7 +55,7 @@ $(document).ready(function() {
     e.preventDefault();
     e.stopPropagation();
   });
-  
+    
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {
     var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));

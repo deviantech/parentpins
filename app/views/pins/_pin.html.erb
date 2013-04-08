@@ -31,8 +31,17 @@
     </p>
   </div>
   <% if pin.comments_count > 0 %>
-    <% pin.comments.limit(4).each do |comment| %>
-      <div class="comment"><%= comment.body %></div>
+    <% pin.comments.each_with_index do |comment, idx| %>
+      <% if idx == 3 %>
+        <div class="comment load-more">
+          <%= link_to_function "View All #{pin.comments_count} Comments", "viewAllComments(this)" %>
+        </div>
+      <% end %>
+      <div class="comment <%= dom_id(comment) %><%= ' hidden' if idx >= 3 %>">
+        <%= avatar_link(comment.user, :v30) %>
+        <%= link_to comment.user.name, profile_path(comment.user) %>:
+        <%= comment.body %>
+      </div>
     <% end %>
   <% end %>
   <% if user_signed_in? && !pin.new_record? %>

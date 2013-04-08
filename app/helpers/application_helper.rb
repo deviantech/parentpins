@@ -131,8 +131,8 @@ module ApplicationHelper
     end
   end
 
-  def avatar_link(user)
-    link_to image_tag(user.avatar.v50.url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar_link'
+  def avatar_link(user, version = 'v50')
+    link_to image_tag(user.avatar.send(version).url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar_link'
   end
 
   def error_messages_for(resource)

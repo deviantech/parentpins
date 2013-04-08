@@ -48,7 +48,7 @@
               <%= f.hidden_field :commentable_id, :value => @pin.try(:id) %>
               <%= avatar_link(current_user) %>
               <%= f.text_area :body, :placeholder => 'Enter your comment...', :maxlength => 10000 %>
-              <%= f.submit 'Comment', :class => "btn sec_action comment_button" %>
+              <%= f.submit 'Comment', :class => "btn sec_action" %>
             <% end %>
           </div>
         <% end %>
