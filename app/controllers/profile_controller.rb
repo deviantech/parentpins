@@ -32,7 +32,7 @@ class ProfileController < ApplicationController
   def update
     if params[:from] == 'step_2' ? @profile.update_attributes(params[:user]) : @profile.update_maybe_with_password(params[:user])
       sign_in(@profile, :bypass => true)
-      redirect_to activity_profile_path(@profile), :notice => "Updated profile"
+      redirect_to activity_profile_path(@profile), :notice => "Updated your profile."
     else
       render 'edit'
     end
@@ -63,12 +63,12 @@ class ProfileController < ApplicationController
     @profile ||= User.find(params[:id])
     get_profile_counters
   rescue ActiveRecord::RecordNotFound => e
-    redirect_to(root_path, :notice => "Unable to find the specified profile")
+    redirect_to(root_path, :notice => "Unable to find the specified profile.")
   end
   
   def get_profile_owner
     unless @profile == current_user
-      redirect_to(profile_path(@profile), :notice => "You don't own this profile") and return
+      redirect_to(profile_path(@profile), :notice => "You don't own this profile.") and return
     end
   end
 

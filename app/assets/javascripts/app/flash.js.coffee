@@ -10,6 +10,12 @@ Global.addFlashMsg = (msg, name) ->
   $(content).hide().appendTo(box).slideDown()
   Global.closeModal()
 
+Global.setFlashMsg = (msg, name) -> 
+  $('.flashmsg .close').each ->
+    unless $(this).parent().hasClass('.alert-bookmarklet')
+      $(this).click()
+  Global.addFlashMsg(msg, name)
+
 # Close bookmarklet flash message specially
 closeBookmarkletFlash = ->
   $.post("/mark/got_bookmarklet")

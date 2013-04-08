@@ -29,7 +29,7 @@ class BoardController < ApplicationController
   def create
     @board = current_user.boards.new(params[:board])
     if @board.save
-      redirect_to profile_board_path(@board.user, @board), :notice => 'Created new board'
+      redirect_to profile_board_path(@board.user, @board)
     else
       flash.now[:error] = "Unable to save board"
       render :action => 'new'
@@ -50,7 +50,7 @@ class BoardController < ApplicationController
 
   def update
     if @board.update_attributes(params[:board])
-      redirect_to profile_board_path(@board.user, @board), :notice => 'Saved changes to board'
+      redirect_to profile_board_path(@board.user, @board), :notice => 'Saved changes to board.'
     else
       flash.now[:error] = "Unable to save board"
       render :action => 'new'
@@ -59,7 +59,7 @@ class BoardController < ApplicationController
 
   def destroy
     @board.destroy
-    redirect_to profile_boards_path(current_user), :notice => 'Removed Board'
+    redirect_to profile_boards_path(current_user), :notice => %Q{Removed Board: "#{@board.name}".}
   end
   
   def comments

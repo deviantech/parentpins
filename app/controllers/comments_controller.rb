@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     @comment = current_user.comments.new(params[:comment])
     
     unless @comment.save
-      flash[:error] = "Unable to save comment"
+      flash[:error] = "Unable to save comment."
     end
     redirect_to :back
   end
