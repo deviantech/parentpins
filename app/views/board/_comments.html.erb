@@ -7,7 +7,7 @@
           <% if @board.comments_count.zero? %>
             Add first comment!
           <% elsif @board.comments_count == 1 %>
-            Reply to comment!
+            Add Comment
           <% else %>
             See all comments
           <% end %>
@@ -45,7 +45,17 @@
       $(document).ready(function(){
   
         $("#message_toggle").click(function() {
-          $("#comment_form_wrapper").is(':visible') ? $("#comment_form_wrapper").slideUp("slow") : $("#comment_form_wrapper").slideDown("slow");
+          var wrapper = $("#comment_form_wrapper");
+          var link = $(this);
+          
+          if (wrapper.is(':visible')) {
+            link.text( link.data('origText') || 'See All Comments');
+            wrapper.slideUp("slow");
+          } else {
+            link.data('origText', link.text());
+            wrapper.slideDown("slow");
+            link.text('Collapse Comments');
+          }
           $("#more_comments").is(':visible') ? $("#more_comments").slideUp("slow") : $("#more_comments").slideDown("slow");
         
           $('.load_more_comments_button').trigger('click');
