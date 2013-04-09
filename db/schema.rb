@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130409225737) do
+ActiveRecord::Schema.define(:version => 20130409233713) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20130409225737) do
     t.string   "teacher_grade"
     t.string   "teacher_subject"
     t.boolean  "got_bookmarklet",        :default => false
+    t.string   "website"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

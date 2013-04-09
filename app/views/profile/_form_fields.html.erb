@@ -1,10 +1,16 @@
 <div class="field">
-  <p>How many kids do you have?</p>
-  <%= f.text_field :kids, :placeholder => "1, 2, more?", :type => 'number' %>
-</div>
-<div class="field">
   <p>Write something about yourself...</p>
   <%= f.text_area :bio, :placeholder => "Ex: I'm always checking out ParentPins for great ideas on healthy, kid-friendly recipes..." %>
+</div>
+
+<div class="field">
+  <p>Do you have an external website?</p>
+  <%= f.url_field :website, :placeholder => "Ex: your blog URL" %>
+</div>
+
+<div class="field">
+  <p>How many kids do you have?</p>
+  <%= f.text_field :kids, :placeholder => "1, 2, more?", :type => 'number' %>
 </div>
 
 <div class="field checkbox teacher">

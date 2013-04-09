@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website
   
   has_many :boards,       :order => 'position ASC',     :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -25,9 +25,10 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :username
   
-  validates_uniqueness_of :username, :allow_blank => false
-  validates_format_of :username, :with => /\A[a-z0-9\.\-\_]+\z/i
-  validates_numericality_of :kids, :allow_blank => true, :message => 'must be a number'
+  validates_uniqueness_of   :username,  :allow_blank => false
+  validates_format_of       :username,  :with => /\A[a-z0-9\.\-\_]+\z/i
+  validates_numericality_of :kids,      :allow_blank => true, :message => 'must be a number'
+  validates_format_of       :website,   :allow_blank => true, :with => URI::regexp(%w(http https))
   validate :valid_username
   before_destroy :clean_redis
 
