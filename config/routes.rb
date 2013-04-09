@@ -22,6 +22,7 @@ ParentPins::Application.routes.draw do
   end
   
   # Pretty URLs for pin subtypes
+  root :to => redirect("/pins")
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
   match '/products' => 'pins#index',  :kind => 'product',   :as => 'products'
   match '/ideas'    => 'pins#index',  :kind => 'idea',      :as => 'ideas'
@@ -62,9 +63,6 @@ ParentPins::Application.routes.draw do
   end
   
   resources :comments, :only => [:create, :destroy]
-  
-  
-  root :to => 'pins#index'
   
   resource :feedback, :only => [:new, :create]
   
