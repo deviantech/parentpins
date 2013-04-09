@@ -1,6 +1,6 @@
 <%= render 'shared/filters' %>
 
-<% if @pins.blank? && (@profile_counters && @profile_counters[params[:action].to_sym].to_i.zero?) %>
+<% if @pins.blank? %>
   <div class="empty-results">
     <% if @profile.blank? %>
       <h2>No pins to show</h2>
