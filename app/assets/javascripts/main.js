@@ -115,4 +115,11 @@ $(document).ready(function() {
     $(this).hide().siblings('a.start-sorting').show();
   });
   
+  // Pin listing pages - if pin image too small, .actions will overlay entirely. Clicking on actions but NOT on one of its buttons should open normal pin link
+  $('ul.masonry').on('click', 'li.pin .actions', function(e) {
+    if (e.target.className.match(/actions/)) {
+      $(e.target).siblings('a.image_link').click();
+    }
+  });
+  
 });
