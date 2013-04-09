@@ -1,6 +1,8 @@
 <div class="featured">
   <div class="featured_blogger">
     <h2>Featured Pinners</h2>
-    <p>featured blogger content here</p>
+    <% Featured.with_user.random.limit(2).each do |featured| %>
+      <p>Kyle, you can put placeholder here. featured.user will get you user fields</p>
+    <% end %>
   </div>
 </div>

@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   has_many :comments,     :dependent => :destroy
   
   has_many :feedbacks
+  has_one  :featured, :dependent => :destroy
   
   extend FriendlyId
   friendly_id :username

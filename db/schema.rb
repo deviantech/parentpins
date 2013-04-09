@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408195300) do
+ActiveRecord::Schema.define(:version => 20130409225737) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -57,6 +57,16 @@ ActiveRecord::Schema.define(:version => 20130408195300) do
 
   add_index "comments", ["commentable_type", "commentable_id"], :name => "index_comments_on_commentable_type_and_commentable_id"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
+
+  create_table "featureds", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "description"
+    t.boolean  "live",        :default => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "featureds", ["live"], :name => "index_featureds_on_live"
 
   create_table "feedbacks", :force => true do |t|
     t.text     "body"
