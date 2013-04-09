@@ -55,6 +55,10 @@ class Pin < ActiveRecord::Base
   
   default_scope newest_first
 
+  def repinned?
+    !repinned_from_id.blank?
+  end
+
   def self.trending
     # TODO: implement some sort of trending logic if kind/category aren't provided
     newest_first.not_repinned
