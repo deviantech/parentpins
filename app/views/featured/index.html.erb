@@ -3,7 +3,7 @@
   <h1>Featured ParentPinners</h1>
 
   <div class="feat_carousel">
-    <% @featured.each do |featured| %>
+    <% Featured.show(4).each do |featured| %>
       <% user = featured.user %>
       <div class="feature">
         <div class="user">

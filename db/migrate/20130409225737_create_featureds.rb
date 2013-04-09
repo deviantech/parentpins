@@ -11,7 +11,7 @@ class CreateFeatureds < ActiveRecord::Migration
     
     if Rails.env.development?
       User.limit(4).each do |u|
-        Featured.create(:user_id => u.id)
+        Featured.create(:user_id => u.id, :live => true)
       end
     end
   end
