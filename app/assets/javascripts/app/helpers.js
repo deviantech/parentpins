@@ -144,9 +144,11 @@ function startSorting(toSort, url) {
   }
 
   function showHandles() {
-    toSort.find('.handle').slideDown(function() {
-      if (toSort.hasClass('masonry')) toSort.masonry('reload');
-    });
+    if (toSort.hasClass('masonry')) {
+      toSort.addClass('hadMasonry');
+      toSort.masonry('destroy');
+    }
+    toSort.find('.handle').slideDown();
   }
 
   if (toSort.hasClass('js-sorting')) {
@@ -173,13 +175,13 @@ function startSorting(toSort, url) {
 }
 function stopSorting(toSort) {
   toSort.sortable('disable');
-  toSort.find('.handle').slideUp(function() {
-    if (toSort.hasClass('masonry')) toSort.masonry('reload');
-  });
+  if (toSort.hasClass('hadMasonry')) applyMasonry(toSort);
+  toSort.find('.handle').slideUp();
 }
 
-function applyMasonry() {
-  $('.masonry').masonry({
+function applyMasonry(selector) {
+  selector = selector || '.masonry'
+  $(selector).masonry({
     columnWidth: 10,
     gutterWidth: 6,
     itemSelector: 'li',
