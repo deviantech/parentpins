@@ -29,8 +29,10 @@ group :development do
   gem 'capistrano-ext', :require => false
   gem 'capistrano_colors', :require => false
   gem 'capistrano-conditional', :git => 'git://github.com/deviantech/capistrano-conditional.git', :require => false
-  gem 'mail_view'
 end
+
+# TODO: when ALLOW_MAIL_PREVIEW it removed in favor of development only, put this in the development group
+gem 'mail_view'
 
 group :test do
   gem 'factory_girl_rails', :platform => :ruby_19
