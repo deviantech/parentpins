@@ -16,4 +16,9 @@ class UserMailer < BaseMailer
     mail(:to => @user.email, :subject => "[ParentPins] Reset Password")
   end
   
+  def featured_notice(uid)
+    @user = User.find(uid)
+    mail(:to => @user.email, :subject => "[ParentPins] You've been selected as a Featured Pinner!")
+  end
+  
 end

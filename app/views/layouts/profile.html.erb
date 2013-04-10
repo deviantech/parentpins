@@ -31,6 +31,13 @@
         </p>
       <% end %>
 
+      <% if @profile.featured? %>
+        <p class="featured_info featured_icon">
+          Featured Pinner!
+        </p>
+      <% end %>
+      
+
       <% unless @profile.bio.blank? %>
       <p class="bio"><%= @profile.bio %></p>
       <% end %>

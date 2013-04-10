@@ -31,8 +31,7 @@ ParentPins::Application.routes.draw do
 
   get '/boards' => 'board#index', :as => :boards
   
-  # TODO: implement this page
-  get '/featured' => 'featured#index'
+  get '/featured' => 'featured#index', :as => :featured
   
   post '/mark/got_bookmarklet' => 'profile#got_bookmarklet'
   

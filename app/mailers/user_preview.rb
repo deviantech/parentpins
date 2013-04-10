@@ -15,6 +15,10 @@ if Rails.env.development?
       UserMailer.password_reset( User.first.try(:id) )
     end
   
+    def featured_notice
+      UserMailer.featured_notice( User.first.try(:id) )
+    end
+  
   end
 
 end

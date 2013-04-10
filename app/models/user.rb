@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio
   
   has_many :boards,       :order => 'position ASC',     :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -92,8 +92,9 @@ class User < ActiveRecord::Base
   end
 
   def feature
+    return nil if featured?
     update_attribute :featured, true
-    # TODO: Send notification email
+    UserMailer.featured_notice(self.id).deliver
   end
   
   def unfeature
