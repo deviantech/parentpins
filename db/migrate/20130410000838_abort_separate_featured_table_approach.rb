@@ -4,6 +4,12 @@ class AbortSeparateFeaturedTableApproach < ActiveRecord::Migration
     add_column :users, :featured_bio, :text
     add_index :users, :featured
     drop_table :featureds
+    
+    if Rails.env.development?
+      User.limit(4).each do |u|
+        u.feature
+      end
+    end
   end
 
   def down

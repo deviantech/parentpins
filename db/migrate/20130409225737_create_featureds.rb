@@ -9,7 +9,7 @@ class CreateFeatureds < ActiveRecord::Migration
     
     add_index :featureds, :live
     
-    if Rails.env.development?
+    if Rails.env.development? && defined?(Featured)
       User.limit(4).each do |u|
         Featured.create(:user_id => u.id, :live => true)
       end

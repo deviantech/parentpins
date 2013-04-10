@@ -20,7 +20,6 @@ class User < ActiveRecord::Base
   has_many :comments,     :dependent => :destroy
   
   has_many :feedbacks
-  has_one  :featured, :dependent => :destroy
   
   extend FriendlyId
   friendly_id :username
@@ -34,11 +33,11 @@ class User < ActiveRecord::Base
 
   # Used by searchable
   scope :newest_first, order('id DESC')
+  scope :featured, where({:featured => true})
 
   def name
     username.to_s
   end
-
 
   # If password required for update, try. Otherwise just to update. Not the cleanest combination of forms...
   def update_maybe_with_password(params)
@@ -51,7 +50,6 @@ class User < ActiveRecord::Base
       update_attributes(params)
     end
   end
-
 
   def self.new_with_session(params, session)
     super.tap do |user|
@@ -81,6 +79,27 @@ class User < ActiveRecord::Base
   def activity
     Pin.where(['user_id IN (?) OR board_id IN (?)', users_following_ids, boards_following_ids])
   end
+
+  def self.get_featured(n = 2)
+    self.featured.order('rand()').limit(n)
+  end
+
+  def featured_bio
+    desc = self['featured_bio']
+    desc = self.bio if desc.blank?
+    desc = 'No bio provided.' if desc.blank?
+    desc
+  end
+
+  def feature
+    update_attribute :featured, true
+    # TODO: Send notification email
+  end
+  
+  def unfeature
+    update_attribute :featured, false
+  end
+
 
   # ===============================
   # = REDIS: last board pinned to =

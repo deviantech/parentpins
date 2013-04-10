@@ -3,15 +3,14 @@
   <h1>Featured ParentPinners</h1>
 
   <div class="feat_carousel">
-    <% Featured.show(4).each do |featured| %>
-      <% user = featured.user %>
+    <% User.get_featured(4).each do |user| %>
       <div class="feature">
         <div class="user">
           <%= link_to image_tag(user.avatar.url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar' %>
           <%= link_to user.name, profile_path(user), :class => 'user_link' %>
           <p class="board_count"><strong><%= user.boards.count %></strong> Board<%= 's' unless user.boards.count == 1 %></p>
           <div class="follow_section"><%= render 'profile/follow_buttons', :to_follow => user %></div>
-          <p class="description"><%= featured.description.blank? ? (user.bio.blank? ? 'No bio provided.' : user.bio) : featured.description %></p>
+          <p class="description"><%= user.featured_bio %></p>
           <% unless user.website.blank? %>
             <p class="website"><%= link_to 'External website', user.website, :target => '_blank', :rel => 'nofollow' %>.</p>
           <% end %>

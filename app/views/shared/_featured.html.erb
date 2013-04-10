@@ -1,8 +1,8 @@
 <div class="featured">
   <div class="featured_blogger">
     <h2>Featured Pinners</h2>
-    <% Featured.show(2).each do |featured| %>
-      <p>Kyle, you can put placeholder here. featured.user will get you user fields</p>
+    <% User.get_featured(2).each do |user| %>
+      <p>Kyle, you can put placeholder here.</p>
     <% end %>
   </div>
 </div>

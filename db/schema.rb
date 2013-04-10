@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(:version => 20130410000838) do
     t.boolean  "got_bookmarklet",        :default => false
     t.string   "website"
     t.boolean  "featured",               :default => false
+    t.text     "featured_bio"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
