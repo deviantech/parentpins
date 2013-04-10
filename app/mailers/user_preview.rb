@@ -1,4 +1,4 @@
-if Rails.env.development?
+if ALLOW_MAIL_PREVIEW
 
   # This class only used in development. It allows viewing mail messages in the browser. https://github.com/37signals/mail_view
   class UserPreview < MailView

@@ -17,9 +17,6 @@ ParentPins::Application.routes.draw do
   match  "/popup/pins/new"      => "popup#pin",     :as => 'bookmarklet_popup'
   match  "/popup/pins/create"   => "popup#create",  :as => 'pin_from_popup'
   match  "/popup/login"         => "popup#login",   :as => 'popup_login'
-  if Rails.env.development? # TODO: remove this once styled
-    match  "/popup/pins/success" => "popup#success"
-  end
   
   # Pretty URLs for pin subtypes
   root :to => redirect("/pins")
@@ -73,7 +70,7 @@ ParentPins::Application.routes.draw do
   match '/search/:kind' => 'search#index'
   match '/search' => 'search#redirect_by_kind'
     
-  if Rails.env.development?
+  if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'
     mount UserPreview   => '/preview/mail/user'
   end
