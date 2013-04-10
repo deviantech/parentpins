@@ -12,6 +12,10 @@
           <p class="board_count"><strong><%= user.boards.count %></strong> Board<%= 's' unless user.boards.count == 1 %></p>
           <div class="follow_section"><%= render 'profile/follow_buttons', :to_follow => user %></div>
           <p class="description"><%= featured.description.blank? ? (user.bio.blank? ? 'No bio provided.' : user.bio) : featured.description %></p>
+          <% unless user.website.blank? %>
+            <p class="website"><%= link_to 'External website', user.website, :target => '_blank', :rel => 'nofollow' %>.</p>
+          <% end %>
+          
         </div>
 
         <% unless user.pins.empty? %>
