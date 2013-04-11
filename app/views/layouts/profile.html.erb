@@ -20,11 +20,8 @@
 
       <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
 
-      <% unless @profile.website.blank? %>
-        <p><%= link_to 'External Website', @profile.website, :target => '_blank', :rel => 'nofollow' %></p>
-      <% end %>
-      
-      
+      <%= render 'profile/social_media', :profile => @profile %>
+            
       <% if @profile.teacher? %>
         <p class="teacher_info teacher_icon">
           <%= display_teacher_info @profile %>

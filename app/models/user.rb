@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account
   
   has_many :boards,       :order => 'position ASC',     :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   validates_format_of       :username,  :with => /\A[a-z0-9\.\-\_]+\z/i
   validates_numericality_of :kids,      :allow_blank => true, :message => 'must be a number'
   validates_format_of       :website,   :allow_blank => true, :with => URI::regexp(%w(http https))
-  validate :valid_username
+  validate :valid_username, :valid_social_media_links
   before_destroy :clean_redis
 
   # Used by searchable
@@ -101,6 +101,31 @@ class User < ActiveRecord::Base
     update_attribute :featured, false
   end
 
+  def twitter_account=(str)
+    val = str.gsub(/@/, '').split('/').last.split('?').first
+    if val.blank? 
+      @twitter_error = str
+    else
+      self['twitter_account'] = val
+    end
+  end
+  
+  def twitter_account_url
+    twitter_account.blank? ? nil : "https://twitter.com/#{twitter_account}"
+  end
+  
+  def facebook_account=(str)
+    val = str.split('/').last.split('?').first
+    if val.blank? 
+      @facebook_error = str
+    else
+      self['facebook_account'] = val
+    end
+  end
+
+  def facebook_account_url
+    facebook_account.blank? ? nil : "https://www.facebook.com/#{facebook_account}"
+  end
 
   # ===============================
   # = REDIS: last board pinned to =
@@ -309,6 +334,11 @@ class User < ActiveRecord::Base
   end
 
   protected
+  
+  def valid_social_media_links
+    errors.add(:twitter_account, "doesn't appear valid") if @twitter_error
+    errors.add(:facebook_account, "doesn't appear valid") if @facebook_error
+  end
   
   def valid_username
     return if username.blank?

@@ -1,0 +1,7 @@
+<% unless profile.website.blank? && !profile.twitter_account_url && !profile.facebook_account_url %>
+  <p>
+    <%= link_to 'W', profile.website, :target => '_blank', :rel => 'nofollow' unless profile.website.blank? %>
+    <%= link_to('T', profile.twitter_account_url, :target => '_blank', :rel => 'nofollow') if profile.twitter_account_url %>
+    <%= link_to('F', profile.facebook_account_url, :target => '_blank', :rel => 'nofollow') if profile.facebook_account_url %>
+  </p>
+<% end %>

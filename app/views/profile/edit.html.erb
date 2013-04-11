@@ -58,6 +58,22 @@
  
       </div>
 
+
+      <div class="section">
+        <h3>Social Media</h3>
+        <p>You can either enter your username or copy/paste in your account URL.</p>
+        <div class="field">
+          <%= f.label :facebook_account, 'Facebook' %>
+          <%= f.text_field :facebook_account, :placeholder => 'e.g. facebook.com/YourUsername' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :twitter_account, 'Twitter' %>
+          <%= f.text_field :twitter_account, :placeholder => 'e.g. @YourHandle' %>
+        </div>
+ 
+      </div>
+
       <div class="clear"></div>
 
       <div class="submit">
