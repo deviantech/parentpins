@@ -39,7 +39,7 @@
       
 
       <% unless @profile.bio.blank? %>
-      <p class="bio"><%= @profile.bio %></p>
+        <p class="bio"><%= auto_link @profile.bio, :html => { :target => '_blank' } %></p>
       <% end %>
     </div>
 

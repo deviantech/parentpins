@@ -51,6 +51,7 @@ gem 'ruby-debug', :platform => :ruby_18
 gem 'debugger', :platform => :ruby_19
 
 gem 'haml'
+gem 'rails_autolink'
 
 gem 'devise', '~> 2.2.3'
 gem 'omniauth'

@@ -10,7 +10,7 @@
           <%= link_to user.name, profile_path(user), :class => 'user_link' %>
           <p class="board_count"><strong><%= user.boards.count %></strong> Board<%= 's' unless user.boards.count == 1 %></p>
           <div class="follow_section"><%= render 'profile/follow_buttons', :to_follow => user %></div>
-          <p class="description"><%= user.featured_bio %></p>
+          <p class="description"><%= auto_link user.featured_bio, :html => { :target => '_blank' } %></p>
           <% unless user.website.blank? %>
             <p class="website"><%= link_to 'External website', user.website, :target => '_blank', :rel => 'nofollow' %>.</p>
           <% end %>
