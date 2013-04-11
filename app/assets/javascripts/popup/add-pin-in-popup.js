@@ -7,3 +7,10 @@ $(document).ready(function(){
     $(this).attr('cols', $(this).attr('cols')+1);
   });
 });
+
+$(document).on('submit', '.pin_form', function() {
+  $('.form').children().slideUp(function() {
+    $('.form').animate({width: '220px', padding: '10px 0px', 'margin-left': '293px'});
+  });
+  $('.form').append('<img src="/assets/ui/ball-loader.gif" class="loader" title="Processing">');
+});

@@ -1,9 +1,12 @@
 <div class="success-wrapper">
   <h2>Success!</h2>
-  <p class="message">Your pin was pinned to <span><%= link_to @pin.board.name, profile_board_url(@pin.user, @pin.board) %></span></p>
+  <p class="message">
+    Your pin was pinned to 
+    <span><%= link_to @pin.board.name, profile_board_url(@pin.user, @pin.board), :target => '_blank', :onclick => 'window.close()' %></span>
+  </p>
 
   <div class="buttons">
-    <%= link_to "View Pin", pin_url(@pin), :class => 'btn sec_action' %>
+    <%= link_to "View Pin", pin_url(@pin), :target => '_blank', :onclick => 'window.close()', :class => 'btn sec_action' %>
     <%= share_pin_via_fb_link(@pin) %>
     <%= link_to_function %Q{Close Window <span class="countdown">(10)</span>}.html_safe, 'window.close()', :class => 'js-ignore close_window' %>
   </div>
