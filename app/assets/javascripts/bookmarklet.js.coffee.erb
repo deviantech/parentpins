@@ -11,7 +11,7 @@ do(document = document, jQuery = window.jQuery) ->
   # Config
   host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   popupName = 'ParentPinBookmarklet'
-  cssUrl = host + '/assets/bookmarklet.css'
+  cssUrl = host + "<%= asset_path('bookmarklet.css') %>"
   minJQversion = '1.7.0'
   desiredJQversion = '1.8.2'
   imgDisplayWidth = 192
