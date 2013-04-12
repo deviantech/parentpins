@@ -145,7 +145,19 @@ class Pin < ActiveRecord::Base
   def redis_name__liked_by
     "p:#{self.id}:liked_by"
   end
-        
+  
+  # Add our own affiliate tags wherever relevant
+  def url
+    return nil if self['url'].blank?
+    
+    appending = case self['url']
+    when /amazon.com/i  then "tag=#{AFFILIATES[:amazon][:tag]}"
+    else nil
+    end
+    
+    [self['url'], appending].compact.join( self['url']['?'] ? '&' : '?' )
+  end
+  
   protected
     
   def set_uuid
@@ -167,11 +179,13 @@ class Pin < ActiveRecord::Base
   end
   
   def validate_url_format
+    raw = self['url'].to_s
+    
     begin
-      if url.to_s.starts_with?(/https?/i)
-        uri = URI.parse(url.to_s)
+      if raw.starts_with?(/https?/i)
+        uri = URI.parse(raw)
       else
-        uri = URI.join(self.via_url.to_s, url.to_s)
+        uri = URI.join(self.via_url.to_s, raw)
         self.url = uri.to_s
       end
       
@@ -181,13 +195,14 @@ class Pin < ActiveRecord::Base
     end
   end
   
-  # Before save, automatically edit URL to remove affiliate codes, insert our own, etc. 
-   # Happens here because validation may change url, and not in url= because validation relies on other fields be set as well.
+  # Before save, automatically edit URL to remove affiliate codes (we'll insert our own when displayed, rather than saving static codes in the DB).
+  # Happens here because validation may change url, and not in url= because validation relies on other fields be set as well.
   def filter_url_before_save
-    return true unless url_changed? && !self.url.blank?
-    self.url = self.url.to_s.strip
-    self.url = self.url.sub(/tag=.+?(&|$)/, "tag=#{AFFILIATES[:amazon][:tag]}" + '\1') if self.url =~ /amazon.com/i   # Replace amazon associate tag
-    self.url = self.url.gsub(/&&+/, '&').sub(/[\?&]$/, '')                                # Trailing ? or &
+    return true unless url_changed? && !self['url'].blank?
+    raw = self['url'].to_s.strip
+    raw = raw.sub(/tag=.+?(?:&|$)/, '') if raw =~ /amazon.com/i   # Remove amazon associate tag
+    raw = raw.gsub(/&&+/, '&').sub(/[\?&]$/, '')                  # Trailing ? or &
+    self.url = raw
   end
   
   
