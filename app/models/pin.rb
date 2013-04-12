@@ -151,7 +151,7 @@ class Pin < ActiveRecord::Base
     return nil if self['url'].blank?
     
     appending = case self['url']
-    when /amazon.com/i  then "tag=#{AFFILIATES[:amazon][:tag]}"
+    when /amazon.com/i  then AFFILIATES[:amazon][:tag] ? "tag=#{AFFILIATES[:amazon][:tag]}" : nil
     else nil
     end
     
