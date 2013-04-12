@@ -9,9 +9,10 @@ AFFILIATES = YAML.load_file( File.join(Rails.root, 'config', 'affiliates.yml')).
 module Sprockets
   module Helpers
     module RailsHelper
-      include BookmarkletHelper
       
-      #  Any other custom helper methods go here
+      # Any other custom helper methods go here
+      # TODO: this no longer works (maybe with rails 3.2.13 upgrade?)
+      # Edited assets to not require any custom methods, but eventually we might need to revisit if our needs change
       
     end
   end
