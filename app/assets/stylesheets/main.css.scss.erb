@@ -995,7 +995,7 @@ li.pin-context {
   background: #F2F0F0;
   margin: 0 -15px; }
 
-.attribution .image_link, .comment .image_link {
+.attribution .image_link, .comment .avatar_link {
   float: left;
   margin: 11px 10px 10px;
   height: 30px;
@@ -1005,9 +1005,10 @@ li.pin-context {
   border-bottom: 1px solid #fff;
   @include circular; }
 
-.attribution .image_link img, .comment .image_link img {
+.attribution .image_link img, .comment .avatar_link img {
   display: block;
-  @include circular; }
+  @include circular;
+  height: 30px; }
 
 .attribution .details {
   max-width: 260px;
@@ -1022,13 +1023,13 @@ li.pin-context {
 
 .comment .details {
   max-width: 260px;
-  font-size: 11px;
+  font-size: 12px;
   display: block;
   vertical-align: middle;
   overflow: hidden;
   word-wrap: break-word;
   color: #AD9C9C;
-  line-height: 14.85px;
+  line-height: 18px;
   margin: 10px;
   color: #8C7E7E; }
 
@@ -1048,12 +1049,15 @@ li.pin-context {
   color: #222; }
 
 .comment {
+  border-top: 1px solid #fff;
   .details a:hover {
     text-decoration: underline;
-    color: #222; }
-  border-top: 1px solid #fff;
+    color: #222; } }
+
+.comment_form {
   form {
     padding: 10px;
+    margin:0 -15px;
     textarea {
       border: 1px solid #ccc;
       font-size: 11px;
@@ -1069,6 +1073,13 @@ li.pin-context {
       -webkit-border-radius: 3px;
       border-radius: 3px;
       resize: none; }
+    .avatar_link {
+      @include circular; 
+      img {
+        @include circular; } }
+    .btn.sec_action {
+      margin:8px 0 5px 0 !important;
+      padding:8px 15px !important; }
     input {
       float: right;
       margin: 0 0 5px 0;
