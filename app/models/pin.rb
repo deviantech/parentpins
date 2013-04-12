@@ -28,8 +28,9 @@ class Pin < ActiveRecord::Base
   validates_presence_of :user, :description, :board, :category, :age_group
   validates_inclusion_of :kind, :in => VALID_TYPES
   validates_length_of :description, :maximum => 1024, :allow_blank => true
-  validate :url_format, :not_previously_pinned, :on => :create
+  validate :validate_url_format, :not_previously_pinned, :on => :create
   
+  before_save     :filter_url_before_save
   before_update   :update_board_images_on_change
   before_create   :set_uuid
   after_create    :update_board_add_image, :track_board_last_pinned_to
@@ -144,10 +145,9 @@ class Pin < ActiveRecord::Base
   def redis_name__liked_by
     "p:#{self.id}:liked_by"
   end
-    
-  
+        
   protected
-  
+    
   def set_uuid
     self.uuid ||= UUIDTools::UUID.timestamp_create().to_s
   end
@@ -166,7 +166,7 @@ class Pin < ActiveRecord::Base
     self.category_id = board.category_id
   end
   
-  def url_format
+  def validate_url_format
     begin
       if url.to_s.starts_with?(/https?/i)
         uri = URI.parse(url.to_s)
@@ -180,6 +180,16 @@ class Pin < ActiveRecord::Base
       errors.add(:url, "doesn't appear to be a valid link")
     end
   end
+  
+  # Before save, automatically edit URL to remove affiliate codes, insert our own, etc. 
+   # Happens here because validation may change url, and not in url= because validation relies on other fields be set as well.
+  def filter_url_before_save
+    return true unless url_changed? && !self.url.blank?
+    self.url = self.url.to_s.strip
+    self.url = self.url.sub(/tag=.+?(&|$)/, "tag=#{AFFILIATES[:amazon][:tag]}" + '\1') if self.url =~ /amazon.com/i   # Replace amazon associate tag
+    self.url = self.url.gsub(/&&+/, '&').sub(/[\?&]$/, '')                                # Trailing ? or &
+  end
+  
   
   def not_previously_pinned
     return true unless board
