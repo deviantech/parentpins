@@ -59,6 +59,9 @@ module ParentPins
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    
+    # Add custom fonts assets
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
         
     # Set host for use elsewhere
     host = if Rails.env.production?  then 'www.parentpins.com'
