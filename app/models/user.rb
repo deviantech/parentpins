@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   def name
     username.to_s
   end
-
+  
   # If password required for update, try. Otherwise just to update. Not the cleanest combination of forms...
   def update_maybe_with_password(params)
     if params[:email] != email || !params[:password].blank? || !params[:password_confirmation].blank?
@@ -94,13 +94,18 @@ class User < ActiveRecord::Base
   def feature
     return nil if featured?
     update_attribute :featured, true
-    # TODO: only send once (e.g. if accidentally unfeature/refeature, no need to resend email)
-    UserMailer.featured_notice(self.id).deliver
+    UserMailer.featured_notice(self.id).deliver if featured_pin_id.blank?     # Never clear featured_pin_id once set, so we can prevent sending emails if feature/unfeature/feature again
+    update_attribute :featured_pin_id, pins.first.id || 0
   end
   
   def unfeature
     update_attribute :featured, false
   end
+
+  def featured_pin
+    @featured_pin ||= (featured_pin_id.blank? || !pins.exists?(featured_pin_id)) ? pins.first : pins.find(featured_pin_id)
+  end
+  
 
   def twitter_account=(str)
     val = str.gsub(/@/, '').split('/').last.split('?').first

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130414004927) do
+ActiveRecord::Schema.define(:version => 20130414012411) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(:version => 20130414004927) do
     t.string   "facebook_account"
     t.string   "twitter_account"
     t.boolean  "admin",                  :default => false
+    t.integer  "featured_pin_id"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

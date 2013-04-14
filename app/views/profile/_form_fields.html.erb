@@ -3,18 +3,6 @@
   <%= f.text_area :bio, :placeholder => "Ex: I'm always checking out ParentPins for great ideas on healthy, kid-friendly recipes..." %>
 </div>
 
-<% if f.object.featured? %>
-<div class="field">
-  <p>Featured page description</p>
-  <%= f.text_area :featured_bio, :placeholder => "Description to be used on the Featured page" %>
-</div>
-<% end %>
-
-<div class="field">
-  <p>Do you have an external website?</p>
-  <%= f.url_field :website, :placeholder => "Ex: your blog URL" %>
-</div>
-
 <div class="field">
   <p>How many kids do you have?</p>
   <%= f.text_field :kids, :placeholder => "1, 2, more?", :type => 'number' %>

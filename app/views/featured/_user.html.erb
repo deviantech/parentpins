@@ -11,7 +11,7 @@
 
   <% unless user.pins.empty? %>
     <ul id="pins" class="timeline">
-      <%= render user.pins.first %>
+      <%= render user.featured_pin %>
     </ul>
   <% end %>
 </div>
