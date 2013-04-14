@@ -59,7 +59,7 @@ $(document).ready(function() {
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {
     var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
-    $.post(url);
+    $.ajax({type: $(this).data('ajax-method') || 'POST', url: url})
     e.preventDefault();
     e.stopPropagation();
     

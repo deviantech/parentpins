@@ -94,6 +94,7 @@ class User < ActiveRecord::Base
   def feature
     return nil if featured?
     update_attribute :featured, true
+    # TODO: only send once (e.g. if accidentally unfeature/refeature, no need to resend email)
     UserMailer.featured_notice(self.id).deliver
   end
   

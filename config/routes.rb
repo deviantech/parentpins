@@ -55,6 +55,7 @@ ParentPins::Application.routes.draw do
         end
         post 'sort', :on => :collection
       end
+      resource :featured, :only => [:create, :destroy], :controller => 'featured'
     end
   end
   
