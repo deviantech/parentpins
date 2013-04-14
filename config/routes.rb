@@ -55,7 +55,11 @@ ParentPins::Application.routes.draw do
         end
         post 'sort', :on => :collection
       end
-      resource :featured, :only => [:create, :destroy], :controller => 'featured'
+      resource :featured, :only => [:create, :destroy], :controller => 'featured' do
+        member do
+          post "set_pin/:id" => "featured#set_pin", :as => 'set_pin'
+        end
+      end
     end
   end
   

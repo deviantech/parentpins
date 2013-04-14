@@ -1,5 +1,7 @@
 <li class="pin pin-context <%= dom_id(pin) %>">
-  <% unless pin.new_record? || params[:action] == 'edit' %>
+  <% if params[:context] == 'select_featured' %>
+    <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
+  <% elsif !(pin.new_record? || params[:action] == 'edit') %>
     <%= render 'pins/actions', :pin => pin %>
   <% end %>
   <div class="bind-price price<%= ' hidden' unless pin.price %>"><%= number_to_currency pin.price %></div>
