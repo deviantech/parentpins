@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
     return nil if featured?
     update_attribute :featured, true
     UserMailer.featured_notice(self.id).deliver if featured_pin_id.blank?     # Never clear featured_pin_id once set, so we can prevent sending emails if feature/unfeature/feature again
-    update_attribute :featured_pin_id, pins.first.id || 0
+    update_attribute(:featured_pin_id, pins.first.id || 0) if featured_pin_id.blank? || !pins.exists?(featured_pin_id)  # Only update featured pin if there isn't a valid one set already
   end
   
   def unfeature

@@ -55,7 +55,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   border-radius: #{$radius} #{$radius} #{$radius} #{$radius};
 }
 
-@mixin boxshadow($a, $b, $c, $color) {
+@mixin boxshadow($a: 0px, $b: 3px, $c: 6px, $color: rgba(0, 0, 0, 0.15)) {
   -webkit-box-shadow: #{$a} #{$b} #{$c} #{$color};
   -moz-box-shadow: #{$a} #{$b} #{$c} #{$color};
   box-shadow: #{$a} #{$b} #{$c} #{$color};
@@ -2503,3 +2503,7 @@ code {
       overflow:hidden; }
     .attribution .image_link {
       height:auto; } } }
+.edit-featured-pin img.pin_image {
+  @include rounded(2px);
+  @include boxshadow;
+}
