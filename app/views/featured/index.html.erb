@@ -3,25 +3,6 @@
   <h1>Featured ParentPinners</h1>
 
   <div class="feat_carousel">
-    <% User.get_featured(4).each do |user| %>
-      <div class="feature">
-        <div class="user">
-          <%= link_to image_tag(user.avatar.url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar' %>
-          <%= link_to user.name, profile_path(user), :class => 'user_link' %>
-          <p class="board_count"><strong><%= user.boards.count %></strong> Board<%= 's' unless user.boards.count == 1 %></p>
-          <div class="follow_section"><%= render 'profile/follow_buttons', :to_follow => user %></div>
-          <p class="description"><%= auto_link user.featured_bio, :html => { :target => '_blank' } %></p>
-          <%= render 'profile/social_media', :profile => user %>
-          
-        </div>
-
-        <% unless user.pins.empty? %>
-          <ul id="pins" class="timeline">
-            <%= render user.pins.first %>
-          </ul>
-        <% end %>
-      </div>
-    <% end %>
-    
+    <%= render :partial => 'featured/user', :collection => User.get_featured(4) %>    
   </div>
 </div>
