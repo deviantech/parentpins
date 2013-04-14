@@ -58,10 +58,11 @@ $(document).ready(function() {
     
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {
-    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
-    $.ajax({type: $(this).data('ajax-method') || 'POST', url: url})
     e.preventDefault();
     e.stopPropagation();
+    
+    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    $.ajax({type: $(this).data('ajax-method') || 'POST', url: url});
     
     $(this).parent().find('.following-action').each(function() {
       if ($(this).hasClass('hidden')) {
