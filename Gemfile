@@ -39,7 +39,7 @@ group :test do
   gem 'ffaker'
 end
 
-gem 'jquery-rails'
+gem 'jquery-rails', '2.1.4'
 gem 'will_paginate'
 gem 'roadie'
 
