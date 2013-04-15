@@ -42,14 +42,14 @@ $(document).ready(function() {
     if ($this.parents('.pin-context').length == 0) return;
     var focusable;
           
-    if ($this.parents('.modal_overlay').length) { // If in modal
-      focusable = $this.parents('.modal_overlay').find('.comment_form textarea').first();
-      $this.parents('.modal_overlay').scrollTo(focusable);
-    } else {
+    if ($this.parents('li.pin').length) { // If on page listing multiple pins
       focusable = $this.parents('li.pin').find('.comment_form textarea').first();
       focusable.parents('.comment_form').toggle();
       focusable.parents('.masonry').masonry('reload');
       $.scrollTo( $this.parents('li.pin') );
+    } else { // If in modal or on standalone pin#show page
+      focusable = $this.parents('.pin-context').find('.comment_form textarea').first();
+      ($this.parents('.modal_overlay').length ? $this.parents('.modal_overlay') : $).scrollTo(focusable.parents('.comments'));      
     }
     focusable.focus();
     e.preventDefault();
