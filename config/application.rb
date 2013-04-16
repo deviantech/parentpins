@@ -71,5 +71,9 @@ module ParentPins
 
     # Set base host for emails
     config.action_mailer.default_url_options = { :host => host, :port => (Rails.env.production? || Rails.env.staging?) ? 80 : 3000 }
+    
+    config.to_prepare do
+      Devise::Mailer.layout "base_mailer"
+    end
   end
 end

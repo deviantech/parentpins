@@ -1,5 +1,22 @@
-<p>Welcome <%= @resource.email %>!</p>
-
-<p>You can confirm your account email through the link below:</p>
-
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token) %></p>
+<tr>
+  <td valign="top" class="bodyContent">
+    <div mc:edit="std_content00">
+      <h1 class="h1">You're In with the Pins</h1>
+      <p><strong>Welcome <%= @resource.name %>!</strong></p>
+      <p>Please confirm your account email through the link below:</p>
+    </div>
+  </td>
+</tr>
+<tr>
+  <td align="center" valign="top" style="padding-top:0;">
+    <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
+      <tr>
+        <td valign="middle" class="templateButtonContent">
+          <div mc:edit="std_content01">
+            <%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token), :style => "color:#fff;text-decoration:none;" %>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>

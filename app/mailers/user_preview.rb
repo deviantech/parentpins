@@ -3,17 +3,21 @@ if ALLOW_MAIL_PREVIEW
   # This class only used in development. It allows viewing mail messages in the browser. https://github.com/37signals/mail_view
   class UserPreview < MailView
   
+    # Devise::Mailer
+  
     def unlock_instructions
-      UserMailer.unlock_instructions( User.first.try(:id) )
+      Devise::Mailer.unlock_instructions( User.first )
     end
 
     def confirmation_instructions
-      UserMailer.confirmation_instructions( User.first.try(:id) )
+      Devise::Mailer.confirmation_instructions( User.first )
     end
 
-    def password_reset
-      UserMailer.password_reset( User.first.try(:id) )
+    def reset_password_instructions
+      Devise::Mailer.reset_password_instructions( User.first )
     end
+  
+    # UserMailer
   
     def featured_notice
       UserMailer.featured_notice( User.first.try(:id) )

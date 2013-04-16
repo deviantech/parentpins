@@ -1,10 +1,9 @@
 class User < ActiveRecord::Base
   extend Searchable
   # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable,
-  # :lockable, :timeoutable
+  # :token_authenticatable, :confirmable, :timeoutable
   devise :database_authenticatable, :registerable, :omniauthable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :lockable
 
   mount_uploader :avatar,       AvatarUploader
   mount_uploader :cover_image,  CoverImageUploader
