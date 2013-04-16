@@ -1,5 +1,5 @@
 <a class="potentialImage" href="#" data-link="<%= @image.link %>">
   <img src="<%= @image.src %>" alt=""/>
   <span class="details"><%= @image.height %> x <%= @image.width %></span>
-  <div class="btn_select_cover"><span>ParentPin It</span></div>
+  <div class="btn_select_cover"><span style="margin-top: <%= (@image.scaledHeight - 35) / 2 %>px">ParentPin It</span></div>
 </a>

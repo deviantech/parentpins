@@ -74,7 +74,7 @@ do(document = document, jQuery = window.jQuery) ->
       else
         if `!(data.src in Global.potentials)` # No duplicates
           Global.potentials[data.src] = data
-          Global.imageBase.find('#noPotentialImages').hide();
+          Global.imageBase.find('#noPotentialImages').hide();          
           # Max-height will prevent getting too big, but without this firefox will leave box with no height
           added = $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( Global.imageBase ).height( data.scaledHeight )
 
@@ -145,7 +145,10 @@ do(document = document, jQuery = window.jQuery) ->
       area   = height * width
       
       # What would height be if width was imgDisplayWidth?
-      scaledHeight = width == 0 ? 0 : ((imgDisplayWidth / width) * height)
+      scaledHeight = if width == 0
+        0
+      else
+        (imgDisplayWidth / width) * height
     
       return {
         src:    $img.attr('src') || $img.data('src'),
