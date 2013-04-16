@@ -103,8 +103,7 @@ $(document).ready(function() {
     var updatedURL = urlReplacingHash(History.getState().url, $(this).parents('li.pin').attr('id'));
     $(this).append( $('<input type="hidden" name="redirect_to">').val(updatedURL) );
   });
-  
-  
+    
   // As a function because shared with popup.js
   handlePopupWindows();
   
