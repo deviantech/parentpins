@@ -71,6 +71,10 @@ function urlReplacingPathKeepingParams(newPath) {
   return urlPlusParamString(newPath, window.location.search);
 }
 
+function urlReplacingHash(url, hash) {
+  return url.split('#')[0] + '#' + hash;
+}
+
 function deparam(url) {
   var params = {};
   var paramString = url.substr(url.indexOf('?') + 1);

@@ -96,6 +96,15 @@ $(document).ready(function() {
     }
   });
   
+  // When comment form submitted, update history to point to current LI if on page listing multiple (so redirect_to :back will load the page scrolled down to see the new comment)
+  $(document).on('submit', 'form.new_comment', function(e, seen) {
+    if (!$(this).parents('li.pin').length) return;
+
+    var updatedURL = urlReplacingHash(History.getState().url, $(this).parents('li.pin').attr('id'));
+    $(this).append( $('<input type="hidden" name="redirect_to">').val(updatedURL) );
+  });
+  
+  
   // As a function because shared with popup.js
   handlePopupWindows();
   

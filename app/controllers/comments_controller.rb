@@ -7,7 +7,8 @@ class CommentsController < ApplicationController
     unless @comment.save
       flash[:error] = "Unable to save comment."
     end
-    redirect_to :back
+
+    redirect_to params[:redirect_to] || :back
   end
   
   def destroy

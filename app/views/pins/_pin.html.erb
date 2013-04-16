@@ -1,4 +1,4 @@
-<li class="pin pin-context <%= dom_id(pin) %>">
+<li class="pin pin-context" id="<%= dom_id(pin) %>">
   <% if params[:context] == 'select_featured' %>
     <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
   <% elsif !(pin.new_record? || params[:action] == 'edit') %>
