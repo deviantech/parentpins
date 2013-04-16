@@ -4,13 +4,14 @@ if ALLOW_MAIL_PREVIEW
   class UserPreview < MailView
   
     # Devise::Mailer
+
+    # Confirmation is not currently required
+    # def confirmation_instructions
+    #   Devise::Mailer.confirmation_instructions( User.first )
+    # end
   
     def unlock_instructions
       Devise::Mailer.unlock_instructions( User.first )
-    end
-
-    def confirmation_instructions
-      Devise::Mailer.confirmation_instructions( User.first )
     end
 
     def reset_password_instructions
