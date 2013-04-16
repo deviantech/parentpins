@@ -9,6 +9,7 @@
 
 do(document = document, jQuery = window.jQuery) -> 
   # Config
+  obeyMetaRestrictions = true # Only set to false when testing in development
   host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   popupName = 'ParentPinBookmarklet'
   cssUrl = host + "<%= asset_path('bookmarklet.css') %>"
@@ -190,7 +191,7 @@ do(document = document, jQuery = window.jQuery) ->
       return false      
 
     beginIfAllowed = ->
-      if $('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length
+      if obeyMetaRestrictions && ($('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length)
         msg = $('meta[name="pinning"][content="nopin"]').first().attr('description') || $('meta[name="pinterest"][content="nopin"]').first().attr('description')
         msg = msg || "This site doesn't allow pinning to external websites. Please contact the owner with any questions."
         alert(msg)
