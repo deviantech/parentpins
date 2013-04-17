@@ -1,9 +1,11 @@
 <li class="user">
   <%= link_to profile_path(user) do %>
     <%= image_tag user.avatar.v50 %>
-    <%= user.name %>
-    <span><%= pluralize user.followed_by_even_indirectly_count, 'Follower', 'Followers' %></span>
-    <span><%= user.following_even_indirectly_count %> Following</span>
+    <div class="body">  
+      <div class="user_name"><%= user.name %></div>
+      <span><%= pluralize user.followed_by_even_indirectly_count, 'Follower', 'Followers' %></span>
+      <span><%= user.following_even_indirectly_count %> Following</span>
+    </div>
   <% end %>
   <div class="follow_section"><%= render 'profile/follow_buttons', :to_follow => user, :in_list => true %></div>
 </li>

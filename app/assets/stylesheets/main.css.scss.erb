@@ -578,7 +578,7 @@ ul li .handle {
       font-weight:bold;
       color:#888; } }
   .avatar {
-    border: 4px solid $themeCOLOR;
+    border: 4px solid #fff;
     display: block;
     margin: 0 auto 5px;
     height: 120px;
@@ -588,7 +588,7 @@ ul li .handle {
     -moz-box-shadow: 0 3px 5px #F1F1F1;
     box-shadow: 0 3px 5px #F1F1F1;
     &:hover {
-      border:4px solid #fff; }
+      border:4px solid $themeCOLOR; }
     img {
       @include circular; } } 
   .follow,.unfollow {
@@ -1426,13 +1426,17 @@ form .field {
   &:before {
     position:absolute;
     @include pinli-font;
-    content:"\e014";
     top: 5px !important;
     left: 15px !important;
     color: #000;
     font-size: 26px;
     height: 28px;
     width: 28px;} }
+
+.featured_icon:before {
+  content:"\e014"; }    
+.teacher_icon:before {
+  content:"\e017"; }
     
 .teacher_info, .featured_info {
   padding: 8px 10px 8px 50px !important;
@@ -1753,12 +1757,23 @@ input:focus[placeholder], textarea:focus[placeholder] {
         padding: 0;
         display:block;
         text-decoration: none;
+        position:relative;
+        img {
+          position:absolute;
+          top:-3px;
+          left:-3px;
+          border:3px solid #fff; }
         &:hover {
           color:#000; 
           img {
-            border: 3px solid $themeCOLOR;
-            top: 2px;
-            left: -3px; } } } } 
+            border: 3px solid $themeCOLOR; } }
+        .body {
+          margin-left:66px;
+          .user_name {
+            width: 135px;
+          	white-space: nowrap;
+          	overflow: hidden;
+          	text-overflow: ellipsis; } } } }
     span {
       color: #444;
       display: block;
