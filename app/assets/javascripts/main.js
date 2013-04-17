@@ -100,10 +100,10 @@ $(document).ready(function() {
   $(document).on('submit', 'form.new_comment', function(e, seen) {
     if (!$(this).parents('li.pin').length) return;
 
-    var updatedURL = urlReplacingHash(History.getState().url, $(this).parents('li.pin').attr('id'));
+    var updatedURL = urlReplacingHash(History.getState().url, "scroll:"+$(this).parents('li.pin').attr('id'));
     $(this).append( $('<input type="hidden" name="redirect_to">').val(updatedURL) );
   });
-    
+        
   // As a function because shared with popup.js
   handlePopupWindows();
   

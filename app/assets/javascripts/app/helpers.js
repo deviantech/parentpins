@@ -184,7 +184,7 @@ function stopSorting(toSort) {
 }
 
 function applyMasonry(selector) {
-  selector = selector || '.masonry'
+  selector = selector || '.masonry';
   $(selector).masonry({
     columnWidth: 10,
     gutterWidth: 6,
@@ -193,6 +193,7 @@ function applyMasonry(selector) {
     isFitWidth: true
   }).imagesLoaded(function() {
     $(this).masonry('reload');
+    setTimeout(scrollFromURL, 200);
   });  
 }
 
@@ -201,4 +202,11 @@ function viewAllComments(link) {
   div.hide();
   div.siblings('.comment').removeClass('hidden');
   div.parents('.masonry').masonry('reload');
+}
+
+function scrollFromURL() {
+  var scrollTarget = RegExp(/scroll:(.+)/i);
+  if (scrollTarget.test(window.location.hash)) {
+    $.scrollTo( '#' + window.location.hash.match(scrollTarget)[1] );
+  }
 }
