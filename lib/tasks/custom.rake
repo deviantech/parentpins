@@ -1,21 +1,33 @@
-namespace :trends do
-  
-  namespace :update do
+namespace :trends do  
 
-    desc "Update the trending calculations for pins"
-    task :pins => :environment do
-      max_to_process = 1_000    # Only sort the most recent 1,000 (limit memory usage)
-      points = {}
-          
-      pins = Pin.limit(max_to_process).order('id DESC').select([:id, :repins_count, :created_at, :uuid])
-      pins.each do |p|
-        p.update_attribute :trend_position, p.likes_count + p.repins_count + trend_points_for_creation_date(p)
-      end
 
-      # All other pins get identical trend_position
-      Pin.update_all ['trend_position = ?', 0], ['id < ?', pins.last.id]
-    end
+  # Current logic - higher position == better. New pins get 0, so will show at very bottom until positions updated again
+  desc "Update the trending calculations for pins and boards"
+  task :update => :environment do
+    batch_size = 1_000
+    [Pin, Board].each do |klass|
+      iterations = -1
+      klass.update_all ['trend_position = ?', -1]
     
+      loop do
+        records = klass.unscoped.where(['trend_position = ?', -1]).order('rand()').limit(batch_size)
+        break if records.empty?
+        iterations += 1
+        puts "#{klass.name} iteration #{iterations + 1}"
+        
+        records.each_with_index do |record, idx|
+          base_position = (batch_size * iterations) + idx
+          modifier = if record.is_a?(Pin)
+            record.likes_count + record.repins_count + trend_points_for_creation_date(record)
+          else
+            record.direct_followers_count + record.comments_count - (record.pins_count > 0 ? 0 : 200) # boards with pins first
+          end
+          
+          position = base_position + (2 * modifier)  # Give slight preference to more popular items
+          klass.update_all ['trend_position = ?', position], ['id = ?', record.id]             # Don't use AR here -- we're in an infinite loop, can't risk an invalid record preventing the save
+        end
+      end
+    end
   end
   
 end

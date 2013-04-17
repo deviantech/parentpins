@@ -60,7 +60,8 @@ class Pin < ActiveRecord::Base
   end
 
   def self.trending
-    unscoped.order('trend_position DESC, rand()').group('url')
+    # trend_position is not unique, but mysql will return in same order each time
+    unscoped.order('trend_position DESC').group('url')
   end
   
   def self.from_bookmarklet(user, params)

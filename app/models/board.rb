@@ -25,12 +25,8 @@ class Board < ActiveRecord::Base
   }
   scope :newest_first, order('id DESC')
   scope :with_pins, where('pins_count > 0')
-  
-  def self.trending
-    # TODO: implement some sort of trending logic
-    newest_first.with_pins
-  end
-  
+  scope :trending, order('trend_position DESC')
+    
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
   def thumbnail_urls(n = 4)
     pins.newest_first.not_ids(cover_source_id || 0).limit(n).collect{ |p| p.image.v55.url }
@@ -69,6 +65,10 @@ class Board < ActiveRecord::Base
   
   def followers_even_indirectly_count
     Rails.redis.sunion(redis_name__followed_by, user.redis_name__followed_by).count
+  end
+  
+  def direct_followers_count
+    Rails.redis.scard(redis_name__followed_by)
   end
   
   def directly_followed_by_ids
