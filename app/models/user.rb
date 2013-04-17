@@ -314,10 +314,6 @@ class User < ActiveRecord::Base
   # ======================
   # = REDIS: queue names =
   # ======================    
-  def redis_name__categories
-    "u:#{self.id}:categories"
-  end
-  
   def redis_name__followed_by
     "u:#{self.id}:followed_by"
   end
@@ -362,7 +358,6 @@ class User < ActiveRecord::Base
     likes.each {|l| unlike(l)}
     
     # Remove my redis objects
-    Rails.redis.del(redis_name__categories)
     Rails.redis.del(redis_name__followed_by)
     Rails.redis.del(redis_name__following_users)
     Rails.redis.del(redis_name__following_boards)

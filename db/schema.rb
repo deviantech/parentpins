@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416214936) do
+ActiveRecord::Schema.define(:version => 20130417195852) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
@@ -32,10 +32,12 @@ ActiveRecord::Schema.define(:version => 20130416214936) do
     t.integer  "pins_count",      :default => 0
     t.integer  "position"
     t.integer  "cover_source_id"
+    t.integer  "trend_position"
   end
 
   add_index "boards", ["category_id"], :name => "index_boards_on_category_id"
   add_index "boards", ["slug"], :name => "index_boards_on_slug"
+  add_index "boards", ["trend_position"], :name => "index_boards_on_trend_position", :unique => true
   add_index "boards", ["user_id", "position"], :name => "index_boards_on_user_id_and_position"
 
   create_table "categories", :force => true do |t|
@@ -98,11 +100,13 @@ ActiveRecord::Schema.define(:version => 20130416214936) do
     t.integer  "repinned_from_id"
     t.integer  "repin_count",                                                       :default => 0
     t.string   "uuid",               :limit => 36
+    t.integer  "trend_position"
   end
 
   add_index "pins", ["age_group_id"], :name => "index_pins_on_age_group_id"
   add_index "pins", ["board_id"], :name => "index_pins_on_board_id"
   add_index "pins", ["category_id"], :name => "index_pins_on_category_id"
+  add_index "pins", ["trend_position"], :name => "index_pins_on_trend_position", :unique => true
   add_index "pins", ["user_id"], :name => "index_pins_on_user_id"
   add_index "pins", ["uuid"], :name => "index_pins_on_uuid", :unique => true
   add_index "pins", ["via_id"], :name => "index_pins_on_via_id"
