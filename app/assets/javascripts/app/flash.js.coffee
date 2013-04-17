@@ -21,3 +21,10 @@ closeBookmarkletFlash = ->
   $.post("/mark/got_bookmarklet")
 
 $('.flashmsg.alert-bookmarklet').on 'click', '[data-dismiss="alert"]', closeBookmarkletFlash
+
+# When last flash msg closed, hide the #flash div (margin/padding messes up page layout otherwise)
+$(document).ready ->
+  $('#flash').on 'close', ->
+    if $('#flash .flashmsg').length == 1
+      hideFlash = -> $('#flash').addClass('hidden')
+      setTimeout hideFlash, 100
