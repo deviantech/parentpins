@@ -76,6 +76,7 @@ $(document).ready(function() {
   // Add custom trucation
   $(document).on('click', 'a.view-more', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     var wrapper = $(e.target).parent();
     if (wrapper.data('original-text')) {
       if (!wrapper.data('short-text')) wrapper.data('short-text', wrapper.html());
@@ -88,6 +89,7 @@ $(document).ready(function() {
   
   $(document).on('click', 'a.view-less', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     var wrapper = $(e.target).parent();
     if (wrapper.data('short-text')) {
       wrapper.html( wrapper.data('short-text') );
