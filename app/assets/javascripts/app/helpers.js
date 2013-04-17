@@ -193,7 +193,6 @@ function applyMasonry(selector) {
     isFitWidth: true
   }).imagesLoaded(function() {
     $(this).masonry('reload');
-    setTimeout(scrollFromURL, 200);
   });  
 }
 
@@ -204,9 +203,3 @@ function viewAllComments(link) {
   div.parents('.masonry').masonry('reload');
 }
 
-function scrollFromURL() {
-  var scrollTarget = RegExp(/scroll:(.+)/i);
-  if (scrollTarget.test(window.location.hash)) {
-    $.scrollTo( '#' + window.location.hash.match(scrollTarget)[1] );
-  }
-}
