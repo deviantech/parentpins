@@ -4,6 +4,7 @@ namespace :trends do
   # Current logic - higher position == better. New pins get 0, so will show at very bottom until positions updated again
   desc "Update the trending calculations for pins and boards"
   task :update => :environment do
+    puts "[#{Time.now}] Updating trends"
     batch_size = 1_000
     [Pin, Board].each do |klass|
       iterations = -1
@@ -13,7 +14,7 @@ namespace :trends do
         records = klass.unscoped.where(['trend_position = ?', -1]).order('rand()').limit(batch_size)
         break if records.empty?
         iterations += 1
-        puts "#{klass.name} iteration #{iterations + 1}"
+        puts "\t- #{klass.name} iteration #{iterations + 1}"
         
         records.each_with_index do |record, idx|
           base_position = (batch_size * iterations) + idx
@@ -28,6 +29,7 @@ namespace :trends do
         end
       end
     end
+    puts "\t-Done updating trends."
   end
   
 end

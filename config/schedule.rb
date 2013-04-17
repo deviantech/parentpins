@@ -3,7 +3,7 @@
 
 # Runs like normal, but uses the current symlink so we don't have to update whenever on every deploy
 def current(cmd_type, cmd_str)
-  @full_path ||= File.expand_path( File.dirname(__FILE__) )
+  @full_path ||= File.expand_path( File.dirname(__FILE__) ).gsub(/\/config/, '')
   @curr_path ||= @full_path['/releases/'] ? @full_path.gsub(/releases\/\d+/, 'current') : @full_path
   
   send(cmd_type, cmd_str, :path => @curr_path)
@@ -17,6 +17,6 @@ set :output, File.join(File.expand_path( File.dirname(__FILE__) ).gsub(/releases
 
 
 
-every 2.minutes do
+every 2.hours do
   current :bx_rake, "trends:update"
 end
