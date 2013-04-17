@@ -55,7 +55,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   border-radius: #{$radius} #{$radius} #{$radius} #{$radius};
 }
 
-@mixin boxshadow($a, $b, $c, $color) {
+@mixin boxshadow($a: 0px, $b: 3px, $c: 6px, $color: rgba(0, 0, 0, 0.15)) {
   -webkit-box-shadow: #{$a} #{$b} #{$c} #{$color};
   -moz-box-shadow: #{$a} #{$b} #{$c} #{$color};
   box-shadow: #{$a} #{$b} #{$c} #{$color};
@@ -1965,7 +1965,9 @@ body.profile {
 /* flash messaging */
 
 #flash {
-  margin: -24px 0 12px 0; }
+  margin-bottom: 24px; 
+  margin-top: -20px;
+}
 
 .flashmsg {
   position: relative;
@@ -1977,22 +1979,18 @@ body.profile {
   padding: 12px 0;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   .close {
-    color: #fff;
-    font-size: 22px;
+    color: #666;
+    font-size: 20px;
     line-height:24px;
     font-weight:bold;
     padding: 0 4px 4px;
     position: absolute;
     right: 20px;
     top: 10px;
-    height:24px;
-    width:19px;
-    @include circular;
-    background:#222;
     &:hover {
       cursor: pointer;
-      background:#fff;
-      color:#3F3F40; } }
+      color:#000;
+   } }
   &.alert, &.alert-success {
     background: #D2FFE2; }
   &.alert-error {
@@ -2518,3 +2516,17 @@ code {
       overflow:hidden; }
     .attribution .image_link {
       height:auto; } } }
+.edit-featured-pin img.pin_image {
+  @include rounded(2px);
+  @include boxshadow;
+}
+li.pin a.select-featured-pin {
+  width: 222px;
+  margin: -15px 0 0 -15px;
+  display: block;
+  background: #CCC;
+  text-align: center;
+  font-weight: bold;
+  padding-top: 10px;
+  height: 40px;
+}

@@ -42,14 +42,14 @@ $(document).ready(function() {
     if ($this.parents('.pin-context').length == 0) return;
     var focusable;
           
-    if ($this.parents('.modal_overlay').length) { // If in modal
-      focusable = $this.parents('.modal_overlay').find('.comment_form textarea').first();
-      $this.parents('.modal_overlay').scrollTo(focusable);
-    } else {
+    if ($this.parents('li.pin').length) { // If on page listing multiple pins
       focusable = $this.parents('li.pin').find('.comment_form textarea').first();
       focusable.parents('.comment_form').toggle();
       focusable.parents('.masonry').masonry('reload');
       $.scrollTo( $this.parents('li.pin') );
+    } else { // If in modal or on standalone pin#show page
+      focusable = $this.parents('.pin-context').find('.comment_form textarea').first();
+      ($this.parents('.modal_overlay').length ? $this.parents('.modal_overlay') : $).scrollTo(focusable.parents('.comments'));      
     }
     focusable.focus();
     e.preventDefault();
@@ -58,10 +58,11 @@ $(document).ready(function() {
     
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {
-    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
-    $.post(url);
     e.preventDefault();
     e.stopPropagation();
+    
+    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    $.ajax({type: $(this).data('ajax-method') || 'POST', url: url});
     
     $(this).parent().find('.following-action').each(function() {
       if ($(this).hasClass('hidden')) {
@@ -95,6 +96,14 @@ $(document).ready(function() {
     }
   });
   
+  // When comment form submitted, update history to point to current LI if on page listing multiple (so redirect_to :back will load the page scrolled down to see the new comment)
+  $(document).on('submit', 'form.new_comment', function(e, seen) {
+    if (!$(this).parents('li.pin').length) return;
+
+    var updatedURL = urlReplacingHash(History.getState().url, $(this).parents('li.pin').attr('id'));
+    $(this).append( $('<input type="hidden" name="redirect_to">').val(updatedURL) );
+  });
+    
   // As a function because shared with popup.js
   handlePopupWindows();
   

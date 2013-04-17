@@ -7,6 +7,8 @@
       <%= link_to image_tag(@profile.avatar.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
       <h2><%= @profile.name %></h2>
       <%= render 'profile/follow_buttons', :to_follow => @profile %>      
+      <%= render 'profile/feature_buttons', :user => @profile %>
+      
       <ul class="nav_profile" data-profile-id="<%= @profile.id %>">
         <% if current_user == @profile %>
           <li><%= profile_nav_link :activity %></li>

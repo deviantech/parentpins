@@ -1,8 +1,6 @@
 <div class="featured">
   <div class="featured_blogger">
     <h2>Featured Pinners</h2>
-    <% User.get_featured(2).each do |user| %>
-      <p>Kyle, you can put placeholder here.</p>
-    <% end %>
+    <%= render :partial => 'featured/user', :collection => User.get_featured(2) %>    
   </div>
 </div>
