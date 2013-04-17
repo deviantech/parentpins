@@ -1950,7 +1950,9 @@ body.profile {
 /* flash messaging */
 
 #flash {
-  margin: -24px 0 12px 0; }
+  margin-bottom: 24px; 
+  margin-top: -20px;
+}
 
 .flashmsg {
   position: relative;
@@ -1962,22 +1964,18 @@ body.profile {
   padding: 12px 0;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
   .close {
-    color: #fff;
-    font-size: 30px;
+    color: #666;
+    font-size: 20px;
     line-height:24px;
     font-weight:bold;
     padding: 0 4px 4px;
     position: absolute;
     right: 20px;
     top: 10px;
-    height:24px;
-    width:19px;
-    @include circular;
-    background:#222;
     &:hover {
       cursor: pointer;
-      background:#fff;
-      color:#3F3F40; } }
+      color:#000;
+   } }
   &.alert, &.alert-success {
     background: #D2FFE2; }
   &.alert-error {
