@@ -13,7 +13,7 @@ end
 job_type :bx_rake, "cd :path && bundle exec rake :task --silent :output RAILS_ENV=:environment"
 
 
-set :output, File.join(File.expand_path( File.dirname(__FILE__) ).gsub(/releases\/\d+/, 'current'), 'log', 'cron_log.log')
+set :output, File.join(File.expand_path( File.dirname(__FILE__) ).gsub(/releases\/\d+/, 'current'), '..', 'log', 'cron_log.log')
 
 
 
