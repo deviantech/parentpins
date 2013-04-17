@@ -69,5 +69,7 @@ gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install 
 gem 'friendly_id'
 
 
+gem 'whenever', :require => false
+
 # No longer needed on modern Ruby
 gem 'system_timer', :platform => :ruby_18
