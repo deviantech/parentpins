@@ -1,14 +1,19 @@
+// TODO: also update the multiple below it, if there is one
 <% if params[:context] == 'multiple' %>
   var form = $('li#<%= dom_id(@comment.commentable) %> .comment_form');
-  $("<%= escape_javascript(render "/pins/listing_comment", :comment => @comment) %>").insertBefore(form);
+  $("<%= escape_javascript(render "/pins/listing_comment", :comment => @comment) %>").prependTo( form.parents('.comments') );
   form.toggle().find('textarea').val('');
-  form.parents('.masonry').masonry('reload');
-<% elsif params[:context] == '' %>
-
+  form.parents('.masonry').masonry('reload');  
 <% else %>
-  <% if @comment.errors.any? %>
+  var form = $('div.pin-context#<%= dom_id(@comment.commentable) %> .comment_form');
+  if (form.length) {
+    form.find('textarea').val('');
+    $("<%= escape_javascript(render "/pins/comment", :comment => @comment) %>").prependTo( form.parents('.comments') );
+  } else {
+    <% if @comment.errors.any? %>
     Global.setFlashMsg("Unable to save comment.", "error");
-  <% else %>
+    <% else %>
     Global.setFlashMsg("Saved comment.", "success");  
-  <% end %>
+    <% end %>
+  }
 <% end %>

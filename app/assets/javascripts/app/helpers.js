@@ -197,7 +197,7 @@ function applyMasonry(selector) {
 }
 
 function viewAllComments(link) {
-  var div = $(link).parents('.comment');
+  var div = $(link).hasClass('load-more') ? $(link) : $(link).parents('.load-more');
   div.hide();
   div.siblings('.comment').removeClass('hidden');
   div.parents('.masonry').masonry('reload');

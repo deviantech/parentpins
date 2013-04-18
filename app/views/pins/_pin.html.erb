@@ -32,6 +32,7 @@
       Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
     </p>
   </div>
+  <div class="comments">
   <% if pin.comments_count > 0 %>
     <% pin.comments.each_with_index do |comment, idx| %>
       <% if idx == 3 %>
@@ -47,4 +48,5 @@
       <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
     </div>
   <% end %>
+  </div>
 </li>
