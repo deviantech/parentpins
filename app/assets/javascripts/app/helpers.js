@@ -205,6 +205,15 @@ function viewAllComments(link) {
 
 
 // Wrap $.scrollTo to take into account the height of the fixed header
+function scrollToHeightFor(elem) {
+  if (!$(elem).length) return 0;
+  
+  // Handle case of pin in modal, need to consider how far modal already scrolled
+  var modal_top_offset = $(elem).parents('.modal_overlay').find('.pin-context');
+  modal_top_offset = modal_top_offset.length ? $(modal_top_offset).offset().top : 0;
+
+  return $(elem).offset().top - $('#header_wrapper').height() - 10 - modal_top_offset;
+}
 function scrollTo(elem) {
-  $.scrollTo( $(elem).offset().top - $('#header_wrapper').height() - 10 );
+  $.scrollTo( scrollToHeightFor(elem) );
 }

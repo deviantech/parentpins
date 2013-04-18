@@ -50,9 +50,9 @@ $(document).ready(function() {
     } else { // If in modal or on standalone pin#show page
       focusable = $this.parents('.pin-context').find('.comment_form textarea').first();
       if ($this.parents('.modal_overlay').length) {
-        $this.parents('.modal_overlay').scrollTo(focusable.parents('.comments'));      
+        $this.parents('.modal_overlay').scrollTo( scrollToHeightFor(focusable.parents('.comments')) );      
       } else {
-        scrollTo(focusable.parents('comments'));
+        scrollTo(focusable.parents('.comments'));
       }
     }
     focusable.focus();
