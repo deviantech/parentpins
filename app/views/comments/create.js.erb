@@ -1,26 +1,42 @@
-var newComment = $("<%= escape_javascript(render "/pins/comment", :comment => @comment) %>");
+<% if @comment.commentable.is_a?(Pin) %>
+  var newComment = $("<%= escape_javascript(render "/pins/comment", :comment => @comment) %>");
 
-// Try updating the li.pin in the ul, if there is one
-var form1 = $('li#<%= dom_id(@comment.commentable) %> .comment_form');
-if (form1.length) {
-  newComment.insertAfter(form1);
-  form1.hide().find('textarea').val('');
-  form1.parents('.masonry').masonry('reload');
-  newComment = newComment.clone();
-}
+  // Try updating the li.pin in the ul, if there is one
+  var form1 = $('li#<%= dom_id(@comment.commentable) %> .comment_form');
+  if (form1.length) {
+    newComment.insertAfter(form1);
+    form1.hide().find('textarea').val('');
+    form1.parents('.masonry').masonry('reload');
+    newComment = newComment.clone();
+  }
 
-// Then update the individual pin, if there's one in a modal or shown alone
-var form2 = $('div.pin-context#<%= dom_id(@comment.commentable) %> .comment_form');
-if (form2.length) {
-  form2.find('textarea').val('');
-  newComment.insertAfter(form2);
-}
+  // Then update the individual pin, if there's one in a modal or shown alone
+  var form2 = $('div.pin-context#<%= dom_id(@comment.commentable) %> .comment_form');
+  if (form2.length) {
+    form2.find('textarea').val('');
+    newComment.insertAfter(form2);
+  }
 
-// Have some fallback in case neither exists
-if (!form1.length && !form2.length) {
+  // Have some fallback in case neither exists
+  if (!form1.length && !form2.length) {
+    <% if @comment.errors.any? %>
+      Global.setFlashMsg("Unable to save comment.", "error");
+    <% else %>
+      Global.setFlashMsg("Saved comment.", "success");  
+    <% end %>
+  }
+  
+<% elsif @comment.commentable.is_a?(Board) %>
+  var newComment = $("<%= escape_javascript(render "/board/comment", :comment => @comment, :first => true) %>");
+  $('li.recent_comment').find('.user_info .count').remove();
+  $('ul.comments').first().prepend(newComment);
+  $('#comment_body').val('');
+
+
+<% else %>
   <% if @comment.errors.any? %>
     Global.setFlashMsg("Unable to save comment.", "error");
   <% else %>
     Global.setFlashMsg("Saved comment.", "success");  
   <% end %>
-}
+<% end %>
