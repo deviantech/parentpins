@@ -33,20 +33,20 @@
     </p>
   </div>
   <div class="comments">
-  <% if pin.comments_count > 0 %>
-    <% pin.comments.each_with_index do |comment, idx| %>
-      <% if idx == 3 %>
-        <div class="comment load-more">
-          <%= link_to_function "View All #{pin.comments_count} Comments", "viewAllComments(this)" %>
-        </div>
-      <% end %>
-      <%= render 'listing_comment', :comment => comment, :idx => idx %>
+    <% if user_signed_in? && !pin.new_record? %>
+      <div class="comment_form">
+        <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
+      </div>
     <% end %>
-  <% end %>
-  <% if user_signed_in? && !pin.new_record? %>
-    <div class="comment_form">
-      <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
-    </div>
-  <% end %>
+    <% if pin.comments_count > 0 %>
+      <% pin.comments.each_with_index do |comment, idx| %>
+        <% if idx == 3 %>
+          <div class="comment load-more">
+            <%= link_to_function "View #{pluralize pin.comments_count - 3, 'More Comment', 'More Comments'}", "viewAllComments(this)" %>
+          </div>
+        <% end %>
+        <%= render 'comment', :comment => comment, :idx => idx, :small_avatar => true %>
+      <% end %>
+    <% end %>
   </div>
 </li>

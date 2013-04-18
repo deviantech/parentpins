@@ -46,7 +46,6 @@ $(document).ready(function() {
       focusable = $this.parents('li.pin').find('.comment_form textarea').first();
       focusable.parents('.comment_form').toggle();
       focusable.parents('.masonry').masonry('reload');
-      viewAllComments($this.parents('li.pin').find('.load-more'));
       $.scrollTo( $this.parents('li.pin') );
     } else { // If in modal or on standalone pin#show page
       focusable = $this.parents('.pin-context').find('.comment_form textarea').first();
@@ -56,16 +55,7 @@ $(document).ready(function() {
     e.preventDefault();
     e.stopPropagation();
   });
-  
-  // Ajax submissions of comments - add a :context param the controller can use to figure out what to render
-  $(document).on("ajax:beforeSend", function(evt, xhr, settings) {
-    var target = $(evt.target);
-    if (!target.hasClass('new_comment')) return;
-    
-    var context = target.parents('li.pin.pin-context').length ? 'multiple' : 'individual';
-    settings.data += "&context="+context;
-  });
-    
+      
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {
     e.preventDefault();

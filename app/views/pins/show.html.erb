@@ -40,12 +40,12 @@
       <% end %>
 
       <div class="comments" id="pinly_comment">
-        <%= render :partial => 'pins/comment', :collection => @pin.comments %>
         <% if user_signed_in?%>
           <div class="comment_form">
             <%= render 'comments/form', :commentable => @pin %>
           </div>
         <% end %>
+        <%= render :partial => 'pins/comment', :collection => @pin.comments %>
       </div>
     </div>
     <div class="clearfix"></div>

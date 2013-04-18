@@ -1,19 +1,25 @@
-// TODO: also update the multiple below it, if there is one
-<% if params[:context] == 'multiple' %>
-  var form = $('li#<%= dom_id(@comment.commentable) %> .comment_form');
-  $("<%= escape_javascript(render "/pins/listing_comment", :comment => @comment) %>").prependTo( form.parents('.comments') );
-  form.toggle().find('textarea').val('');
-  form.parents('.masonry').masonry('reload');  
-<% else %>
-  var form = $('div.pin-context#<%= dom_id(@comment.commentable) %> .comment_form');
-  if (form.length) {
-    form.find('textarea').val('');
-    $("<%= escape_javascript(render "/pins/comment", :comment => @comment) %>").prependTo( form.parents('.comments') );
-  } else {
-    <% if @comment.errors.any? %>
+var newComment = $("<%= escape_javascript(render "/pins/comment", :comment => @comment) %>");
+
+// Try updating the li.pin in the ul, if there is one
+var form1 = $('li#<%= dom_id(@comment.commentable) %> .comment_form');
+if (form1.length) {
+  newComment.insertAfter(form1);
+  form1.hide().find('textarea').val('');
+  form1.parents('.masonry').masonry('reload');
+}
+
+// Then update the individual pin, if there's one in a modal or shown alone
+var form2 = $('div.pin-context#<%= dom_id(@comment.commentable) %> .comment_form');
+if (form2.length) {
+  form2.find('textarea').val('');
+  newComment.insertAfter(form2);
+} 
+
+// Have some fallback in case neither exists
+if (!form1.length && !form2.length) {
+  <% if @comment.errors.any? %>
     Global.setFlashMsg("Unable to save comment.", "error");
-    <% else %>
+  <% else %>
     Global.setFlashMsg("Saved comment.", "success");  
-    <% end %>
-  }
-<% end %>
+  <% end %>
+}
