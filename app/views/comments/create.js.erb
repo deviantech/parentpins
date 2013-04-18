@@ -6,6 +6,7 @@ if (form1.length) {
   newComment.insertAfter(form1);
   form1.hide().find('textarea').val('');
   form1.parents('.masonry').masonry('reload');
+  newComment = newComment.clone();
 }
 
 // Then update the individual pin, if there's one in a modal or shown alone
@@ -13,7 +14,7 @@ var form2 = $('div.pin-context#<%= dom_id(@comment.commentable) %> .comment_form
 if (form2.length) {
   form2.find('textarea').val('');
   newComment.insertAfter(form2);
-} 
+}
 
 // Have some fallback in case neither exists
 if (!form1.length && !form2.length) {

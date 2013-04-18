@@ -2549,8 +2549,15 @@ li.pin .comment .user_info {
   }
   a {
     color: #8C7E7E;
+    font-weight: bold;
+    text-decoration: none;
+    position: relative;
+    top: 1px;
     &:after {
       content: ':';
+    }
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
