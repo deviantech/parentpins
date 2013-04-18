@@ -43,13 +43,7 @@
         <%= render :partial => 'pins/comment', :collection => @pin.comments %>
         <% if user_signed_in?%>
           <div class="comment_form">
-            <%= form_for Comment.new(params[:comment]) do |f| %>
-              <%= f.hidden_field :commentable_type, :value => @pin.try(:class).try(:name) %>
-              <%= f.hidden_field :commentable_id, :value => @pin.try(:id) %>
-              <%= avatar_link(current_user) %>
-              <%= f.text_area :body, :placeholder => 'Enter your comment...', :maxlength => 10000 %>
-              <%= f.submit 'Comment', :class => "btn sec_action" %>
-            <% end %>
+            <%= render 'comments/form', :commentable => @pin %>
           </div>
         <% end %>
       </div>

@@ -1,0 +1,14 @@
+<% if params[:context] == 'multiple' %>
+  var form = $('li#<%= dom_id(@comment.commentable) %> .comment_form');
+  $("<%= escape_javascript(render "/pins/listing_comment", :comment => @comment) %>").insertBefore(form);
+  form.toggle().find('textarea').val('');
+  form.parents('.masonry').masonry('reload');
+<% elsif params[:context] == '' %>
+
+<% else %>
+  <% if @comment.errors.any? %>
+    Global.setFlashMsg("Unable to save comment.", "error");
+  <% else %>
+    Global.setFlashMsg("Saved comment.", "success");  
+  <% end %>
+<% end %>

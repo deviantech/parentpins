@@ -1,0 +1,7 @@
+<div class="comment <%= dom_id(comment) %><%= ' hidden' if defined?(idx) && idx >= 3 %>">
+  <%= avatar_link(comment.user, :v30) %>
+  <p class="details">
+    <%= link_to comment.user.name, profile_path(comment.user) %>:
+    <%= comment.body %>
+  </p>
+</div>

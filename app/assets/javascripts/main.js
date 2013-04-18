@@ -55,6 +55,13 @@ $(document).ready(function() {
     e.preventDefault();
     e.stopPropagation();
   });
+  
+  // Ajax submissions of comments - add a :context param the controller can use to figure out what to render
+  $(document).on("ajax:beforeSend", function(evt, xhr, settings) {
+    if (!$(evt.target).hasClass('new_comment')) return;
+    var context = $(evt.target).parents('li.pin.pin-context').length ? 'multiple' : 'individual';
+    settings.data += "&context="+context;
+  });
     
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {

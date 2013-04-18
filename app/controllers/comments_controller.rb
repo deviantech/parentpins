@@ -2,13 +2,11 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!, :only => [:create, :destroy]
   
   def create
-    @comment = current_user.comments.new(params[:comment])
-    
-    unless @comment.save
-      flash[:error] = "Unable to save comment."
+    @comment = current_user.comments.create(params[:comment])
+    respond_to do |wants|
+      wants.html { redirect_to :back }
+      wants.js
     end
-
-    redirect_to :back
   end
   
   def destroy
