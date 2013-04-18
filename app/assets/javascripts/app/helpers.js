@@ -203,3 +203,8 @@ function viewAllComments(link) {
   div.parents('.masonry').masonry('reload');
 }
 
+
+// Wrap $.scrollTo to take into account the height of the fixed header
+function scrollTo(elem) {
+  $.scrollTo( $(elem).offset().top - $('#header_wrapper').height() - 10 );
+}

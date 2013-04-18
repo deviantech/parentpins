@@ -46,10 +46,14 @@ $(document).ready(function() {
       focusable = $this.parents('li.pin').find('.comment_form textarea').first();
       focusable.parents('.comment_form').toggle();
       focusable.parents('.masonry').masonry('reload');
-      $.scrollTo( $this.parents('li.pin') );
+      scrollTo( $this.parents('li.pin') );
     } else { // If in modal or on standalone pin#show page
       focusable = $this.parents('.pin-context').find('.comment_form textarea').first();
-      ($this.parents('.modal_overlay').length ? $this.parents('.modal_overlay') : $).scrollTo(focusable.parents('.comments'));      
+      if ($this.parents('.modal_overlay').length) {
+        $this.parents('.modal_overlay').scrollTo(focusable.parents('.comments'));      
+      } else {
+        scrollTo(focusable.parents('comments'));
+      }
     }
     focusable.focus();
     e.preventDefault();
@@ -93,7 +97,7 @@ $(document).ready(function() {
     var wrapper = $(e.target).parent();
     if (wrapper.data('short-text')) {
       wrapper.html( wrapper.data('short-text') );
-      $.scrollTo(wrapper.parents('.masonry-brick'));
+      scrollTo(wrapper.parents('.masonry-brick'));
       wrapper.parents('.masonry').masonry('reload');
     }
   });
