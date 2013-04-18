@@ -45,7 +45,7 @@
             <%= link_to_function "View #{pluralize pin.comments_count - 3, 'More Comment', 'More Comments'}", "viewAllComments(this)" %>
           </div>
         <% end %>
-        <%= render 'comment', :comment => comment, :idx => idx, :small_avatar => true %>
+        <%= render '/pins/comment', :comment => comment, :idx => idx, :small_avatar => true %>
       <% end %>
     <% end %>
   </div>
