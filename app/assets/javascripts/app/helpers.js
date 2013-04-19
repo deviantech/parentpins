@@ -217,3 +217,20 @@ function scrollToHeightFor(elem) {
 function scrollTo(elem) {
   $.scrollTo( scrollToHeightFor(elem) );
 }
+
+function updateFollowingButtonsAfterClickOn(clicked) {
+  var link = $(clicked);
+  var wrapper = link.parent();
+  var to_show = link.hasClass('follow') ? 'unfollow' : 'follow';
+
+  // Handle this specific set of toggles
+  wrapper.find('.following-action').addClass('hidden');
+  wrapper.find('.following-action.'+to_show).removeClass('hidden');
+
+  // If for a user, also update toggles of any owned boards shown on this page
+  if (wrapper.hasClass('following-action-for-profile')) {
+    var uid = wrapper.data('profile-id');
+    $('.following-action-for-board-owned-by-'+uid+' .following-action').addClass('hidden');
+    $('.following-action-for-board-owned-by-'+uid+' .following-action.'+to_show).removeClass('hidden');
+  }
+}

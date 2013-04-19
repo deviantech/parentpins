@@ -152,7 +152,7 @@ class User < ActiveRecord::Base
   # Hard to decide what to show for counts. Most efficient to only show those directly following, but
   # on the "follows" page we had to show all (else you can never see the boards you follow), so on the
   # "followed_by" page we had to follow suit to remain consistent.
-  
+    
   # TODO: make uses of this more efficient   
   def following_even_indirectly
     @following_even_indirectly ||= begin
@@ -176,6 +176,10 @@ class User < ActiveRecord::Base
 
   def followed_by_even_indirectly_count
     followed_by_even_indirectly.count
+  end
+  
+  def direct_followers
+    User.where(:id => followed_by_ids)
   end
   
   # ids
@@ -236,6 +240,9 @@ class User < ActiveRecord::Base
   def follow_user(obj)
     Rails.redis.sadd(redis_name__following_users, obj.id)
     Rails.redis.sadd(obj.redis_name__followed_by,  self.id)
+    obj.boards.each do |board|
+      follow_board(board)
+    end
   end
   
   def follow_board(obj)
@@ -258,6 +265,9 @@ class User < ActiveRecord::Base
   def unfollow_user(obj)
     Rails.redis.srem(redis_name__following_users, obj.id)
     Rails.redis.srem(obj.redis_name__followed_by,   self.id)
+    obj.boards.each do |board|
+      unfollow_board(board)
+    end
   end
 
   def unfollow_board(obj)
@@ -266,14 +276,11 @@ class User < ActiveRecord::Base
   end
 
   # counters
-  
-  def following_even_indirectly_count
-    Rails.redis.scard(redis_name__following_users)
-  end
-  
+    
   def following_individual_boards_count
     Rails.redis.scard(redis_name__following_boards)
   end
+    
   
   # ==========================================================
   # = REDIS: Liked Pins (implementation partially in pin.rb) =

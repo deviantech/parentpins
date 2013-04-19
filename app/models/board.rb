@@ -19,6 +19,7 @@ class Board < ActiveRecord::Base
   
   after_save :update_pin_settings
   before_destroy :clean_redis
+  after_create :apply_followers_from_user
   
   scope :in_category, lambda {|cat|
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
@@ -87,6 +88,12 @@ class Board < ActiveRecord::Base
     pins.find_each do |pin|
       pin.send(:copy_board_settings)
       pin.save
+    end
+  end
+
+  def apply_followers_from_user
+    user.direct_followers.each do |u|
+      u.follow_board(self)
     end
   end
 
