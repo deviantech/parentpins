@@ -20,7 +20,8 @@ $(document).ready(function() {
   
   // Like/Unlike
   $(document).on('click', '.like_button', function(e) {
-    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    var context = $('.nav_profile').length ? ('context=' + $('.nav_profile').data('profileId')) : '';
+    var url = urlPlusParamString($(this).data('url'), context);
     $.post(url);
     e.preventDefault();
     e.stopPropagation();
