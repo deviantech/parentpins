@@ -7,7 +7,10 @@ outputDiv = $('#ppBookmarkletContent')
 progressDiv = outputDiv.find('#noPotentialImages') # TODO -- pass this in in case there's another with this ID in the original page's HTML
 boardSelector = '.UserBoards .item.gridSortable a.boardLinkWrapper'
 pinSelector   = '.pinWrapper'
-debug = true
+debug = false
+useTestData = true
+
+testData = [{"name":"Default","pinterestURL":"http://pinterest.com/dvntpins/default/","pins":[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","link":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg"},{"description":"That's How a Pro Uses a Bunk Bed","domain":"memebase.cheezburger.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg","pinterestURL":"http://pinterest.com/pin/442126888388218505/","link":"http://memebase.cheezburger.com/senorgif","imageURL":"http://media-cache-ak1.pinimg.com/736x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg"},{"description":"ireland - Google Search","domain":"travel.nytimes.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg","pinterestURL":"http://pinterest.com/pin/442126888388183279/","link":"http://travel.nytimes.com/travel/guides/europe/ireland/overview.html","imageURL":"http://media-cache-ak1.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg"}]}]
 
 processingAllBoards = new $.Deferred()
 processingAllPins = new $.Deferred()
@@ -67,55 +70,59 @@ processThisPin = (pin) ->
     
 
 
+if useTestData
+  boardsData = testData
+  processingAllPins.resolve()
+else
+  $(boardSelector).each (bidx, board) ->
+    processingThisBoard = new $.Deferred()
+    $board = $(board)
+    boardURL = $board.prop('href')
+    boardName = $.trim( $board.find('.boardName').text() )
+    boardPinData = []
 
-$(boardSelector).each (bidx, board) ->
-  processingThisBoard = new $.Deferred()
-  $board = $(board)
-  boardURL = $board.prop('href')
-  boardName = $.trim( $board.find('.boardName').text() )
-  boardPinData = []
+    iframeAjaxSeen_Categories = false
+    iframeAjaxSeen_Board = false
+    alreadyProcessingBoard = false
 
-  iframeAjaxSeen_Categories = false
-  iframeAjaxSeen_Board = false
-  alreadyProcessingBoard = false
+    iframe = $('<iframe>').hide().attr('src', boardURL).appendTo( $('body') )
+    iframe.show().css({position: 'absolute', left: '50px', top: (bidx*500)+'px', height: '500px', width: '500px', border: '2px solid #333', 'z-index': 9999999999999}) if debug
 
-  iframe = $('<iframe>').hide().attr('src', boardURL).appendTo( $('body') ).show().css({position: 'absolute', left: '50px', top: (bidx*500)+'px', height: '500px', width: '500px', border: '2px solid #333', 'z-index': 9999999999999})
-
-  processingThisBoard.done () ->
-    boardsPending -= 1
-    boardsData.push({
-      name: boardName,
-      pinterestURL: boardURL,
-      pins: boardPinData
-    })
-    reportProgress('finished processing board: '+boardName)
-    processingAllBoards.resolve() if boardsPending == 0
-    
-  processSingleBoard = () ->
-    $ = iframe.get(0).contentWindow.jQuery
-    # Scroll iframe down to try lazy loading later images
-    $(iframe).contents().scrollTop( $(iframe).contents().height() )
-    
-    iframe.contents().find(pinSelector).each (pidx, pin) ->
-      $pin = $(pin)
-      boardPinData.push({
-        description: $pin.find('.pinDescription').text(),
-        domain: $pin.find('.pinDomain').text(),
-        price: $pin.find('.priceValue').text(),
-        smallImageURL: $pin.find('.pinImg.loaded').prop('src'),
-        pinterestURL: $pin.find('a.pinImageWrapper').prop('href')
+    processingThisBoard.done () ->
+      boardsPending -= 1
+      boardsData.push({
+        name: boardName,
+        pinterestURL: boardURL,
+        pins: boardPinData
       })
-    processingThisBoard.resolve()
+      reportProgress('finished processing board: '+boardName)
+      processingAllBoards.resolve() if boardsPending == 0
     
-  iframe.on 'load', () ->
-    # Don't fully understand, but ajaxComplete seems to only work if use the jquery from the inner window 
-    # (see untested answer on http://stackoverflow.com/questions/14563041/detect-content-of-iframe-change-the-content-is-dynamic-jquery-mobile) 
-    this.contentWindow.jQuery(this.contentWindow.document).ajaxComplete (event, xhr, settings) ->
-      return if alreadyProcessingBoard
-      iframeAjaxSeen_Categories = true if /resource\/CategoriesResource\/get/.test(settings.url)
-      iframeAjaxSeen_Board      = true if /resource\/BoardFeedResource\/get/.test(settings.url)
+    processSingleBoard = () ->
+      $ = iframe.get(0).contentWindow.jQuery
+      # Scroll iframe down to try lazy loading later images
+      $(iframe).contents().scrollTop( $(iframe).contents().height() )
+    
+      iframe.contents().find(pinSelector).each (pidx, pin) ->
+        $pin = $(pin)
+        boardPinData.push({
+          description: $pin.find('.pinDescription').text(),
+          domain: $pin.find('.pinDomain').text(),
+          price: $pin.find('.priceValue').text(),
+          smallImageURL: $pin.find('.pinImg.loaded').prop('src'),
+          pinterestURL: $pin.find('a.pinImageWrapper').prop('href')
+        })
+      processingThisBoard.resolve()
+    
+    iframe.on 'load', () ->
+      # Don't fully understand, but ajaxComplete seems to only work if use the jquery from the inner window 
+      # (see untested answer on http://stackoverflow.com/questions/14563041/detect-content-of-iframe-change-the-content-is-dynamic-jquery-mobile) 
+      this.contentWindow.jQuery(this.contentWindow.document).ajaxComplete (event, xhr, settings) ->
+        return if alreadyProcessingBoard
+        iframeAjaxSeen_Categories = true if /resource\/CategoriesResource\/get/.test(settings.url)
+        iframeAjaxSeen_Board      = true if /resource\/BoardFeedResource\/get/.test(settings.url)
       
-      # TODO: how handle if too many pins in board, pagination required?
-      if (iframeAjaxSeen_Categories && iframeAjaxSeen_Board)
-        alreadyProcessingBoard = true
-        setTimeout(processSingleBoard, 100)
+        # TODO: how handle if too many pins in board, pagination required?
+        if (iframeAjaxSeen_Categories && iframeAjaxSeen_Board)
+          alreadyProcessingBoard = true
+          setTimeout(processSingleBoard, 100)
