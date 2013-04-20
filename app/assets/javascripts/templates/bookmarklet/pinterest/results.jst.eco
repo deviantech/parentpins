@@ -1,0 +1,11 @@
+<ul id="boards">
+  <% for board in @boards: %>
+    <li>
+      <strong><%= board.name %></strong> has
+      <%= board.pins.length %> pin<%= 's' if board.pins.length != 1 %>:
+      <% for pin in board.pins: %>
+        <p><%= pin.description %></p>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
