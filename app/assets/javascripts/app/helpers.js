@@ -184,7 +184,7 @@ function stopSorting(toSort) {
 }
 
 function applyMasonry(selector) {
-  selector = selector || '.masonry'
+  selector = selector || '.masonry';
   $(selector).masonry({
     columnWidth: 10,
     gutterWidth: 6,
@@ -197,8 +197,40 @@ function applyMasonry(selector) {
 }
 
 function viewAllComments(link) {
-  var div = $(link).parents('.comment');
+  var div = $(link).hasClass('load-more') ? $(link) : $(link).parents('.load-more');
   div.hide();
   div.siblings('.comment').removeClass('hidden');
   div.parents('.masonry').masonry('reload');
+}
+
+
+// Wrap $.scrollTo to take into account the height of the fixed header
+function scrollToHeightFor(elem) {
+  if (!$(elem).length) return 0;
+  
+  // Handle case of pin in modal, need to consider how far modal already scrolled
+  var modal_top_offset = $(elem).parents('.modal_overlay').find('.pin-context');
+  modal_top_offset = modal_top_offset.length ? $(modal_top_offset).offset().top : 0;
+
+  return $(elem).offset().top - $('#header_wrapper').height() - 10 - modal_top_offset;
+}
+function scrollTo(elem) {
+  $.scrollTo( scrollToHeightFor(elem) );
+}
+
+function updateFollowingButtonsAfterClickOn(clicked) {
+  var link = $(clicked);
+  var wrapper = link.parent();
+  var to_show = link.hasClass('follow') ? 'unfollow' : 'follow';
+
+  // Handle this specific set of toggles
+  wrapper.find('.following-action').addClass('hidden');
+  wrapper.find('.following-action.'+to_show).removeClass('hidden');
+
+  // If for a user, also update toggles of any owned boards shown on this page
+  if (wrapper.hasClass('following-action-for-profile')) {
+    var uid = wrapper.data('profile-id');
+    $('.following-action-for-board-owned-by-'+uid+' .following-action').addClass('hidden');
+    $('.following-action-for-board-owned-by-'+uid+' .following-action.'+to_show).removeClass('hidden');
+  }
 }

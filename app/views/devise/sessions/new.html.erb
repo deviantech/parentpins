@@ -1,39 +1,41 @@
-<div class="wrapper profile">
+<div class="<%= modal_class %>">
+  <div class="wrapper profile">
 
-  <div class="content board board_wide">
-    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form narrow'}) do |f| %>
-      <h1>Login to ParentPins</h1>
-      <div class="field">
-        <%= f.text_field :username, :placeholder => 'Username' %>
-      </div>
-
-      <div class="field">
-        <%= f.password_field :password, :placeholder => 'Password' %>
-      </div>
-
-      <% if devise_mapping.rememberable? -%>
-        <div class="field checkbox">
-          <%= f.label :remember_me %><%= f.check_box :remember_me %> 
+    <div class="content board board_wide">
+      <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form narrow'}) do |f| %>
+        <h1>Login to ParentPins</h1>
+        <div class="field">
+          <%= f.text_field :username, :placeholder => 'Username' %>
         </div>
-      <% end -%>
 
-      <div class="submit">
-        <%= f.submit "Log In", :class => 'btn tertiary_action' %>
-      </div>
+        <div class="field">
+          <%= f.password_field :password, :placeholder => 'Password' %>
+        </div>
+
+        <% if devise_mapping.rememberable? -%>
+          <div class="field checkbox">
+            <%= f.label :remember_me %><%= f.check_box :remember_me %> 
+          </div>
+        <% end -%>
+
+        <div class="submit">
+          <%= f.submit "Log In", :class => 'btn tertiary_action' %>
+        </div>
       
-      <div class="buttons">
-        <% if params[:controller] == 'popup' %>
-          <%- resource_class.omniauth_providers.each do |provider| %>
-            <p><%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), :class => 'btn btn_facebook' %></p>
-          <% end -%>
-        <% else %>
-          <%= render "devise/shared/links" %>
-        <% end %>
-      </div>
-    <% end %>
+        <div class="buttons">
+          <% if params[:controller] == 'popup' %>
+            <%- resource_class.omniauth_providers.each do |provider| %>
+              <p><%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), :class => 'btn btn_facebook' %></p>
+            <% end -%>
+          <% else %>
+            <%= render "devise/shared/links" %>
+          <% end %>
+        </div>
+      <% end %>
 
+    </div>
+  
+    <div class="clearfix"></div>
+  
   </div>
-  
-  <div class="clearfix"></div>
-  
 </div>

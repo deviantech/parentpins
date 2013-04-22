@@ -1,4 +1,4 @@
-<li class="pin pin-context" id="<%= dom_id(pin) %>">
+<li class="pin pin-context <%= dom_id(pin) %>" id="<%= dom_id(pin) %>">
   <% if params[:context] == 'select_featured' %>
     <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
   <% elsif !(pin.new_record? || params[:action] == 'edit') %>
@@ -32,25 +32,21 @@
       Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
     </p>
   </div>
-  <% if pin.comments_count > 0 %>
-    <% pin.comments.each_with_index do |comment, idx| %>
-      <% if idx == 3 %>
-        <div class="comment load-more">
-          <%= link_to_function "View All #{pin.comments_count} Comments", "viewAllComments(this)" %>
-        </div>
-      <% end %>
-      <div class="comment <%= dom_id(comment) %><%= ' hidden' if idx >= 3 %>">
-        <%= avatar_link(comment.user, :v30) %>
-        <p class="details">
-          <%= link_to comment.user.name, profile_path(comment.user) %>:
-          <%= comment.body %>
-        </p>
+  <div class="comments">
+    <% if user_signed_in? && !pin.new_record? %>
+      <div class="comment_form">
+        <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
       </div>
     <% end %>
-  <% end %>
-  <% if user_signed_in? && !pin.new_record? %>
-    <div class="comment_form">
-      <%= render 'comments/form', :commentable => pin %>
-    </div>
-  <% end %>
+    <% if pin.comments_count > 0 %>
+      <% pin.comments.each_with_index do |comment, idx| %>
+        <% if idx == 3 %>
+          <div class="comment load-more">
+            <%= link_to_function "View #{pluralize pin.comments_count - 3, 'More Comment', 'More Comments'}", "viewAllComments(this)" %>
+          </div>
+        <% end %>
+        <%= render '/pins/comment', :comment => comment, :idx => idx, :small_avatar => true %>
+      <% end %>
+    <% end %>
+  </div>
 </li>

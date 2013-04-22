@@ -17,7 +17,7 @@ class Pin < ActiveRecord::Base
   belongs_to :category
   belongs_to :age_group
   
-  belongs_to  :repinned_from,    :class_name => 'Pin',    :counter_cache => :repin_count
+  belongs_to  :repinned_from,    :class_name => 'Pin',    :counter_cache => :repins_count
   has_many    :repins,           :class_name => 'Pin',    :foreign_key => 'repinned_from_id'
   
   has_many :comments, :dependent => :destroy, :as => :commentable
@@ -47,7 +47,6 @@ class Pin < ActiveRecord::Base
     groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
   }
   scope :repinned, where('repinned_from_id IS NOT NULL')
-  scope :not_repinned, where('repinned_from_id IS NULL')
   
   scope :with_image, where('image <> ""')
   
@@ -61,8 +60,8 @@ class Pin < ActiveRecord::Base
   end
 
   def self.trending
-    # TODO: implement some sort of trending logic if kind/category aren't provided
-    newest_first.not_repinned
+    # trend_position is not unique, but mysql will return in same order each time
+    unscoped.order('trend_position DESC').group('url')
   end
   
   def self.from_bookmarklet(user, params)
@@ -135,7 +134,7 @@ class Pin < ActiveRecord::Base
     Rails.redis.smembers(redis_name__liked_by)
   end
   
-  def liked_by_count
+  def likes_count
     Rails.redis.scard(redis_name__liked_by)
   end
   

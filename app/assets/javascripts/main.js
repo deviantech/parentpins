@@ -20,7 +20,8 @@ $(document).ready(function() {
   
   // Like/Unlike
   $(document).on('click', '.like_button', function(e) {
-    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    var context = $('.nav_profile').length ? ('context=' + $('.nav_profile').data('profileId')) : '';
+    var url = urlPlusParamString($(this).data('url'), context);
     $.post(url);
     e.preventDefault();
     e.stopPropagation();
@@ -46,36 +47,31 @@ $(document).ready(function() {
       focusable = $this.parents('li.pin').find('.comment_form textarea').first();
       focusable.parents('.comment_form').toggle();
       focusable.parents('.masonry').masonry('reload');
-      $.scrollTo( $this.parents('li.pin') );
+      scrollTo( $this.parents('li.pin') );
     } else { // If in modal or on standalone pin#show page
       focusable = $this.parents('.pin-context').find('.comment_form textarea').first();
-      ($this.parents('.modal_overlay').length ? $this.parents('.modal_overlay') : $).scrollTo(focusable.parents('.comments'));      
+      if ($this.parents('.modal_overlay').length) {
+        $this.parents('.modal_overlay').scrollTo( scrollToHeightFor(focusable.parents('.comments')) );      
+      } else {
+        scrollTo(focusable.parents('.comments'));
+      }
     }
     focusable.focus();
     e.preventDefault();
     e.stopPropagation();
   });
-    
+      
   // Follow/unfollow buttons
-  $(document).on('click', '.following-action', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
+  $(document).on('click', '.following-action', function(e) {    
     var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
     $.ajax({type: $(this).data('ajax-method') || 'POST', url: url});
-    
-    $(this).parent().find('.following-action').each(function() {
-      if ($(this).hasClass('hidden')) {
-        $(this).removeClass('hidden');
-      } else {
-        $(this).addClass('hidden');
-      }
-    });
+    updateFollowingButtonsAfterClickOn(this);
   });
     
   // Add custom trucation
   $(document).on('click', 'a.view-more', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     var wrapper = $(e.target).parent();
     if (wrapper.data('original-text')) {
       if (!wrapper.data('short-text')) wrapper.data('short-text', wrapper.html());
@@ -88,22 +84,15 @@ $(document).ready(function() {
   
   $(document).on('click', 'a.view-less', function(e) {
     e.preventDefault();
+    e.stopPropagation();
     var wrapper = $(e.target).parent();
     if (wrapper.data('short-text')) {
       wrapper.html( wrapper.data('short-text') );
-      $.scrollTo(wrapper.parents('.masonry-brick'));
+      scrollTo(wrapper.parents('.masonry-brick'));
       wrapper.parents('.masonry').masonry('reload');
     }
   });
-  
-  // When comment form submitted, update history to point to current LI if on page listing multiple (so redirect_to :back will load the page scrolled down to see the new comment)
-  $(document).on('submit', 'form.new_comment', function(e, seen) {
-    if (!$(this).parents('li.pin').length) return;
-
-    var updatedURL = urlReplacingHash(History.getState().url, $(this).parents('li.pin').attr('id'));
-    $(this).append( $('<input type="hidden" name="redirect_to">').val(updatedURL) );
-  });
-    
+          
   // As a function because shared with popup.js
   handlePopupWindows();
   

@@ -19,18 +19,15 @@ class Board < ActiveRecord::Base
   
   after_save :update_pin_settings
   before_destroy :clean_redis
+  after_create :apply_followers_from_user
   
   scope :in_category, lambda {|cat|
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
   }
   scope :newest_first, order('id DESC')
   scope :with_pins, where('pins_count > 0')
-  
-  def self.trending
-    # TODO: implement some sort of trending logic
-    newest_first.with_pins
-  end
-  
+  scope :trending, order('trend_position DESC')
+    
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
   def thumbnail_urls(n = 4)
     pins.newest_first.not_ids(cover_source_id || 0).limit(n).collect{ |p| p.image.v55.url }
@@ -71,6 +68,10 @@ class Board < ActiveRecord::Base
     Rails.redis.sunion(redis_name__followed_by, user.redis_name__followed_by).count
   end
   
+  def direct_followers_count
+    Rails.redis.scard(redis_name__followed_by)
+  end
+  
   def directly_followed_by_ids
     Rails.redis.smembers(redis_name__followed_by)
   end
@@ -87,6 +88,12 @@ class Board < ActiveRecord::Base
     pins.find_each do |pin|
       pin.send(:copy_board_settings)
       pin.save
+    end
+  end
+
+  def apply_followers_from_user
+    user.direct_followers.each do |u|
+      u.follow_board(self)
     end
   end
 

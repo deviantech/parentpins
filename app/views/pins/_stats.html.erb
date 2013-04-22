@@ -1,9 +1,9 @@
-<% if pin.liked_by_count > 0 || pin.comments_count > 0 || pin.repin_count > 0 %>
+<% if pin.likes_count > 0 || pin.comments_count > 0 || pin.repins_count > 0 %>
   <div class="stats">
     
-    <% if pin.liked_by_count > 0 %>
-      <span class="like_count">
-        <%= pluralize pin.liked_by_count, 'like', 'likes' %>
+    <% if pin.likes_count > 0 %>
+      <span class="likes_count">
+        <%= pluralize pin.likes_count, 'like', 'likes' %>
       </span>
     <% end %>
     
@@ -13,9 +13,9 @@
       </span>
     <% end %>
     
-    <% if pin.repin_count > 0 %>
+    <% if pin.repins_count > 0 %>
       <span class="repins_count">
-        <%= pluralize pin.repin_count, 'repin', 'repins' %>
+        <%= pluralize pin.repins_count, 'repin', 'repins' %>
       </span>
     <% end %>
     

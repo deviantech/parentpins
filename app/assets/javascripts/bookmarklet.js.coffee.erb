@@ -13,6 +13,7 @@ do(document = document, jQuery = window.jQuery) ->
   host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   popupName = 'ParentPinBookmarklet'
   cssUrl = host + "<%= asset_path('bookmarklet.css') %>"
+  pinterestScriptURL = host + "<%= asset_path('bookmarklet/pinterest.js') %>"
   minJQversion = '1.7.0'
   desiredJQversion = '1.8.2'
   imgDisplayWidth = 192
@@ -75,7 +76,7 @@ do(document = document, jQuery = window.jQuery) ->
       else
         if `!(data.src in Global.potentials)` # No duplicates
           Global.potentials[data.src] = data
-          Global.imageBase.find('#noPotentialImages').hide();          
+          Global.imageBase.find('#noPotentialImages').hide();
           # Max-height will prevent getting too big, but without this firefox will leave box with no height
           added = $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( Global.imageBase ).height( data.scaledHeight )
 
@@ -196,12 +197,20 @@ do(document = document, jQuery = window.jQuery) ->
         msg = msg || "This site doesn't allow pinning to external websites. Please contact the owner with any questions."
         alert(msg)
       else
-        Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
-        Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent')
-        Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
-        # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
-        Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
-        startEvaluatingPotentialImages()
+        if (window.location.host == 'pinterest.com') and not /pinterest.com\/.+?\/boards/.test( $('.UserInfoBar a.active').prop('href'))
+          alert("To import your Pinterest pins, open this bookmarklet from your Pinterest profile page.")
+        else
+          Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
+          Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent')
+          Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
+          # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
+          Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
+          
+          if (window.location.host == 'pinterest.com') # Handle pinterest importing in a separate file
+            Global.imageBase.find('#noPotentialImages').text("Collecting Pinterest account data...");
+            $.getScript(pinterestScriptURL)
+          else
+            startEvaluatingPotentialImages()
       
 
     # Now that everything's been defined and wrapped in jQuery, start running things

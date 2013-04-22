@@ -1,6 +1,6 @@
 <% if user_signed_in? && current_user != board.user %>
-  <span class="following-action-for-board-<%= board.id %>">
-    <a href="#" data-url="<%= follow_profile_board_path(board.user, board) %>" class="following-action follow <%= 'hidden' if current_user.following?(board) %>">+ follow</a>
-    <a href="#" data-url="<%= unfollow_profile_board_path(board.user, board) %>" class="following-action unfollow <%= 'hidden' unless current_user.following?(board) %>">- following</a>
+  <span class="following-action-for-board-owned-by-<%= board.user_id %> following-action-for-board-<%= board.id %>">
+    <a href="#" data-url="<%= follow_profile_board_path(board.user, board) %>" class="following-action follow <%= 'hidden' if current_user.following?(board) %>">follow</a>
+    <a href="#" data-url="<%= unfollow_profile_board_path(board.user, board) %>" class="following-action unfollow <%= 'hidden' unless current_user.following?(board) %>">unfollow</a>
   </span>
 <% end %>          
