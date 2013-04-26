@@ -58,6 +58,23 @@
 
     </div>
 
+    <% if f.object.featured? %>
+      <div class="section">
+        <h3>Featured Settings</h3>
+
+        <div class="field">
+          <p>Featured page description</p>
+          <%= f.text_area :featured_bio, :placeholder => "Description to be used on the Featured page" %>
+        </div>
+      
+      
+        <div class="field edit-featured-pin">
+          <p>Your featured pin</p>
+          <%= link_to image_tag(f.object.featured_pin.image.v55.url, :class => 'pin_image'), pin_url(f.object.featured_pin), :class => 'ajax' %>
+          To change, <%= link_to 'select new pin', pins_profile_path(f.object, :context => 'select_featured') %>.
+        </div>
+      </div>
+    <% end %>
 
     <div class="section">
       <h3>Social Media</h3>
@@ -78,23 +95,7 @@
       </div>
     </div>
     
-    <% if f.object.featured? %>
-      <div class="section">
-        <h3>Featured Settings</h3>
-
-        <div class="field">
-          <p>Featured page description</p>
-          <%= f.text_area :featured_bio, :placeholder => "Description to be used on the Featured page" %>
-        </div>
-      
-      
-        <div class="field edit-featured-pin">
-          <p>Your featured pin</p>
-          <%= link_to image_tag(f.object.featured_pin.image.v55.url, :class => 'pin_image'), pin_url(f.object.featured_pin), :class => 'ajax' %>
-          To change, <%= link_to 'select new pin', pins_profile_path(f.object, :context => 'select_featured') %>.
-        </div>
-      </div>
-    <% end %>
+    
     
 
     <div class="clear"></div>
