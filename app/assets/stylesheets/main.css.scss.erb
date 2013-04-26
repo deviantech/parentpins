@@ -1466,6 +1466,25 @@ form .field {
   top:10px;
   left:20px;}
 
+.social_links {
+  padding:12px 24px 0 40px;
+  overflow:hidden;
+  border-top:1px solid #E7E7E7;
+  a {
+    display:block;
+    text-indent:-9999px;
+    height:30px;
+    width:30px;
+    float:left;
+    margin:0 12px 0 0;
+    background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) 0 0 no-repeat; }
+  .blog {
+    background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) -30px 0 no-repeat; }
+  .twitter {
+    background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) -60px 0 no-repeat; }
+  .facebook {
+    background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) 0 0 no-repeat; } }
+
 .delete:hover {color:red;}
 
 form.form .field.with_image {
