@@ -2116,19 +2116,37 @@ body.profile {
   line-height:18px;
   font-weight:normal;
   background:rgba(255,255,255,0.8);
+  border:1px solid #E7E7E7;
   padding:10px 20px;
   margin:0 0 0 50px;
   -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   &:first-letter {
-    text-transform:capitalize; } }
+    text-transform:capitalize; }
+  .description {
+    margin:0; } 
+  .board-controls {
+    float:right;
+    a {
+      font-size:13px;
+      line-height:18px; } }
+  h1 {
+    text-align:left !important;
+    margin: 0 0 12px 0 !important;
+    line-height:30px !important;
+    font-size:24px !important; 
+    padding:0 !important;} }
+    
 .board_stats {
-  float:right;
-  padding:0 10px;
-  margin:0 0 10px 10px;
+  padding:6px 0;
+  margin:0;
   color: #888888;
-  font-size: 13px; }
+  font-size: 13px;
+  line-height:18px;
+  span {
+    display:inline-block;
+    padding-right:12px; } }
 
 .footer_wrapper {
 background: transparent;
@@ -2275,18 +2293,19 @@ h1, h2 {
 
 .board_comments {
   padding:10px;
-  margin:0 0 0 50px;
-  background:rgba(255, 255, 255, 0.5);
+  margin:0 12px 0 62px;
+  background:rgba(0, 0, 0, 0.02);
   -moz-border-radius: 0 0 4px 4px;
   -webkit-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
-  border-bottom:1px solid rgba(0, 0, 0, 0.1);
+  border:1px solid rgba(0, 0, 0, 0.1);
   #more_comments, #comment_form_wrapper {
     display: none;
   }
   h2 {
     font-family: helvetica, sans-serif;
-    font-size: 20px;
+    font-size: 17px;
+    line-height:24px;
     font-weight: 200;
     margin: 7px 0 0;
     padding: 0 0 5px 5px; }

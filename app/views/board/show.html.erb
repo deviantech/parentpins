@@ -1,30 +1,27 @@
-<h1>
-  <a href="<%= profile_boards_path(@board.user) %>" class="user">
-    <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
-    <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
-  </a>
-  Board: <%= @board.name %>
-</h1>
-
-
 <div class="board_description">
+  <% if user_signed_in? %>
+    <div class="board-controls">
+      <% if current_user == @profile %>
+        <%= link_to 'Edit', edit_profile_board_path(current_user, @board), :class => "ajax" %>
+      <% else %>
+        <%= render 'board/follow_buttons', :board => @board %>
+      <% end %>
+    </div>
+  <% end %>
+  <h1>
+    <a href="<%= profile_boards_path(@board.user) %>" class="user">
+      <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
+      <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
+    </a>
+    Board: <%= @board.name %>
+  </h1>
+  <p class="description"><%= @board.description.blank? ? 'No description provided.' : @board.description %></p>
   <div class="board_stats">
-    <%= pluralize @board.pins_count, 'pin', 'pins' %>
-    /
-    <%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %>
-    <br>
-    Category: <strong><%= @board.category.name %></strong>
-    <% if user_signed_in? %>
-      <div class="board-controls">
-        <% if current_user == @profile %>
-          <%= link_to 'Edit', edit_profile_board_path(current_user, @board), :class => "ajax" %>
-        <% else %>
-          <%= render 'board/follow_buttons', :board => @board %>
-        <% end %>
-      </div>
-    <% end %>
+    <span><%= pluralize @board.pins_count, 'pin', 'pins' %></span>
+    <span><%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %></span>
+    <span>Category: <%= @board.category.name %></span>
   </div>
-  <%= @board.description.blank? ? 'No description provided.' : @board.description %>
+  
   <div class="clearfix"></div>
 </div>
 
