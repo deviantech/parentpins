@@ -8,7 +8,7 @@
   </h1>
 
   <% if @profile == current_user %>
-    <div class="page-controls">
+    <div class="page-controls my-board-controls">
       <%= link_to 'Add Board', new_profile_board_path(current_user), :class => 'ajax' %>
       |
       <% if params[:category].blank? %>
