@@ -40,5 +40,9 @@
     <div class="follow_holder">
       <%= render "/board/follow_buttons", :board => board %>
     </div>
+  <% else %>
+    <div class="follow_holder">
+      <p class="mine">your board</p>
+    </div>
   <% end %>
 </li>
