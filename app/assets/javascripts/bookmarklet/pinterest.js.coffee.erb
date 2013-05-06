@@ -1,4 +1,6 @@
 //= require templates/bookmarklet/pinterest/step_1
+//= require templates/bookmarklet/pinterest/our_boards
+
 # Note - maybe if eval in getScript (or just $.get callback, can pass in vars from other script?)
 
 # Config
@@ -8,7 +10,10 @@ boardSelector = '.UserBoards .item.gridSortable a.boardLinkWrapper'
 pinSelector   = '.pinWrapper'
 debug = false
 useTestData = true
-cssUrl = "//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") + asset_path('import-pinterest.css') %>"
+host        = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
+cssUrl      = host + "<%= asset_path('import-pinterest.css') %>"
+boardsUrl   = host + "/boards/mine"
+
 # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
 appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
 
@@ -53,9 +58,13 @@ processingAllBoards.done () ->
   for board in boardsData
     processThisPin(pin) for pin in board.pins
   
+# Render template with the pinterest data, and pull in our remote boards as well
 processingAllPins.done () ->
   window.data = boardsData
   outputDiv.html( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData}) )
+  $.getJSON boardsUrl, (json) ->
+    outputDiv.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards']({boards: json}) )
+  
   
 
 

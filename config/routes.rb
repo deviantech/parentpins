@@ -27,9 +27,8 @@ ParentPins::Application.routes.draw do
   match '/pins/category/:category_id' => 'pins#index',  :as => 'pins_category'
 
   get '/boards' => 'board#index', :as => :boards
-  
   get '/featured' => 'featured#index', :as => :featured
-  
+    
   post '/mark/got_bookmarklet' => 'profile#got_bookmarklet'
   
   # Allow periods in URL (e.g. facebook username is kali.donovan)
@@ -73,6 +72,9 @@ ParentPins::Application.routes.draw do
   
   match '/search/:kind' => 'search#index'
   match '/search' => 'search#redirect_by_kind'
+
+  # Use for importing pinterest pins
+  get '/boards/mine' => 'board#mine', :format => :json
     
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'

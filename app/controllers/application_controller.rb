@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
 
   def paginate_boards(base_scope)
     @results = @boards = base_scope.includes(:category).in_category(@category).page(params[:page])
-    support_ajax_pagination :json => base_scope.includes(:category).in_category(@category)
+    support_ajax_pagination
   end
 
   def support_ajax_pagination(opts = {})
@@ -41,9 +41,6 @@ class ApplicationController < ActionController::Base
     respond_to do |format|
       format.html { @profile ? render(:layout => 'profile') : render }
       format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
-      if opts[:json]
-        format.json { render :json => opts[:json].to_json }
-      end
     end
   end
     

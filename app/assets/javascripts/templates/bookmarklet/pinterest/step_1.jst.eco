@@ -30,12 +30,6 @@
 <% end %>
 
 
-<% partial_OurBoard = (board) => %>
-  <p>TODO: IMPORT PP BOARDS HERE</p>
-<% end %>
-
-
-
 
 <div id="pp_pinterest_import_wrapper">
   
@@ -65,9 +59,7 @@
   </div>
 
   <div id="our_section">
-    <div id="boards">
-      <%= partial_OurBoard() %>
-    </div>
+    <div class="loading">Retreiving your boards...</div>
   </div>
   
 </div>

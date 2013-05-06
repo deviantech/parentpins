@@ -77,6 +77,16 @@ class BoardController < ApplicationController
     render :nothing => true
   end
 
+  # TODO: make user sign in before starting pinterest importing session!
+  # Show current user's boards via JSON for use in e.g. parentpins importing
+  def mine
+    respond_to do |format|
+      format.json {
+        render :json => (user_signed_in? ? current_user.boards : []).to_json
+      }
+    end
+  end
+
   protected
 
   def find_my_board
