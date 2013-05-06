@@ -1,0 +1,3 @@
+<li class="board">
+  <h2>Pinterest Board: <%= board.name %></h2>
+</li>

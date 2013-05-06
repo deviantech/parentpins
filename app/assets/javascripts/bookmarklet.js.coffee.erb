@@ -9,6 +9,7 @@
 
 do(document = document, jQuery = window.jQuery) -> 
   # Config
+  testingPinterest = true # TODO: remove this once set
   obeyMetaRestrictions = true # Only set to false when testing in development
   host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   popupName = 'ParentPinBookmarklet'
@@ -206,7 +207,7 @@ do(document = document, jQuery = window.jQuery) ->
           # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
           Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
           
-          if (window.location.host == 'pinterest.com') # Handle pinterest importing in a separate file
+          if (testingPinterest or window.location.host == 'pinterest.com') # Handle pinterest importing in a separate file
             Global.imageBase.find('#noPotentialImages').text("Collecting Pinterest account data...");
             $.getScript(pinterestScriptURL)
           else

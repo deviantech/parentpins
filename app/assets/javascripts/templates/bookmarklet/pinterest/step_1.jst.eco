@@ -1,0 +1,69 @@
+<% partial_PinterestBoard = (board) => %>
+  <li class="board">
+    <h2>Pinterest Board: <%= board.name %></h2>
+  </li>
+<% end %>
+
+<% partial_PinterestPin = (board, pin) => %>
+  <li class="pin" data-board="<%= board.id %>">
+    <div class="thumb">
+      <img src="<%= pin.smallImageURL %>" alt="Pin Image">
+    </div>
+    <div class="info">
+      <p>
+        <strong>Description:</strong>
+        <%= pin.description %>
+      </p>
+      <% if pin.price: %>
+      <p>
+        <strong>Price:</strong>
+        <%= pin.price %>
+      </p>
+      <% end %>
+      <p>
+        <strong>Link:</strong>
+        <%= pin.link %>
+      </p>
+    </div>
+    <div class="clearfix"></div>
+  </li>
+<% end %>
+
+
+<% partial_OurBoard = (board) => %>
+  <p>TODO: IMPORT PP BOARDS HERE</p>
+<% end %>
+
+
+
+
+<div id="pp_pinterest_import_wrapper">
+  
+  <div id="pinterest_section">
+    <div id="importing_boards">
+      <ul>
+      <% for board in @boards: %>
+        <%= partial_PinterestBoard(board) %>
+      <% end %>
+      </ul>
+    </div>
+    
+    <div id="importing_pins">
+      <ul class="pins">
+        <% for board in @boards: %>        
+          <% for pin in board.pins: %>
+            <%= partial_PinterestPin(board, pin) %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+
+  </div>
+
+  <div id="pp_section">
+    <div id="boards">
+      <%= partial_OurBoard() %>
+    </div>
+  </div>
+  
+</div>
