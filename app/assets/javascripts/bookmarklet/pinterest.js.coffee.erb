@@ -8,11 +8,12 @@ outputDiv = $('#ppBookmarkletContent')
 progressDiv = outputDiv.find('#noPotentialImages') # TODO -- pass this in in case there's another with this ID in the original page's HTML
 boardSelector = '.UserBoards .item.gridSortable a.boardLinkWrapper'
 pinSelector   = '.pinWrapper'
-debug = false
-useTestData = true
 host        = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
 cssUrl      = host + "<%= asset_path('import-pinterest.css') %>"
-boardsUrl   = host + "/boards/mine"
+boardsUrl   = host + '<%= Rails.application.routes.url_helpers.my_boards_path %>'
+debug       = false
+useTestData = true
+
 
 # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
 appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]

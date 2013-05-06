@@ -9,8 +9,8 @@
 
 do(document = document, jQuery = window.jQuery) -> 
   # Config
-  testingPinterest = true # TODO: remove this once set
-  obeyMetaRestrictions = true # Only set to false when testing in development
+  testingPinterest = <%= Rails.env.development? ? 'true' : 'false' %> # TODO: remove this once set
+  obeyMetaRestrictions = <%= Rails.env.development? ? 'false' : 'true' %> # Only set to false when testing in development
   host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   popupName = 'ParentPinBookmarklet'
   cssUrl = host + "<%= asset_path('bookmarklet.css') %>"

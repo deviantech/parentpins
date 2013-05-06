@@ -74,7 +74,7 @@ ParentPins::Application.routes.draw do
   match '/search' => 'search#redirect_by_kind'
 
   # Use for importing pinterest pins
-  get '/boards/mine' => 'board#mine', :format => :json
+  get '/boards/mine' => 'board#mine', :as => 'my_boards', :format => :json
     
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'
