@@ -1,5 +1,6 @@
 class FrontController < ApplicationController
-  caches_page :about, :legal, :privacy
+  # TODO: can't page cache, because different UI logged in vs. not
+  # caches_page :legal, :privacy
   
   def contact
   end

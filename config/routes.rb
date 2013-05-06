@@ -68,7 +68,6 @@ ParentPins::Application.routes.draw do
   resource :feedback, :only => [:new, :create]
   
   match '/faq' => 'front#faq'
-  match '/about' => 'front#about'
   match '/legal' => 'front#legal'
   match '/privacy' => 'front#privacy'
   
