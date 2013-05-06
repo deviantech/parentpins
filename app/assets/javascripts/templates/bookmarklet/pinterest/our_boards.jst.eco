@@ -7,8 +7,8 @@
         /
         <%= @pluralize board.followers_even_indirectly_count, 'follower', 'followers' %>    
       </div>
-      <div class="ourBoardPins">
-      </div>
+      <ul class="ourBoardPins">
+      </ul>
     </li>
   <% end %>
 </ul>
