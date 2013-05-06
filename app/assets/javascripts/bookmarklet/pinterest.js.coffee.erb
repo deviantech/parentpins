@@ -203,18 +203,22 @@ stepOneDisplayed.done () ->
 # Only show pins from selected board
 outputDiv.on 'click', '.importing_boards li', (e) ->
   li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
-
   li.siblings().removeClass('selected')
-  outputDiv.find('.importing_pins li.pin').hide()
-  outputDiv.find('.importing_pins li.pin.'+li.attr('class')).show()
-  checkIfAnyDraggableLeft()
   li.addClass('selected')
+  hideShowPinsForSelectedBoard()
+  
+
+hideShowPinsForSelectedBoard = () ->
+  class_to_show = outputDiv.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '')
+  outputDiv.find('.importing_pins li.pin').hide()
+  outputDiv.find('.importing_pins li.pin.' + class_to_show).show()
+  checkIfAnyDraggableLeft()
 
 checkIfAnyDraggableLeft = () ->
   if outputDiv.find('.importing_pins li.pin:visible').length == 0
-    outputDiv.find('.importing_pins ul').append("<li class='no-more'>No more</li>") if outputDiv.find('.importing_pins li.no-more').length == 0
+    outputDiv.find('.importing_pins ul').append("<div class='no-more'>No more pins.</div>") if outputDiv.find('.importing_pins .no-more').length == 0
   else
-    outputDiv.find('.importing_pins li.no-more').remove()
+    outputDiv.find('.importing_pins .no-more').remove()
   
 
 initStepOneFunctionality = () ->
@@ -223,13 +227,13 @@ initStepOneFunctionality = () ->
     hoverClass: "ui-state-active",
     drop: (event, ui) ->
       $(this).find('.ourBoardPins').append( $(ui.draggable).css({left: 0, top: 0}) )
-      checkIfAnyDraggableLeft()
+      setTimeout(hideShowPinsForSelectedBoard, 1)
   }
   dropToPinterestOpts = {
     hoverClass: "ui-state-active",
     drop: (event, ui) ->
       $(this).find('.importing_pins ul').append( $(ui.draggable).css({left: 0, top: 0}) )
-      checkIfAnyDraggableLeft()
+      setTimeout(hideShowPinsForSelectedBoard, 1)
   }
   dragOpts = {
     revert: 'invalid',

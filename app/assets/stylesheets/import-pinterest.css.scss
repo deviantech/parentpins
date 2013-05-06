@@ -37,10 +37,12 @@
         background: #FFF;
         border: 1px solid #333;
         float: left;
-        min-height: 100px;
-        min-width: 100px;
         ul {
           width: 100%;
+          .no-more {
+            margin: 62px 75px;
+            color: #BBB;
+          }
           li {
             height: 120px;
             width: 100px;
