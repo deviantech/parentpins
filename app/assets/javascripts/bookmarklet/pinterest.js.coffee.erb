@@ -152,6 +152,7 @@ else
           price: $pin.find('.priceValue').text(),
           smallImageURL: $pin.find('.pinImg.loaded').prop('src'),
           pinterestURL: $pin.find('a.pinImageWrapper').prop('href')
+          id: hashFromString($pin.find('a.pinImageWrapper').prop('href'))
         })
       processingThisBoard.resolve()
     

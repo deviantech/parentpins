@@ -5,25 +5,9 @@
 <% end %>
 
 <% partial_PinterestPin = (board, pin) => %>
-  <li class="pin board-all board-<%= board.id %>">
+  <li class="pin board-all board-<%= board.id %> pin-<%= pin.id %>">
     <div class="thumb">
       <img src="<%= pin.smallImageURL %>" alt="Pin Image">
-    </div>
-    <div class="info">
-      <p>
-        <strong>Description:</strong>
-        <%= pin.description %>
-      </p>
-      <% if pin.price: %>
-      <p>
-        <strong>Price:</strong>
-        <%= pin.price %>
-      </p>
-      <% end %>
-      <p>
-        <strong>Link:</strong>
-        <%= pin.link %>
-      </p>
     </div>
     <div class="clearfix"></div>
   </li>

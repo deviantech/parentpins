@@ -58,6 +58,16 @@
       .loading {
         padding: 5px;
       }
+      ul {
+        clear: both;
+        li {
+          list-style: none;
+          float: left;
+          margin: 10px;
+          height: 220px;
+          width: 120px;
+        }
+      }
     }
   }
 }
