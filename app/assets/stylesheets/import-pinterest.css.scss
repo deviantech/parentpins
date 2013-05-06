@@ -1,31 +1,60 @@
 .ppBookmarkletOverlay {
-  #boards {
-    margin: 50px auto;
-    width: 800px;
-    border: 2px solid #666;
-    overflow: auto;
-    background: #FCFCFC;
-    .clearfix {
-      clear: both;
+  #pp_pinterest_import_wrapper {
+    margin: 50px;
+    ul {
+      list-style: none;
+      margin: 0px;
+      padding: 0px;
     }
-    .board {
-      .pin {
-        clear: both;
-        border-bottom: 1px solid #CCC;
-        margin: 10px;
-        padding: 5px;
-        .thumb {
-          width: 250px;
-          float: left;
-          img {
-            border: 1px solid #333;
+    #pinterest_section {
+      background: #DDD;
+      border: 2px solid #666;
+      #importing_boards {
+        width: 200px;
+        margin: 20px;
+        background: #FFF;
+        border: 1px solid #333;
+        float: left;
+        ul {
+          li {
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+            cursor: hand;
+            background: #F0F0F0;
+          }
+          li.selected {
+            background: #CCC;
           }
         }
-        .info {
-          width: 400px;
-          float: right;
+      }
+      #importing_pins {
+        margin: 20px;
+        margin-left: 0px;
+        background: #FFF;
+        border: 1px solid #333;
+        float: left;
+        ul {
+          width: 100%;
+          li {
+            height: 120px;
+            width: 100px;
+            border: 1px solid #333;
+            background: #EEE;
+            float: left;
+            margin: 10px;
+          }
         }
       }
+      .clearfix {
+        clear: both;
+      }
+    }
+
+    #our_section {
+      background: #999; 
+      border: 2px solid #666;
+      margin-top: 20px;
     }
   }
 }

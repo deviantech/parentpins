@@ -1,11 +1,11 @@
 <% partial_PinterestBoard = (board) => %>
-  <li class="board">
-    <h2>Pinterest Board: <%= board.name %></h2>
+  <li class="board-<%= board.id %>">
+    Pinterest Board: <%= board.name %>
   </li>
 <% end %>
 
 <% partial_PinterestPin = (board, pin) => %>
-  <li class="pin" data-board="<%= board.id %>">
+  <li class="pin board-all board-<%= board.id %>">
     <div class="thumb">
       <img src="<%= pin.smallImageURL %>" alt="Pin Image">
     </div>
@@ -42,9 +42,12 @@
   <div id="pinterest_section">
     <div id="importing_boards">
       <ul>
-      <% for board in @boards: %>
-        <%= partial_PinterestBoard(board) %>
-      <% end %>
+        <li class="board-all selected">
+          Show All Pins
+        </li>
+        <% for board in @boards: %>
+          <%= partial_PinterestBoard(board) %>
+        <% end %>
       </ul>
     </div>
     
@@ -58,9 +61,10 @@
       </ul>
     </div>
 
+    <div class="clearfix"></div>
   </div>
 
-  <div id="pp_section">
+  <div id="our_section">
     <div id="boards">
       <%= partial_OurBoard() %>
     </div>
