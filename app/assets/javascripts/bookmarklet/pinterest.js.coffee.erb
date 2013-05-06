@@ -204,17 +204,32 @@ stepOneDisplayed.done () ->
 outputDiv.on 'click', '.importing_boards li', (e) ->
   li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
 
-  li.siblings().removeClass('selected')  
+  li.siblings().removeClass('selected')
   outputDiv.find('.importing_pins li.pin').hide()
   outputDiv.find('.importing_pins li.pin.'+li.attr('class')).show()
+  checkIfAnyDraggableLeft()
   li.addClass('selected')
+
+checkIfAnyDraggableLeft = () ->
+  if outputDiv.find('.importing_pins li.pin:visible').length == 0
+    outputDiv.find('.importing_pins ul').append("<li class='no-more'>No more</li>") if outputDiv.find('.importing_pins li.no-more').length == 0
+  else
+    outputDiv.find('.importing_pins li.no-more').remove()
   
+
 initStepOneFunctionality = () ->
   # Add draggable/droppable effects
   dropOpts = {
     hoverClass: "ui-state-active",
     drop: (event, ui) ->
       $(this).find('.ourBoardPins').append( $(ui.draggable).css({left: 0, top: 0}) )
+      checkIfAnyDraggableLeft()
+  }
+  dropToPinterestOpts = {
+    hoverClass: "ui-state-active",
+    drop: (event, ui) ->
+      $(this).find('.importing_pins ul').append( $(ui.draggable).css({left: 0, top: 0}) )
+      checkIfAnyDraggableLeft()
   }
   dragOpts = {
     revert: 'invalid',
@@ -228,4 +243,5 @@ initStepOneFunctionality = () ->
   
   $(outputDiv).find('.importing_pins li.pin').draggable(dragOpts)
   $(outputDiv).find('#our_section li.board').droppable(dropOpts)
+  $(outputDiv).find('#pinterest_section').droppable(dropToPinterestOpts)
   

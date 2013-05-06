@@ -73,9 +73,9 @@
           margin: 10px;
           height: 150px;
           width: 220px;
-          overflow: hidden;
           background: #EEE;
           border: 1px solid #999;
+          overflow: auto;
           .ourBoardTitle {
             font-weight: bold;
             font-size: 12px;
@@ -92,6 +92,7 @@
               width: 50px;
               border: 1px solid #333;
               margin: 2px;
+              overflow: hidden;
               img {
                 max-width: 50px;
               }
