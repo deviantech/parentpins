@@ -15,9 +15,9 @@ debug       = false
 useTestData = true
 
 
+
 # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
 appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
-
 
 testData = [{"name":"Default","pinterestURL":"http://pinterest.com/dvntpins/default/","id": 236459021, "pins":[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":511140869,"link":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg"},{"description":"That's How a Pro Uses a Bunk Bed","domain":"memebase.cheezburger.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg","pinterestURL":"http://pinterest.com/pin/442126888388218505/","id":1291275682,"link":"http://memebase.cheezburger.com/senorgif","imageURL":"http://media-cache-ak1.pinimg.com/736x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg"},{"description":"ireland - Google Search","domain":"travel.nytimes.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg","pinterestURL":"http://pinterest.com/pin/442126888388183279/","id":599475931,"link":"http://travel.nytimes.com/travel/guides/europe/ireland/overview.html","imageURL":"http://media-cache-ak1.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg"}]},{"name":"Secondary","pinterestURL":"http://pinterest.com/dvntpins/secondary/","id": 141808096, "pins":[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":511140869,"link":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg"}]}];
 
@@ -25,7 +25,12 @@ includeBookmarkletStyles = () ->
   return if ($('link#ppPinterestImportCSS').length)
   $(appendTarget).append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="ppPinterestImportCSS" />')
 
+includejQueryUI = () ->
+  $(appendTarget).append('<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>')
+  console.log('added script')
+
 includeBookmarkletStyles()
+includejQueryUI()
 
 processingAllBoards = new $.Deferred()
 processingAllPins = new $.Deferred()
@@ -73,6 +78,7 @@ processingAllPins.done () ->
         i + ' ' + (if i == 1 then singular else plural)
     }
     outputDiv.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
+    initStepOneFunctionality()
   
   
 
@@ -176,14 +182,16 @@ else
 # =====================================================
 # = Add events to enable interactivity on step_1 page =
 # =====================================================
-
 # Only show pins from selected board
-$(outputDiv).on 'click', '#importing_boards li', (e) ->
+$(outputDiv).on 'click', '.importing_boards li', (e) ->
   li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
 
   li.siblings().removeClass('selected')  
-  $(outputDiv).find('#importing_pins li.pin').hide();
-  $(outputDiv).find('#importing_pins li.pin.'+li.attr('class')).show();
+  $(outputDiv).find('.importing_pins li.pin').hide()
+  $(outputDiv).find('.importing_pins li.pin.'+li.attr('class')).show()
   li.addClass('selected')
   
-  
+initStepOneFunctionality = () ->
+  # Add draggable/droppable effects
+  console.log($(outputDiv).find('.importing_pins li.pin'))
+  $(outputDiv).find('.importing_pins li.pin').draggable()

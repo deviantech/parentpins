@@ -18,7 +18,7 @@
 <div id="pp_pinterest_import_wrapper">
   
   <div id="pinterest_section">
-    <div id="importing_boards">
+    <div class="importing_boards">
       <ul>
         <li class="board-all selected">
           Show All Pins
@@ -29,8 +29,8 @@
       </ul>
     </div>
     
-    <div id="importing_pins">
-      <ul class="pins">
+    <div class="importing_pins">
+      <ul>
         <% for board in @boards: %>        
           <% for pin in board.pins: %>
             <%= partial_PinterestPin(board, pin) %>

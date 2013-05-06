@@ -12,7 +12,7 @@
     #pinterest_section {
       background: #EEE;
       border: 2px solid #666;
-      #importing_boards {
+      .importing_boards {
         width: 200px;
         margin: 20px;
         background: #FFF;
@@ -31,7 +31,7 @@
           }
         }
       }
-      #importing_pins {
+      .importing_pins {
         margin: 20px;
         margin-left: 0px;
         background: #FFF;
