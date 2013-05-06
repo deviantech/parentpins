@@ -10,7 +10,7 @@ boardSelector = '.UserBoards .item.gridSortable a.boardLinkWrapper'
 pinSelector   = '.pinWrapper'
 host        = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
 cssUrl      = host + "<%= asset_path('import-pinterest.css') %>"
-boardsUrl   = host + '<%= Rails.application.routes.url_helpers.my_boards_path %>'
+boardsUrl   = host + '<%= Rails.application.routes.url_helpers.my_boards_path %>?callback=?' # Force jsonp request
 debug       = false
 useTestData = true
 
