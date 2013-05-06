@@ -1,1 +1,17 @@
-Board: <%= @boards[0]?.name %>
+<% for board in @boards: %>
+  <li class="board">
+    <h3><%= board.name %></h3>
+    <h4>
+      <%= @pluralize board.pins_count, 'pin', 'pins' %>
+      /
+      <%= @pluralize board.followers_even_indirectly_count, 'follower', 'followers' %>    
+    </h4>
+    <div class="holder">
+      <div class="cover">
+        <img src="<%= @absoluteURL board.cover.url %>">
+      </div>
+      <div class="thumbs">
+      </div>
+    </div>
+  </li>
+<% end %>

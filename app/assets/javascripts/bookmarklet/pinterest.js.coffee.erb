@@ -63,7 +63,15 @@ processingAllPins.done () ->
   window.data = boardsData
   outputDiv.html( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData}) )
   $.getJSON boardsUrl, (json) ->
-    outputDiv.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards']({boards: json}) )
+    context = {
+      boards: json,
+      absoluteURL: (rel) ->
+        return rel if rel.match(/:\/\//)
+        host + rel
+      pluralize: (i, singular, plural) ->
+        i + ' ' + (if i == 1 then singular else plural)
+    }
+    outputDiv.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
   
   
 
