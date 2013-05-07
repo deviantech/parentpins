@@ -4,7 +4,8 @@
 # Note - maybe if eval in getScript (or just $.get callback, can pass in vars from other script?)
 
 # Config
-outputDiv = $('#ppBookmarkletContent')
+outputDiv         = $('#ppBookmarkletContent')
+outputDivWrapper  = outputDiv.parents('#ppBookmarkletContentWrapper')
 progressDiv = outputDiv.find('#noPotentialImages') # TODO -- pass this in in case there's another with this ID in the original page's HTML
 boardSelector = '.UserBoards .item.gridSortable a.boardLinkWrapper'
 pinSelector   = '.pinWrapper'
@@ -21,22 +22,22 @@ appendTarget = document.getElementsByTagName("head")[0] || document.getElementsB
 
 testData = [{"name":"Default","pinterestURL":"http://pinterest.com/dvntpins/default/","id": 236459021, "pins":[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":511140869,"link":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg"},{"description":"That's How a Pro Uses a Bunk Bed","domain":"memebase.cheezburger.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg","pinterestURL":"http://pinterest.com/pin/442126888388218505/","id":1291275682,"link":"http://memebase.cheezburger.com/senorgif","imageURL":"http://media-cache-ak1.pinimg.com/736x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg"},{"description":"ireland - Google Search","domain":"travel.nytimes.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg","pinterestURL":"http://pinterest.com/pin/442126888388183279/","id":599475931,"link":"http://travel.nytimes.com/travel/guides/europe/ireland/overview.html","imageURL":"http://media-cache-ak1.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg"}]},{"name":"Secondary","pinterestURL":"http://pinterest.com/dvntpins/secondary/","id": 141808096, "pins":[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":511140869,"link":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg"}]}];
 
-
 weHavejQueryUI = new $.Deferred()
-stepOneDisplayed = new $.Deferred()
+stepOneFrameLoaded = new $.Deferred()
+stepOneDoc = null
 processingAllBoards = new $.Deferred()
 processingAllPins = new $.Deferred()
 boardsData = []
 boardsPending = $(boardSelector).length
 pinsPending = 'unknown'
 
-includeBookmarkletStyles = () ->
-  return if ($('link#ppPinterestImportCSS').length)
-  $(appendTarget).append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="ppPinterestImportCSS" />')
+window.ppImporter ?= {}
+window.ppImporter.stepOneIframeLoaded = () ->
+  stepOneFrameLoaded.resolve()
 
 includejQueryUI = () ->
   if weHavejQueryUI.state() == 'pending'
-    if $(appendTarget).draggable
+    if jQuery.ui
       weHavejQueryUI.resolve()
     else
       done = false
@@ -48,8 +49,8 @@ includejQueryUI = () ->
           weHavejQueryUI.resolve()
       appendTarget.appendChild(script)
 
-includeBookmarkletStyles()
 includejQueryUI()
+
 
 reportProgress = (custom) ->
   msg = if boardsPending == 0
@@ -79,8 +80,17 @@ processingAllBoards.done () ->
   
 # Render template with the pinterest data, and pull in our remote boards as well
 processingAllPins.done () ->
-  window.data = boardsData
-  outputDiv.html( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData}) )
+  window.data = boardsData    
+  progressDiv.remove()
+  stepOneFrame = $('<iframe id="ppParentPinsImporter">').appendTo( $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv ) )
+  stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
+  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
+  stepOneDoc = stepOneFrame.contents()
+  
+  # TODO: load jquery UI here, since this window's jquery version is the one touching the contents
+  # TODO: load data in via ajax (track where callback needs to be defined)
+  
+  # outputDiv.html( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData}) )
   $.getJSON boardsUrl, (json) ->
     context = {
       boards: json,
@@ -90,13 +100,10 @@ processingAllPins.done () ->
       pluralize: (i, singular, plural) ->
         i + ' ' + (if i == 1 then singular else plural)
     }
-    outputDiv.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
-    stepOneDisplayed.resolve()
+    stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
+    # displayStepOne()
   
   
-
-
-
 finalizedAPin = (pin) ->
   pinsPending -= 1
   reportProgress('processed a pin: '+pin.pinterestURL)
@@ -190,38 +197,35 @@ else
 
 
 
-# We want to init functionality after BOTH the HTML is displayed (including from remote) AND the jquery UI library has loaded
-weHavejQueryUI.done () ->
-  initStepOneFunctionality() if stepOneDisplayed.state() == 'resolved'
-
-stepOneDisplayed.done () ->
-  initStepOneFunctionality() if weHavejQueryUI.state() == 'resolved'
 
 # =====================================================
 # = Add events to enable interactivity on step_1 page =
-# =====================================================
-# Only show pins from selected board
-outputDiv.on 'click', '.importing_boards li', (e) ->
-  li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
-  li.siblings().removeClass('selected')
-  li.addClass('selected')
-  hideShowPinsForSelectedBoard()
-  
+# =====================================================  
 
 hideShowPinsForSelectedBoard = () ->
-  class_to_show = outputDiv.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '')
-  outputDiv.find('.importing_pins li.pin').hide()
-  outputDiv.find('.importing_pins li.pin.' + class_to_show).show()
+  class_to_show = stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '')
+  stepOneDoc.find('.importing_pins li.pin').hide()
+  stepOneDoc.find('.importing_pins li.pin.' + class_to_show).show()
   checkIfAnyDraggableLeft()
 
 checkIfAnyDraggableLeft = () ->
-  if outputDiv.find('.importing_pins li.pin:visible').length == 0
-    outputDiv.find('.importing_pins ul').append("<div class='no-more'>No more pins.</div>") if outputDiv.find('.importing_pins .no-more').length == 0
+  if stepOneDoc.find('.importing_pins li.pin:visible').length == 0
+    stepOneDoc.find('.importing_pins ul').append("<div class='no-more'>No more pins.</div>") if stepOneDoc.find('.importing_pins .no-more').length == 0
   else
-    outputDiv.find('.importing_pins .no-more').remove()
+    stepOneDoc.find('.importing_pins .no-more').remove()
   
 
-initStepOneFunctionality = () ->
+window.ppImporter.initStepOneFunctionality = () ->
+  return if window.ppImporter.initStepOneFunctionalityLoaded
+  window.ppImporter.initStepOneFunctionalityLoaded = true
+  
+  # Only show pins from selected board
+  stepOneDoc.on 'click', '.importing_boards li', (e) ->
+    li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
+    li.siblings().removeClass('selected')
+    li.addClass('selected')
+    hideShowPinsForSelectedBoard()
+    
   # Add draggable/droppable effects
   dropOpts = {
     hoverClass: "ui-state-active",
@@ -237,7 +241,7 @@ initStepOneFunctionality = () ->
   }
   dragOpts = {
     revert: 'invalid',
-    stack: $(outputDiv).find('#our_section li.board'),
+    stack: stepOneDoc.find('#our_section li.board'),
     helper: 'clone',
     start: (event, ui) ->
       $(event.target).css({opacity: 0.5})
@@ -245,11 +249,13 @@ initStepOneFunctionality = () ->
       $(event.target).css({opacity: 1.0})
   }
   
-  outputDiv.find('.importing_pins li.pin').draggable(dragOpts)
-  outputDiv.find('#our_section li.board').droppable(dropOpts)
-  outputDiv.find('#pinterest_section').droppable(dropToPinterestOpts)
+  # TODO :: why doesn't draggable seem to have any effect when being called on iframe contents? and what is the second argument to $() all about?
   
-  outputDiv.find('#ppSubmitBoardsSortedLink').on 'click', transitionToStepTwo
+  stepOneDoc.find('.importing_pins li.pin').draggable(dragOpts)
+  stepOneDoc.find('#our_section li.board').droppable(dropOpts)
+  stepOneDoc.find('#pinterest_section').droppable(dropToPinterestOpts)
+  
+  stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', transitionToStepTwo
 
 dataForPinID = (id) ->
   for board in boardsData
@@ -261,7 +267,7 @@ transitionToStepTwo = () ->
   # Loop through the #our_section boards and collect pinterest data for any with pins to be imported
   toImport = {}
   boardsWithPins = []
-  for board in outputDiv.find('#our_section li.board')
+  for board in stepOneDoc.find('#our_section li.board')
     ourBoardID = $(board).data('boardId')
     thisBoardData = []
     for pin in $(board).find('.ourBoardPins li')
@@ -278,3 +284,11 @@ transitionToStepTwo = () ->
 
   console.log('next page...', boardsWithPins)
   toImport
+
+# We want to init functionality after BOTH the HTML is displayed (including from remote) AND the jquery UI library has loaded. Unfortunatly it loads twice...
+stepOneFrameLoaded.done () ->
+  window.ppImporter.initStepOneFunctionality() if weHavejQueryUI.state() == 'resolved'
+
+weHavejQueryUI.done () ->
+  window.ppImporter.initStepOneFunctionality() if stepOneFrameLoaded.state() == 'resolved'
+

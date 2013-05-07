@@ -1,117 +1,115 @@
-.ppBookmarkletOverlay {
-  #pp_pinterest_import_wrapper {
-    margin: 50px;
-    .clearfix {
-      clear: both;
-    }
-    ul {
-      list-style: none;
-      margin: 0px;
-      padding: 0px;
-    }
-    #ppSubmitBoardsSortedLink {
-      // TODO: style this nicely as a submit button
-      font-weight: bold;
-      font-size: 16px;
-      position: relative;
-      top: 10px;
-    }
-    #pinterest_section {
-      background: #EEE;
-      border: 2px solid #666;
-      .importing_boards {
-        width: 200px;
-        margin: 20px;
-        background: #FFF;
-        border: 1px solid #333;
-        float: left;
-        ul {
-          li {
-            margin: 5px;
-            padding: 5px;
-            cursor: pointer;
-            cursor: hand;
-            background: #F0F0F0;
-          }
-          li.selected {
-            background: #CCC;
-          }
-        }
-      }
-      .importing_pins {
-        margin: 20px;
-        margin-left: 0px;
-        background: #FFF;
-        border: 1px solid #333;
-        float: left;
-        ul {
-          width: 100%;
-          .no-more {
-            margin: 62px 75px;
-            color: #BBB;
-          }
-          li {
-            height: 120px;
-            width: 100px;
-            border: 1px solid #333;
-            background: #EEE;
-            float: left;
-            margin: 10px;
-            overflow: hidden;
-            img {
-              max-width: 100px;
-            }
-          }
-        }
-      }
-    }
-
-    #our_section {
-      background: #CCC; 
-      border: 2px solid #666;
-      margin-top: 20px;
-      .loading {
-        padding: 5px;
-      }
+#pp_pinterest_import_wrapper {
+  margin: 50px;
+  .clearfix {
+    clear: both;
+  }
+  ul {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+  }
+  #ppSubmitBoardsSortedLink {
+    // TODO: style this nicely as a submit button
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    top: 10px;
+  }
+  #pinterest_section {
+    background: #EEE;
+    border: 2px solid #666;
+    .importing_boards {
+      width: 200px;
+      margin: 20px;
+      background: #FFF;
+      border: 1px solid #333;
+      float: left;
       ul {
-        font-size: 10px;
-        clear: both;
         li {
-          list-style: none;
+          margin: 5px;
+          padding: 5px;
+          cursor: pointer;
+          cursor: hand;
+          background: #F0F0F0;
+        }
+        li.selected {
+          background: #CCC;
+        }
+      }
+    }
+    .importing_pins {
+      margin: 20px;
+      margin-left: 0px;
+      background: #FFF;
+      border: 1px solid #333;
+      float: left;
+      ul {
+        width: 100%;
+        .no-more {
+          margin: 62px 75px;
+          color: #BBB;
+        }
+        li {
+          height: 120px;
+          width: 100px;
+          border: 1px solid #333;
+          background: #EEE;
           float: left;
           margin: 10px;
-          height: 150px;
-          width: 220px;
-          background: #EEE;
-          border: 1px solid #999;
-          overflow: auto;
-          .ourBoardTitle {
-            font-weight: bold;
-            font-size: 12px;
-            padding: 2px;
-            background: rgba(255, 255, 255, 0.3);
+          overflow: hidden;
+          img {
+            max-width: 100px;
           }
-          .ourBoardInfo {
-            padding: 1px;
-            background: rgba(255, 255, 255, 0.5);
-          }
-          .ourBoardPins {
-            li { // This applies different styles to the pinterest LIs after being dropped in our ULs
-              height: 50px;
-              width: 50px;
-              border: 1px solid #333;
-              margin: 2px;
-              overflow: hidden;
-              img {
-                max-width: 50px;
-              }
+        }
+      }
+    }
+  }
+
+  #our_section {
+    background: #CCC; 
+    border: 2px solid #666;
+    margin-top: 20px;
+    .loading {
+      padding: 5px;
+    }
+    ul {
+      font-size: 10px;
+      clear: both;
+      li {
+        list-style: none;
+        float: left;
+        margin: 10px;
+        height: 150px;
+        width: 220px;
+        background: #EEE;
+        border: 1px solid #999;
+        overflow: auto;
+        .ourBoardTitle {
+          font-weight: bold;
+          font-size: 12px;
+          padding: 2px;
+          background: rgba(255, 255, 255, 0.3);
+        }
+        .ourBoardInfo {
+          padding: 1px;
+          background: rgba(255, 255, 255, 0.5);
+        }
+        .ourBoardPins {
+          li { // This applies different styles to the pinterest LIs after being dropped in our ULs
+            height: 50px;
+            width: 50px;
+            border: 1px solid #333;
+            margin: 2px;
+            overflow: hidden;
+            img {
+              max-width: 50px;
             }
           }
         }
-        li.ui-state-active {
-          opacity: 0.6;
-          border: 1px solid #000;
-        }
+      }
+      li.ui-state-active {
+        opacity: 0.6;
+        border: 1px solid #000;
       }
     }
   }

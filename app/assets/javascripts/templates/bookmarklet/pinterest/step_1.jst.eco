@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="<%= @cssUrl %>" media="all" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    
 <% partial_PinterestBoard = (board) => %>
   <li class="board-<%= board.id %>">
     Pinterest Board: <%= board.name %>
@@ -12,7 +21,6 @@
     <div class="clearfix"></div>
   </li>
 <% end %>
-
 
 
 <div id="pp_pinterest_import_wrapper">
@@ -46,6 +54,14 @@
     <div class="loading">Retreiving your boards...</div>
   </div>
 
-  <a href="javascript: return false();" id="ppSubmitBoardsSortedLink">Import These Pins</a>
+  <a href="#" onclick="return false;" id="ppSubmitBoardsSortedLink">Import These Pins</a>
   
 </div>
+<script type="text/javascript">
+   if (window.parent && window.parent.ppImporter) {
+     window.parent.ppImporter.stepOneIframeLoaded();
+   }
+//]]>
+</script>
+</body>
+</html>
