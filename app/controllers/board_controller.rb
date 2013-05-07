@@ -82,7 +82,7 @@ class BoardController < ApplicationController
   def mine
     respond_to do |format|
       format.json {
-        render :json => (user_signed_in? ? current_user.boards : []).to_json(:only => [:name, :pins_count, :cover], :methods => [:followers_even_indirectly_count]), :callback => params[:callback]
+        render :json => (user_signed_in? ? current_user.boards : []).to_json(:only => [:id, :name, :pins_count, :cover], :methods => [:followers_even_indirectly_count]), :callback => params[:callback]
       }
     end
   end

@@ -1,6 +1,6 @@
 <ul>
   <% for board in @boards: %>
-    <li class="board" style="background: url(<%= @absoluteURL board.cover.url %>);">
+    <li class="board" style="background: url(<%= @absoluteURL board.cover.url %>);" data-board-id="<%= board.id %>">
       <div class="ourBoardTitle"><%= board.name %></div>
       <div class="ourBoardInfo">
         <%= @pluralize board.pins_count, 'pin', 'pins' %>

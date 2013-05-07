@@ -5,7 +5,7 @@
 <% end %>
 
 <% partial_PinterestPin = (board, pin) => %>
-  <li class="pin board-all board-<%= board.id %> pin-<%= pin.id %>">
+  <li class="pin board-all board-<%= board.id %>" data-pin-id="<%= pin.id %>">
     <div class="thumb">
       <img src="<%= pin.smallImageURL %>" alt="Pin Image">
     </div>
@@ -45,5 +45,7 @@
   <div id="our_section">
     <div class="loading">Retreiving your boards...</div>
   </div>
+
+  <a href="javascript: return false();" id="ppSubmitBoardsSortedLink">Import These Pins</a>
   
 </div>

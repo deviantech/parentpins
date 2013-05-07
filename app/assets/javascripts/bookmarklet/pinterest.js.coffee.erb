@@ -245,7 +245,36 @@ initStepOneFunctionality = () ->
       $(event.target).css({opacity: 1.0})
   }
   
-  $(outputDiv).find('.importing_pins li.pin').draggable(dragOpts)
-  $(outputDiv).find('#our_section li.board').droppable(dropOpts)
-  $(outputDiv).find('#pinterest_section').droppable(dropToPinterestOpts)
+  outputDiv.find('.importing_pins li.pin').draggable(dragOpts)
+  outputDiv.find('#our_section li.board').droppable(dropOpts)
+  outputDiv.find('#pinterest_section').droppable(dropToPinterestOpts)
   
+  outputDiv.find('#ppSubmitBoardsSortedLink').on 'click', transitionToStepTwo
+
+dataForPinID = (id) ->
+  for board in boardsData
+    for pin in board.pins
+      return pin if pin.id == id
+  null
+
+transitionToStepTwo = () ->
+  # Loop through the #our_section boards and collect pinterest data for any with pins to be imported
+  toImport = {}
+  boardsWithPins = []
+  for board in outputDiv.find('#our_section li.board')
+    ourBoardID = $(board).data('boardId')
+    thisBoardData = []
+    for pin in $(board).find('.ourBoardPins li')
+      data = dataForPinID( $(pin).data('pinId') )
+      thisBoardData.push(data) if data
+    
+    if thisBoardData.length
+      toImport[ourBoardID] = thisBoardData 
+      boardsWithPins.push(ourBoardID)
+  
+  # Now that we have our list of things to import, what to do?
+  if boardsWithPins.length == 0
+    return alert("You haven't yet selected any pins to import. Please drag at least one Pinterest pin down onto the ParentPins board you want to save it to.")
+
+  console.log('next page...', boardsWithPins)
+  toImport
