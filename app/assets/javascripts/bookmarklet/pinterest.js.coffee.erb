@@ -25,6 +25,7 @@ testData = [{"name":"Default","pinterestURL":"http://pinterest.com/dvntpins/defa
 weHavejQueryUI = new $.Deferred()
 stepOneFrameLoaded = new $.Deferred()
 stepOneDoc = null
+stepOneFrame = null
 processingAllBoards = new $.Deferred()
 processingAllPins = new $.Deferred()
 boardsData = []
@@ -78,30 +79,14 @@ processingAllBoards.done () ->
   for board in boardsData
     processThisPin(pin) for pin in board.pins
   
-# Render template with the pinterest data, and pull in our remote boards as well
+# Render template with the pinterest data
 processingAllPins.done () ->
   window.data = boardsData    
   progressDiv.remove()
   stepOneFrame = $('<iframe id="ppParentPinsImporter">').appendTo( $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv ) )
   stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
   stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
-  stepOneDoc = stepOneFrame.contents()
-  
-  # TODO: load jquery UI here, since this window's jquery version is the one touching the contents
-  # TODO: load data in via ajax (track where callback needs to be defined)
-  
-  # outputDiv.html( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData}) )
-  $.getJSON boardsUrl, (json) ->
-    context = {
-      boards: json,
-      absoluteURL: (rel) ->
-        return rel if rel.match(/:\/\//)
-        host + rel
-      pluralize: (i, singular, plural) ->
-        i + ' ' + (if i == 1 then singular else plural)
-    }
-    stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
-    # displayStepOne()
+  stepOneDoc = stepOneFrame.contents()    
   
   
 finalizedAPin = (pin) ->
@@ -215,17 +200,7 @@ checkIfAnyDraggableLeft = () ->
     stepOneDoc.find('.importing_pins .no-more').remove()
   
 
-window.ppImporter.initStepOneFunctionality = () ->
-  return if window.ppImporter.initStepOneFunctionalityLoaded
-  window.ppImporter.initStepOneFunctionalityLoaded = true
-  
-  # Only show pins from selected board
-  stepOneDoc.on 'click', '.importing_boards li', (e) ->
-    li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
-    li.siblings().removeClass('selected')
-    li.addClass('selected')
-    hideShowPinsForSelectedBoard()
-    
+initOnceBoardsAreLoaded = () ->
   # Add draggable/droppable effects
   dropOpts = {
     hoverClass: "ui-state-active",
@@ -249,13 +224,38 @@ window.ppImporter.initStepOneFunctionality = () ->
       $(event.target).css({opacity: 1.0})
   }
   
-  # TODO :: why doesn't draggable seem to have any effect when being called on iframe contents? and what is the second argument to $() all about?
+  # http://bugs.jqueryui.com/ticket/5727 -- draggable in child window doesn't work when initialized from parent document
+  stepOneFrame[0].contentWindow.initializeDraggableFromParent([
+    ['.importing_pins li.pin',  'draggable', dragOpts],
+    ['#our_section li.board',   'droppable', dropOpts],
+    ['#pinterest_section',      'droppable', dropToPinterestOpts]
+  ])
+
+window.ppImporter.initStepOneFunctionality = () ->
+  return if window.ppImporter.initStepOneFunctionalityLoaded
+  window.ppImporter.initStepOneFunctionalityLoaded = true
   
-  stepOneDoc.find('.importing_pins li.pin').draggable(dragOpts)
-  stepOneDoc.find('#our_section li.board').droppable(dropOpts)
-  stepOneDoc.find('#pinterest_section').droppable(dropToPinterestOpts)
+  $.getJSON boardsUrl, (json) ->
+    context = {
+      boards: json,
+      absoluteURL: (rel) ->
+        return rel if rel.match(/:\/\//)
+        host + rel
+      pluralize: (i, singular, plural) ->
+        i + ' ' + (if i == 1 then singular else plural)
+    }
+    stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
+    initOnceBoardsAreLoaded()
+  
   
   stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', transitionToStepTwo
+  
+  # Only show pins from selected board
+  stepOneDoc.on 'click', '.importing_boards li', (e) ->
+    li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
+    li.siblings().removeClass('selected')
+    li.addClass('selected')
+    hideShowPinsForSelectedBoard()  
 
 dataForPinID = (id) ->
   for board in boardsData
