@@ -1,0 +1,29 @@
+body.importing {
+  padding: 5px;
+  ul.importing_boards {
+    li.importing_board {
+      clear: both;
+      list-style: none;
+      width: 100%;
+      border-bottom: 2px solid #333;
+      .board_info {
+        float: left;
+        width: 200px;
+      }
+      ul.importing_pins {
+        float: left;
+        display:inline-block;
+        margin-left: 220px;
+        li.importing_pin {
+          list-style: none;
+          padding: 5px;
+          border-bottom: 1px solid #DDD;
+          &.odd {
+            background: #EEE;
+          }
+        }
+
+      }
+    }
+  }
+}
