@@ -75,6 +75,7 @@ ParentPins::Application.routes.draw do
 
   # Use for importing pinterest pins
   get '/boards/mine' => 'board#mine', :as => 'my_boards', :format => :json
+  match '/import/step_2' => "import#step_2", :as => 'pinterest_import_step_2'
     
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'

@@ -1,0 +1,11 @@
+%h1 Step 2 from server!
+%p Importing pins to #{@boards.length} boards
+
+%ul
+  - @boards.each do |board|
+    %li
+      %h3= board.name
+      %ul.pins
+        - @importing[board.id].each do |pin|
+          %li= pin['description']
+  

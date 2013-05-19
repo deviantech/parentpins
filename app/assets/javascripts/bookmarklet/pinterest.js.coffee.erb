@@ -1,17 +1,19 @@
-//= require templates/bookmarklet/pinterest/step_1
 //= require templates/bookmarklet/pinterest/our_boards
+//= require templates/bookmarklet/pinterest/step_1
+//= require templates/bookmarklet/pinterest/step_2_load
 
 # Note - maybe if eval in getScript (or just $.get callback, can pass in vars from other script?)
 
 # Config
 outputDiv         = $('#ppBookmarkletContent')
 outputDivWrapper  = outputDiv.parents('#ppBookmarkletContentWrapper')
-progressDiv = outputDiv.find('#noPotentialImages') # TODO -- pass this in in case there's another with this ID in the original page's HTML
-boardSelector = '.UserBoards .item.gridSortable a.boardLinkWrapper'
-pinSelector   = '.pinWrapper'
+progressDiv       = outputDiv.find('#noPotentialImages') # TODO -- pass this in in case there's another with this ID in the original page's HTML
+boardSelector     = '.UserBoards .item.gridSortable a.boardLinkWrapper'
+pinSelector       = '.pinWrapper'
 host        = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
 cssUrl      = host + "<%= asset_path('import-pinterest.css') %>"
 boardsUrl   = host + '<%= Rails.application.routes.url_helpers.my_boards_path %>?callback=?' # Force jsonp request
+stepTwoURL  = host + '<%= Rails.application.routes.url_helpers.pinterest_import_step_2_path %>' # Loaded in iframe directly from PP
 debug       = false
 useTestData = true
 
@@ -24,8 +26,11 @@ testData = [{"name":"Default","pinterestURL":"http://pinterest.com/dvntpins/defa
 
 weHavejQueryUI = new $.Deferred()
 stepOneFrameLoaded = new $.Deferred()
+iframeWrapper = null
 stepOneDoc = null
 stepOneFrame = null
+stepTowDoc = null
+stepTwoFrame = null
 processingAllBoards = new $.Deferred()
 processingAllPins = new $.Deferred()
 boardsData = []
@@ -83,7 +88,14 @@ processingAllBoards.done () ->
 processingAllPins.done () ->
   window.data = boardsData    
   progressDiv.remove()
-  stepOneFrame = $('<iframe id="ppParentPinsImporter">').appendTo( $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv ) )
+  initStepOne()
+  
+ensureFrameWrapper = () ->
+  iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )
+
+initStepOne = () ->
+  ensureFrameWrapper()
+  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
   stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
   stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
   stepOneDoc = stepOneFrame.contents()    
@@ -282,13 +294,21 @@ transitionToStepTwo = () ->
   if boardsWithPins.length == 0
     return alert("You haven't yet selected any pins to import. Please drag at least one Pinterest pin down onto the ParentPins board you want to save it to.")
 
-  console.log('next page...', boardsWithPins)
-  toImport
+  initStepTwo(toImport)
 
-# We want to init functionality after BOTH the HTML is displayed (including from remote) AND the jquery UI library has loaded. Unfortunatly it loads twice...
+# We want to init functionality after BOTH the HTML is displayed (including from remote) AND the jquery UI library has loaded. Unfortunately it loads twice...
 stepOneFrameLoaded.done () ->
   window.ppImporter.initStepOneFunctionality() if weHavejQueryUI.state() == 'resolved'
 
 weHavejQueryUI.done () ->
   window.ppImporter.initStepOneFunctionality() if stepOneFrameLoaded.state() == 'resolved'
 
+
+initStepTwo = (toImport) ->
+  ensureFrameWrapper()
+  stepOneFrame.hide()
+  stepTwoFrame ||= $('<iframe class="ppParentPinsImporter" name="ppParentPinsImporterStep2Frame">').appendTo( iframeWrapper )
+  stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
+
+  # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
+  stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )  

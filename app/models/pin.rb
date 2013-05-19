@@ -64,6 +64,20 @@ class Pin < ActiveRecord::Base
     unscoped.order('trend_position DESC').group('url')
   end
   
+  def self.from_pinterest(user, data)
+    # Remove params used on the client side
+    params = data.except('smallImageURL', 'pinterestURL', 'id', 'domain')
+    params[:url] = params.delete('link')
+    
+    # TODO - set it in paraa as cached, but don't process until actually try to save the pin
+    params.delete('imageURL')
+    # params[:remote_image_url] = params.delete('imageURL')
+
+    # TODO: add support for via_url, etc..
+    
+    pin = user.pins.new(params)
+  end
+  
   def self.from_bookmarklet(user, params)
     # params[:url] is always the URL it was pinned from
     # params[:link], if present, means the image was linking to a new page. Show the new page instead (seems to be Pinterest's logic)

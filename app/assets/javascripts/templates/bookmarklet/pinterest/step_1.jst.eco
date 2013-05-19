@@ -69,8 +69,7 @@
      };
      
      window.parent.ppImporter.stepOneIframeLoaded();
-   }   
-//]]>
+   }
 </script>
 </body>
 </html>
