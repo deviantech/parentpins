@@ -45,4 +45,17 @@ body.importing {
       }
     }
   }
+  .form_button_bar {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    border-top: 1px solid #999;
+    height: 50px;
+    width: 100%;
+    background: #F0F0F0;
+    input[type=submit] {
+      float: right;
+      margin: 5px;
+    }
+  }
 }

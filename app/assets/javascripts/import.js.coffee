@@ -1,3 +1,10 @@
+window.previousStep = () ->
+  if (window.parent && window.parent.ppImporter)
+    window.parent.ppImporter.transitionToStepOne()
+  else
+    alert("Sorry, can't load previous step because we don't seem to have been loaded in the bookmarklet context.")
+
+
 $(document).ready () ->
   
   # Toggle price fields
@@ -7,3 +14,5 @@ $(document).ready () ->
       field.removeClass('hidden')
     else
       field.addClass('hidden')
+  
+  

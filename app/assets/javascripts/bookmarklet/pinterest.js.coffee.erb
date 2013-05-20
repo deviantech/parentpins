@@ -86,20 +86,12 @@ processingAllBoards.done () ->
   
 # Render template with the pinterest data
 processingAllPins.done () ->
-  window.data = boardsData    
+  window.data = boardsData
   progressDiv.remove()
-  initStepOne()
+  transitionToStepOne()
   
 ensureFrameWrapper = () ->
-  iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )
-
-initStepOne = () ->
-  ensureFrameWrapper()
-  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
-  stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
-  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
-  stepOneDoc = stepOneFrame.contents()    
-  
+  iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
   
 finalizedAPin = (pin) ->
   pinsPending -= 1
@@ -275,6 +267,16 @@ dataForPinID = (id) ->
       return pin if pin.id == id
   null
 
+
+transitionToStepOne = () ->
+  ensureFrameWrapper()
+  if (stepTwoFrame)
+    stepTwoFrame.hide()
+  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
+  stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
+  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
+  stepOneDoc = stepOneFrame.contents()
+
 transitionToStepTwo = () ->
   # Loop through the #our_section boards and collect pinterest data for any with pins to be imported
   toImport = {}
@@ -311,5 +313,4 @@ initStepTwo = (toImport) ->
   stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
 
   # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
-  stepTwoFrame.contents()[0].write( $.param(toImport) )  
-  # stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )  
+  stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )

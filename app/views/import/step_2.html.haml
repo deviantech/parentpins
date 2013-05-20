@@ -2,7 +2,7 @@
   Importing #{pluralize @pins.length, 'pin', 'pins'} to
   #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
 
-= form_for :boards, :url => pinterest_import_step_2_path, :html => {:class => 'import_form'} do
+= form_for :boards, :url => pinterest_import_step_2_path, :html => {:class => 'import_form'} do |f|
   %ul.importing_boards
     - @boards.each do |board|
       %li.importing_board
@@ -36,3 +36,8 @@
                 .line
                   %strong Pin Description
                   = text_area_tag :description, pin.description
+  
+  .form_button_bar 
+    = link_to_function 'Go Back and Modify Selection', 'previousStep()'
+    or
+    = f.submit 'Import Pins'
