@@ -1,5 +1,11 @@
+/*
+ *= require normalize
+ *= require boilerplate
+ *= require_self
+ */
 body.importing {
   padding: 5px;
+  font-family:"Helvetica Neue", Helvetica, sans-serif;
   ul.importing_boards {
     li.importing_board {
       clear: both;
@@ -15,14 +21,27 @@ body.importing {
         display:inline-block;
         margin-left: 220px;
         li.importing_pin {
+          clear: both;
           list-style: none;
           padding: 5px;
+          margin-bottom: 10px;
           border-bottom: 1px solid #DDD;
           &.odd {
             background: #EEE;
           }
+          .pin_photo {
+            width: 100px;
+            float: left;
+            img {
+              max-width: 100px;
+              max-height: 100px;
+            }
+          }
+          .pin_info {
+            float: left;
+            margin-left: 110px;
+          }
         }
-
       }
     }
   }

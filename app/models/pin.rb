@@ -1,6 +1,8 @@
 class Pin < ActiveRecord::Base  
   extend Searchable
-  attr_accessible :kind, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id
+  
+  attr_accessor :cached_remote_image_url
+  attr_accessible :kind, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id, :cached_remote_image_url
 
   VALID_TYPES = %w(idea product article)
   REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image)
@@ -70,8 +72,8 @@ class Pin < ActiveRecord::Base
     params[:url] = params.delete('link')
     
     # TODO - set it in paraa as cached, but don't process until actually try to save the pin
-    params.delete('imageURL')
     # params[:remote_image_url] = params.delete('imageURL')
+    params[:cached_remote_image_url] = params.delete('imageURL')
 
     # TODO: add support for via_url, etc..
     

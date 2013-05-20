@@ -13,8 +13,8 @@
     <meta name="keywords" content="ParentPins, keywords, here">
     <meta name="viewport" content="width=device-width">
     
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= csrf_meta_tags %>    
+    <%= stylesheet_link_tag "import", :media => "all" %>
+    <%= csrf_meta_tags %>
   </head>
   
   <body class="importing">
@@ -23,7 +23,8 @@
     <![endif]-->
     <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
     <div class="clearfix"></div>
-    <%= javascript_include_tag "application" %>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <%= javascript_include_tag "import" %>
     <%= yield :footer_js %>
 </body>
 </html>
