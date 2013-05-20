@@ -14,6 +14,9 @@
             %li.importing_pin{:class => cycle('even', 'odd')}
               .pin_photo
                 = image_tag pin.cached_remote_image_url
+                .status_boxes
+                  .ageGroupStatus Age
+                  .pinTypeStatus Type
               .pin_info
                 = hidden_field_tag :remote_image_url, pin.cached_remote_image_url
                 .line
