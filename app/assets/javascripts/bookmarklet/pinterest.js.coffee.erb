@@ -41,6 +41,17 @@ window.ppImporter ?= {}
 window.ppImporter.stepOneIframeLoaded = () ->
   stepOneFrameLoaded.resolve()
 
+window.ppImporter.transitionToStepOne = () ->
+  ensureFrameWrapper()
+  if (stepTwoFrame)
+    stepTwoFrame.hide()
+  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
+  stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
+  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
+  stepOneDoc = stepOneFrame.contents()
+
+
+
 includejQueryUI = () ->
   if weHavejQueryUI.state() == 'pending'
     if jQuery.ui
@@ -88,7 +99,7 @@ processingAllBoards.done () ->
 processingAllPins.done () ->
   window.data = boardsData
   progressDiv.remove()
-  transitionToStepOne()
+  window.ppImporter.transitionToStepOne()
   
 ensureFrameWrapper = () ->
   iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
@@ -268,14 +279,6 @@ dataForPinID = (id) ->
   null
 
 
-transitionToStepOne = () ->
-  ensureFrameWrapper()
-  if (stepTwoFrame)
-    stepTwoFrame.hide()
-  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
-  stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
-  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
-  stepOneDoc = stepOneFrame.contents()
 
 transitionToStepTwo = () ->
   # Loop through the #our_section boards and collect pinterest data for any with pins to be imported

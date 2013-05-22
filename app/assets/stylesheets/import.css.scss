@@ -41,12 +41,9 @@ body.importing {
           &.odd {
             background: #EEE;
           }
-          &.odd.complete{
-            background: #393;
-          }
           &.complete {
-            background: #090;
-            border-color: #333;
+            background: #EFE;
+            border-color: #999;
           }
         }
       }

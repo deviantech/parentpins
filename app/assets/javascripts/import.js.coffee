@@ -5,21 +5,33 @@ window.previousStep = () ->
     alert("Sorry, can't load previous step because we don't seem to have been loaded in the bookmarklet context.")
 
 
-updateAgeGroupStatus = (field) ->
-  updateStatusField field, '.ageGroupStatus'
+updateOtherStatus = (fields) ->
+  updateStatusField fields, '.otherStatus'
 
-updatePinTypeStatus = (field) ->
-  updateStatusField field, '.pinTypeStatus'
+updateAgeGroupStatus = (fields) ->
+  updateStatusField fields, '.ageGroupStatus'
+
+updatePinTypeStatus = (fields) ->
+  updateStatusField fields, '.pinTypeStatus'
     
-updateStatusField = (field, statusSelector) ->
-  li = $(field).parents('li').first()
+updateStatusField = (fields, statusSelector) ->
+  li = $(fields).first().parents('li').first()
   target = li.find(statusSelector)
-  if $(field).val() == ''
+  anyBlank = false
+  
+  $(fields).each () ->
+    if $(this).val() == ''
+      console.log(this, 'is blank')
+      anyBlank = true
+    else
+      console.log(this, 'not blank')
+  
+  if anyBlank
     target.removeClass('complete').addClass('pending')
   else
     target.removeClass('pending').addClass('complete')
   
-  if li.find('.status_boxes .ageGroupStatus').hasClass('complete') && li.find('.status_boxes .pinTypeStatus').hasClass('complete')
+  if li.find('.status_boxes .ageGroupStatus').hasClass('complete') && li.find('.status_boxes .pinTypeStatus').hasClass('complete') && li.find('.status_boxes .otherStatus').hasClass('complete')
     li.addClass('complete')
   else
     li.removeClass('complete')
@@ -27,6 +39,11 @@ updateStatusField = (field, statusSelector) ->
 
 $(document).ready () ->
   form = $('form.import_form')  
+  
+  form.on 'submit', () ->
+    if (form.find('li.importing_pin.complete').length == 0)
+      alert('You need to set the Type and Age Group for each Pinterest pin before we can import it into ParentPins.')
+      return false;
   
   form.find('input[type=radio]').each () ->
     updatePinTypeStatus(this)
@@ -38,7 +55,7 @@ $(document).ready () ->
   # Handle marking pin type selected, toggle price fields
   form.on 'change', 'input[type=radio]', () ->
     updatePinTypeStatus(this)
-    extrafield = $(this).parents('li').find('.field-price')
+    extrafield = $(this).parents('li').first().find('.field-price')
     if $(this).val() == 'product'
       extrafield.removeClass('hidden')
     else
