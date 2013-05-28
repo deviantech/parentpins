@@ -32,15 +32,16 @@ class ImportController < ApplicationController
     @pins_to_import = []
     @boards = []
     
-    params[:import][:boards].each do |board_id, pin_data_collection|
+    (params[:import] ? params[:import][:boards] : []).each do |board_id, pin_data_collection|
       next unless board = current_user.boards.find_by_id(board_id)
-      @boards << board unless @boards.include?(board)
 
       pin_data_collection[:pins].each do |idx, data|
         pin = current_user.pins.new(data)
         pin.board = board
+        
         unless pin.save
           @pins_to_import << pin
+          @boards << board unless @boards.include?(board)
         end
       end
     end

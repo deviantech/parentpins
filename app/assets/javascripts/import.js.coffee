@@ -1,4 +1,4 @@
-window.nextStep = () ->
+window.importCompleted = () ->
   if (window.parent && window.parent.ppImporter)
     window.parent.ppImporter.importCompleted()
   else
@@ -33,10 +33,7 @@ updateStatusField = (fields, statusSelector) ->
       anyBlank = true if !value
     else
       if $(this).val() == ''
-        console.log(this, 'is blank')
         anyBlank = true
-      else
-        console.log(this, 'not blank')
   
   if anyBlank
     target.removeClass('complete').addClass('pending')
@@ -49,22 +46,48 @@ updateStatusField = (fields, statusSelector) ->
     li.removeClass('complete')
   
 
+window.toggleImportingThisPin = (link) ->
+  li = $(link).parents('li.importing_pin')
+  
+  if (li.hasClass('skip-this-pin'))
+    li.removeClass('skip-this-pin')
+
+    $('#'+li.attr('id')+'_pin_info').insertAfter( li.find('.pin_photo') ).show()
+    li.find('.pin_errors').show()
+    li.find('.status_boxes').show()
+    li.find('.open_close_controls a').text('Skip this Pin')
+  else
+    li.addClass('skip-this-pin')
+    
+    # Hide various UI components
+    li.find('.pin_info').hide()
+    li.find('.pin_errors').hide()
+    li.find('.status_boxes').hide()
+    li.find('.open_close_controls a').text('Import this Pin')
+
+    # Now actually move .pin_info outside the form, so it doesn't submit
+    li.find('.pin_info').insertAfter( li.parents('form') )
+  
+
 $(document).ready () ->
   form = $('form.import_form')  
   
-  # form.on 'submit', () ->
-  #   if (form.find('li.importing_pin.complete').length == 0)
-  #     alert('You need to set the Type and Age Group for each Pinterest pin before we can import it into ParentPins.')
-  #     return false;
+  form.on 'submit', () ->
+    if (form.find('li.importing_pin.complete').length == 0)
+      alert('You need to set the Type and Age Group for each Pinterest pin before we can import it into ParentPins.')
+      return false;
   
   form.find('li.importing_pin').each () ->
-    updateOtherStatus( $(this).find('.other_input') )    
+    updateOtherStatus( $(this).find('.other_input') )
+    
+    inputToTest = if $(this).find('input.pin_type:checked').length
+      $(this).find('input.pin_type:checked')
+    else
+      $(this).find('input.pin_type').first()
+    updatePinTypeStatus( inputToTest )
 
   form.find('select.age_group_id').each () ->
     updateAgeGroupStatus(this)
-
-  form.find('input.pin_type').each () ->
-    updatePinTypeStatus(this)
     
   # Handle marking pin type selected, toggle price fields
   form.on 'change', 'input.pin_type', () ->
@@ -80,5 +103,5 @@ $(document).ready () ->
     updateAgeGroupStatus(this)
 
   # Handle updating on other inputs
-  form.on 'change', '.other_input', () ->
+  form.on 'change keyup keypress', '.other_input', () ->
     updateOtherStatus( $(this).parents('li.importing_pin').find('.other_input') )

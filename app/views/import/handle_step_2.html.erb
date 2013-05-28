@@ -1,5 +1,7 @@
 <h1>Import Completed</h1>
 
-<script type="text/javascript" charset="utf-8">
-  window.nextStep();
-</script>
+<% content_for :footer_js do %>
+  <script type="text/javascript" charset="utf-8">
+    importCompleted();
+  </script>
+<% end %>
