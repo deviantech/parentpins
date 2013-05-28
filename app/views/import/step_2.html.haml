@@ -14,6 +14,8 @@
             - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
               = b.fields_for "pins[#{idx}]", pin do |p|
                 %li.importing_pin{:class => cycle('even', 'odd')}
+                  - if pin.errors
+                    .pin_errors= pin.errors.full_messages.uniq.map(&:downcase).to_sentence.capitalize
                   .pin_photo
                     = image_tag pin.cached_remote_image_url
                     .status_boxes
@@ -26,7 +28,7 @@
                       %strong Age Group
                       = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all), {}, :class => 'age_group_id'
                     .line
-                      %strong Pin Type
+                      %strong Pin Kind
                       - Pin::VALID_TYPES.each do |kind|
                         %label.radio_opt
                           = p.radio_button :kind, kind, :class => 'pin_type'
@@ -42,7 +44,7 @@
                     .line
                       %strong Pin Description
                       = p.text_area :description, :class => 'other_input'
-  
+                  .clearfix
   .form_button_bar 
     = link_to_function 'Go Back and Modify Selection', 'previousStep()'
     or

@@ -27,9 +27,9 @@ class Pin < ActiveRecord::Base
   accepts_nested_attributes_for :board
   
   before_validation :copy_board_settings,       :on => :create
-  validates_presence_of :user, :description, :board, :category, :age_group
-  validates_inclusion_of :kind, :in => VALID_TYPES
-  validates_length_of :description, :maximum => 1024, :allow_blank => true
+  validates :user, :description, :board, :category, :age_group, :kind, :presence => true
+  validates :kind,          :inclusion => {:in => VALID_TYPES, :message => "must be one of the supported types", :allow_blank => true}
+  validates :description,   :length => {:maximum => 1024, :allow_blank => true}
   validate :validate_url_format, :not_previously_pinned, :on => :create
   
   before_save     :filter_url_before_save
@@ -250,6 +250,7 @@ class Pin < ActiveRecord::Base
   end
 
   def track_board_last_pinned_to
+    return true if cached_remote_image_url # Bulk importing, no need to track most recent board
     user.set_last_board_pinned_to_id(board_id)
   end
   

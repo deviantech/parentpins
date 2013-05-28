@@ -30,24 +30,22 @@ class ImportController < ApplicationController
   # Not the prettiest nested params, but functional
   def handle_step_2
     @pins_to_import = []
-    @boards << []
+    @boards = []
     
     params[:import][:boards].each do |board_id, pin_data_collection|
-      next unless @board = current_user.boards.find_by_id(board_id)
-      @boards << @board unless @boards.include?(@board)
+      next unless board = current_user.boards.find_by_id(board_id)
+      @boards << board unless @boards.include?(board)
 
       pin_data_collection[:pins].each do |idx, data|
-        pin = @board.pins.new(data)
-        pin.user = current_user
+        pin = current_user.pins.new(data)
+        pin.board = board
         unless pin.save
           @pins_to_import << pin
         end
       end
     end
     
-    if @pins_to_import.empty?
-      render :text => 'DONE! TODO: add handling of success here', :layout => false
-    else
+    unless @pins_to_import.empty?
       render 'step_2'
     end
   end

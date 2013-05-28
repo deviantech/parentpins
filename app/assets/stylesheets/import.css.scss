@@ -26,6 +26,13 @@ body.importing {
           padding: 5px;
           margin-bottom: 10px;
           border-bottom: 1px solid #DDD;
+          .pin_errors {
+            border: 1px solid red;
+            padding: 5px;
+            background: #FCC;
+            margin: 5px;
+            margin-bottom: 10px;
+          }
           .pin_photo {
             width: 100px;
             float: left;

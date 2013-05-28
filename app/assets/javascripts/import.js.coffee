@@ -1,3 +1,10 @@
+window.nextStep = () ->
+  if (window.parent && window.parent.ppImporter)
+    window.parent.ppImporter.importCompleted()
+  else
+    alert("Sorry, can't complete import because we don't seem to have been loaded in the bookmarklet context.")
+
+
 window.previousStep = () ->
   if (window.parent && window.parent.ppImporter)
     window.parent.ppImporter.transitionToStepOne()
