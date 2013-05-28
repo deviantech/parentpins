@@ -1,15 +1,14 @@
 window.importCompleted = () ->
-  if (window.parent && window.parent.ppImporter)
-    window.parent.ppImporter.importCompleted()
-  else
-    alert("Sorry, can't complete import because we don't seem to have been loaded in the bookmarklet context.")
-
+  $('body').addClass('import_completed')
+  # Would be nice to automatically close the iframe, but we're from different domains at this point
 
 window.previousStep = () ->
-  if (window.parent && window.parent.ppImporter)
-    window.parent.ppImporter.transitionToStepOne()
+  if (!window.parent)
+    alert("Sorry, can't load previous step because page doesn't appear to have been loaded in a bookmarklet context.")
+  else if (!window.parent.postMessage)
+    alert("Sorry, can't load previous step because your browser appears to old to support modern web standards.")
   else
-    alert("Sorry, can't load previous step because we don't seem to have been loaded in the bookmarklet context.")
+    window.parent.postMessage("previous", '*')
 
 
 updateOtherStatus = (fields) ->
@@ -105,3 +104,9 @@ $(document).ready () ->
   # Handle updating on other inputs
   form.on 'change keyup keypress', '.other_input', () ->
     updateOtherStatus( $(this).parents('li.importing_pin').find('.other_input') )
+  
+  # Show back button, if we can communicate with parent frame  
+  if (!!window.postMessage)
+    $('.js-if-post-message').removeClass('hidden')
+
+  

@@ -17,15 +17,12 @@ stepTwoURL  = host + '<%= Rails.application.routes.url_helpers.pinterest_import_
 debug       = false
 useTestData = true
 
-
-
 # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
 appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
 
 testData = [{"name":"Default","pinterestURL":"http://pinterest.com/dvntpins/default/","id": 236459021, "pins":[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":511140869,"link":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg"},{"description":"That's How a Pro Uses a Bunk Bed","domain":"memebase.cheezburger.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg","pinterestURL":"http://pinterest.com/pin/442126888388218505/","id":1291275682,"link":"http://memebase.cheezburger.com/senorgif","imageURL":"http://media-cache-ak1.pinimg.com/736x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg"},{"description":"ireland - Google Search","domain":"travel.nytimes.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg","pinterestURL":"http://pinterest.com/pin/442126888388183279/","id":599475931,"link":"http://travel.nytimes.com/travel/guides/europe/ireland/overview.html","imageURL":"http://media-cache-ak1.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg"}]},{"name":"Secondary","pinterestURL":"http://pinterest.com/dvntpins/secondary/","id": 141808096, "pins":[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":511140869,"link":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg"}]}];
 
-weHavejQueryUI = new $.Deferred()
-stepOneFrameLoaded = new $.Deferred()
+# Initial values
 iframeWrapper = null
 stepOneDoc = null
 stepOneFrame = null
@@ -37,37 +34,17 @@ boardsData = []
 boardsPending = $(boardSelector).length
 pinsPending = 'unknown'
 
+# One-time window setup
 window.ppImporter ?= {}
-window.ppImporter.stepOneIframeLoaded = () ->
-  stepOneFrameLoaded.resolve()
+window.ppImporter.state ?= {}
 
-window.ppImporter.transitionToStepOne = () ->
-  ensureFrameWrapper()
-  if (stepTwoFrame)
-    stepTwoFrame.hide()
-  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
-  stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
-  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
-  stepOneDoc = stepOneFrame.contents()
-
-
-
-includejQueryUI = () ->
-  if weHavejQueryUI.state() == 'pending'
-    if jQuery.ui
-      weHavejQueryUI.resolve()
+if !window.ppImporter.state['receiving_messages']
+  $(window).on 'message', (event) ->
+    if event.originalEvent.origin.replace(/^https?:/, '') != host
+      console.log('Ignoring message from mismatchted source: ' + event.originalEvent.origin)
     else
-      done = false
-      script = document.createElement("script")
-      script.src = "//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"
-      script.onload = script.onreadystatechange = ->
-        if !done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")
-          done = true;
-          weHavejQueryUI.resolve()
-      appendTarget.appendChild(script)
-
-includejQueryUI()
-
+      handlePostedMessage(event.originalEvent)
+  window.ppImporter.state['receiving_messages'] = true
 
 reportProgress = (custom) ->
   msg = if boardsPending == 0
@@ -94,12 +71,7 @@ processingAllBoards.done () ->
   # Now start doing them
   for board in boardsData
     processThisPin(pin) for pin in board.pins
-  
-# Render template with the pinterest data
-processingAllPins.done () ->
-  window.data = boardsData
-  progressDiv.remove()
-  window.ppImporter.transitionToStepOne()
+
   
 ensureFrameWrapper = () ->
   iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
@@ -111,6 +83,11 @@ finalizedAPin = (pin) ->
   if pinsPending == 0
     processingAllPins.resolve()
 
+
+# Workaround for non-supporting browsers
+getIframeWindow = (iframeElement) ->
+  iframeElement.contentWindow || iframeElement.contentDocument.parentWindow
+
 processThisPin = (pin) ->
   unless pin.pinterestURL
     finalizedAPin(pin)
@@ -119,8 +96,8 @@ processThisPin = (pin) ->
   pinFrame = $('<iframe>').hide().attr('src', pin.pinterestURL).appendTo( $('body') )
   console.log('opening '+pin.pinterestURL)
   pinFrame.on 'load', () ->
-    pin.link = this.contentWindow.jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
-    pin.imageURL = this.contentWindow.jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
+    pin.link = getIframeWindow(this).jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
+    pin.imageURL = getIframeWindow(this).jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
     finalizedAPin(pin)
   
 # http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ , converted to coffeescript, returning absolute value. Generating IDs for pinterest boards.
@@ -166,7 +143,7 @@ else
       processingAllBoards.resolve() if boardsPending == 0
     
     processSingleBoard = () ->
-      $ = iframe.get(0).contentWindow.jQuery
+      $ = getIframeWindow(iframe.get(0))
       # Scroll iframe down to try lazy loading later images
       $(iframe).contents().scrollTop( $(iframe).contents().height() )
     
@@ -185,7 +162,7 @@ else
     iframe.on 'load', () ->
       # Don't fully understand, but ajaxComplete seems to only work if use the jquery from the inner window 
       # (see untested answer on http://stackoverflow.com/questions/14563041/detect-content-of-iframe-change-the-content-is-dynamic-jquery-mobile) 
-      this.contentWindow.jQuery(this.contentWindow.document).ajaxComplete (event, xhr, settings) ->
+      getIframeWindow(this).jQuery(getIframeWindow(this).document).ajaxComplete (event, xhr, settings) ->
         return if alreadyProcessingBoard
         iframeAjaxSeen_Categories = true if /resource\/CategoriesResource\/get/.test(settings.url)
         iframeAjaxSeen_Board      = true if /resource\/BoardFeedResource\/get/.test(settings.url)
@@ -240,16 +217,25 @@ initOnceBoardsAreLoaded = () ->
   }
   
   # http://bugs.jqueryui.com/ticket/5727 -- draggable in child window doesn't work when initialized from parent document
-  stepOneFrame[0].contentWindow.initializeDraggableFromParent([
+  getIframeWindow(stepOneFrame[0]).initializeDraggableFromParent([
     ['.importing_pins li.pin',  'draggable', dragOpts],
     ['#our_section li.board',   'droppable', dropOpts],
     ['#pinterest_section',      'droppable', dropToPinterestOpts]
   ])
 
-window.ppImporter.initStepOneFunctionality = () ->
-  return if window.ppImporter.initStepOneFunctionalityLoaded
-  window.ppImporter.initStepOneFunctionalityLoaded = true
-  
+
+transitionToStepOne = () ->
+  ensureFrameWrapper()
+  if (stepTwoFrame)
+    stepTwoFrame.hide()
+  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
+  stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
+  stepOneFrame.contents()[0].open()
+  stepOneDoc = stepOneFrame.contents()
+  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
+
+
+initStepOneFunctionality = () ->  
   $.getJSON boardsUrl, (json) ->
     context = {
       boards: json,
@@ -261,10 +247,10 @@ window.ppImporter.initStepOneFunctionality = () ->
     }
     stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
     initOnceBoardsAreLoaded()
-  
-  
-  stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', transitionToStepTwo
-  
+
+  stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () ->
+    transitionToStepTwo()
+
   # Only show pins from selected board
   stepOneDoc.on 'click', '.importing_boards li', (e) ->
     li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
@@ -272,12 +258,21 @@ window.ppImporter.initStepOneFunctionality = () ->
     li.addClass('selected')
     hideShowPinsForSelectedBoard()  
 
+window.ppImporter.stepOneIframeLoaded = () ->
+  initStepOneFunctionality()
+
+
 dataForPinID = (id) ->
   for board in boardsData
     for pin in board.pins
       return pin if pin.id == id
   null
 
+# Render template with the pinterest data
+processingAllPins.done () ->
+  window.data = boardsData
+  progressDiv.remove()
+  transitionToStepOne()
 
 
 transitionToStepTwo = () ->
@@ -301,19 +296,17 @@ transitionToStepTwo = () ->
 
   initStepTwo(toImport)
 
-# We want to init functionality after BOTH the HTML is displayed (including from remote) AND the jquery UI library has loaded. Unfortunately it loads twice...
-stepOneFrameLoaded.done () ->
-  window.ppImporter.initStepOneFunctionality() if weHavejQueryUI.state() == 'resolved'
 
-weHavejQueryUI.done () ->
-  window.ppImporter.initStepOneFunctionality() if stepOneFrameLoaded.state() == 'resolved'
-
+handlePostedMessage = (event) ->
+  if event.data == 'previous'
+    transitionToStepOne()
+  
 
 initStepTwo = (toImport) ->
   ensureFrameWrapper()
   stepOneFrame.hide()
   stepTwoFrame ||= $('<iframe class="ppParentPinsImporter" name="ppParentPinsImporterStep2Frame">').appendTo( iframeWrapper )
   stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
-
+  
   # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
   stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )

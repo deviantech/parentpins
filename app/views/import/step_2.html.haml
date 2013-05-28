@@ -48,6 +48,7 @@
                       = p.text_area :description, :class => 'other_input'
                   .clearfix
   .form_button_bar 
-    = link_to_function 'Go Back and Modify Selection', 'previousStep()'
-    or
+    %span.js-if-post-message.hidden
+      = link_to_function 'Go Back and Modify Selection', 'previousStep()'
+      or
     = f.submit 'Import Pins'

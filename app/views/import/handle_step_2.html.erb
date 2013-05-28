@@ -1,4 +1,13 @@
-<h1>Import Completed</h1>
+<div class="import_completed">
+  <h1>Import Completed</h1>
+  <div class="instructions">
+    You can return to the original page by pressing Close in the upper right hand corner of the screen.
+  </div>
+  <div class="instructions">
+    To see your newly-imported pins, 
+    <%= link_to 'click here', pins_profile_url(current_user), :target => '_top' %>.
+  </div>
+</div>
 
 <% content_for :footer_js do %>
   <script type="text/javascript" charset="utf-8">

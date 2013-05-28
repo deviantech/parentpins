@@ -82,3 +82,14 @@ body.importing {
     }
   }
 }
+body.import_completed {
+  background: #F6FFF6;
+}
+.import_completed {
+  h1 {
+    text-align: center;
+  }
+  .instructions {
+    text-align: center;
+  }
+}
