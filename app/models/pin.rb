@@ -175,6 +175,11 @@ class Pin < ActiveRecord::Base
     [self['url'], appending].compact.join( self['url']['?'] ? '&' : '?' )
   end
   
+  # Strip off just the filename component of the image, used to match previously imported pins
+  def image_filename
+    self['image']
+  end
+  
   protected
     
   def set_uuid

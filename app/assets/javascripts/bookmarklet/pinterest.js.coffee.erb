@@ -1,6 +1,7 @@
 //= require templates/bookmarklet/pinterest/our_boards
 //= require templates/bookmarklet/pinterest/step_1
 //= require templates/bookmarklet/pinterest/step_2_load
+//= require underscore.min
 
 # Note - maybe if eval in getScript (or just $.get callback, can pass in vars from other script?)
 
@@ -12,7 +13,8 @@ boardSelector     = '.UserBoards .item.gridSortable a.boardLinkWrapper'
 pinSelector       = '.pinWrapper'
 host        = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
 cssUrl      = host + "<%= asset_path('import-pinterest.css') %>"
-boardsUrl   = host + '<%= Rails.application.routes.url_helpers.my_boards_path %>?callback=?' # Force jsonp request
+boardsUrl   = host + '<%= Rails.application.routes.url_helpers.my_boards_json_path %>?callback=?' # Force jsonp request
+pinsUrl     = host + '<%= Rails.application.routes.url_helpers.my_pins_json_path %>?callback=?' # Force jsonp request
 stepTwoURL  = host + '<%= Rails.application.routes.url_helpers.pinterest_import_step_2_path %>' # Loaded in iframe directly from PP
 debug       = false
 useTestData = true
@@ -31,6 +33,8 @@ stepTwoFrame = null
 processingAllBoards = new $.Deferred()
 processingAllPins = new $.Deferred()
 boardsData = []
+importedPins = []
+filterPreviouslyImported = false
 boardsPending = $(boardSelector).length
 pinsPending = 'unknown'
 
@@ -45,6 +49,7 @@ if !window.ppImporter.state['receiving_messages']
     else
       handlePostedMessage(event.originalEvent)
   window.ppImporter.state['receiving_messages'] = true
+
 
 reportProgress = (custom) ->
   msg = if boardsPending == 0
@@ -224,6 +229,29 @@ initOnceBoardsAreLoaded = () ->
   ])
 
 
+filterDataToImport = (data) ->
+  if !filterPreviouslyImported
+    return data
+  else
+    filteredData = []
+
+    # Remove any pins where url and image filename already exist in user's parentpins. Remove any boards with no more pins.
+    $.each data, (board_idx, board) ->
+      filteredPins = _.reject board.pins, (pin) ->
+        return false unless importedPins[pin.link]
+        
+        pinImageURL = pin.imageURL.replace(/^.*\//, '')
+        _.any importedPins[pin.link], (importedImageURL) ->
+          importedImageURL == pinImageURL
+        
+      if filteredPins.length > 0
+        boardClone = _.clone(board)
+        boardClone.pins = filteredPins
+        filteredData.push(boardClone)
+        
+    return filteredData
+  
+
 transitionToStepOne = () ->
   ensureFrameWrapper()
   if (stepTwoFrame)
@@ -232,7 +260,9 @@ transitionToStepOne = () ->
   stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
   stepOneFrame.contents()[0].open()
   stepOneDoc = stepOneFrame.contents()
-  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
+  
+  filteredData = filterDataToImport(boardsData)  
+  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: filteredData, cssUrl: cssUrl}) )
 
 
 initStepOneFunctionality = () ->  
@@ -247,6 +277,19 @@ initStepOneFunctionality = () ->
     }
     stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
     initOnceBoardsAreLoaded()
+
+  $.getJSON pinsUrl, (data) ->
+    importedPins = data
+    window.importedPins = importedPins
+    stepOneDoc.find('#ppTogglePreviouslyImportedLink').show()
+
+  updatedLinkText = if filterPreviouslyImported then 'Show Previously Imported' else 'Hide Previously Imported'
+  stepOneDoc.find('#ppTogglePreviouslyImportedLink').text(updatedLinkText)
+  
+  stepOneDoc.find('#ppTogglePreviouslyImportedLink').on 'click', () ->
+    filterPreviouslyImported = !filterPreviouslyImported
+    transitionToStepOne()
+
 
   stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () ->
     transitionToStepTwo()
