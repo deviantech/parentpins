@@ -33,8 +33,8 @@ stepTwoFrame = null
 processingAllBoards = new $.Deferred()
 processingAllPins = new $.Deferred()
 boardsData = []
-ppPins = []
-ppBoards = []
+ppPins = null
+ppBoards = null
 filterPreviouslyImported = false
 boardsPending = $(boardSelector).length
 pinsPending = 'unknown'
@@ -255,14 +255,12 @@ filterDataToImport = (data) ->
 
 transitionToStepOne = () ->
   ensureFrameWrapper()
-  if (stepTwoFrame)
-    stepTwoFrame.hide()
+  stepTwoFrame.hide() if (stepTwoFrame)
   stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
   stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
   stepOneFrame.contents()[0].open()
+  filteredData = filterDataToImport(boardsData)
   stepOneDoc = stepOneFrame.contents()
-  
-  filteredData = filterDataToImport(boardsData)  
   stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: filteredData, cssUrl: cssUrl}) )
 
 
@@ -300,9 +298,7 @@ initStepOneFunctionality = () ->
       withImportedData(data)
 
   updatedLinkText = if filterPreviouslyImported then 'Show Previously Imported' else 'Hide Previously Imported'
-  stepOneDoc.find('#ppTogglePreviouslyImportedLink').text(updatedLinkText)
-
-  stepOneDoc.find('#ppTogglePreviouslyImportedLink').on 'click', () ->
+  stepOneDoc.find('#ppTogglePreviouslyImportedLink').text(updatedLinkText).on 'click', () ->
     if _.isEmpty(dataToImportFromStepOne()) || confirm("This will reset the page, undoing any pins you may have already assigned to a ParentPins board. Are you sure you want to continue?")
       filterPreviouslyImported = !filterPreviouslyImported
       transitionToStepOne()
@@ -311,7 +307,7 @@ initStepOneFunctionality = () ->
     transitionToStepTwo()
 
   # Only show pins from selected board
-  stepOneDoc.on 'click', '.importing_boards li', (e) ->
+  stepOneDoc.find('body').on 'click', '.importing_boards li', (e) ->
     li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
     li.siblings().removeClass('selected')
     li.addClass('selected')
