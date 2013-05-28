@@ -18,20 +18,25 @@ updateStatusField = (fields, statusSelector) ->
   li = $(fields).first().parents('li').first()
   target = li.find(statusSelector)
   anyBlank = false
-  
+    
   $(fields).each () ->
-    if $(this).val() == ''
-      console.log(this, 'is blank')
-      anyBlank = true
+    if $(this).is(':radio')
+      name = $(this).attr('name')
+      value = $(this).parent().find('input:radio[name="'+name+'"]:checked').val()
+      anyBlank = true if !value
     else
-      console.log(this, 'not blank')
+      if $(this).val() == ''
+        console.log(this, 'is blank')
+        anyBlank = true
+      else
+        console.log(this, 'not blank')
   
   if anyBlank
     target.removeClass('complete').addClass('pending')
   else
     target.removeClass('pending').addClass('complete')
   
-  if li.find('.status_boxes .ageGroupStatus').hasClass('complete') && li.find('.status_boxes .pinTypeStatus').hasClass('complete') && li.find('.status_boxes .otherStatus').hasClass('complete')
+  if li.find('.status_boxes .status_box').length == li.find('.status_boxes .status_box.complete').length
     li.addClass('complete')
   else
     li.removeClass('complete')
@@ -40,20 +45,22 @@ updateStatusField = (fields, statusSelector) ->
 $(document).ready () ->
   form = $('form.import_form')  
   
-  form.on 'submit', () ->
-    if (form.find('li.importing_pin.complete').length == 0)
-      alert('You need to set the Type and Age Group for each Pinterest pin before we can import it into ParentPins.')
-      return false;
+  # form.on 'submit', () ->
+  #   if (form.find('li.importing_pin.complete').length == 0)
+  #     alert('You need to set the Type and Age Group for each Pinterest pin before we can import it into ParentPins.')
+  #     return false;
   
-  form.find('input[type=radio]').each () ->
-    updatePinTypeStatus(this)
-    # TODO: fix the initial pin type setting from radio button
+  form.find('li.importing_pin').each () ->
+    updateOtherStatus( $(this).find('.other_input') )    
 
-  form.find('select[name=age_group_id]').each () ->
+  form.find('select.age_group_id').each () ->
     updateAgeGroupStatus(this)
+
+  form.find('input.pin_type').each () ->
+    updatePinTypeStatus(this)
     
   # Handle marking pin type selected, toggle price fields
-  form.on 'change', 'input[type=radio]', () ->
+  form.on 'change', 'input.pin_type', () ->
     updatePinTypeStatus(this)
     extrafield = $(this).parents('li').first().find('.field-price')
     if $(this).val() == 'product'
@@ -62,5 +69,9 @@ $(document).ready () ->
       extrafield.addClass('hidden')
   
   # Handle marking age group selected
-  form.on 'change', 'select[name=age_group_id]', () ->
+  form.on 'change', 'select.age_group_id', () ->
     updateAgeGroupStatus(this)
+
+  # Handle updating on other inputs
+  form.on 'change', '.other_input', () ->
+    updateOtherStatus( $(this).parents('li.importing_pin').find('.other_input') )

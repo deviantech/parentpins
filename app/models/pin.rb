@@ -66,7 +66,7 @@ class Pin < ActiveRecord::Base
     unscoped.order('trend_position DESC').group('url')
   end
   
-  def self.from_pinterest(user, data)
+  def self.from_pinterest(user, board, data)
     # Remove params used on the client side
     params = data.except('smallImageURL', 'pinterestURL', 'id', 'domain')
     params[:url] = params.delete('link')
@@ -78,6 +78,8 @@ class Pin < ActiveRecord::Base
     # TODO: add support for via_url, etc..
     
     pin = user.pins.new(params)
+    pin.board_id = board.id
+    return pin
   end
   
   def self.from_bookmarklet(user, params)

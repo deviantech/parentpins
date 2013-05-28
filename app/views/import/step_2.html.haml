@@ -1,34 +1,35 @@
 %h1 
-  Importing #{pluralize @pins.length, 'pin', 'pins'} to
+  Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
   #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
 
-= form_for :importer, :url => pinterest_import_step_2_path, :html => {:class => 'import_form'} do |f|
+= form_for :import, :url => pinterest_import_handle_step_2_path, :html => {:class => 'import_form'} do |f|
   %ul.importing_boards
     - @boards.each do |board|
-      = f.fields_for 'boards[]', board do |b|
+      = f.fields_for "boards[#{board.id}]", board do |b|
         %li.importing_board
           .board_info
             %h3= board.name
             = image_tag board.cover.url
           %ul.importing_pins
-            - @importing[board.id].each do |pin|
-              = b.fields_for 'pins[]', pin do |p|
+            - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
+              = b.fields_for "pins[#{idx}]", pin do |p|
                 %li.importing_pin{:class => cycle('even', 'odd')}
                   .pin_photo
                     = image_tag pin.cached_remote_image_url
                     .status_boxes
-                      .ageGroupStatus Age
-                      .pinTypeStatus Type
+                      .status_box.ageGroupStatus Age
+                      .status_box.pinTypeStatus Type
+                      .status_box.otherStatus Other
                   .pin_info
                     = p.hidden_field :remote_image_url, :value => pin.cached_remote_image_url
                     .line
                       %strong Age Group
-                      = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all)
+                      = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all), {}, :class => 'age_group_id'
                     .line
                       %strong Pin Type
                       - Pin::VALID_TYPES.each do |kind|
                         %label.radio_opt
-                          = p.radio_button :kind, kind
+                          = p.radio_button :kind, kind, :class => 'pin_type'
                           = kind.titleize
                     .line.field-price.hidden
                       %strong 
@@ -37,10 +38,10 @@
                       = p.text_field :price
                     .line
                       %strong Pin Link
-                      = p.text_field :url
+                      = p.text_field :url, :class => 'other_input'
                     .line
                       %strong Pin Description
-                      = p.text_area :description
+                      = p.text_area :description, :class => 'other_input'
   
   .form_button_bar 
     = link_to_function 'Go Back and Modify Selection', 'previousStep()'
