@@ -80,7 +80,7 @@ processingAllBoards.done () ->
 
   
 ensureFrameWrapper = () ->
-  iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
+  iframeWrapper ?= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
   
 finalizedAPin = (pin) ->
   pinsPending -= 1
@@ -256,12 +256,18 @@ filterDataToImport = (data) ->
 transitionToStepOne = () ->
   ensureFrameWrapper()
   stepTwoFrame.hide() if (stepTwoFrame)
-  stepOneFrame ||= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
+  stepOneFrame ?= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
   stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
-  stepOneFrame.contents()[0].open()
+
   filteredData = filterDataToImport(boardsData)
   stepOneDoc = stepOneFrame.contents()
-  stepOneFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_1']({boards: filteredData, cssUrl: cssUrl}) )
+  
+  doc = stepOneDoc[0]
+  if doc
+    doc.open()
+    doc.write( JST['templates/bookmarklet/pinterest/step_1']({boards: filteredData, cssUrl: cssUrl}) )
+  else
+    alert("Unable to access document for stepOneFrame - maybe cross domain security issue?")
 
 
 initStepOneFunctionality = () ->
@@ -304,7 +310,10 @@ initStepOneFunctionality = () ->
       transitionToStepOne()
 
   stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () ->
-    transitionToStepTwo()
+    if _.isEmpty(dataToImportFromStepOne())
+      alert("Drag the Pinterest pins you'd like to import down to your ParentPins boards before clicking import.")
+    else
+      transitionToStepTwo()
 
   # Only show pins from selected board
   stepOneDoc.find('body').on 'click', '.importing_boards li', (e) ->
@@ -363,8 +372,9 @@ handlePostedMessage = (event) ->
 initStepTwo = (toImport) ->
   ensureFrameWrapper()
   stepOneFrame.hide()
-  stepTwoFrame ||= $('<iframe class="ppParentPinsImporter" name="ppParentPinsImporterStep2Frame">').appendTo( iframeWrapper )
-  stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top )
+  stepTwoFrame.remove() if stepTwoFrame
+  stepTwoFrame = $('<iframe class="ppParentPinsImporter" name="ppParentPinsImporterStep2Frame">').appendTo( iframeWrapper )
+  stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
   
   # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
   stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/pinterest/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )
