@@ -63,6 +63,11 @@ do(document = document, jQuery = window.jQuery) ->
       $(document).off 'keyup', closeBookmarkletIfEscapePressed
       $('#'+popupName).fadeOut ->
         $(this).remove()
+      
+      # If the pinterest importer is running, notify it that we're closing.
+      if (window.ppImporter && window.ppImporter.bookmarkletClosing)
+        window.ppImporter.bookmarkletClosing()
+        
       return false
     
     closeBookmarkletIfEscapePressed = (e) ->
