@@ -57,7 +57,10 @@
   </div>
 
   <div id="buttons_section">
-    <a href="#" onclick="return false;" id="ppTogglePreviouslyImportedLink" style="display:none;">Hide Previously Imported</a>
+    <div class="left">
+      <a href="#" onclick="return false;" id="ppTogglePreviouslyImportedLink" style="display:none;">Hide Previously Imported</a>
+      <a href="#" onclick="return false;" id="ppResetDragDropLink">Reset Drag/Drop</a>
+    </div>
 
     <div class="right">
       <a href="#" onclick="return false;" id="ppSubmitBoardsSortedLink">Import These Pins</a>

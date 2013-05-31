@@ -8,7 +8,7 @@ window.previousStep = () ->
   else if (!window.parent.postMessage)
     alert("Sorry, can't load previous step because your browser appears to old to support modern web standards.")
   else
-    window.parent.postMessage("previous", '*')
+    window.parent.postMessage("step2:previous", '*')
 
 
 updateOtherStatus = (fields) ->

@@ -315,6 +315,10 @@ initStepOneFunctionality = () ->
     else
       transitionToStepTwo()
 
+  stepOneDoc.find('#ppResetDragDropLink').on 'click', () ->
+    transitionToStepOne()
+    
+  
   # Only show pins from selected board
   stepOneDoc.find('body').on 'click', '.importing_boards li', (e) ->
     li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
@@ -365,8 +369,9 @@ transitionToStepTwo = () ->
 
 
 handlePostedMessage = (event) ->
-  if event.data == 'previous'
-    transitionToStepOne()
+  if event.data == 'step2:previous'
+    stepTwoFrame.hide()
+    stepOneFrame.show()
   
 
 initStepTwo = (toImport) ->
