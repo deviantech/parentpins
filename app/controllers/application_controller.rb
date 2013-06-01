@@ -63,9 +63,11 @@ class ApplicationController < ActionController::Base
   def conditionally_remove_nested_attributes(parent_model, nested_model)
     params[parent_model] ||= {}
     params[parent_model]["#{nested_model}_attributes"] ||= {} 
+
     # NOTE: if use for other associations, handle that they may not have user_id defined
     params[parent_model]["#{nested_model}_attributes"]['user_id'] = current_user.try(:id)
     return true if params[parent_model]["#{nested_model}_id"].blank?
     params[parent_model].delete("#{nested_model}_attributes")
   end
+  
 end

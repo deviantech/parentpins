@@ -60,9 +60,7 @@ class PinsController < ApplicationController
   def mine
     respond_to do |format|
       format.json {
-        render :json => (user_signed_in? ? current_user.pins : []).each_with_object({}) {|p, result| 
-          result[p.url] ||= []; result[p.url] << p.image_filename
-        }.to_json, :callback => params[:callback]
+        render :json => Pin.json_for_pins(user_signed_in? ? current_user.pins : []), :callback => params[:callback]
       }
     end
   end

@@ -1,15 +1,22 @@
+window.importedPins = (pins_as_string) ->
+  sendMessage("step2:imported:"+pins_as_string)
+
 window.importCompleted = () ->
   $('body').addClass('import_completed')
-  # Would be nice to automatically close the iframe, but we're from different domains at this point
+  sendMessage("step2:done")
 
 window.previousStep = () ->
-  if (!window.parent)
-    alert("Sorry, can't load previous step because page doesn't appear to have been loaded in a bookmarklet context.")
-  else if (!window.parent.postMessage)
-    alert("Sorry, can't load previous step because your browser appears to old to support modern web standards.")
-  else
-    window.parent.postMessage("step2:previous", '*')
+  sendMessage("step2:previous", 'load previous step')
+  
 
+sendMessage = (msg, explanation) ->
+  if (!window.parent)
+   if explanation then alert("Sorry, can't " + explanation + " because page doesn't appear to have been loaded in a bookmarklet context.")
+  else if (!window.parent.postMessage)
+    if explanation then alert("Sorry, can't " + explanation + " because your browser appears to old to support modern web standards.")
+  else
+    window.parent.postMessage(msg, '*')
+  
 
 updateOtherStatus = (fields) ->
   updateStatusField fields, '.otherStatus'

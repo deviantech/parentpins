@@ -57,6 +57,12 @@ class Pin < ActiveRecord::Base
   
   default_scope newest_first
 
+  def self.json_for_pins(pins)
+    Array(pins).each_with_object({}) {|p, result| 
+      result[p.url] ||= []; result[p.url] << p.image_filename
+    }.to_json
+  end
+
   def repinned?
     !repinned_from_id.blank?
   end

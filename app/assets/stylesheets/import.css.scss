@@ -86,10 +86,12 @@ body.import_completed {
   background: #F6FFF6;
 }
 .import_completed {
-  h1 {
+  h1, .centered {
     text-align: center;
   }
   .instructions {
-    text-align: center;
+    width: 400px;
+    margin: 0 auto;
+    margin-top: 25px;
   }
 }

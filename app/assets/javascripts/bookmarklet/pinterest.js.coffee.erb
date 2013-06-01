@@ -257,6 +257,41 @@ transitionToStepOne = () ->
     alert("Unable to access document for stepOneFrame - maybe cross domain security issue?")
 
 
+stepOneWithImportedData = (data, resetAllAlreadyMovedPins) ->
+  if ppPins # If already have some, append to the imported list
+    _.each _.keys(data), (url) ->
+      ppPins[url] ?= []
+      ppPins[url] = _.union(ppPins[url], data[url])
+  else
+    ppPins = data
+    
+  window.ppPins = ppPins
+  not_yet_imported = stepOneDoc.find('.importing_pins.not_yet_imported ul')
+  imported = stepOneDoc.find('.importing_pins.previously_imported ul')
+
+  # In case any already assigned a board, move back to main section
+  if resetAllAlreadyMovedPins
+    stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
+      $(this).appendTo(not_yet_imported)
+
+  # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
+  moveToSectionIfPreviouslyImported = (li) ->
+    li = $(li)
+    prev_imported = _.any ppPins[li.data('pin-url')], (importedImageURL) ->
+      importedImageURL == li.data('pin-image')
+
+    if prev_imported
+        li.addClass('already-imported').appendTo(imported)
+
+  not_yet_imported.find('li.pin').each () ->
+    moveToSectionIfPreviouslyImported(this)
+
+  stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
+    moveToSectionIfPreviouslyImported(this)
+  
+
+  checkIfAnyDraggableLeft()
+
 initStepOneFunctionality = () ->
   withPPBoards = (data) ->
     ppBoards = data
@@ -273,26 +308,7 @@ initStepOneFunctionality = () ->
     stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/pinterest/our_boards'](context) )
     initOnceBoardsAreLoaded()
     
-  withImportedData = (data) ->
-    ppPins = data
-    window.ppPins = ppPins
-    not_yet_imported = stepOneDoc.find('.importing_pins.not_yet_imported ul')
-    imported = stepOneDoc.find('.importing_pins.previously_imported ul')
 
-    # In case any already assigned a board, move back to main section
-    stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
-      $(this).appendTo(not_yet_imported)
-
-    # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
-    not_yet_imported.find('li.pin').each () ->
-      li = $(this)
-      prev_imported = _.any ppPins[li.data('pin-url')], (importedImageURL) ->
-        importedImageURL == li.data('pin-image')
-      
-      if prev_imported
-          li.addClass('already-imported').appendTo(imported)
-    
-    checkIfAnyDraggableLeft()
       
   
   if ppBoards
@@ -302,10 +318,10 @@ initStepOneFunctionality = () ->
       withPPBoards(data)
       
   if ppPins
-    withImportedData(ppPins)
+    stepOneWithImportedData(ppPins)
   else
     $.getJSON pinsUrl, (data) ->
-      withImportedData(data)
+      stepOneWithImportedData(data)
 
   stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () ->
     if _.isEmpty(dataToImportFromStepOne())
@@ -314,7 +330,7 @@ initStepOneFunctionality = () ->
       transitionToStepTwo()
 
   stepOneDoc.find('#ppResetDragDropLink').on 'click', () ->
-    withImportedData(ppPins)
+    stepOneWithImportedData(ppPins, true)
   
   stepOneDoc.find('#ppTogglePreviouslyImportedPins').on 'click', () ->
     imported = stepOneDoc.find('.importing_pins.previously_imported')
@@ -379,10 +395,18 @@ transitionToStepTwo = () ->
 
 handlePostedMessage = (event) ->
   if event.data == 'step2:previous'
-    # Update previously imported list
-    # Update UI to remove prev imported without clearing settings?
     stepTwoFrame.hide()
     stepOneFrame.show()
+    # Update previously imported list
+    # Update UI to remove prev imported without clearing settings?
+  else if event.data == 'step2:done'
+    # We could hide the iframe, if we wanted...
+  else if event.data.substr(0,15) == 'step2:imported:'
+    json_string = event.data.substr(15, event.data.length)
+    pins = $.parseJSON(json_string)
+    stepOneWithImportedData(pins)
+    
+    
   
 
 initStepTwo = (toImport) ->

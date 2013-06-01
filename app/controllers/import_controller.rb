@@ -7,7 +7,7 @@ class ImportController < ApplicationController
   def step_2
     @pins_to_import = []
     @boards = []
-
+    
     # Bookmarklet sends initial step_2 data encoded in a single parameter, for testing we may want to send parameters as normal
     data = params[:data_string] ? Rack::Utils.parse_nested_query(params[:data_string]) : params.except("controller", "action")
 
@@ -25,6 +25,7 @@ class ImportController < ApplicationController
   def handle_step_2
     @pins_to_import = []
     @boards = []
+    @imported = []
 
     (params[:import] ? params[:import][:boards] : []).each do |board_id, pin_data_collection|
       next unless board = current_user.boards.find_by_id(board_id)
@@ -33,7 +34,9 @@ class ImportController < ApplicationController
         pin = current_user.pins.new(data)
         pin.board = board
 
-        unless pin.save
+        if pin.save
+          @imported << pin
+        else
           @pins_to_import << pin
           @boards << board unless @boards.include?(board)
         end
