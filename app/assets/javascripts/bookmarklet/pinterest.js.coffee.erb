@@ -34,7 +34,6 @@ processingAllPins = new $.Deferred()
 boardsData = []
 ppPins = null
 ppBoards = null
-filterPreviouslyImported = false
 boardsPending = $(boardSelector).length
 pinsPending = 'unknown'
 
@@ -192,10 +191,16 @@ hideShowPinsForSelectedBoard = () ->
   checkIfAnyDraggableLeft()
 
 checkIfAnyDraggableLeft = () ->
-  if stepOneDoc.find('.importing_pins li.pin:visible').length == 0
-    stepOneDoc.find('.importing_pins ul').append("<div class='no-more'>No more pins.</div>") if stepOneDoc.find('.importing_pins .no-more').length == 0
-  else
-    stepOneDoc.find('.importing_pins .no-more').remove()
+  stepOneDoc.find('.importing_pins').each () ->
+    section = $(this)
+    if section.find('li.pin:visible').length == 0
+      kind = if section.hasClass('not_yet_imported') 
+       'not-yet-imported'
+      else
+       'previously imported'
+      section.find('ul').append("<div class='no-more'>No more "+kind+" pins.</div>") if section.find('.no-more').length == 0
+    else
+      section.find('.no-more').remove()
   
 
 initOnceBoardsAreLoaded = () ->
@@ -209,7 +214,13 @@ initOnceBoardsAreLoaded = () ->
   dropToPinterestOpts = {
     hoverClass: "ui-state-active",
     drop: (event, ui) ->
-      $(this).find('.importing_pins ul').append( $(ui.draggable).css({left: 0, top: 0}) )
+      li = $(ui.draggable)
+      base = if li.hasClass('already-imported')
+        $(this).find('.importing_pins.previously_imported ul')
+      else
+        $(this).find('.importing_pins.not_yet_imported ul')
+      
+      base.append( li.css({left: 0, top: 0}) )
       setTimeout(hideShowPinsForSelectedBoard, 1)
   }
   dragOpts = {
@@ -228,29 +239,6 @@ initOnceBoardsAreLoaded = () ->
     ['#our_section li.board',   'droppable', dropOpts],
     ['#pinterest_section',      'droppable', dropToPinterestOpts]
   ])
-
-
-filterDataToImport = (data) ->
-  if !filterPreviouslyImported
-    return data
-  else
-    filteredData = []
-
-    # Remove any pins where url and image filename already exist in user's parentpins. Remove any boards with no more pins.
-    $.each data, (board_idx, board) ->
-      filteredPins = _.reject board.pins, (pin) ->
-        return false unless ppPins[pin.link]
-        
-        pinImageURL = pin.imageURL.replace(/^.*\//, '')
-        _.any ppPins[pin.link], (importedImageURL) ->
-          importedImageURL == pinImageURL
-        
-      if filteredPins.length > 0
-        boardClone = _.clone(board)
-        boardClone.pins = filteredPins
-        filteredData.push(boardClone)
-        
-    return filteredData
   
 
 transitionToStepOne = () ->
@@ -259,13 +247,12 @@ transitionToStepOne = () ->
   stepOneFrame ?= $('<iframe class="ppParentPinsImporter">').appendTo( iframeWrapper )
   stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
 
-  filteredData = filterDataToImport(boardsData)
   stepOneDoc = stepOneFrame.contents()
   
   doc = stepOneDoc[0]
   if doc
     doc.open()
-    doc.write( JST['templates/bookmarklet/pinterest/step_1']({boards: filteredData, cssUrl: cssUrl}) )
+    doc.write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
   else
     alert("Unable to access document for stepOneFrame - maybe cross domain security issue?")
 
@@ -289,7 +276,24 @@ initStepOneFunctionality = () ->
   withImportedData = (data) ->
     ppPins = data
     window.ppPins = ppPins
-    stepOneDoc.find('#ppTogglePreviouslyImportedLink').show()
+    not_yet_imported = stepOneDoc.find('.importing_pins.not_yet_imported ul')
+    imported = stepOneDoc.find('.importing_pins.previously_imported ul')
+
+    # In case any already assigned a board, move back to main section
+    stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
+      $(this).appendTo(not_yet_imported)
+
+    # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
+    not_yet_imported.find('li.pin').each () ->
+      li = $(this)
+      prev_imported = _.any ppPins[li.data('pin-url')], (importedImageURL) ->
+        importedImageURL == li.data('pin-image')
+      
+      if prev_imported
+          li.addClass('already-imported').appendTo(imported)
+    
+    checkIfAnyDraggableLeft()
+      
   
   if ppBoards
     withPPBoards(ppBoards)
@@ -303,12 +307,6 @@ initStepOneFunctionality = () ->
     $.getJSON pinsUrl, (data) ->
       withImportedData(data)
 
-  updatedLinkText = if filterPreviouslyImported then 'Show Previously Imported' else 'Hide Previously Imported'
-  stepOneDoc.find('#ppTogglePreviouslyImportedLink').text(updatedLinkText).on 'click', () ->
-    if _.isEmpty(dataToImportFromStepOne()) || confirm("This will reset the page, undoing any pins you may have already assigned to a ParentPins board. Are you sure you want to continue?")
-      filterPreviouslyImported = !filterPreviouslyImported
-      transitionToStepOne()
-
   stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () ->
     if _.isEmpty(dataToImportFromStepOne())
       alert("Drag the Pinterest pins you'd like to import down to your ParentPins boards before clicking import.")
@@ -316,8 +314,18 @@ initStepOneFunctionality = () ->
       transitionToStepTwo()
 
   stepOneDoc.find('#ppResetDragDropLink').on 'click', () ->
-    transitionToStepOne()
-    
+    withImportedData(ppPins)
+  
+  stepOneDoc.find('#ppTogglePreviouslyImportedPins').on 'click', () ->
+    imported = stepOneDoc.find('.importing_pins.previously_imported')
+    link = $(this)
+    if imported.is(':visible')
+      imported.slideUp()
+      link.text('Show Previously Imported')
+    else
+      imported.slideDown()
+      link.text('Hide Previously Imported')
+    checkIfAnyDraggableLeft()
   
   # Only show pins from selected board
   stepOneDoc.find('body').on 'click', '.importing_boards li', (e) ->
@@ -371,6 +379,8 @@ transitionToStepTwo = () ->
 
 handlePostedMessage = (event) ->
   if event.data == 'step2:previous'
+    # Update previously imported list
+    # Update UI to remove prev imported without clearing settings?
     stepTwoFrame.hide()
     stepOneFrame.show()
   

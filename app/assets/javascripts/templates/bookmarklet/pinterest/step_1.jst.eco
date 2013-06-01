@@ -16,7 +16,7 @@
 <% end %>
 
 <% partial_PinterestPin = (board, pin) => %>
-  <li class="pin board-all board-<%= board.id %>" data-pin-id="<%= pin.id %>">
+  <li class="pin board-all board-<%= board.id %>" data-pin-id="<%= pin.id %>" data-pin-url="<%= pin.link %>" data-pin-image="<%= pin.imageURL.replace(/^.*\//, '') %>">
     <div class="thumb">
       <img src="<%= pin.smallImageURL %>" alt="Pin Image">
     </div>
@@ -39,7 +39,7 @@
       </ul>      
     </div>
     
-    <div class="importing_pins">
+    <div class="importing_pins not_yet_imported">
       <ul>
         <% for board in @boards: %>        
           <% for pin in board.pins: %>
@@ -48,6 +48,13 @@
         <% end %>
       </ul>
     </div>
+
+    <div class="importing_pins previously_imported">
+      <ul>
+      </ul>
+    </div>
+
+    <a href="#" onclick="return false;" id="ppTogglePreviouslyImportedPins">Hide Previously Imported</a>
 
     <div class="clearfix"></div>
   </div>
@@ -58,7 +65,6 @@
 
   <div id="buttons_section">
     <div class="left">
-      <a href="#" onclick="return false;" id="ppTogglePreviouslyImportedLink" style="display:none;">Hide Previously Imported</a>
       <a href="#" onclick="return false;" id="ppResetDragDropLink">Reset Drag/Drop</a>
     </div>
 
