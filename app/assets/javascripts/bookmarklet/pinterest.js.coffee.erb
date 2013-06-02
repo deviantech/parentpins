@@ -198,7 +198,13 @@ checkIfAnyDraggableLeft = () ->
        'not-yet-imported'
       else
        'previously imported'
-      section.find('ul').append("<div class='no-more'>No more "+kind+" pins.</div>") if section.find('.no-more').length == 0
+      board_label = if stepOneDoc.find('.importing_boards li.selected').first().hasClass('board-all')
+        ''
+      else
+        'on this board'
+      
+      section.find('.no-more').remove()
+      section.find('ul').append("<div class='no-more'>List of "+kind+" pins "+board_label+" is empty.</div>")
     else
       section.find('.no-more').remove()
   
