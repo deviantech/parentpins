@@ -11,6 +11,8 @@
       </ul>
     </li>
   <% end %>
+  
+  <li>+ board</li>
 </ul>
 
 <div class="clearfix"></div>

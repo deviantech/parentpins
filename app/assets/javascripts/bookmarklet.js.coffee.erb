@@ -30,6 +30,8 @@ do(document = document, jQuery = window.jQuery) ->
   Global = Global || {potentials: {}}
 
   prepForBookmarklet = ->
+    includeBookmarkletStyles()
+    
     # check prior inclusion and version
     if (not jQuery? || jQuery.fn.jquery < minJQversion)
       done = false
@@ -46,15 +48,21 @@ do(document = document, jQuery = window.jQuery) ->
 
   # Just to be sure $ is available and not in compatibility mode on the host site
   weHavejQuery = ->
-    includeBookmarkletStyles(jQuery)
     # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with.
     # Note that we were using the sprockets-commonjs gem to include via .module.js, but 1) this is more direct in this case, and 2) it threw odd errors only on http://piccsy.com/2012/03/twins-2l9ffupx/
     `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'bookmarklet', 'jquery-imagesloaded-min.js') ) %>`
     initBookmarkletWithjQuery(jQuery)
-  
-  includeBookmarkletStyles = ($) ->
-    return if ($('link#'+popupName+'CSS').length)
-    $(appendTarget).append('<link href="' + cssUrl + '?r=' + (Math.random() * 9999999) + '" media="all" rel="stylesheet" type="text/css" id="' + popupName + 'CSS" />')
+
+  # Using straight JS so we can start loading the stylesheet while pulling in jquery, etc. -- trying to avoid flash of unstyled content
+  includeBookmarkletStyles = () ->
+    if !document.getElementById(popupName + 'CSS')
+      style = document.createElement('link')
+      style.setAttribute "href", cssUrl + '?r=' + (Math.random() * 9999999)
+      style.setAttribute "type", 'text/css'
+      style.setAttribute "id", popupName + 'CSS'
+      style.setAttribute "rel", "stylesheet"
+      style.setAttribute "media", 'all'
+      appendTarget.appendChild(style)
         
   # Now we have jQuery, let's get started
   initBookmarkletWithjQuery = ($) ->
