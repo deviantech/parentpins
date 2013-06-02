@@ -185,7 +185,7 @@ else
 # =====================================================  
 
 hideShowPinsForSelectedBoard = () ->
-  class_to_show = stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '')
+  class_to_show = stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')
   stepOneDoc.find('.importing_pins li.pin').hide()
   stepOneDoc.find('.importing_pins li.pin.' + class_to_show).show()
   checkIfAnyDraggableLeft()
@@ -221,8 +221,9 @@ initOnceBoardsAreLoaded = () ->
         target.append( li.css({left: 0, top: 0}) )
         setTimeout(hideShowPinsForSelectedBoard, 1)
       else # Dropped a pinterest board
-        stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '')).each () ->
+        stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')).each () ->
           $(this).appendTo(target)
+        hideShowPinsForSelectedBoard()
   }
   dropToPinterestOpts = {
     hoverClass: "ui-state-active",
