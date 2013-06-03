@@ -265,7 +265,11 @@ initOnceBoardsAreLoaded = () ->
     ['#pinterest_section',        'droppable', dropToPinterestOpts]
   ])
   
-
+# Odd timing issue with loading of bookmarklet SCSS, need to repaint window after step1 loaded
+toggleWindowRepaint = () ->
+  body = $('body').first()
+  body.height( body.height() )
+  
 transitionToStepOne = () ->
   ensureFrameWrapper()
   stepTwoFrame.hide() if (stepTwoFrame)
@@ -280,6 +284,7 @@ transitionToStepOne = () ->
     doc.write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
   else
     alert("Unable to access document for stepOneFrame - maybe cross domain security issue?")
+  toggleWindowRepaint()
 
 
 stepOneWithImportedData = (data, resetAllAlreadyMovedPins) ->
