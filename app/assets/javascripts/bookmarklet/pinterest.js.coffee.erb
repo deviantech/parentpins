@@ -11,13 +11,14 @@ outputDivWrapper  = outputDiv.parents('#ppBookmarkletContentWrapper')
 progressDiv       = outputDiv.find('#noPotentialImages') # TODO -- pass this in in case there's another with this ID in the original page's HTML
 boardSelector     = '.UserBoards .item.gridSortable a.boardLinkWrapper'
 pinSelector       = '.pinWrapper'
-host        = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
-cssUrl      = host + "<%= asset_path('import-pinterest.css') %>"
-boardsUrl   = host + '<%= Rails.application.routes.url_helpers.my_boards_json_path %>?callback=?' # Force jsonp request
-pinsUrl     = host + '<%= Rails.application.routes.url_helpers.my_pins_json_path %>?callback=?' # Force jsonp request
-stepTwoURL  = host + '<%= Rails.application.routes.url_helpers.pinterest_import_step_2_path %>' # Loaded in iframe directly from PP
-debug       = false
-useTestData = true
+host              = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
+stepOneCSSUrl     = host + "<%= asset_path('import-pinterest.css') %>"
+stepOneJSUrl      = host + "<%= asset_path('import-pinterest.js') %>"
+boardsUrl         = host + '<%= Rails.application.routes.url_helpers.my_boards_json_path %>?callback=?' # Force jsonp request
+pinsUrl           = host + '<%= Rails.application.routes.url_helpers.my_pins_json_path %>?callback=?' # Force jsonp request
+stepTwoURL        = host + '<%= Rails.application.routes.url_helpers.pinterest_import_step_2_path %>' # Loaded in iframe directly from PP
+debug             = false
+useTestData       = true
 
 # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
 appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
@@ -264,7 +265,7 @@ initOnceBoardsAreLoaded = () ->
     ['#our_section li.board',     'droppable', dropOpts],
     ['#pinterest_section',        'droppable', dropToPinterestOpts]
   ])
-  
+    
 # Odd timing issue with loading of bookmarklet SCSS, need to repaint window after step1 loaded
 toggleWindowRepaint = () ->
   body = $('body').first()
@@ -281,7 +282,7 @@ transitionToStepOne = () ->
   doc = stepOneDoc[0]
   if doc
     doc.open()
-    doc.write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: cssUrl}) )
+    doc.write( JST['templates/bookmarklet/pinterest/step_1']({boards: boardsData, cssUrl: stepOneCSSUrl, jsUrl: stepOneJSUrl}) )
   else
     alert("Unable to access document for stepOneFrame - maybe cross domain security issue?")
   toggleWindowRepaint()

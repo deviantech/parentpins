@@ -1,7 +1,9 @@
+Global = Global || {}
+
 # Define global functions
 Global.closeModal = -> 
   if $('#ajax-modal-target:visible').hasClass('update-history')
-    if History.getState().data.from
+    if History && History.getState().data.from
       History.replaceState(null, null, History.getState().data.from);
   $('#ajax-modal-target:visible').fadeOut ->
     $(this).removeClass('update-history').empty().show();
@@ -25,6 +27,8 @@ $ajax = $('#ajax-modal-target').length || $('<div id="ajax-modal-target"></div>'
 $(document).on 'click', 'a.ajax', (e) ->
   if e.metaKey || e.ctrlKey
     return
+  
+  console.log('opening modal window')
   
   $ajax.html('<div class="ajax-loader"><img src="<%= asset_path 'ui/loader.gif' %>" alt="Loading" class="loader_icon"/></div>').fadeIn()
   if $(this).hasClass('update-history')

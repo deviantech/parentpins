@@ -12,7 +12,47 @@
     </li>
   <% end %>
   
-  <li>+ board</li>
+  <li class="add-board">
+    <div class="ourBoardTitle">
+      Add A New Board
+    </div>
+    <div class="ourBoardInfo">
+      <a href="localhost:3000" id="ppAddNewBoardLink" class="ajax">Add a new board</a>
+    </div>
+
+    <br>
+
+    <form accept-charset="UTF-8" action="" id="new_board" method="post">
+      <input id="board_name" name="board[name]" placeholder="Board Name" size="20" type="text">
+      <select id="board_category_id" name="board[category_id]">
+        <option value="">Select a Category:</option>
+        <option value="1">Activities</option>
+        <option value="15">Advice</option>
+        <option value="20">Babies</option>
+        <option value="7">Books</option>
+        <option value="5">Crafts</option>
+        <option value="14">Cuteness</option>
+        <option value="18">Decor</option>
+        <option value="4">Disabilities</option>
+        <option value="2">Education</option>
+        <option value="8">Food</option>
+        <option value="3">Health</option>
+        <option value="11">Holidays &amp; Parties</option>
+        <option value="16">Humor</option>
+        <option value="6">Media</option>
+        <option value="12">Photography</option>
+        <option value="13">Pregnancy</option>
+        <option value="9">Products</option>
+        <option value="10">Sports</option>
+        <option value="19">Style</option>
+        <option value="21">Teachers</option>
+        <option value="17">Travel</option>
+      </select>
+      <textarea cols="20" id="board_description" name="board[description]" placeholder="Board Description" rows="3"></textarea>
+      <input class="btn tertiary_action" name="commit" type="submit" value="Add Board">
+    </form>
+    
+  </li>
 </ul>
 
 <div class="clearfix"></div>
