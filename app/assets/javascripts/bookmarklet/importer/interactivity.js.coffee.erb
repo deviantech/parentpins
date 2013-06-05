@@ -26,14 +26,6 @@ class window.ppImporterClasses.Interactivity
   ppPins = null
   ppBoards = null
   
-
-  # Instance variable declaration
-  @iframeWrapper = null
-  @stepOneDoc = null
-  @stepOneFrame = null
-  @stepTwoFrame = null
-  @boardsData = []
-
   
   # ==================================================================
   # = Private functions that don't need access to instance variables =
@@ -43,8 +35,7 @@ class window.ppImporterClasses.Interactivity
   toggleWindowRepaint = () ->
     body = $('body').first()
     body.height( body.height() )
-  
-
+      
   # =======================================
   # = Methods (public interface of class) =
   # =======================================
@@ -84,38 +75,46 @@ class window.ppImporterClasses.Interactivity
     if ppPins
       @stepOneWithImportedData(ppPins)
     else
-      $.getJSON pinsUrl, (data) ->
-        self.stepOneWithImportedData(data)
+      $.getJSON pinsUrl, (data) =>
+        @stepOneWithImportedData(data)
 
-    @stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () ->
-      if _.isEmpty(self.dataToImportFromStepOne())
+    @stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () =>
+      if _.isEmpty(@dataToImportFromStepOne())
         alert("Drag the Pinterest pins you'd like to import down to your ParentPins boards before clicking import.")
       else
-        self.transitionToStepTwo()
+        @transitionToStepTwo()
 
     @stepOneDoc.find('#ppResetDragDropLink').on 'click', () =>
-      self.stepOneWithImportedData(ppPins, true)
+      @stepOneWithImportedData(ppPins, true)
 
-    @stepOneDoc.find('#ppTogglePreviouslyImportedPins').on 'click', () ->
-      imported = self.stepOneDoc.find('.importing_pins.previously_imported')
-      link = $(this)
+    @stepOneDoc.find('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
+      imported = @stepOneDoc.find('.importing_pins.previously_imported')
+      link = $(e.currentTarget)
       if imported.is(':visible')
         imported.slideUp()
         link.text('Show Previously Imported')
       else
         imported.slideDown()
         link.text('Hide Previously Imported')
-      self.checkIfAnyDraggableLeft()
+      @checkIfAnyDraggableLeft()
 
     # Only show pins from selected board
-    @stepOneDoc.find('body').on 'click', '.importing_boards li', (e) ->
-      li = if this.tagName == 'LI' then $(this) else $(this).parents('li').first()
+    @stepOneDoc.find('body').on 'click', '.importing_boards li', (e) =>
+      li = if this.tagName == 'LI' then $(e.currentTarget) else $(e.currentTarget).parents('li').first()
       li.siblings().removeClass('selected')
       li.addClass('selected')
-      self.hideShowPinsForSelectedBoard()
+      @hideShowPinsForSelectedBoard()
 
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
+    # Instance variable declaration
+    @iframeWrapper = null
+    @stepOneDoc = null
+    @stepOneFrame = null
+    @stepTwoFrame = null
+    @boardsData = []
+    
+    
     $(window).on 'message', @handleAnyPostedMessage
 
     @transitionToStepOne = () ->
@@ -190,7 +189,6 @@ class window.ppImporterClasses.Interactivity
       # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
       @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )
 
-
     @hideShowPinsForSelectedBoard = () ->
       class_to_show = @stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')
       @stepOneDoc.find('.importing_pins li.pin').hide()
@@ -198,16 +196,14 @@ class window.ppImporterClasses.Interactivity
       @checkIfAnyDraggableLeft()
 
     @checkIfAnyDraggableLeft = () ->
-      self = this
-    
-      @stepOneDoc.find('.importing_pins').each () ->
-        section = $(this)
+      @stepOneDoc.find('.importing_pins').each (i, pin) =>
+        section = $(pin)
         if section.find('li.pin:visible').length == 0
           kind = if section.hasClass('not_yet_imported') 
            'not-yet-imported'
           else
            'previously imported'
-          board_label = if self.stepOneDoc.find('.importing_boards li.selected').first().hasClass('board-all')
+          board_label = if @stepOneDoc.find('.importing_boards li.selected').first().hasClass('board-all')
             ''
           else
             'on this board'
@@ -224,17 +220,18 @@ class window.ppImporterClasses.Interactivity
       # Add draggable/droppable effects
       dropOpts = {
         hoverClass: "ui-state-active",
-        drop: (event, ui) ->
+        drop: (event, ui) =>
           li = $(ui.draggable)
           target = $(this).find('.ourBoardPins')
 
           if li.hasClass('pin')      
             target.append( li.css({left: 0, top: 0}) )
-            setTimeout(self.hideShowPinsForSelectedBoard, 1)
+            # setTimeout(@hideShowPinsForSelectedBoard, 1)
           else # Dropped a pinterest board
-            self.stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')).each () ->
+            @stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')).each () ->
               $(this).appendTo(target)
-            self.hideShowPinsForSelectedBoard()
+            # @hideShowPinsForSelectedBoard()
+          true
       }
       dropToPinterestOpts = {
         hoverClass: "ui-state-active",
