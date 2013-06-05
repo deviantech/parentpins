@@ -14,7 +14,7 @@ do(document = document, jQuery = window.jQuery) ->
   host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   popupName = 'ParentPinBookmarklet'
   cssUrl = host + "<%= asset_path('bookmarklet.css') %>"
-  pinterestScriptURL = host + "<%= asset_path('bookmarklet/pinterest.js') %>"
+  importerScriptURL = host + "<%= asset_path('bookmarklet/importer.js') %>"
   minJQversion = '1.7.0'
   desiredJQversion = '1.8.2'
   imgDisplayWidth = 192
@@ -222,7 +222,7 @@ do(document = document, jQuery = window.jQuery) ->
           
           if (testingPinterest or window.location.host == 'pinterest.com') # Handle pinterest importing in a separate file
             Global.imageBase.find('#noPotentialImages').text("Collecting Pinterest account data...");
-            $.getScript(pinterestScriptURL)
+            $.getScript(importerScriptURL)
           else
             startEvaluatingPotentialImages()
       

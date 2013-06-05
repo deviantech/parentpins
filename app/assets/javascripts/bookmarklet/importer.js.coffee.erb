@@ -1,0 +1,7 @@
+//= require bookmarklet/importer/get_data
+//= require bookmarklet/importer/interactivity
+//= require bookmarklet/importer/importer
+//= require underscore.min
+
+window.ppImporter ?= new window.ppImporterClasses.ImporterBase({dataSource: 'Pinterest'});
+

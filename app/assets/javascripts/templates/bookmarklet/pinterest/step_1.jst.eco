@@ -89,7 +89,7 @@
        }
      };
      
-     window.parent.ppImporter.stepOneIframeLoaded();
+     window.parent.ppImporter.Interactivity.initStepOneFunctionality();
    }
 </script>
 </body>
