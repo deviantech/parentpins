@@ -231,8 +231,8 @@ class window.ppImporterClasses.Interactivity
           if li.hasClass('pin')      
             target.append( li.css({left: 0, top: 0}) )
             self.hideShowPinsForSelectedBoard()
-          else # Dropped a pinterest board
-            self.stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')).each () ->
+          else # Dropped a pinterest board. If currently showing previously imported, move ALL in board. Otherwise, only move not-yet-imported over.
+            self.stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')+':visible').each () ->
               $(this).appendTo(target)
             self.hideShowPinsForSelectedBoard()
       }
