@@ -18,7 +18,6 @@ class window.ppImporterClasses.Sources.Pinterest
   
     # Render template with the pinterest data
     processingAllPins.done () ->
-      window.data = boardsData
       progressDiv.remove()
       transitionToStepOne()
   
@@ -36,7 +35,6 @@ class window.ppImporterClasses.Sources.Pinterest
 
     processingAllBoards.done () ->
       reportProgress('Done processing all boards')
-      window.data = boardsData
 
       # Calculate how many to do
       pinsPending = 0
