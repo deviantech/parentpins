@@ -62,7 +62,8 @@ class window.ppImporterClasses.Interactivity
     @boardsData = []
     
     
-    $(window).on 'message', @handleAnyPostedMessage
+    $(window).on 'message', (evt) =>
+      @handleAnyPostedMessage(evt)
 
     @initStepOneFunctionality = () ->
       self = this
@@ -140,23 +141,23 @@ class window.ppImporterClasses.Interactivity
       @iframeWrapper ?= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
 
     @handleAnyPostedMessage = (event) ->
-      alert 'handling any'
       if event.originalEvent.origin.replace(/^https?:/, '') != host
         console.log('Ignoring message from mismatchted source: ' + event.originalEvent.origin)
       else
         @handlePostedMessage(event.originalEvent)
 
     @handlePostedMessage = (event) ->
-      alert 'in handle posted msg'
       if event.data == 'step2:previous'
         @stepTwoFrame.hide()
         @stepOneFrame.show()
+        toggleWindowRepaint()
       else if event.data == 'step2:done'
         # We could hide the iframe, if we wanted...
       else if event.data.substr(0,15) == 'step2:imported:'
         json_string = event.data.substr(15, event.data.length)
         pins = $.parseJSON(json_string)
         @stepOneWithImportedData(pins)
+        toggleWindowRepaint()
 
     @dataToImportFromStepOne = () ->
       toImport = {}
