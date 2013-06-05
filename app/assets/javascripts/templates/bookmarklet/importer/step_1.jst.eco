@@ -87,6 +87,17 @@
        for (var i=0; i < commands.length; i++) {
          jQuery(commands[i][0], this.document)[commands[i][1]](commands[i][2]);
        }
+       
+       // Now that we have the boards in place, also add fancy cover-image-on-hover effect.
+       $('#our_section li.board').hover(function(e) {
+         var img = $(e.currentTarget).data('cover-image')
+         if (img) {
+            $(e.currentTarget).css({'background-image': "url("+img+")"});
+         }
+       }, function(e) {
+         $(e.currentTarget).css({'background-image': ""});
+       });
+       
      };
      
      window.parent.ppImporter.Interactivity.stepOneLoaded();

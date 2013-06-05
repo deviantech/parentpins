@@ -275,12 +275,13 @@ class window.ppImporterClasses.Interactivity
       }
 
       # http://bugs.jqueryui.com/ticket/5727 -- draggable in child window doesn't work when initialized from parent document
-      this.parent.getIframeWindow(@stepOneFrame[0]).initializeDraggableFromParent([
+      @parent.getIframeWindow(@stepOneFrame[0]).initializeDraggableFromParent([
         ['.importing_pins li.pin',    'draggable', dragOpts],
         ['.importing_boards li',      'draggable', pinterestBoardDragOpts],
         ['#our_section li.board',     'droppable', dropOpts],
         ['#pinterest_section',        'droppable', dropToPinterestOpts]
       ])
+        
 
     @stepOneWithImportedData = (data, resetAllAlreadyMovedPins) ->
       if ppPins # If already have some, append to the imported list
