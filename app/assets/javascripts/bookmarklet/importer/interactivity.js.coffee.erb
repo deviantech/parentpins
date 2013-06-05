@@ -191,9 +191,13 @@ class window.ppImporterClasses.Interactivity
 
     @hideShowPinsForSelectedBoard = () ->
       class_to_show = @stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')
-      @stepOneDoc.find('.importing_pins li.pin').hide()
-      @stepOneDoc.find('.importing_pins li.pin.' + class_to_show).show()
-      @checkIfAnyDraggableLeft()
+      soon = () =>
+        @stepOneDoc.find('.importing_pins li.pin').hide()
+        @stepOneDoc.find('.importing_pins li.pin.' + class_to_show).show()
+        @checkIfAnyDraggableLeft()
+        
+      # Give JS time to reset to having dropped pin (not sure why, but required)
+      setTimeout soon, 1
 
     @checkIfAnyDraggableLeft = () ->
       @stepOneDoc.find('.importing_pins').each (i, pin) =>
@@ -220,18 +224,17 @@ class window.ppImporterClasses.Interactivity
       # Add draggable/droppable effects
       dropOpts = {
         hoverClass: "ui-state-active",
-        drop: (event, ui) =>
+        drop: (event, ui) ->
           li = $(ui.draggable)
           target = $(this).find('.ourBoardPins')
 
           if li.hasClass('pin')      
             target.append( li.css({left: 0, top: 0}) )
-            # setTimeout(@hideShowPinsForSelectedBoard, 1)
+            self.hideShowPinsForSelectedBoard()
           else # Dropped a pinterest board
-            @stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')).each () ->
+            self.stepOneDoc.find('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')).each () ->
               $(this).appendTo(target)
-            # @hideShowPinsForSelectedBoard()
-          true
+            self.hideShowPinsForSelectedBoard()
       }
       dropToPinterestOpts = {
         hoverClass: "ui-state-active",
@@ -244,7 +247,7 @@ class window.ppImporterClasses.Interactivity
             $(this).find('.importing_pins.not_yet_imported ul')
 
           base.append( li.css({left: 0, top: 0}) )
-          setTimeout(self.hideShowPinsForSelectedBoard, 1)
+          self.hideShowPinsForSelectedBoard()
       }
       dragOpts = {
         revert: 'invalid',
