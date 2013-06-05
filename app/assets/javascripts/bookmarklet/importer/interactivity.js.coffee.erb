@@ -35,7 +35,7 @@ class window.ppImporterClasses.Interactivity
   toggleWindowRepaint = () ->
     body = $('body').first()
     body.height( body.height() )
-      
+
   # =======================================
   # = Methods (public interface of class) =
   # =======================================
@@ -48,62 +48,8 @@ class window.ppImporterClasses.Interactivity
     $(window).off 'message', @handleAnyPostedMessage
 
   # Publicly accessible because when step_1 page loads, it calls back to this
-  initStepOneFunctionality: () ->
-    self = this
-    
-    withPPBoards = (data) =>
-      ppBoards = data
-      window.ppBoards = data
-
-      context = {
-        boards: data,
-        absoluteURL: (rel) ->
-          return rel if rel.match(/:\/\//)
-          self.host + rel
-        pluralize: (i, singular, plural) ->
-          i + ' ' + (if i == 1 then singular else plural)
-      }
-      @stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/importer/our_boards'](context) )
-      @initOnceBoardsAreLoaded()
-
-    if ppBoards
-      withPPBoards(ppBoards)
-    else
-      $.getJSON boardsUrl, (data) ->
-        withPPBoards(data)
-
-    if ppPins
-      @stepOneWithImportedData(ppPins)
-    else
-      $.getJSON pinsUrl, (data) =>
-        @stepOneWithImportedData(data)
-
-    @stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () =>
-      if _.isEmpty(@dataToImportFromStepOne())
-        alert("Drag the Pinterest pins you'd like to import down to your ParentPins boards before clicking import.")
-      else
-        @transitionToStepTwo()
-
-    @stepOneDoc.find('#ppResetDragDropLink').on 'click', () =>
-      @stepOneWithImportedData(ppPins, true)
-
-    @stepOneDoc.find('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
-      imported = @stepOneDoc.find('.importing_pins.previously_imported')
-      link = $(e.currentTarget)
-      if imported.is(':visible')
-        imported.slideUp()
-        link.text('Show Previously Imported')
-      else
-        imported.slideDown()
-        link.text('Hide Previously Imported')
-      @checkIfAnyDraggableLeft()
-
-    # Only show pins from selected board
-    @stepOneDoc.find('body').on 'click', '.importing_boards li', (e) =>
-      li = if this.tagName == 'LI' then $(e.currentTarget) else $(e.currentTarget).parents('li').first()
-      li.siblings().removeClass('selected')
-      li.addClass('selected')
-      @hideShowPinsForSelectedBoard()
+  stepOneLoaded: () ->
+    @initStepOneFunctionality()
 
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
@@ -116,6 +62,61 @@ class window.ppImporterClasses.Interactivity
     
     
     $(window).on 'message', @handleAnyPostedMessage
+
+    @initStepOneFunctionality = () ->
+      self = this
+
+      withPPBoards = (data) =>
+        ppBoards = data
+        window.ppBoards = data
+
+        context = {
+          boards: data,
+          absoluteURL: (rel) ->
+            return rel if rel.match(/:\/\//)
+            self.host + rel
+          pluralize: (i, singular, plural) ->
+            i + ' ' + (if i == 1 then singular else plural)
+        }
+        @stepOneDoc.find('#our_section').html( JST['templates/bookmarklet/importer/our_boards'](context) )
+        @initOnceBoardsAreLoaded()
+
+      if ppBoards
+        withPPBoards(ppBoards)
+      else
+        $.getJSON boardsUrl, (data) ->
+          withPPBoards(data)
+
+      if ppPins
+        @stepOneWithImportedData(ppPins)
+      else
+        $.getJSON pinsUrl, (data) =>
+          @stepOneWithImportedData(data)
+
+      @stepOneDoc.find('#ppSubmitBoardsSortedLink').on 'click', () =>
+        if _.isEmpty(@dataToImportFromStepOne())
+          alert("Drag the Pinterest pins you'd like to import down to your ParentPins boards before clicking import.")
+        else
+          @transitionToStepTwo()
+
+      @stepOneDoc.find('#ppResetDragDropLink').on 'click', () =>
+        @stepOneWithImportedData(ppPins, true)
+
+      @stepOneDoc.find('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
+        imported = @stepOneDoc.find('.importing_pins.previously_imported')
+        link = $(e.currentTarget)
+        if imported.is(':visible')
+          imported.slideUp()
+          link.text('Show Previously Imported')
+        else
+          imported.slideDown()
+          link.text('Hide Previously Imported')
+        @checkIfAnyDraggableLeft()
+
+      # Only show pins from selected board
+      @stepOneDoc.find('body').on 'click', '.importing_boards li', (e) =>
+        $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
+        @hideShowPinsForSelectedBoard()
 
     @transitionToStepOne = () ->
       @ensureFrameWrapper()
