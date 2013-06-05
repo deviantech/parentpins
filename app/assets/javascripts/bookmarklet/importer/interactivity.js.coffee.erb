@@ -66,8 +66,6 @@ class window.ppImporterClasses.Interactivity
       @handleAnyPostedMessage(evt)
 
     @initStepOneFunctionality = () ->
-      self = this
-
       withPPBoards = (data) =>
         ppBoards = data
         window.ppBoards = data
@@ -76,7 +74,7 @@ class window.ppImporterClasses.Interactivity
           boards: data,
           absoluteURL: (rel) ->
             return rel if rel.match(/:\/\//)
-            self.host + rel
+            host + rel
           pluralize: (i, singular, plural) ->
             i + ' ' + (if i == 1 then singular else plural)
         }
