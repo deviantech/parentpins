@@ -34,7 +34,8 @@ class window.ppImporterClasses.Interactivity
   # Odd timing issue with loading of bookmarklet SCSS, need to repaint window after step1 loaded
   toggleWindowRepaint = () ->
     body = $('body').first()
-    body.height( body.height() )
+    curHeight = body.height()
+    body.height(curHeight - 1).height(curHeight)
 
   # =======================================
   # = Methods (public interface of class) =
@@ -139,12 +140,14 @@ class window.ppImporterClasses.Interactivity
       @iframeWrapper ?= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
 
     @handleAnyPostedMessage = (event) ->
+      alert 'handling any'
       if event.originalEvent.origin.replace(/^https?:/, '') != host
         console.log('Ignoring message from mismatchted source: ' + event.originalEvent.origin)
       else
         @handlePostedMessage(event.originalEvent)
 
     @handlePostedMessage = (event) ->
+      alert 'in handle posted msg'
       if event.data == 'step2:previous'
         @stepTwoFrame.hide()
         @stepOneFrame.show()
@@ -189,6 +192,7 @@ class window.ppImporterClasses.Interactivity
 
       # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
       @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )
+      toggleWindowRepaint()
 
     @hideShowPinsForSelectedBoard = () ->
       class_to_show = @stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')
