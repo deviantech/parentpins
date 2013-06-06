@@ -28,8 +28,6 @@ $(document).on 'click', 'a.ajax', (e) ->
   if e.metaKey || e.ctrlKey
     return
   
-  console.log('opening modal window')
-  
   $ajax.html('<div class="ajax-loader"><img src="<%= asset_path 'ui/loader.gif' %>" alt="Loading" class="loader_icon"/></div>').fadeIn()
   if $(this).hasClass('update-history')
     $ajax.addClass('update-history')

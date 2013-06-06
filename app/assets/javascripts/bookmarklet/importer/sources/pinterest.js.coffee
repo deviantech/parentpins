@@ -14,6 +14,8 @@ class window.ppImporterClasses.Sources.Pinterest
     processingAllPins = new $.Deferred()
 
   # TODO: finish converting this to module, return the data
+  # TODO: now return object with boards and pins arrays, with IDs for each (see test data for format)
+  # TODO: pin id calculation should include board id (so same pin in two boards gets unique ID). update the test data when completed.
   getData: () ->
   
     # Render template with the pinterest data
@@ -65,7 +67,7 @@ class window.ppImporterClasses.Sources.Pinterest
         pin.imageURL = this.parent.getIframeWindow(this).jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
         finalizedAPin(pin)
 
-    # http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ , converted to coffeescript, returning absolute value. Generating IDs for pinterest boards.
+    # http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ , converted to coffeescript, returning absolute value. Generating IDs for pinterest pins/boards, return as string.
     hashFromString = (str) ->
       hash = 0
       return hash  if @length is 0
@@ -75,7 +77,7 @@ class window.ppImporterClasses.Sources.Pinterest
         hash = ((hash << 5) - hash) + char
         hash = hash & hash # Convert to 32bit integer
         i++
-      Math.abs(hash)
+      Math.abs(hash) + ''
   
   
     getPinterestData = () ->

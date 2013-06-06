@@ -29,12 +29,19 @@ class ImportController < ApplicationController
     @pins_to_import = []
     @boards = []
 
-    @data.each do |board_id, board_pins|
-      board = current_user.boards.find(board_id)
-      @boards << board
-      board_pins.each do |idx, pin_data|
-        pin = Pin.from_pinterest(current_user, board, pin_data)
-        @pins_to_import << pin
+    (@data[:import] ? @data[:import][:boards] : []).each do |board_id, pins|
+      next unless board = current_user.boards.find_by_id(board_id)
+
+      pins.each do |idx, data|
+        # TODO: params from pinterest / from us not matching
+        pin = Pin.from_pinterest(current_user, board, data)
+
+        if params[:from] == 'importer' || !pin.save
+          @pins_to_import << pin
+          @boards << board unless @boards.include?(board)
+        else
+          @imported << pin
+        end
       end
     end
     

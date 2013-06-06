@@ -34,12 +34,20 @@ class window.ppImporterClasses.Interactivity
   # = Methods (public interface of class) =
   # =======================================
   start: (data) ->
-    @externalPinData = data
+    @externalPinData = data.pins
+    @externalBoardData = data.boards
     @transitionToStepOne()
 
   bookmarkletClosing: () ->
     # TODO: remove any iframes created
     $(window).off 'message', @handleAnyPostedMessage
+
+  pinsForBoard: (board_id) ->
+    returning = []
+    for pin in @externalPinData
+      if pin.board_id == board_id then returning.push(pin)
+    return returning
+  
 
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
@@ -48,7 +56,8 @@ class window.ppImporterClasses.Interactivity
     @stepOneDoc = null
     @stepOneFrame = null
     @stepTwoFrame = null
-    @externalPinData = []
+    @externalPinData = []     # Expects an array with an id, board_id, and various pin fields
+    @externalBoardData = []   # Expects an array with at least id and name fields
 
     $(window).on 'message', (evt) =>
       @handleAnyPostedMessage(evt)
@@ -56,13 +65,13 @@ class window.ppImporterClasses.Interactivity
     # =========================================================
     # = General or potentially-shared implementation methods  =
     # =========================================================
-       
-    @rubyFormattedPinData = (subset) ->
-      data = subset || @externalPinData
+    
+    
+    @rubyFormattedPinData = () ->
       boards = {}
-      
-      for board in data
-        boards[board.id] = {name: board.name, pins: board.pins}
+            
+      for board in @externalBoardData
+        boards[board.id] = {name: board.name, pins: @pinsForBoard(board.id)}
 
       return {import: {boards: boards}}
     
@@ -126,10 +135,9 @@ class window.ppImporterClasses.Interactivity
 
       # Helper to get full data from pin ID
       dataForPinID = (pid) =>
-        for board in @externalPinData
-          for pin in board.pins
-            return pin if pin.id == pid
-        null    
+        for pin in @externalPinData
+          return pin if pin.id == pid
+        null
       
       # Get full data for all pins to import
       pinsByBoard = {}
@@ -147,5 +155,5 @@ class window.ppImporterClasses.Interactivity
       @stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
 
       # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
-      @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: $.param({import: {boards: pinsByBoard}}), url: stepTwoURL}) )
+      @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: $.param({from: 'importer', import: {boards: pinsByBoard}}), url: stepTwoURL}) )
       toggleWindowRepaint()

@@ -14,7 +14,7 @@ dataToSubmit = () ->
   for board in $('#our_section li.board')
     theBoardID = $(board).data('boardId')
     for pin in $(board).find('.ourBoardPins li')
-      thePinID = $(pin).data('pinId')
+      thePinID = $(pin).data('pinExternalId')
       toImport.push("#{theBoardID}.#{thePinID}")
 
   return toImport
