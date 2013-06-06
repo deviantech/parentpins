@@ -60,10 +60,91 @@ class window.ppImporterClasses.Interactivity
     @stepOneFrame = null
     @stepTwoFrame = null
     @boardsData = []
-    
-    
+
     $(window).on 'message', (evt) =>
       @handleAnyPostedMessage(evt)
+    
+    # =========================================================
+    # = General or potentially-shared implementation methods  =
+    # =========================================================
+
+    @dataForDrugPin = (pid) ->
+      for board in @boardsData
+        for pin in board.pins
+          return pin if pin.id == pid
+      null
+      
+    @ensureFrameWrapper = () ->
+      @iframeWrapper ?= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
+
+    @handleAnyPostedMessage = (event) ->
+      if event.originalEvent.origin.replace(/^https?:/, '') != host
+        console.log('Ignoring message from mismatchted source: ' + event.originalEvent.origin)
+      else
+        @handlePostedMessage(event.originalEvent)
+
+    @handlePostedMessage = (event) ->
+      if event.data == 'step2:previous'
+        @stepTwoFrame.hide()
+        @stepOneFrame.show()
+        toggleWindowRepaint()
+      else if event.data == 'step2:done'
+        # We could hide the iframe, if we wanted...
+      else if event.data.substr(0,15) == 'step2:imported:'
+        json_string = event.data.substr(15, event.data.length)
+        pins = $.parseJSON(json_string)
+        @stepOneWithImportedData(pins)
+        toggleWindowRepaint()
+    
+        
+    @hideShowPinsForSelectedBoard = () ->
+      class_to_show = @stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')
+      soon = () =>
+        @stepOneDoc.find('.importing_pins li.pin').hide()
+        @stepOneDoc.find('.importing_pins li.pin.' + class_to_show).show()
+        @checkIfAnyDraggableLeft()
+
+      # Give JS time to reset to having dropped pin (not sure why, but required)
+      setTimeout soon, 1
+
+    @checkIfAnyDraggableLeft = () ->
+      @stepOneDoc.find('.importing_pins').each (i, pin) =>
+        section = $(pin)
+        if section.find('li.pin:visible').length == 0
+          kind = if section.hasClass('not_yet_imported') 
+           'not-yet-imported'
+          else
+           'previously imported'
+          board_label = if @stepOneDoc.find('.importing_boards li.selected').first().hasClass('board-all')
+            ''
+          else
+            'on this board'
+
+          section.find('.no-more').remove()
+          section.find('ul').append("<div class='no-more'>List of "+kind+" pins "+board_label+" is empty.</div>")
+        else
+          section.find('.no-more').remove()
+
+    
+    # =================================================================
+    # = Step One - choose pins to import and assign to desired boards =
+    # =================================================================
+
+    @transitionToStepOne = () ->
+      @ensureFrameWrapper()
+      @stepTwoFrame.hide() if (@stepTwoFrame)
+      @stepOneFrame ?= $('<iframe class="ppParentPinsImporter">').appendTo( @iframeWrapper )
+      @stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
+
+      @stepOneDoc = @stepOneFrame.contents()
+
+      doc = @stepOneDoc[0]
+      if doc
+        doc.open()
+        doc.write( JST['templates/bookmarklet/importer/step_1']({boards: @boardsData, cssUrl: stepOneCSSUrl, jsUrl: stepOneJSUrl}) )
+      else
+        alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
+      toggleWindowRepaint()
 
     @initStepOneFunctionality = () ->
       withPPBoards = (data) =>
@@ -118,113 +199,43 @@ class window.ppImporterClasses.Interactivity
         $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
         @hideShowPinsForSelectedBoard()
 
-    @transitionToStepOne = () ->
-      @ensureFrameWrapper()
-      @stepTwoFrame.hide() if (@stepTwoFrame)
-      @stepOneFrame ?= $('<iframe class="ppParentPinsImporter">').appendTo( @iframeWrapper )
-      @stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
-
-      @stepOneDoc = @stepOneFrame.contents()
-
-      doc = @stepOneDoc[0]
-      if doc
-        doc.open()
-        doc.write( JST['templates/bookmarklet/importer/step_1']({boards: @boardsData, cssUrl: stepOneCSSUrl, jsUrl: stepOneJSUrl}) )
+    @stepOneWithImportedData = (data, resetAllAlreadyMovedPins) ->
+      if ppPins # If already have some, append to the imported list
+        _.each _.keys(data), (url) ->
+          ppPins[url] ?= []
+          ppPins[url] = _.union(ppPins[url], data[url])
       else
-        alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
-      toggleWindowRepaint()
+        ppPins = data
 
-    # Helper Methods
-    @ensureFrameWrapper = () ->
-      @iframeWrapper ?= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
+      not_yet_imported = @stepOneDoc.find('.importing_pins.not_yet_imported ul')
+      imported = @stepOneDoc.find('.importing_pins.previously_imported ul')
 
-    @handleAnyPostedMessage = (event) ->
-      if event.originalEvent.origin.replace(/^https?:/, '') != host
-        console.log('Ignoring message from mismatchted source: ' + event.originalEvent.origin)
-      else
-        @handlePostedMessage(event.originalEvent)
+      # In case any already assigned a board, move back to main section
+      if resetAllAlreadyMovedPins
+        @stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
+          $(this).appendTo(not_yet_imported)
 
-    @handlePostedMessage = (event) ->
-      if event.data == 'step2:previous'
-        @stepTwoFrame.hide()
-        @stepOneFrame.show()
-        toggleWindowRepaint()
-      else if event.data == 'step2:done'
-        # We could hide the iframe, if we wanted...
-      else if event.data.substr(0,15) == 'step2:imported:'
-        json_string = event.data.substr(15, event.data.length)
-        pins = $.parseJSON(json_string)
-        @stepOneWithImportedData(pins)
-        toggleWindowRepaint()
+      # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
+      moveToSectionIfPreviouslyImported = (li) ->
+        li = $(li)
+        prev_imported = _.any ppPins[li.data('pin-url')], (importedImageURL) ->
+          importedImageURL == li.data('pin-image')
 
-    @dataToImportFromStepOne = () ->
-      toImport = {}
-      for board in @stepOneDoc.find('#our_section li.board')
-        ourBoardID = $(board).data('boardId')
-        thisBoardData = []
-        for pin in $(board).find('.ourBoardPins li')
-          data = @dataForPinID( $(pin).data('pinId') )
-          thisBoardData.push(data) if data
+        if prev_imported
+            li.addClass('already-imported').appendTo(imported)
 
-        if thisBoardData.length
-          toImport[ourBoardID] = thisBoardData 
+      not_yet_imported.find('li.pin').each () ->
+        moveToSectionIfPreviouslyImported(this)
 
-      return toImport
+      @stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
+        moveToSectionIfPreviouslyImported(this)
 
-
-    @transitionToStepTwo = () ->
-      # Loop through the #our_section boards and collect pinterest data for any with pins to be imported
-      toImport = @dataToImportFromStepOne()
-
-      # Now that we have our list of things to import, what to do?
-      if _.isEmpty(toImport).length == 0
-        return alert("You haven't yet selected any pins to import. Please drag at least one Pinterest pin down onto the ParentPins board you want to save it to.")
-
-      @initStepTwo(toImport)
-
-    @initStepTwo = (toImport) ->
-      @ensureFrameWrapper()
-      @stepOneFrame.hide()
-      @stepTwoFrame.remove() if @stepTwoFrame
-      @stepTwoFrame = $('<iframe class="ppParentPinsImporter" name="ppParentPinsImporterStep2Frame">').appendTo( @iframeWrapper )
-      @stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
-
-      # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
-      @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )
-      toggleWindowRepaint()
-
-    @hideShowPinsForSelectedBoard = () ->
-      class_to_show = @stepOneDoc.find('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')
-      soon = () =>
-        @stepOneDoc.find('.importing_pins li.pin').hide()
-        @stepOneDoc.find('.importing_pins li.pin.' + class_to_show).show()
-        @checkIfAnyDraggableLeft()
-        
-      # Give JS time to reset to having dropped pin (not sure why, but required)
-      setTimeout soon, 1
-
-    @checkIfAnyDraggableLeft = () ->
-      @stepOneDoc.find('.importing_pins').each (i, pin) =>
-        section = $(pin)
-        if section.find('li.pin:visible').length == 0
-          kind = if section.hasClass('not_yet_imported') 
-           'not-yet-imported'
-          else
-           'previously imported'
-          board_label = if @stepOneDoc.find('.importing_boards li.selected').first().hasClass('board-all')
-            ''
-          else
-            'on this board'
-
-          section.find('.no-more').remove()
-          section.find('ul').append("<div class='no-more'>List of "+kind+" pins "+board_label+" is empty.</div>")
-        else
-          section.find('.no-more').remove()
+      @checkIfAnyDraggableLeft()
 
 
     @initOnceBoardsAreLoaded = () ->
       self = this
-      
+
       # Add draggable/droppable effects
       dropOpts = {
         hoverClass: "ui-state-active",
@@ -279,44 +290,44 @@ class window.ppImporterClasses.Interactivity
         ['#our_section li.board',     'droppable', dropOpts],
         ['#pinterest_section',        'droppable', dropToPinterestOpts]
       ])
-        
 
-    @stepOneWithImportedData = (data, resetAllAlreadyMovedPins) ->
-      if ppPins # If already have some, append to the imported list
-        _.each _.keys(data), (url) ->
-          ppPins[url] ?= []
-          ppPins[url] = _.union(ppPins[url], data[url])
-      else
-        ppPins = data
+    @dataToImportFromStepOne = () ->
+      toImport = {}
+      for board in @stepOneDoc.find('#our_section li.board')
+        ourBoardID = $(board).data('boardId')
+        thisBoardData = []
+        for pin in $(board).find('.ourBoardPins li')
+          data = @dataForDrugPin( $(pin).data('pinId') )
+          thisBoardData.push(data) if data
 
-      not_yet_imported = @stepOneDoc.find('.importing_pins.not_yet_imported ul')
-      imported = @stepOneDoc.find('.importing_pins.previously_imported ul')
+        if thisBoardData.length
+          toImport[ourBoardID] = thisBoardData 
 
-      # In case any already assigned a board, move back to main section
-      if resetAllAlreadyMovedPins
-        @stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
-          $(this).appendTo(not_yet_imported)
-
-      # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
-      moveToSectionIfPreviouslyImported = (li) ->
-        li = $(li)
-        prev_imported = _.any ppPins[li.data('pin-url')], (importedImageURL) ->
-          importedImageURL == li.data('pin-image')
-
-        if prev_imported
-            li.addClass('already-imported').appendTo(imported)
-
-      not_yet_imported.find('li.pin').each () ->
-        moveToSectionIfPreviouslyImported(this)
-
-      @stepOneDoc.find('#our_section ul.ourBoardPins li').each () ->
-        moveToSectionIfPreviouslyImported(this)
-
-      @checkIfAnyDraggableLeft()
+      return toImport
 
 
-    @dataForPinID = (id) ->
-      for board in @boardsData
-        for pin in board.pins
-          return pin if pin.id == id
-      null
+
+    # ==============================================================================
+    # = Step 2 - set the extra required info for each pin, then actually save them =
+    # ==============================================================================
+
+    @transitionToStepTwo = () ->
+      # Loop through the #our_section boards and collect pinterest data for any with pins to be imported
+      toImport = @dataToImportFromStepOne()
+
+      # Now that we have our list of things to import, what to do?
+      if _.isEmpty(toImport).length == 0
+        return alert("You haven't yet selected any pins to import. Please drag at least one Pinterest pin down onto the ParentPins board you want to save it to.")
+
+      @initStepTwo(toImport)
+
+    @initStepTwo = (toImport) ->
+      @ensureFrameWrapper()
+      @stepOneFrame.hide()
+      @stepTwoFrame.remove() if @stepTwoFrame
+      @stepTwoFrame = $('<iframe class="ppParentPinsImporter" name="ppParentPinsImporterStep2Frame">').appendTo( @iframeWrapper )
+      @stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
+
+      # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
+      @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/step_2_load']({data_string: $.param(toImport), stepTwoURL: stepTwoURL}) )
+      toggleWindowRepaint()
