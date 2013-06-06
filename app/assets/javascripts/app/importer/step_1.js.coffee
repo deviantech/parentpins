@@ -21,38 +21,39 @@ dataToSubmit = () ->
 
 
 handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
- if prevImported # If already have some, append to the imported list
-   if data
-     _.each _.keys(data), (url) ->
-       prevImported[url] ?= []
-       prevImported[url] = _.union(prevImported[url], data[url])
- else
-   prevImported = data
+  if prevImported # If already have some, append to the imported list
+    if data
+      _.each _.keys(data), (url) ->
+        prevImported[url] ?= []
+        prevImported[url] = _.union(prevImported[url], data[url])
+  else
+    prevImported = data
 
- not_yet_imported = $('.importing_pins.not_yet_imported ul')
- imported = $('.importing_pins.previously_imported ul')
-
- # In case any already assigned a board, move back to main section
- if resetAllAlreadyMovedPins
-   $('#our_section ul.ourBoardPins li').each () ->
-     $(this).appendTo(not_yet_imported)
-
- # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
- moveToSectionIfPreviouslyImported = (li) ->
-   li = $(li)
-   prev_imported = _.any prevImported[li.data('pin-url')], (importedImageURL) ->
-     importedImageURL == li.data('pin-image')
-
-   if prev_imported
-       li.addClass('already-imported').appendTo(imported)
-
- not_yet_imported.find('li.pin').each () ->
-   moveToSectionIfPreviouslyImported(this)
-
- $('#our_section ul.ourBoardPins li').each () ->
-   moveToSectionIfPreviouslyImported(this)
-
- checkIfAnyDraggableLeft()
+  not_yet_imported = $('.importing_pins.not_yet_imported ul')
+  imported = $('.importing_pins.previously_imported ul')
+ 
+  # In case any already assigned a board, move back to main section
+  if resetAllAlreadyMovedPins
+    $('#our_section ul.ourBoardPins li').each () ->
+      $(this).appendTo(not_yet_imported)
+ 
+  # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
+  moveToSectionIfPreviouslyImported = (li) ->
+    li = $(li)
+    
+    prev_imported = _.any prevImported[li.data('pin-url')], (importedImageURL) ->
+      importedImageURL == li.data('pin-image')
+ 
+    if prev_imported
+        li.addClass('already-imported').appendTo(imported)
+ 
+  not_yet_imported.find('li.pin').each () ->
+    moveToSectionIfPreviouslyImported(this)
+ 
+  $('#our_section ul.ourBoardPins li').each () ->
+    moveToSectionIfPreviouslyImported(this)
+ 
+  checkIfAnyDraggableLeft()
 
 
 hideShowPinsForSelectedBoard = () ->
@@ -149,7 +150,9 @@ initBoardBackgroundOnHover = () ->
 
    
 window.initStep1 = () ->
-  handlePreviouslyImportedData( $.parseJSON( $('.importing_pins.previously_imported').data('initial') ) )
+  initial = $('.importing_pins.previously_imported').data('initial')
+  if typeof(initial) == 'string' then initial = $.parseJSON(raw)
+  handlePreviouslyImportedData(initial)
   initDragDrop()
   initBoardBackgroundOnHover()
 
@@ -159,7 +162,7 @@ window.initStep1 = () ->
   
   # Handle Reset Button
   $('#ppResetDragDropLink').on 'click', () =>
-   handlePreviouslyImportedData(null, true)
+    handlePreviouslyImportedData(null, true)
 
   # Handle show/hide previous
   $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
@@ -175,6 +178,14 @@ window.initStep1 = () ->
 
   # Only show pins from selected board
   $('body').on 'click', '.importing_boards li', (e) =>
-   $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
-   hideShowPinsForSelectedBoard()
+    $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
+    hideShowPinsForSelectedBoard()
    
+   # Allow step 2 to tell parent to tell step 1 when new pins have been imported
+   $(window).on 'message', (evt) =>
+     [command, extra] = evt.originalEvent.data.split(':')
+     if command == 'imported'
+        pins = $.parseJSON(extra)
+        handlePreviouslyImportedData(pins)
+        
+  

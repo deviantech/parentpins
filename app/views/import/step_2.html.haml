@@ -59,4 +59,4 @@
 - if @imported
   - content_for :footer_js do
     :javascript
-      importedPins("#{escape_javascript(Pin.json_for_pins(@imported).html_safe)}");
+      importedPins("#{Pin.json_for_pins(@imported)}");

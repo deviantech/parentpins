@@ -16,7 +16,7 @@
               .thumb= image_tag pin.cached_remote_small_image_url, :alt => "Pin Image"
               .clearfix
             
-    .importing_pins.previously_imported{'data-initial' => %Q{"#{escape_javascript(Pin.json_for_pins(user_signed_in? ? current_user.pins : []))}"}}
+    .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
       %ul
 
     = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'

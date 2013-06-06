@@ -54,7 +54,7 @@ class window.ppImporterClasses.Interactivity
   
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
-    # Instance variable declaration
+    # Instance variable declarations
     @iframeWrapper = null
     @stepOneFrame = null
     @stepTwoFrame = null
@@ -67,8 +67,6 @@ class window.ppImporterClasses.Interactivity
     # =========================================================
     # = General or potentially-shared implementation methods  =
     # =========================================================
-    
-    
     @rubyFormattedPinData = () ->
       boards = {}
             
@@ -87,20 +85,21 @@ class window.ppImporterClasses.Interactivity
         @handlePostedMessage(event.originalEvent)
 
     @handlePostedMessage = (event) ->
-      if event.data.substr(0,11) == 'step1:next:'
-        passed_string = event.data.substr(11, event.data.length)        
-        @transitionToStepTwo(passed_string)
-      else if event.data == 'step2:previous'
-        @stepTwoFrame.hide()
-        @stepOneFrame.show()
-        toggleWindowRepaint()
-      else if event.data == 'step2:done'
-        # We could hide the iframe, if we wanted...
-      else if event.data.substr(0,15) == 'step2:imported:'
-        json_string = event.data.substr(15, event.data.length)
-        pins = $.parseJSON(json_string)
-        @stepOneWithImportedData(pins)
-        toggleWindowRepaint()
+      [step, command, extra] = event.data.split(':')
+      if step == 'step1'
+        if command == 'next' then @transitionToStepTwo(extra)
+      else if step == 'step2'
+        switch command
+          when 'previous'
+            @stepTwoFrame.hide()
+            @stepOneFrame.show()
+            toggleWindowRepaint()
+          when 'done' then null # We could hide the iframe, if we wanted...
+          when 'imported'          
+            if @stepOneFrame && @stepOneFrame[0]
+              step1 = @parent.getIframeWindow(@stepOneFrame[0])
+              step1.postMessage "imported:#{extra}", '*'
+              toggleWindowRepaint()
 
 
     # =================================================================
@@ -120,7 +119,6 @@ class window.ppImporterClasses.Interactivity
         toggleWindowRepaint()
       else
         alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
-
 
 
     # ==============================================================================
