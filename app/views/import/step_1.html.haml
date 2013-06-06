@@ -1,0 +1,44 @@
+#pp_pinterest_import_wrapper
+
+  #pinterest_section
+    .importing_boards
+      %ul
+        %li.board-all.selected Show All Pins
+        - @external_boards.each do |board|
+          %li{:class => "board-#{board.id}"}
+            Pinterest Board: #{board.name}
+    
+    .importing_pins.not_yet_imported
+      %ul
+        - @external_boards.each do |board|
+          - board.pins.each do |pin|
+            = render 'external_pin', :pin => pin, :board => board
+              
+    .importing_pins.previously_imported{'data-initial' => %Q{"#{escape_javascript(Pin.json_for_pins(user_signed_in? ? current_user.pins : []))}"}}
+      %ul
+
+    = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'
+    .clearfix
+
+  #our_section
+    %ul
+      - (user_signed_in? ? current_user.boards : []).each do |board|
+        %li.board{:data => {'cover-image' => board.cover.url, 'board-id' => board.id}}
+          .ourBoardTitle= board.name
+          .ourBoardInfo
+            = pluralize board.pins_count, 'pin', 'pins'
+            /
+            = pluralize board.followers_even_indirectly_count, 'follower', 'followers'
+          %ul.ourBoardPins
+      %li.add-board
+        .ourBoardTitle Add a new board
+        .ourBoardInfo
+          = link_to 'Add a new board TEST', 'localhost:3000', :id => "ppAddNewBoardLink"
+      .clearfix
+
+  .buttons_section
+    .left
+      = link_to_function "Reset Drag/Drop", 'return false', :id => 'ppResetDragDropLink'
+    
+    .right
+      = link_to_function 'Import These Pins', 'return false', :id => 'ppSubmitBoardsSortedLink'

@@ -73,11 +73,10 @@ ParentPins::Application.routes.draw do
   match '/search/:kind' => 'search#index'
   match '/search' => 'search#redirect_by_kind'
 
-  # Use for importing pinterest pins
-  get '/my/boards' => 'board#mine', :as => 'my_boards_json',  :format => :json
-  get '/my/pins' => 'pins#mine',    :as => 'my_pins_json',    :format => :json
-  match '/import/step_2' => "import#step_2", :as => 'pinterest_import_step_2'
-  match '/import/handle_step_2' => "import#handle_step_2", :as => 'pinterest_import_handle_step_2', :method => :post
+  # Use for importing pins from e.g. pinterest
+  match '/import/step_1' => "import#step_1",                :as => 'pin_import_step_1'
+  match '/import/step_2' => "import#step_2",                :as => 'pin_import_step_2'
+  match '/import/handle_step_2' => "import#handle_step_2",  :as => 'pin_import_handle_step_2',  :method => :post
     
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'

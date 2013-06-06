@@ -2,7 +2,7 @@
   Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
   #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
 
-= form_for :import, :url => pinterest_import_handle_step_2_path, :html => {:class => 'import_form'} do |f|
+= form_for :import, :url => pin_import_handle_step_2_path, :html => {:class => 'import_form'} do |f|
   %ul.importing_boards
     - @boards.each do |board|
       = f.fields_for "boards[#{board.id}]", board do |b|

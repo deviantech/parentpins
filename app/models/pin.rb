@@ -1,8 +1,8 @@
 class Pin < ActiveRecord::Base  
   extend Searchable
   
-  attr_accessor :cached_remote_image_url
-  attr_accessible :kind, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id, :cached_remote_image_url
+  attr_accessor :cached_remote_image_url, :cached_remote_small_image_url
+  attr_accessible :kind, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id, :cached_remote_image_url, :cached_remote_small_image_url
 
   VALID_TYPES = %w(idea product article)
   REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image)
@@ -74,17 +74,17 @@ class Pin < ActiveRecord::Base
   
   def self.from_pinterest(user, board, data)
     # Remove params used on the client side
-    params = data.except('smallImageURL', 'pinterestURL', 'id', 'domain')
+    params = data.except('pinterestURL', 'id', 'domain')
     params[:url] = params.delete('link')
     
     # TODO - set it in paraa as cached, but don't process until actually try to save the pin
-    # params[:remote_image_url] = params.delete('imageURL')
     params[:cached_remote_image_url] = params.delete('imageURL')
+    params[:cached_remote_small_image_url] = params.delete('smallImageURL')
 
     # TODO: add support for via_url, etc..
     
     pin = user.pins.new(params)
-    pin.board_id = board.id
+    pin.board_id = board.try(:id)
     return pin
   end
   
@@ -183,7 +183,7 @@ class Pin < ActiveRecord::Base
   
   # Strip off just the filename component of the image, used to match previously imported pins
   def image_filename
-    self['image']
+    self['image'] || cached_remote_image_url.to_s.split('/').last
   end
   
   protected

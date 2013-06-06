@@ -6,7 +6,7 @@
 </head>
 <body>
   <div style="margin: 50px auto; font-size: 25px; color: #555; text-align: center; font-family: sans-serif;">Loading...</div>
-  <form action="<%= @stepTwoURL %>" method="POST" id="loader">
+  <form action="<%= @url %>" method="POST" id="loader">
     <input type="hidden" name='data_string' value="<%= @data_string %>" />
   </form>
   

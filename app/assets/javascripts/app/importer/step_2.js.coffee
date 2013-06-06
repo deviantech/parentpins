@@ -6,17 +6,9 @@ window.importCompleted = () ->
   sendMessage("step2:done")
 
 window.previousStep = () ->
-  sendMessage("step2:previous", 'load previous step')
-  
+  sendMessage("step2:previous", 'load previous step')  
 
-sendMessage = (msg, explanation) ->
-  if (!window.parent)
-   if explanation then alert("Sorry, can't " + explanation + " because page doesn't appear to have been loaded in a bookmarklet context.")
-  else if (!window.parent.postMessage)
-    if explanation then alert("Sorry, can't " + explanation + " because your browser appears to old to support modern web standards.")
-  else
-    window.parent.postMessage(msg, '*')
-  
+
 
 updateOtherStatus = (fields) ->
   updateStatusField fields, '.otherStatus'
@@ -74,8 +66,7 @@ window.toggleImportingThisPin = (link) ->
     # Now actually move .pin_info outside the form, so it doesn't submit
     li.find('.pin_info').insertAfter( li.parents('form') )
   
-
-$(document).ready () ->
+window.initStep2 = () ->
   form = $('form.import_form')  
   
   form.on 'submit', () ->
@@ -116,4 +107,3 @@ $(document).ready () ->
   if (!!window.postMessage)
     $('.js-if-post-message').removeClass('hidden')
 
-  

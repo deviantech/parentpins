@@ -46,7 +46,7 @@ ParentPins::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile += %w( popup.js popup.css bookmarklet.js bookmarklet/importer.js import-pinterest.css bookmarklet.css add-pin.js page-specific/slides.css app/page-specific/slides.jquery.js mail.css import.css import.js .svg .eot .woff .ttf )
+  config.assets.precompile += %w( popup.js popup.css bookmarklet.js bookmarklet/importer.js import.css bookmarklet.css add-pin.js page-specific/slides.css app/page-specific/slides.jquery.js mail.css import.css app/importer.js .svg .eot .woff .ttf )
 
   
   # Disable delivery errors, bad email addresses will be ignored

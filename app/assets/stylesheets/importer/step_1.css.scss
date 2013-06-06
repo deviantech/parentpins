@@ -1,7 +1,7 @@
-//= require modal
-
-#pp_pinterest_import_wrapper {
-  margin: 50px;
+body.step_1 {
+  #pp_pinterest_import_wrapper {
+    margin: 50px;
+  }
   .clearfix {
     clear: both;
   }
@@ -73,7 +73,7 @@
       float: right;
     }
   }
-    
+  
   #our_section {
     background: #CCC; 
     border: 2px solid #666;

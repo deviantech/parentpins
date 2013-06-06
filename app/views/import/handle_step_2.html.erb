@@ -16,7 +16,7 @@
 
 <% content_for :footer_js do %>
   <script type="text/javascript" charset="utf-8">
-    importedPins("<%= escape_javascript(Pin.json_for_pins(@imported).html_safe) %>");
+    importedPins("<%= escape_javascript(Pin.json_for_pins(@imported)) %>");
     importCompleted();
   </script>
 <% end %>

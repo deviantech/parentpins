@@ -53,18 +53,7 @@ class PinsController < ApplicationController
     current_user.unlike(@pin)
     render 'like'
   end
-  
-  
-  # TODO: make user sign in before starting pinterest importing session!
-  # Show current user's pins via JSON for use in e.g. parentpins importing (as a hash based on link for efficiency)
-  def mine
-    respond_to do |format|
-      format.json {
-        render :json => Pin.json_for_pins(user_signed_in? ? current_user.pins : []), :callback => params[:callback]
-      }
-    end
-  end
-  
+    
   protected
   
   def find_any_pin
