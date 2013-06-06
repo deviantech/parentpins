@@ -63,7 +63,7 @@ class window.ppImporterClasses.Sources.Pinterest
       pinFrame = $('<iframe>').hide().attr('src', pin.pinterestURL).appendTo( $('body') )
       console.log('opening '+pin.pinterestURL)
       pinFrame.on 'load', () ->
-        pin.link = this.parent.getIframeWindow(this).jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
+        pin.url = this.parent.getIframeWindow(this).jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
         pin.imageURL = this.parent.getIframeWindow(this).jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
         finalizedAPin(pin)
 

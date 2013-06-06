@@ -1,0 +1,16 @@
+.import_completed
+  %h1 Import Completed
+
+  .centered
+    You can return to the original page by pressing Close in the upper right hand corner of the screen.
+
+  .instructions
+    %strong Next Steps:
+    %ul
+      %li= link_to 'View your newly-imported pins', pins_profile_url(current_user), :target => '_top'
+      %li= link_to_function 'Go back and import more pins', 'window.previousStep()'
+
+- content_for :footer_js do
+  :javascript
+    importedPins("#{escape_javascript(Pin.json_for_pins(@imported))}");
+    importCompleted();

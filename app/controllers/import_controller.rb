@@ -24,19 +24,20 @@ class ImportController < ApplicationController
   end
 
 
-  # Import step 2 - pull in data from external source for only those pins user wants to import (missing key components, so can't actually save pins yet)
+  # Import step 2 - pull in data from external source for only those pins user wants to import (missing key components, so can't actually save pins yet). 
+  # Also handle submitting the form to actually import some/all of them
   def step_2
     @pins_to_import = []
     @boards = []
+    @imported = []
 
-    (@data[:import] ? @data[:import][:boards] : []).each do |board_id, pins|
+    @data[:import][:boards].each do |board_id, board_info|
       next unless board = current_user.boards.find_by_id(board_id)
 
-      pins.each do |idx, data|
-        # TODO: params from pinterest / from us not matching
+      board_info[:pins].each do |idx, data|
         pin = Pin.from_pinterest(current_user, board, data)
 
-        if params[:from] == 'importer' || !pin.save
+        if @data[:from] == 'importer' || !pin.save
           @pins_to_import << pin
           @boards << board unless @boards.include?(board)
         else
@@ -45,34 +46,7 @@ class ImportController < ApplicationController
       end
     end
     
-    # TODO: rewrite to avoid needing handle_step_2. if fail, extend import.js.coffee to run step_2 code on handle_step_2 action name as well.
-  end
-
-  # End with same output as step_2, but from processing params from our own form (only display those that didn't save)
-  def handle_step_2
-    @pins_to_import = []
-    @boards = []
-    @imported = []
-
-    (@data[:import] ? @data[:import][:boards] : []).each do |board_id, board_info|
-      next unless board = current_user.boards.find_by_id(board_id)
-
-      board_info[:pins].each do |idx, data|
-        pin = current_user.pins.new(data)
-        pin.board = board
-
-        if pin.save
-          @imported << pin
-        else
-          @pins_to_import << pin
-          @boards << board unless @boards.include?(board)
-        end
-      end
-    end
-
-    unless @pins_to_import.empty?
-      render 'step_2'
-    end
+    render 'imported' unless @imported.empty?
   end
 
   protected
@@ -80,6 +54,8 @@ class ImportController < ApplicationController
   def parse_params
     # Bookmarklet sends initial data encoded in a single parameter, but for testing we may want to send parameters as normal
     @data = params[:data_string] ? Rack::Utils.parse_nested_query(params[:data_string]).with_indifferent_access : params.except("controller", "action")
+    @data[:import] ||= {}
+    @data[:import][:boards] ||= []
   end
 
 end

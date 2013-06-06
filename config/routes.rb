@@ -76,7 +76,6 @@ ParentPins::Application.routes.draw do
   # Use for importing pins from e.g. pinterest
   match '/import/step_1' => "import#step_1",                :as => 'pin_import_step_1'
   match '/import/step_2' => "import#step_2",                :as => 'pin_import_step_2'
-  match '/import/handle_step_2' => "import#handle_step_2",  :as => 'pin_import_handle_step_2',  :method => :post
     
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'

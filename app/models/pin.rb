@@ -72,19 +72,21 @@ class Pin < ActiveRecord::Base
     unscoped.order('trend_position DESC').group('url')
   end
   
-  def self.from_pinterest(user, board, data)
-    # Remove params used exclusively on the client side
-    params = data.except('pinterestURL', 'domain')
-    params[:url] = params.delete('link')
-    
-    params[:cached_remote_image_url] = params.delete('imageURL')
-    params[:cached_remote_small_image_url] = params.delete('smallImageURL')
-    params[:external_id] = params.delete('id')
+  # Pinterest import compatibility
+  alias_attribute :imageURL,      :cached_remote_image_url
+  alias_attribute :smallImageURL, :cached_remote_small_image_url
+  alias_attribute :pinterestURL,  :via_url
 
-    # TODO: add support for via_url, etc..
-    
-    pin = user.pins.new(params)
+  # Accepts data directly from pinterest or from our form submission
+  def self.from_pinterest(user, board, data)
+    data[:external_id] ||= data.delete('id')
+
+    pin = Pin.new
+    data.each do |attrib, value| 
+      pin.send("#{attrib}=", value) if pin.respond_to?("#{attrib}=")
+    end
     pin.board_id = board.try(:id)
+    pin.user_id = user.try(:id)
     return pin
   end
   

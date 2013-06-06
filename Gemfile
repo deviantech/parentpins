@@ -22,6 +22,7 @@ group :assets do
 end
 
 group :development do
+  gem 'awesome_print', :require => 'ap'
   gem 'thin'
   gem 'git'
   gem 'capistrano', :require => false

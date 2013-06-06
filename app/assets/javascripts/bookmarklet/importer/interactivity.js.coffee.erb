@@ -36,11 +36,15 @@ class window.ppImporterClasses.Interactivity
   start: (data) ->
     @externalPinData = data.pins
     @externalBoardData = data.boards
-    @transitionToStepOne()
+    if window['postMessage']
+      @transitionToStepOne()
+    else
+      outputDiv.find('#noPotentialImages').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
+      @bookmarkletClosing()
 
   bookmarkletClosing: () ->
-    # TODO: remove any iframes created
     $(window).off 'message', @handleAnyPostedMessage
+    @iframeWrapper.find('iframe').remove()
 
   pinsForBoard: (board_id) ->
     returning = []
@@ -48,12 +52,10 @@ class window.ppImporterClasses.Interactivity
       if pin.board_id == board_id then returning.push(pin)
     return returning
   
-
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
     # Instance variable declaration
     @iframeWrapper = null
-    @stepOneDoc = null
     @stepOneFrame = null
     @stepTwoFrame = null
     @externalPinData = []     # Expects an array with an id, board_id, and various pin fields
@@ -99,7 +101,7 @@ class window.ppImporterClasses.Interactivity
         pins = $.parseJSON(json_string)
         @stepOneWithImportedData(pins)
         toggleWindowRepaint()
-    
+
 
     # =================================================================
     # = Step One - choose pins to import and assign to desired boards =
@@ -110,9 +112,8 @@ class window.ppImporterClasses.Interactivity
       @stepTwoFrame.hide() if (@stepTwoFrame)
       @stepOneFrame ?= $('<iframe class="ppParentPinsImporter">').appendTo( @iframeWrapper )
       @stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
-      @stepOneDoc = @stepOneFrame.contents()
 
-      doc = @stepOneDoc[0]
+      doc = @stepOneFrame.contents()[0]
       if doc
         doc.open()
         doc.write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: $.param( @rubyFormattedPinData() ), url: stepOneURL}) )
@@ -127,11 +128,7 @@ class window.ppImporterClasses.Interactivity
     # ==============================================================================
 
     @transitionToStepTwo = (dataString) ->
-      # Given a string of boardID.pinID pairs, look up the full data for each before sending to step 2
-
-      # TODO: remove this and move all code out of importer, passing via window postbacks? then just quit importer if using old browser...
       # TODO: should we just have one iframe (maybe with another nested) rather than going back to parent on different domain for step1/step2 transitions?
-      # TODO: clean up rubyFormattedPinData, other formatting to send consistent params, handle with one set on controller
 
       # Helper to get full data from pin ID
       dataForPinID = (pid) =>
@@ -144,8 +141,8 @@ class window.ppImporterClasses.Interactivity
       for dataPair in dataString.split(':')
         [boardID, pinID] = dataPair.split('.')
         if pinData = dataForPinID(pinID)
-          pinsByBoard[boardID] ?= []
-          pinsByBoard[boardID].push pinData
+          pinsByBoard[boardID] ?= {pins: []}
+          pinsByBoard[boardID].pins.push pinData
       
       # Now display the Step 2 iframe
       @ensureFrameWrapper()

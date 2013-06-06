@@ -26,8 +26,8 @@ do(document = document, jQuery = window.jQuery) ->
   # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
   appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
   
-  # Our "global" to share variables within nested coffeescript
-  Global = Global || {potentials: {}}
+  # Our global to share variables within nested coffeescript
+  window.ppBookmarklet = {potentials: {}}
 
   prepForBookmarklet = ->
     includeBookmarkletStyles()
@@ -85,14 +85,14 @@ do(document = document, jQuery = window.jQuery) ->
 
     # Once it's been evaluated, add this image (actually, image data)
     addImage = (data) ->
-      if !Global.imageBase
+      if !ppBookmarklet.imageBase
         console.log('Attempting to add image before template has been processed')
       else
-        if `!(data.src in Global.potentials)` # No duplicates
-          Global.potentials[data.src] = data
-          Global.imageBase.find('#noPotentialImages').hide();
+        if `!(data.src in ppBookmarklet.potentials)` # No duplicates
+          ppBookmarklet.potentials[data.src] = data
+          ppBookmarklet.imageBase.find('#noPotentialImages').hide();
           # Max-height will prevent getting too big, but without this firefox will leave box with no height
-          added = $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( Global.imageBase ).height( data.scaledHeight )
+          added = $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( ppBookmarklet.imageBase ).height( data.scaledHeight )
 
     isImageBigEnough = (data) ->
       data.width && data.width >= minImageWidth && data.height && data.height >= minImageHeight
@@ -120,7 +120,7 @@ do(document = document, jQuery = window.jQuery) ->
       $toTest = $(toTest)
       $toTest.imagesLoaded ->
         fnWhenLoaded && fnWhenLoaded()
-      $toTest.appendTo(Global.imageTestbed) 
+      $toTest.appendTo(ppBookmarklet.imageTestbed) 
   
     startEvaluatingPotentialImages = ->
       evaluatePotentialImages()
@@ -197,7 +197,7 @@ do(document = document, jQuery = window.jQuery) ->
     
       # Submit via POST (open pin window, then submit a form to it)
       popupWindowName = popupName + 'PinWindow';
-      theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( Global.bookmarkletBase )
+      theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( ppBookmarklet.bookmarkletBase )
       pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no,directories=no,scrollbars=yes')      
       pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
       theForm.submit()
@@ -214,14 +214,14 @@ do(document = document, jQuery = window.jQuery) ->
         if (window.location.host == 'pinterest.com') and not /pinterest.com\/.+?\/boards/.test( $('.UserInfoBar a.active').prop('href'))
           alert("To import your Pinterest pins, open this bookmarklet from your Pinterest profile page.")
         else
-          Global.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
-          Global.imageBase = Global.bookmarkletBase.find('#ppBookmarkletContent')
-          Global.imageBase.on('click', 'a.potentialImage', switchToPinView)
+          ppBookmarklet.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
+          ppBookmarklet.imageBase = ppBookmarklet.bookmarkletBase.find('#ppBookmarkletContent')
+          ppBookmarklet.imageBase.on('click', 'a.potentialImage', switchToPinView)
           # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
-          Global.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(Global.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
+          ppBookmarklet.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(ppBookmarklet.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
           
           if (testingPinterest or window.location.host == 'pinterest.com') # Handle pinterest importing in a separate file
-            Global.imageBase.find('#noPotentialImages').text("Collecting Pinterest account data...");
+            ppBookmarklet.imageBase.find('#noPotentialImages').text("Collecting Pinterest account data...");
             $.getScript(importerScriptURL)
           else
             startEvaluatingPotentialImages()
