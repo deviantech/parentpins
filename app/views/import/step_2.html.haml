@@ -18,13 +18,14 @@
                     .pin_errors= pin.errors.full_messages.uniq.map(&:downcase).to_sentence.capitalize
                   .pin_photo
                     = image_tag pin.remote_image_url || pin.cached_remote_image_url
+                    .open_close_controls
+                      = link_to_function 'Skip this Pin', "toggleImportingThisPin(this)"
+                    
+                  .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
                     .status_boxes
                       .status_box.ageGroupStatus Age
                       .status_box.pinTypeStatus Type
                       .status_box.otherStatus Other
-                    .open_close_controls
-                      = link_to_function 'Skip this Pin', "toggleImportingThisPin(this)"
-                  .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
                     = p.hidden_field :remote_image_url, :value => pin.remote_image_url || pin.cached_remote_image_url
                     = p.hidden_field :smallImageURL, :value => pin.cached_remote_small_image_url
                     = p.hidden_field :external_id
@@ -52,9 +53,9 @@
                   .clearfix
   .form_button_bar 
     %span.js-if-post-message.hidden
-      = link_to_function 'Go Back and Modify Selection', 'previousStep()'
-      or
-    = f.submit 'Import Pins'
+      = link_to_function 'Go Back and Modify Selection', 'previousStep()', :style => 'display:block;float:left;padding:12px;'
+
+    = f.submit 'Import Pins', :class => 'btn tertiary_action'
 
 - if @imported
   - content_for :footer_js do
