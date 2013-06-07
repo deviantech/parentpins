@@ -102,31 +102,34 @@ class window.ppImporterClasses.Sources.Pinterest
   # = Processing Boards =
   # =====================
   processABoard: (board) ->
+    frameDoc = null
     processingThisBoard = new $.Deferred()
-    board     = $(board)
-    boardURL  = board.prop('href')
-    boardName = $.trim( board.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
-    boardID   = @hashFromString(boardURL)
+    
+    board         = $(board)
+    boardURL      = board.prop('href')
+    boardName     = $.trim( board.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
+    boardID       = @hashFromString(boardURL)
+    expectedPins  = parseInt board.find('.boardPinCount').text().replace(/pins?/, ''), 10
     @reportProgress "Starting to process board: #{boardName}"
 
     iframe = $('<iframe class="ppBoardDetailFrame">').hide().attr('src', boardURL).appendTo( appendTarget )
-    iframe.show().css({position: 'absolute', left: '50px', top: '100px', height: '500px', width: '500px', border: '2px solid #333', 'z-index': 9999999999999}) if debug
-
+      
+    if debug
+      frameIdx = $('iframe.ppBoardDetailFrame').length
+      iframe.show().css({position: 'absolute', left: "#{50 * frameIdx}px", top: '100px', height: '100px', width: '100px', border: '2px solid #333', 'z-index': 9999999999999})
+    
     processingThisBoard.done () =>
       iframe.remove()
       @boardsPending -= 1
-      @boardsData.push({name: boardName, pinterestURL: boardURL, id: boardID})
+      @boardsData.push({name: boardName, pinterestURL: boardURL, id: boardID, numPins: expectedPins})
       @reportProgress "Finished processing board: #{boardName}"
       @processingAllBoards.resolve() if @boardsPending == 0
 
     processBoardDetails = () =>
       @reportProgress "Collecting pins for board: #{boardName}"
       
-      # Scroll iframe down to try lazy loading later images
-      $(iframe).contents().scrollTop( $(iframe).contents().height() )
-
       frame$ = @parent.getIframeWindow(iframe).jQuery
-      frame$(pinSelector, iframe.contents()).each (pidx, pin) =>
+      frame$(pinSelector, frameDoc).each (pidx, pin) =>
         pin = frame$(pin)
         pinData = {
           board_id:       boardID,
@@ -137,32 +140,41 @@ class window.ppImporterClasses.Sources.Pinterest
           pinterestURL:   pin.find('a.pinImageWrapper').prop('href')
         }
         pinData.id = @hashFromString "#{boardID}:#{pinData.pinterestURL}"
-        console.log "Found a pin: #{pinData.pinterestURL}"
         @pinsData.push pinData
       processingThisBoard.resolve()
 
-  
-    iframeAjaxSeen_Categories = false
-    iframeAjaxSeen_Board      = false
-    alreadyProcessingBoard    = false
-    
-    window.kt = this
-    
-    iframe.on 'load', (e) =>
-      # TODO: can gget the num pins from the board page now. maybe set interval until that number is available? or any number over 0... how work with lots and lots where some loaded via JS? continue scrolling down until all present?
-      setTimeout processBoardDetails, 5000 # TODO: this might work, but it might not have loaded all contents via JS yet?
-      # # Don't fully understand, but ajaxComplete seems to only work if use the jquery from the inner window 
-      # # (see untested answer on http://stackoverflow.com/questions/14563041/detect-content-of-iframe-change-the-content-is-dynamic-jquery-mobile) 
-      # fWin = @parent.getIframeWindow(e.currentTarget)
-      # fWin.jQuery(iframe.contents()).ajaxComplete (event, xhr, settings) ->
-      #   console.log "ajaxComplete from frame (for board #{boardName}): just loaded #{settings.url}"
-      #   return if alreadyProcessingBoard
-      #   iframeAjaxSeen_Categories = true if /resource\/CategoriesResource\/get/.test(settings.url)
-      #   iframeAjaxSeen_Board      = true if /resource\/BoardFeedResource\/get/.test(settings.url)
-      # 
-      #   # TODO: how handle if too many pins in board, pagination required?
-      #   if (iframeAjaxSeen_Categories && iframeAjaxSeen_Board)
-      #     alreadyProcessingBoard = true
-      #     setTimeout(processBoardDetails, 100)
-    
+      
+    # After load, wait for various ajax events to finish
+    iframe.on 'load', () =>
+      frameDoc = $(iframe).contents()
+      
+      if isNaN(expectedPins)
+        console.log "Unable to parse number of expected pins for board (#{boardName}), so waiting two seconds and hoping for the best"
+        setTimeout processBoardDetails, 3000
+      else
+        timeout = 15 * 1000
+        foundAllPins = null
+      
+        periodicCheck = () ->
+          seen = frameDoc.find('.Pin.Module').length
+          if expectedPins == seen
+            foundAllPins = true
+            clearInterval(pinCountChecker)
+            processBoardDetails()
+          else if debug && seen > 0 # Page requires scrolling to spur loading additional pins
+            frameDoc.scrollTop( frameDoc.height() )
+            console.log "Wanted #{expectedPins}, so far only seen #{seen}. Scrolling down..."
+          else if debug
+            console.log "Wanted #{expectedPins}, so far only seen #{seen}"
+        
+        pinCountChecker = setInterval periodicCheck, 500
+        
+        timeOutIfRequired = () ->
+          unless foundAllPins
+            clearInterval(pinCountChecker)
+            console.log "Board (#{boardName}) timed out trying to load all pins"
+            processBoardDetails() # Will fail to find all pins, but can at least work with what we have
+            # TODO: somehow indicate to user that some pins weren't collected
+        
+        setTimeout timeOutIfRequired, timeout
 
