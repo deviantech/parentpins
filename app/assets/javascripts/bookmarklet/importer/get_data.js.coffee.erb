@@ -8,11 +8,15 @@ class window.ppImporterClasses.GetData
   useTestData   = <%= Rails.env.production? ? false : true %> && false
 
   constructor: (@parent) ->
-    @source = if useTestData then 'Test' else @parent.options.dataSource
+    @dataSourceName = if useTestData then 'Test' else @parent.options.dataSource
+  
+  bookmarkletClosing: () ->
+    if @source?
+      @source.bookmarkletClosing && @source.bookmarkletClosing()
   
   getData: (callback) ->
-    dataSource = new window.ppImporterClasses.Sources[@source](@parent)
-    dataSource.getData (data) ->
+    @source = new window.ppImporterClasses.Sources[@dataSourceName](@parent)
+    @source.getData (data) ->
       callback(data)
       
     

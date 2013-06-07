@@ -35,11 +35,14 @@ class window.ppImporterClasses.Interactivity
   start: (data) ->
     @externalPinData = data.pins
     @externalBoardData = data.boards
-    if window['postMessage']
+    if @externalPinData.length == 0
+      outputDiv.find('#noPotentialImages').html('No importable pins found.').addClass('red')
+    else if window['postMessage']
       @transitionToStepOne()
     else
       outputDiv.find('#noPotentialImages').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
       @bookmarkletClosing()
+    toggleWindowRepaint()
 
   bookmarkletClosing: () ->
     $(window).off 'message', @handleAnyPostedMessage
@@ -72,9 +75,6 @@ class window.ppImporterClasses.Interactivity
       for board in @externalBoardData
         boards[board.id] = {name: board.name, pins: @pinsForBoard(board.id)}
 
-
-      window.b = @externalBoardData
-      window.pinsForBoard = @pinsForBoard
       return $.param({import: {boards: boards}})
     
     @paramsForStepTwo = (dataString) ->

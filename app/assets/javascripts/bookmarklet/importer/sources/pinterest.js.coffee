@@ -20,6 +20,10 @@ class window.ppImporterClasses.Sources.Pinterest
     curHeight = body.height()
     body.height(curHeight - 1).height(curHeight)
   
+  # Clean up after ourselves when bookmarklet closes
+  bookmarkletClosing: () ->
+    outputDiv.find('iframe.ppPinDetailFrame, iframe.ppBoardDetailFrame').remove()
+  
   constructor: (@parent) ->
     @boardsData = []
     @pinsData = []
