@@ -1,4 +1,4 @@
-Global = Global || {}
+window.Global ||= {}
 
 # Define global functions
 Global.closeModal = -> 
@@ -27,6 +27,9 @@ $ajax = $('#ajax-modal-target').length || $('<div id="ajax-modal-target"></div>'
 $(document).on 'click', 'a.ajax', (e) ->
   if e.metaKey || e.ctrlKey
     return
+
+  e.preventDefault()
+  e.stopPropagation()
   
   $ajax.html('<div class="ajax-loader"><img src="<%= asset_path 'ui/loader.gif' %>" alt="Loading" class="loader_icon"/></div>').fadeIn()
   if $(this).hasClass('update-history')
@@ -36,7 +39,6 @@ $(document).on 'click', 'a.ajax', (e) ->
     $ajax.removeClass('update-history')
     
   url = urlPlusParamString($(this).attr('href'), 'via=ajax')
-  $ajax.load(url)
-  e.preventDefault()
-  e.stopPropagation()
-
+  $ajax.load url, () ->
+    $ajax.find('input:visible').first().focus()
+  

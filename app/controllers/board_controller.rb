@@ -23,16 +23,23 @@ class BoardController < ApplicationController
   end
 
   def new
+    @remotely = request.referer.to_s =~ /import\/step_1/ # If from import controller, save form via ajax
     @board = current_user.boards.new(params[:board])
   end
 
   def create
-    @board = current_user.boards.new(params[:board])
-    if @board.save
-      redirect_to profile_board_path(@board.user, @board)
-    else
-      flash.now[:error] = "Unable to save board"
-      render :action => 'new'
+    @board = current_user.boards.create(params[:board])
+    
+    respond_to do |format|
+      format.js {}
+      format.html {
+        if @board.new_record?
+          flash.now[:error] = "Unable to save board"
+          render :action => 'new'
+        else
+          redirect_to profile_board_path(@board.user, @board)
+        end
+      }
     end
   end
 

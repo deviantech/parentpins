@@ -132,7 +132,11 @@ initDragDrop = () ->
     stop: (event, ui) ->
       $(event.target).css({opacity: 1.0})
   }
- 
+  
+  # Used when boards added via ajax
+  window.stepOneAddDroppableBoard = (board) ->
+    $(board).droppable(dropOpts).hide().appendTo( $('#our_section ul.boards') ).fadeIn();
+  
   if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable(dragOpts)
   if $('.importing_boards li').length   then $('.importing_boards li').draggable(pinterestBoardDragOpts)
   if $('#our_section li.board').length  then $('#our_section li.board').droppable(dropOpts)

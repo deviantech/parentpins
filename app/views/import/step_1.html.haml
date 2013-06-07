@@ -23,24 +23,17 @@
     .clearfix
 
   #our_section
-    %ul
+    %ul.boards
       - (user_signed_in? ? current_user.boards : []).each do |board|
-        %li.board{:data => {'cover-image' => board.cover.url, 'board-id' => board.id}}
-          .ourBoardTitle= board.name
-          .ourBoardInfo
-            = pluralize board.pins_count, 'pin', 'pins'
-            \/
-            = pluralize board.followers_even_indirectly_count, 'follower', 'followers'
-          %ul.ourBoardPins
-      %li.add-board
-        .ourBoardTitle Add a new board
-        .ourBoardInfo
-          = link_to 'Add a new board', new_profile_board_path(current_user), :class => 'ajax'
-      .clearfix
+        = render 'our_board', :board => board
+    .clearfix
 
   .buttons_section
     .left
+      = link_to 'Add new board', new_profile_board_path(current_user), :class => 'ajax'
+      %br
       = link_to_function "Reset Drag/Drop", 'return false', :id => 'ppResetDragDropLink'
+      
     
     .right
       = link_to_function 'Import These Pins', 'return false', :id => 'ppSubmitBoardsSortedLink'

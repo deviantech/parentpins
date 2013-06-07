@@ -1,0 +1,7 @@
+<%# If called from js, safe to assume it's in the import controller %>
+<% if @board.new_record? %>
+  $('#ajax-modal-target').find('form.form .errorWrapper').html("<%= escape_javascript(error_messages_for(@board)) %>");
+<% else %>
+  Global.closeModal();
+  stepOneAddDroppableBoard("<%= escape_javascript(render('/import/our_board', :board => @board)) %>");
+<% end %>
