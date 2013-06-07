@@ -101,7 +101,7 @@ class window.ppImporterClasses.Sources.Pinterest
     processingThisBoard = new $.Deferred()
     board     = $(board)
     boardURL  = board.prop('href')
-    boardName = $.trim( board.find('.boardName').text() )
+    boardName = $.trim( board.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
     boardID   = @hashFromString(boardURL)
     @reportProgress "Starting to process board: #{boardName}"
 
