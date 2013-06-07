@@ -69,6 +69,7 @@ ParentPins::Application.routes.draw do
   match '/faq' => 'front#faq'
   match '/legal' => 'front#legal'
   match '/privacy' => 'front#privacy'
+  match '/copyright' => 'front#copyright'
   
   match '/search/:kind' => 'search#index'
   match '/search' => 'search#redirect_by_kind'
