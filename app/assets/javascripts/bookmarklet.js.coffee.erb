@@ -213,6 +213,7 @@ do(document = document, jQuery = window.jQuery) ->
       else
         if (window.location.host == 'pinterest.com') and not /pinterest.com\/.+?\/boards/.test( $('.UserInfoBar a.active').prop('href'))
           alert("To import your Pinterest pins, open this bookmarklet from your Pinterest profile page.")
+          # TODO: standardize test for being on the pinterest profile page (or close enough to be able to open it in iframe to start there)
         else
           ppBookmarklet.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( $('body') ).on('click', '#ppClose', closeBookmarklet)
           ppBookmarklet.imageBase = ppBookmarklet.bookmarkletBase.find('#ppBookmarkletContent')
@@ -221,8 +222,12 @@ do(document = document, jQuery = window.jQuery) ->
           ppBookmarklet.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(ppBookmarklet.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
           
           if (testingPinterest or window.location.host == 'pinterest.com') # Handle pinterest importing in a separate file
-            ppBookmarklet.imageBase.find('#noPotentialImages').text("Collecting Pinterest account data...");
-            $.getScript(importerScriptURL)
+            # TODO: standardize test for being on the pinterest profile page (or close enough to be able to open it in iframe to start there)
+            if $('.Module.UserProfilePage').length
+              ppBookmarklet.imageBase.find('#noPotentialImages').text("Collecting Pinterest account data...");
+              $.getScript(importerScriptURL)
+            else
+              ppBookmarklet.imageBase.find('#noPotentialImages').text("Please navigate to your pinterest profile's homepage.");
           else
             startEvaluatingPotentialImages()
       

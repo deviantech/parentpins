@@ -6,7 +6,6 @@ class window.ppImporterClasses.Interactivity
   # Global Class Config
   outputDiv         = $('#ppBookmarkletContent')
   outputDivWrapper  = outputDiv.parents('#ppBookmarkletContentWrapper')
-  progressDiv       = outputDiv.find('#noPotentialImages')
   host              = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   stepOneURL        = host + '<%= Rails.application.routes.url_helpers.pin_import_step_1_path %>'   # Loaded in iframe directly from PP
   stepTwoURL        = host + '<%= Rails.application.routes.url_helpers.pin_import_step_2_path %>'   # Loaded in iframe directly from PP
