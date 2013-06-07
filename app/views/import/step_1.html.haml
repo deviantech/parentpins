@@ -7,20 +7,24 @@
         - @external_boards.each do |board|
           %li{:class => "board-#{board.id}"}
             Pinterest Board: #{board.name}
-    
-    .importing_pins.not_yet_imported
-      %ul
-        - @external_boards.each do |board|
-          - board.pins.each do |pin|
-            %li.pin.board-all{:class => "board-#{board.id}", :data => {'pin-external-id' => pin.external_id, 'pin-url' => pin.url, 'pin-image' => pin.image_filename}}
-              .thumb= image_tag pin.cached_remote_small_image_url, :alt => "Pin Image"
-              .clearfix
-            
-    .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
-      %ul
 
-    = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'
-    .clearfix
+    .pin_lists
+      = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'
+      %h2 Drag your pins to your boards below.
+      .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
+        %h3 Pins previously imported
+        %ul
+    
+      .importing_pins.not_yet_imported
+        %h3 Pins not yet imported
+        %ul
+          - @external_boards.each do |board|
+            - board.pins.each do |pin|
+              %li.pin.board-all{:class => "board-#{board.id}", :data => {'pin-external-id' => pin.external_id, 'pin-url' => pin.url, 'pin-image' => pin.image_filename}}
+                .thumb= image_tag pin.cached_remote_small_image_url, :alt => "Pin Image"
+                .clearfix
+
+      .clearfix
 
   #our_section
     %ul.boards
@@ -31,9 +35,9 @@
   .buttons_section
     .left
       = link_to 'Add new board', new_profile_board_path(current_user), :class => 'ajax'
-      %br
+
       = link_to_function "Reset Drag/Drop", 'return false', :id => 'ppResetDragDropLink'
       
     
     .right
-      = link_to_function 'Import These Pins', 'return false', :id => 'ppSubmitBoardsSortedLink'
+      = link_to_function 'Import These Pins', 'return false', :id => 'ppSubmitBoardsSortedLink', :class => 'btn tertiary_action'

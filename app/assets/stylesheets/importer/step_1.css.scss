@@ -1,6 +1,44 @@
+/* Variables */
+$themeCOLOR: #76A613;
+$themeLinkCOLOR: #2886B4;
+$themeCOLORLight: lighten( $themeCOLOR, 36% );
+
 body.step_1 {
+  font-family: "helvetica neue", helvetica, arial, sans-serif;
+  padding-top:0;
+  .btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    position: relative;
+    padding: 6px 12px;
+    margin:0 24px 0 0;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+    font-size: 15px;
+    line-height:24px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    background-color:$themeCOLOR;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0, 0, 0, 0.15)');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0,0,0,0.15)')";
+    background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: -ms-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: -webkit-gradient(linear, center top, center bottom, from(transparent), to(rgba(0, 0, 0, 0.15)));
+    background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    &.tertiary_action {
+      background-color: $themeCOLOR;
+      border: 1px solid $themeCOLOR;
+      position: relative;
+      color:#fff;
+      font-weight: bold; } }
   #pp_pinterest_import_wrapper {
-    margin: 50px;
+    margin: 12px;
   }
   .clearfix {
     clear: both;
@@ -18,20 +56,45 @@ body.step_1 {
     top: 10px;
   }
   #pinterest_section {
-    background: #EEE;
-    border: 2px solid #666;
+    .pin_lists {
+      display:block;
+      margin-left:236px;
+    }
+    #ppTogglePreviouslyImportedPins {
+      position:absolute;
+      top:24px;
+      right:24px;
+      font-size:13px;
+      line-height:18px;
+    }
+    h2 {
+      font-size:15px;
+      line-height:18px;
+      padding:0;
+      margin:24px 0 0 12px;
+      font-weight:normal;
+    }
+    h3 {
+      font-size:13px;
+      line-height:18px;
+      padding:0;
+      margin:12px 0 0 12px;
+      font-weight:normal;
+    }
     .importing_boards {
       width: 200px;
-      margin: 20px;
-      background: #FFF;
-      border: 1px solid #333;
-      float: left;
+      margin: 12px;
+      position:absolute;
+      top:24px;
+      left:24px;
       ul {
         li {
-          margin: 5px;
-          padding: 5px;
+          margin: 0 0 6px 0;
+          padding: 6px;
           cursor: pointer;
           cursor: hand;
+          font-size: 14px;
+          line-height: 18px;
           background: #F0F0F0;
         }
         li.selected {
@@ -40,44 +103,58 @@ body.step_1 {
       }
     }
     .importing_pins {
-      margin: 20px;
-      margin-left: 0px;
+      margin: 12px;
       background: #FFF;
-      border: 1px solid #333;
+      border: 1px solid #ddd;
       float: left;
       ul {
         width: 100%;
         .no-more {
-          margin: 62px 75px;
+          margin: 12px;
           color: #BBB;
         }
         li {
           height: 120px;
           width: 100px;
-          border: 1px solid #333;
+          border: 1px solid #ccc;
           background: #EEE;
           float: left;
-          margin: 10px;
+          margin: 9px;
           overflow: hidden;
           img {
             max-width: 100px;
           }
         }
+        li:hover {
+          cursor:hand;
+        }
       }
     }
   }
-
-  #buttons_section {
-    margin-top: 20px;
+  .previously_imported, .not_yet_imported {
+    width:96%;
+  }
+  .buttons_section {
+    margin-top: 24px;
+    .left {
+      a {
+        font-size:14px;
+        line-height:18px;
+        margin:0 24px 0 0;
+        display:block;
+        float:left;
+      }
+    }
     .right {
       float: right;
     }
   }
   
   #our_section {
-    background: #CCC; 
-    border: 2px solid #666;
-    margin-top: 20px;
+    background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAP0lEQVQYV43M2QkAIAwEUdPJ9l/VdqJEUDxyzfdjpBUi2SVzigBICBfSmQtP5MIXmdBCH/TQBSO0YYYmrCCFA3mkJ6ogs+2pAAAAAElFTkSuQmCC); 
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin:12px -13px;
     .loading {
       padding: 5px;
     }
@@ -92,7 +169,7 @@ body.step_1 {
         height: 150px;
         width: 220px;
         background: #EEE;
-        border: 1px solid #999;
+        border: 1px solid #fff;
         overflow: auto;
         .ourBoardTitle {
           font-weight: bold;
@@ -108,11 +185,14 @@ body.step_1 {
           li { // This applies different styles to the pinterest LIs after being dropped in our ULs
             height: 50px;
             width: 50px;
-            border: 1px solid #333;
+            border: none;
             margin: 2px;
             overflow: hidden;
             img {
               max-width: 50px;
+            }
+            &:hover {
+              cursor:hand;
             }
           }
         }
