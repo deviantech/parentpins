@@ -1,22 +1,18 @@
 //= require bookmarklet/importer/sources/pinterest
-
+//= require bookmarklet/importer/sources/test
 
 window.ppImporterClasses ?= {}
 
 class window.ppImporterClasses.GetData
   
   useTestData   = <%= Rails.env.production? ? false : true %> && false
-  testBoards    = <%= Rails.env.production? ? [] : %q{[{"name":"Default","id":'236459021'},{"name":"Secondary","id":'141808096'}]} %>
-  testPins      = <%= Rails.env.production? ? [] : %q{[{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":'511140869',"url":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","board_id":'236459021'},{"description":"That's How a Pro Uses a Bunk Bed","domain":"memebase.cheezburger.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg","pinterestURL":"http://pinterest.com/pin/442126888388218505/","id":'1291275682',"url":"http://memebase.cheezburger.com/senorgif","imageURL":"http://media-cache-ak1.pinimg.com/736x/6e/06/34/6e063495136bfc91b8cfac6cd55e8557.jpg","board_id":'236459021'},{"description":"ireland - Google Search","domain":"travel.nytimes.com","price":"","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg","pinterestURL":"http://pinterest.com/pin/442126888388183279/","id":'599475931',"url":"http://travel.nytimes.com/travel/guides/europe/ireland/overview.html","imageURL":"http://media-cache-ak1.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg","board_id":'236459021'},{"description":"Brandy Melville Tank $28","domain":"saltandseaweed.com","price":"$28.00","smallImageURL":"http://media-cache-ak1.pinimg.com/236x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","pinterestURL":"http://pinterest.com/pin/442126888388601214/","id":'511140869',"url":"http://www.saltandseaweed.com/collections/vendors?q=Brandy+Melville","imageURL":"http://media-cache-ak1.pinimg.com/736x/06/49/09/06490959f16ea755c89e3b444a9e5686.jpg","board_id":'141808096'}]} %>
 
   constructor: (@parent) ->
+    @source = if useTestData then 'Test' else @parent.options.dataSource
   
   getData: (callback) ->
-    if useTestData
-      callback({boards: testBoards, pins: testPins})
-    else
-      dataSource = new window.ppImporterClasses.Sources[@parent.options.dataSource](self)
-      dataSource.getData (data) ->
-        callback(data)
+    dataSource = new window.ppImporterClasses.Sources[@source](@parent)
+    dataSource.getData (data) ->
+      callback(data)
       
     

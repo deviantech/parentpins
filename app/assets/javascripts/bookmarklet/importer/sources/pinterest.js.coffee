@@ -10,7 +10,7 @@ class window.ppImporterClasses.Sources.Pinterest
   debug             = true
   
   # Data selectors
-  boardSelector     = '.UserBoards .item.gridSortable a.boardLinkWrapper'
+  boardSelector     = '.UserBoards .item.gridSortable a.boardLinkWrapper, .secretBoardWrapper .item a.boardLinkWrapper'
   pinSelector       = '.pinWrapper'
   pinsPending       = 'unknown'
   
@@ -64,15 +64,13 @@ class window.ppImporterClasses.Sources.Pinterest
     toggleWindowRepaint()
 
   # http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ , converted to coffeescript, returning absolute value. Generating IDs for pinterest pins/boards, return as string.
-  hashFromString: (str) ->
+  hashFromString: (string) ->
     hash = 0
-    return hash if str.length == 0
-    i = 0
-    while i < @length
-      char = @charCodeAt(i)
+    return hash if !string || string.length == 0
+    for letter in string
+      char = letter.charCodeAt(0)
       hash = ((hash << 5) - hash) + char
-      hash = hash & hash # Convert to 32bit integer
-      i++
+      hash = hash & hash # Convert to 32bit integer      
     Math.abs(hash) + ''
 
   # ===================
@@ -91,9 +89,10 @@ class window.ppImporterClasses.Sources.Pinterest
     pinFrame = $('<iframe class="ppPinDetailFrame">').hide().attr('src', pin.pinterestURL).appendTo( appendTarget )
     console.log('opening '+pin.pinterestURL)
     pinFrame.on 'load', (e) =>
-      pin.url =       @parent.parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
-      pin.imageURL =  @parent.parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
+      pin.url =       @parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
+      pin.imageURL =  @parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
       @finalizedAPin(pin)
+      pinFrame.remove()
 
   # =====================
   # = Processing Boards =
@@ -107,24 +106,26 @@ class window.ppImporterClasses.Sources.Pinterest
     @reportProgress "Starting to process board: #{boardName}"
 
     iframe = $('<iframe class="ppBoardDetailFrame">').hide().attr('src', boardURL).appendTo( appendTarget )
-    iframe.show().css({position: 'absolute', left: '50px', top: '500px', height: '500px', width: '500px', border: '2px solid #333', 'z-index': 9999999999999}) if debug
+    iframe.show().css({position: 'absolute', left: '50px', top: '100px', height: '500px', width: '500px', border: '2px solid #333', 'z-index': 9999999999999}) if debug
 
     processingThisBoard.done () =>
+      iframe.remove()
       @boardsPending -= 1
       @boardsData.push({name: boardName, pinterestURL: boardURL, id: boardID})
       @reportProgress "Finished processing board: #{boardName}"
       @processingAllBoards.resolve() if @boardsPending == 0
 
     processBoardDetails = () =>
-      @reportProgress "Loaded iframe for board: #{boardName}"
-      frame$ = @parent.parent.getIframeWindow(iframe.get(0))
+      @reportProgress "Collecting pins for board: #{boardName}"
       
       # Scroll iframe down to try lazy loading later images
-      frame$(iframe).contents().scrollTop( frame$(iframe).contents().height() )
+      $(iframe).contents().scrollTop( $(iframe).contents().height() )
 
+      frame$ = @parent.getIframeWindow(iframe).jQuery
       frame$(pinSelector, iframe.contents()).each (pidx, pin) =>
         pin = frame$(pin)
         pinData = {
+          board_id:       boardID,
           description:    pin.find('.pinDescription').text(),
           domain:         pin.find('.pinDomain').text(),
           price:          pin.find('.priceValue').text(),
@@ -132,7 +133,8 @@ class window.ppImporterClasses.Sources.Pinterest
           pinterestURL:   pin.find('a.pinImageWrapper').prop('href')
         }
         pinData.id = @hashFromString "#{boardID}:#{pinData.pinterestURL}"
-        pinsData.push pinData
+        console.log "Found a pin: #{pinData.pinterestURL}"
+        @pinsData.push pinData
       processingThisBoard.resolve()
 
   
@@ -140,18 +142,23 @@ class window.ppImporterClasses.Sources.Pinterest
     iframeAjaxSeen_Board      = false
     alreadyProcessingBoard    = false
     
+    window.kt = this
+    
     iframe.on 'load', (e) =>
-      # Don't fully understand, but ajaxComplete seems to only work if use the jquery from the inner window 
-      # (see untested answer on http://stackoverflow.com/questions/14563041/detect-content-of-iframe-change-the-content-is-dynamic-jquery-mobile) 
-      @parent.parent.getIframeWindow(e.currentTarget).jQuery(@parent.parent.getIframeWindow(e.currentTarget).document).ajaxComplete (event, xhr, settings) ->
-        console.log "ajaxComplete from frame (for board #{boardName}): just loaded #{settings.url}"
-        return if alreadyProcessingBoard
-        iframeAjaxSeen_Categories = true if /resource\/CategoriesResource\/get/.test(settings.url)
-        iframeAjaxSeen_Board      = true if /resource\/BoardFeedResource\/get/.test(settings.url)
-
-        # TODO: how handle if too many pins in board, pagination required?
-        if (iframeAjaxSeen_Categories && iframeAjaxSeen_Board)
-          alreadyProcessingBoard = true
-          setTimeout(processBoardDetails, 100)
+      # TODO: can gget the num pins from the board page now. maybe set interval until that number is available? or any number over 0... how work with lots and lots where some loaded via JS? continue scrolling down until all present?
+      setTimeout processBoardDetails, 5000 # TODO: this might work, but it might not have loaded all contents via JS yet?
+      # # Don't fully understand, but ajaxComplete seems to only work if use the jquery from the inner window 
+      # # (see untested answer on http://stackoverflow.com/questions/14563041/detect-content-of-iframe-change-the-content-is-dynamic-jquery-mobile) 
+      # fWin = @parent.getIframeWindow(e.currentTarget)
+      # fWin.jQuery(iframe.contents()).ajaxComplete (event, xhr, settings) ->
+      #   console.log "ajaxComplete from frame (for board #{boardName}): just loaded #{settings.url}"
+      #   return if alreadyProcessingBoard
+      #   iframeAjaxSeen_Categories = true if /resource\/CategoriesResource\/get/.test(settings.url)
+      #   iframeAjaxSeen_Board      = true if /resource\/BoardFeedResource\/get/.test(settings.url)
+      # 
+      #   # TODO: how handle if too many pins in board, pagination required?
+      #   if (iframeAjaxSeen_Categories && iframeAjaxSeen_Board)
+      #     alreadyProcessingBoard = true
+      #     setTimeout(processBoardDetails, 100)
     
 

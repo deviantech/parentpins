@@ -43,13 +43,7 @@ class window.ppImporterClasses.Interactivity
 
   bookmarkletClosing: () ->
     $(window).off 'message', @handleAnyPostedMessage
-    @iframeWrapper.find('iframe').remove()
-
-  pinsForBoard: (board_id) ->
-    returning = []
-    for pin in @externalPinData
-      if pin.board_id == board_id then returning.push(pin)
-    return returning
+    @iframeWrapper.find('iframe').remove() if @iframeWrapper
   
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
@@ -66,10 +60,21 @@ class window.ppImporterClasses.Interactivity
     # =================================
     # = Implementation helper methods =
     # =================================
+    @pinsForBoard = (board_id) ->
+      returning = []
+      for pin in @externalPinData
+        console.log pin.board_id, board_id
+        if pin.board_id == board_id then returning.push(pin)
+      return returning
+    
     @paramsForStepOne = () ->
       boards = {}
       for board in @externalBoardData
         boards[board.id] = {name: board.name, pins: @pinsForBoard(board.id)}
+
+
+      window.b = @externalBoardData
+      window.pinsForBoard = @pinsForBoard
       return $.param({import: {boards: boards}})
     
     @paramsForStepTwo = (dataString) ->

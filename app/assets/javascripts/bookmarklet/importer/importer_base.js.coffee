@@ -4,6 +4,7 @@ class window.ppImporterClasses.ImporterBase
 
   # Workaround for non-supporting browsers
   getIframeWindow: (iframeElement) ->
+    iframeElement = $(iframeElement)[0] # Ensure we're working with the DOM object, not the jQuery wrapper
     iframeElement.contentWindow || iframeElement.contentDocument.parentWindow
 
   # Pass bookmarkletClosing on to interior classes
