@@ -35,7 +35,7 @@
       %li.add-board
         .ourBoardTitle Add a new board
         .ourBoardInfo
-          = link_to 'Add a new board TEST', 'localhost:3000', :id => "ppAddNewBoardLink"
+          = link_to 'Add a new board', new_profile_board_path(current_user), :class => 'ajax'
       .clearfix
 
   .buttons_section

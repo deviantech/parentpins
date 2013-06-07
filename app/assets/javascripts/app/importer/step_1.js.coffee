@@ -133,9 +133,9 @@ initDragDrop = () ->
       $(event.target).css({opacity: 1.0})
   }
  
-  $('.importing_pins li.pin').draggable(dragOpts)
-  $('.importing_boards li').draggable(pinterestBoardDragOpts)
-  $('#our_section li.board').droppable(dropOpts)
+  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable(dragOpts)
+  if $('.importing_boards li').length   then $('.importing_boards li').draggable(pinterestBoardDragOpts)
+  if $('#our_section li.board').length  then $('#our_section li.board').droppable(dropOpts)
   $('#pinterest_section').droppable(dropToPinterestOpts)
   
 initBoardBackgroundOnHover = () ->
