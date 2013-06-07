@@ -1,8 +1,7 @@
 window.importedPins = (pins_as_string) ->
-  sendMessage("step2:imported:"+pins_as_string)
+  sendMessage("step2:imported:#{pins_as_string}")
 
 window.importCompleted = () ->
-  $('body').addClass('import_completed')
   sendMessage("step2:done")
 
 window.previousStep = () ->

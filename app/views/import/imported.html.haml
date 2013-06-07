@@ -12,5 +12,5 @@
 
 - content_for :footer_js do
   :javascript
-    importedPins("#{Pin.json_for_pins(@imported)}");
+    importedPins("#{escape_javascript Pin.json_for_pins(@imported)}");
     importCompleted();

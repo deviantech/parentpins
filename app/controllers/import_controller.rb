@@ -46,7 +46,10 @@ class ImportController < ApplicationController
       end
     end
     
-    render 'imported' unless @imported.empty?
+    if !@imported.empty? && @pins_to_import.empty?
+      @body_class = 'import_completed'
+      render 'imported'
+    end
   end
 
   protected

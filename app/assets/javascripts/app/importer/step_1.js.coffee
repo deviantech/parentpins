@@ -67,8 +67,8 @@ hideShowPinsForSelectedBoard = () ->
   setTimeout soon, 1
 
 checkIfAnyDraggableLeft = () ->
-  $('.importing_pins').each (i, pin) =>
-    section = $(pin)
+  $('.importing_pins').each (i, section) =>
+    section = $(section)
     if section.find('li.pin:visible').length == 0
       kind = if section.hasClass('not_yet_imported') 
        'not-yet-imported'
@@ -183,9 +183,11 @@ window.initStep1 = () ->
    
    # Allow step 2 to tell parent to tell step 1 when new pins have been imported
    $(window).on 'message', (evt) =>
-     [command, extra] = evt.originalEvent.data.split(':')
+     [command, extra...] = evt.originalEvent.data.split(':')
+     extra = extra.join(':')
      if command == 'imported'
         pins = $.parseJSON(extra)
         handlePreviouslyImportedData(pins)
+        setTimeout(checkIfAnyDraggableLeft, 1) # Doesn't seem like it should be necessary... but is, or else sections leave the 'empty' div in place while showing pins
         
   

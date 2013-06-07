@@ -64,16 +64,31 @@ class window.ppImporterClasses.Interactivity
     $(window).on 'message', (evt) =>
       @handleAnyPostedMessage(evt)
     
-    # =========================================================
-    # = General or potentially-shared implementation methods  =
-    # =========================================================
-    @rubyFormattedPinData = () ->
+    # =================================
+    # = Implementation helper methods =
+    # =================================
+    @paramsForStepOne = () ->
       boards = {}
-            
       for board in @externalBoardData
         boards[board.id] = {name: board.name, pins: @pinsForBoard(board.id)}
+      return $.param({import: {boards: boards}})
+    
+    @paramsForStepTwo = (dataString) ->
+      # Helper to get full data from pin ID
+      dataForPinID = (pid) =>
+        for pin in @externalPinData
+          return pin if pin.id == pid
+        null
 
-      return {import: {boards: boards}}
+      # Get full data for all pins to import
+      pinsByBoard = {}
+      for dataPair in dataString.split(':')
+        [boardID, pinID] = dataPair.split('.')
+        if pinData = dataForPinID(pinID)
+          pinsByBoard[boardID] ?= {pins: []}
+          pinsByBoard[boardID].pins.push pinData
+
+      return $.param({from: 'importer', import: {boards: pinsByBoard}})
     
     @ensureFrameWrapper = () ->
       @iframeWrapper ?= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
@@ -85,7 +100,8 @@ class window.ppImporterClasses.Interactivity
         @handlePostedMessage(event.originalEvent)
 
     @handlePostedMessage = (event) ->
-      [step, command, extra] = event.data.split(':')
+      [step, command, extra...] = event.data.split(':')
+      extra = extra.join(':')
       if step == 'step1'
         if command == 'next' then @transitionToStepTwo(extra)
       else if step == 'step2'
@@ -95,7 +111,7 @@ class window.ppImporterClasses.Interactivity
             @stepOneFrame.show()
             toggleWindowRepaint()
           when 'done' then null # We could hide the iframe, if we wanted...
-          when 'imported'          
+          when 'imported'
             if @stepOneFrame && @stepOneFrame[0]
               step1 = @parent.getIframeWindow(@stepOneFrame[0])
               step1.postMessage "imported:#{extra}", '*'
@@ -115,7 +131,7 @@ class window.ppImporterClasses.Interactivity
       doc = @stepOneFrame.contents()[0]
       if doc
         doc.open()
-        doc.write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: $.param( @rubyFormattedPinData() ), url: stepOneURL}) )
+        doc.write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: @paramsForStepOne(), url: stepOneURL}) )
         toggleWindowRepaint()
       else
         alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
@@ -127,20 +143,6 @@ class window.ppImporterClasses.Interactivity
 
     @transitionToStepTwo = (dataString) ->
       # TODO: should we just have one iframe (maybe with another nested) rather than going back to parent on different domain for step1/step2 transitions?
-
-      # Helper to get full data from pin ID
-      dataForPinID = (pid) =>
-        for pin in @externalPinData
-          return pin if pin.id == pid
-        null
-      
-      # Get full data for all pins to import
-      pinsByBoard = {}
-      for dataPair in dataString.split(':')
-        [boardID, pinID] = dataPair.split('.')
-        if pinData = dataForPinID(pinID)
-          pinsByBoard[boardID] ?= {pins: []}
-          pinsByBoard[boardID].pins.push pinData
       
       # Now display the Step 2 iframe
       @ensureFrameWrapper()
@@ -150,5 +152,5 @@ class window.ppImporterClasses.Interactivity
       @stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
 
       # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
-      @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: $.param({from: 'importer', import: {boards: pinsByBoard}}), url: stepTwoURL}) )
+      @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: @paramsForStepTwo(dataString), url: stepTwoURL}) )
       toggleWindowRepaint()
