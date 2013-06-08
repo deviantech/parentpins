@@ -21,7 +21,7 @@ class window.ppImporterClasses.Sources.Pinterest
   
   # Clean up after ourselves when bookmarklet closes
   bookmarkletClosing: () ->
-    outputDiv.find('iframe.ppPinDetailFrame, iframe.ppBoardDetailFrame, iframe.ppDataInitialFrame').remove()
+    outputDiv.find('iframe.ppBoardDetailFrame').remove()
   
   constructor: (@parent) ->
     @boardsData = []
@@ -79,6 +79,7 @@ class window.ppImporterClasses.Sources.Pinterest
     withInitialPage = () =>
       # Now start actually getting data
       @reportProgress "Collecting boards"
+
       if @boardsPending = $(boardSelector, @dataInitialPage).length
         $(boardSelector, @dataInitialPage).each (bidx, board) =>
           @processABoard(board)
