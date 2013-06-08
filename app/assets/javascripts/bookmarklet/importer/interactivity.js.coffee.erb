@@ -71,7 +71,6 @@ class window.ppImporterClasses.Interactivity
     @pinsForBoard = (board_id) ->
       returning = []
       for pin in @externalPinData
-        console.log pin.board_id, board_id
         if pin.board_id == board_id then returning.push(pin)
       return returning
     

@@ -27,6 +27,9 @@ class window.ppImporterClasses.Sources.Pinterest
     @boardsData = []
     @pinsData = []    
     @pinsPending = 'unknown'
+    @boardDetailFrame = null
+    @boardQueue = []
+    
 
 
   # If logged in, you can import your own. You can also import another user's if you're on their boards page specifically.
@@ -62,36 +65,28 @@ class window.ppImporterClasses.Sources.Pinterest
 
     # Once collected all data, pass it along to the callback function
     @processingAllPins.done () =>
-      @reportProgress('Done processing all pins')
+      @reportProgress('Done processing. Passing data over to our servers...')
       progressDiv.hide()
       callback({boards: @boardsData, pins: @pinsData})
 
     @processingAllBoards.done () =>
-      @reportProgress "Done processing all boards"
+      # Clean up the iframe
+      @boardDetailFrame.remove()
+      @boardDetailFrame = null
+      
+      # Now start working on the pins
       @pinsPending = @pinsData.length
-      @reportProgress "Beginning to process pins (#{@pinsPending})"
+      @reportProgress "Done collecting boards.  Now processing pins (#{@pinsPending} remaining)"
       @processAPin(pin) for pin in @pinsData
 
 
     # Now start actually getting data
-    @reportProgress "Collecting boards"
-
-    if @boardsPending = $(boardSelector).length
-      $(boardSelector).each (bidx, board) =>
-        @processABoard(board)
-    else
+    if $(boardSelector).length then @processBoards() else
       @reportProgress "No boards found!", 'red'    
 
     
   reportProgress: (message, color) ->
     console.log "ReportProgress: #{message}"
-    # TODO: make report contents prettier for end user
-    # msg = if @boardsPending == 0
-    #   "Completed all boards! Collecting pin details... ("+@pinsPending+" remaining)"
-    # else if @boardsPending == 1
-    #   "Collecting account information: one board remaining..."
-    # else
-    #   "Collecting account information: " + @boardsPending + ' boards remaining...'
     progressDiv.html(message)    
     progressDiv.addClass('red') if color == 'red' # TODO: add ability to set color
     toggleWindowRepaint()
@@ -111,7 +106,6 @@ class window.ppImporterClasses.Sources.Pinterest
   # ===================
   finalizedAPin: (pin) ->
     @pinsPending -= 1
-    @reportProgress "Processed a pin: #{pin.pinterestURL || '[invalid]'}"
     if @pinsPending == 0 then @processingAllPins.resolve()
 
   processAPin: (pin) ->
@@ -132,27 +126,30 @@ class window.ppImporterClasses.Sources.Pinterest
   # =====================
   # = Processing Boards =
   # =====================
-  processABoard: (board) ->
-    frameDoc = null
-    processingThisBoard = new $.Deferred()
-    
-    board         = $(board)
+  processBoards: () ->
+    @boardQueue = $.makeArray $(boardSelector)
+    @boardDetailFrame ?= $('<iframe class="ppBoardDetailFrame">').appendTo( appendTarget ).css({position: 'absolute', top: '-100px', left: '-1000px', height: '50px', width: '50px', visibility: 'hidden'})
+    @processAnotherBoard()
+  
+  # To avoid overwhelming either the browser or the server, we load the boards sequentially
+  processAnotherBoard: () ->    
+    board         = $( @boardQueue.pop() )
     boardURL      = board.prop('href')
     boardName     = $.trim( board.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
     boardID       = @hashFromString(boardURL)
     expectedPins  = parseInt board.find('.boardPinCount').text().replace(/pins?/, ''), 10
-    @reportProgress "Starting to process board: #{boardName}"
+
+    boardMsg = "Collecting boards (#{@boardQueue.length} remaining). Working on: #{boardName}"
+    @reportProgress boardMsg
+
+    frameDoc = null
+    processingThisBoard = new $.Deferred()
 
     processingThisBoard.done () =>
-      iframe.remove()
-      @boardsPending -= 1
       @boardsData.push({name: boardName, pinterestURL: boardURL, id: boardID, numPins: expectedPins})
-      @reportProgress "Finished processing board: #{boardName}"
-      @processingAllBoards.resolve() if @boardsPending == 0
+      if @boardQueue.length == 0 then @processingAllBoards.resolve() else @processAnotherBoard()
 
-    processBoardDetails = () =>
-      @reportProgress "Collecting pins for board: #{boardName}"
-      
+    processBoardDetails = () =>      
       $(pinSelector, frameDoc).each (pidx, pin) =>
         pin = $(pin)
         pinData = {
@@ -160,7 +157,7 @@ class window.ppImporterClasses.Sources.Pinterest
           description:    pin.find('.pinDescription').text(),
           domain:         pin.find('.pinDomain').text(),
           price:          pin.find('.priceValue').text(),
-          smallImageURL:  pin.find('.pinImg.loaded').prop('src'),
+          smallImageURL:  pin.find('.pinImg.loaded').prop('src'), # May not be lazy loaded yet
           pinterestURL:   pin.find('a.pinImageWrapper').prop('href')
         }
         pinData.id = @hashFromString "#{boardID}:#{pinData.pinterestURL}"
@@ -169,46 +166,44 @@ class window.ppImporterClasses.Sources.Pinterest
 
     if expectedPins == 0
       processingThisBoard.resolve()
-    else
-      iframe = $('<iframe class="ppBoardDetailFrame">').hide().attr('src', boardURL).appendTo( appendTarget )
+    else      
+      @boardDetailFrame.off 'load' # Remove any previous listeners
 
-      if debug
-        frameIdx = $('iframe.ppBoardDetailFrame').length
-        iframe.show().css({position: 'absolute', left: "#{150 * frameIdx}px", top: '100px', height: '100px', width: '100px', border: '2px solid #333', 'z-index': 9999999999999})
-      
       # After load, wait for various ajax events to finish
-      iframe.on 'load', () =>
-        frameDoc = $(iframe).contents()
-      
+      @boardDetailFrame.on 'load', () =>
+        frameDoc = @boardDetailFrame.contents()
+    
         if isNaN(expectedPins)
           console.log "Unable to parse number of expected pins for board (#{boardName}), so waiting two seconds and hoping for the best"
           setTimeout processBoardDetails, 3000
         else
           timeout = 15 * 1000
           foundAllPins = null
-        
-          periodicCheck = () ->
+      
+          periodicCheck = () =>
             seen = frameDoc.find('.Pin.Module').length
             if expectedPins == seen
               foundAllPins = true
               clearInterval(pinCountChecker)
               processBoardDetails()
-            else if debug && seen > 0 # Page requires scrolling to spur loading additional pins
+            else if seen > 0 # Page requires scrolling to spur loading additional pins
               frameDoc.scrollTop( frameDoc.height() )
-              console.log "Wanted #{expectedPins}, so far only seen #{seen}. Scrolling down..."
-            else if debug
-              console.log "Wanted #{expectedPins}, so far only seen #{seen}"
-        
+              @reportProgress "#{boardMsg} - discovered #{seen} of #{expectedPins}"
+      
           pinCountChecker = setInterval periodicCheck, 500
-        
+      
           timeOutIfRequired = () ->
             unless foundAllPins
               clearInterval(pinCountChecker)
               console.log "Board (#{boardName}) timed out trying to load all pins"
               processBoardDetails() # Will fail to find all pins, but can at least work with what we have
               # TODO: somehow indicate to user that some pins weren't collected
-        
+      
           setTimeout timeOutIfRequired, timeout
+      
+      # Now that listeners are in place, update the frame SRC
+      @boardDetailFrame.attr('src', boardURL)
+  
   
   # FUTURE: extracted general form out, but isn't yet used
   waitFor: (checkFn, successFn, failFn, interval, timeout) ->
