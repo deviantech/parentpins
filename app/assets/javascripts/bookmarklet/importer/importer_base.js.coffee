@@ -11,12 +11,13 @@ class window.ppImporterClasses.ImporterBase
   bookmarkletClosing: () ->
     @DataImporter.bookmarkletClosing && @DataImporter.bookmarkletClosing()
     @Interactivity.bookmarkletClosing && @Interactivity.bookmarkletClosing()
-    
+  
   constructor: (@options) ->
     @DataImporter = new window.ppImporterClasses.GetData(this)
     @Interactivity = new window.ppImporterClasses.Interactivity(this)
 
-    # Start working here (fire off interactivity once data has been processed)...  
-    @DataImporter.getData (data) =>
-      @Interactivity.start(data)
+    # Start working here (fire off interactivity once data has been processed)...
+    if @DataImporter.canGetData()
+      @DataImporter.getData (data) =>
+        @Interactivity.start(data)
         

@@ -10,9 +10,8 @@ class window.ppImporterClasses.Sources.Pinterest
   debug             = true
   
   # Data selectors
-  boardSelector     = '.UserBoards .item.gridSortable a.boardLinkWrapper, .secretBoardWrapper .item a.boardLinkWrapper'
-  pinSelector       = '.pinWrapper'
-  pinsPending       = 'unknown'
+  boardSelector = '.boardLinkWrapper'
+  pinSelector   = '.pinWrapper'
   
   # TODO: shared with interactivity... also, why needed when updating div contents?
   toggleWindowRepaint = () ->
@@ -22,14 +21,45 @@ class window.ppImporterClasses.Sources.Pinterest
   
   # Clean up after ourselves when bookmarklet closes
   bookmarkletClosing: () ->
-    outputDiv.find('iframe.ppPinDetailFrame, iframe.ppBoardDetailFrame').remove()
+    outputDiv.find('iframe.ppPinDetailFrame, iframe.ppBoardDetailFrame, iframe.ppDataInitialFrame').remove()
   
   constructor: (@parent) ->
     @boardsData = []
-    @pinsData = []
+    @pinsData = []    
+    @pinsPending = 'unknown'
+
+
+  # If logged in, you can import your own. You can also import another user's if you're on their boards page specifically.
+  checkIfCanGetData: () ->
+    seemsLegit = true
+    
+    showError = (msg) ->
+      progressDiv.addClass('red').text(msg)
+      toggleWindowRepaint()
+      seemsLegit = false
+    
+    if !P?.currentUser
+      showError "You'll need to log into pinterest to import your pins."
+    else if !P.currentUser.attributes?.username
+      showError "It appears the Pinterest API has changed -- please contact us so we can investigate further!"
+    else
+      startURL = if $('.userStats li:first a').length # Other user's profile
+        name = $('meta[name="og:title"], meta[property="og:title"]').attr('content') || window.location.pathname.split('/')[1]
+        @parent.Interactivity.setHeader "Importing boards and pins from: #{name}"
+        $('.userStats li:first a').attr('href')
+      else
+        @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
+        "/#{P.currentUser.attributes.username}/boards/"
+      
+      @dataInitialPage = if window.location.pathname == startURL then $('body') else
+        homeFrame = $('<iframe class="ppDataInitialFrame">').hide().attr('src', startURL).appendTo( appendTarget )
+        homeFrame.on 'load', () =>
+          @dataInitialPage = homeFrame.contents()
+        null
+        
+    return seemsLegit
 
   getData: (callback) ->
-    @boardsPending = $(boardSelector).length
     @processingAllBoards = new $.Deferred()
     @processingAllPins = new $.Deferred()
 
@@ -45,13 +75,24 @@ class window.ppImporterClasses.Sources.Pinterest
       @reportProgress "Beginning to process pins (#{@pinsPending})"
       @processAPin(pin) for pin in @pinsData
 
-    # Now start actually getting data
-    @reportProgress "Collecting boards"
-    if $(boardSelector).length
-      $(boardSelector).each (bidx, board) =>
-        @processABoard(board)
-    else
-     @reportProgress "No boards found!", 'red'
+
+    withInitialPage = () =>
+      # Now start actually getting data
+      @reportProgress "Collecting boards"
+      if @boardsPending = $(boardSelector, @dataInitialPage).length
+        $(boardSelector, @dataInitialPage).each (bidx, board) =>
+          @processABoard(board)
+      else
+        @reportProgress "No boards found!", 'red'
+    
+    withoutInitialPage = () =>
+      @reportProgress "Error loading page -- please navigate to the profile's boards page, then try again.", 'red'
+      
+    hasInitialPage = () =>
+      @dataInitialPage?
+    
+    @waitFor hasInitialPage, withInitialPage, withoutInitialPage, 500, 10 * 1000
+    
 
     
   reportProgress: (message, color) ->
@@ -91,7 +132,6 @@ class window.ppImporterClasses.Sources.Pinterest
       return
 
     pinFrame = $('<iframe class="ppPinDetailFrame">').hide().attr('src', pin.pinterestURL).appendTo( appendTarget )
-    console.log('opening '+pin.pinterestURL)
     pinFrame.on 'load', (e) =>
       pin.url =       @parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
       pin.imageURL =  @parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
@@ -116,7 +156,7 @@ class window.ppImporterClasses.Sources.Pinterest
       
     if debug
       frameIdx = $('iframe.ppBoardDetailFrame').length
-      iframe.show().css({position: 'absolute', left: "#{50 * frameIdx}px", top: '100px', height: '100px', width: '100px', border: '2px solid #333', 'z-index': 9999999999999})
+      iframe.show().css({position: 'absolute', left: "#{150 * frameIdx}px", top: '100px', height: '100px', width: '100px', border: '2px solid #333', 'z-index': 9999999999999})
     
     processingThisBoard.done () =>
       iframe.remove()
@@ -154,7 +194,7 @@ class window.ppImporterClasses.Sources.Pinterest
       else
         timeout = 15 * 1000
         foundAllPins = null
-      
+        
         periodicCheck = () ->
           seen = frameDoc.find('.Pin.Module').length
           if expectedPins == seen
@@ -177,4 +217,20 @@ class window.ppImporterClasses.Sources.Pinterest
             # TODO: somehow indicate to user that some pins weren't collected
         
         setTimeout timeOutIfRequired, timeout
-
+  
+  waitFor: (checkFn, successFn, failFn, interval, timeout) ->
+    succeeded = false
+    
+    periodicCheck = () ->
+      console.log "Checking... #{checkFn()}"
+      if checkFn()
+        succeeded = true
+        clearInterval(checker)
+        successFn()
+        
+    timeoutIfRequred = () ->
+      if !succeeded
+        failFn && failFn()
+    
+    checker = setInterval periodicCheck, interval
+    setTimeout timeoutIfRequred, timeout

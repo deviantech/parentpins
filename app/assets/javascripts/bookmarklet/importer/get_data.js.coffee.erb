@@ -9,13 +9,15 @@ class window.ppImporterClasses.GetData
 
   constructor: (@parent) ->
     @dataSourceName = if useTestData then 'Test' else @parent.options.dataSource
-  
+    @source = new window.ppImporterClasses.Sources[@dataSourceName](@parent)
+    
   bookmarkletClosing: () ->
-    if @source?
-      @source.bookmarkletClosing && @source.bookmarkletClosing()
+    @source.bookmarkletClosing && @source.bookmarkletClosing()
+  
+  canGetData: () ->
+    if @source.checkIfCanGetData then @source.checkIfCanGetData() else true
   
   getData: (callback) ->
-    @source = new window.ppImporterClasses.Sources[@dataSourceName](@parent)
     @source.getData (data) ->
       callback(data)
       

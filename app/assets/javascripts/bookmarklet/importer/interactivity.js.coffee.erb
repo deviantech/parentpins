@@ -32,6 +32,11 @@ class window.ppImporterClasses.Interactivity
   # =======================================
   # = Methods (public interface of class) =
   # =======================================
+  
+  setHeader: (msg) ->
+    # TODO: grab containing element from parent, pass into children, rather than this search over the whole page
+    $('#ppHeaderCenter').html(msg)
+  
   start: (data) ->
     @externalPinData = data.pins
     @externalBoardData = data.boards
