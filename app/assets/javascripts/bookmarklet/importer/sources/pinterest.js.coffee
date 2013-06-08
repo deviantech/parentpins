@@ -131,12 +131,15 @@ class window.ppImporterClasses.Sources.Pinterest
       @finalizedAPin(pin)
       return
 
-    pinFrame = $('<iframe class="ppPinDetailFrame">').hide().attr('src', pin.pinterestURL).appendTo( appendTarget )
-    pinFrame.on 'load', (e) =>
-      pin.url =       @parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper a').first().prop('href')
-      pin.imageURL =  @parent.getIframeWindow(e.currentTarget).jQuery('.detailed.Pin.Module .pinWrapper img.pinImage').first().prop('src')
+    pinRequest = $.get pin.pinterestURL
+    pinRequest.done (pinHTML) =>
+      pinHTML       = $(pinHTML)
+      pin.url       = pinHTML.find('.detailed.Pin.Module .pinWrapper a:first').prop('href')
+      pin.imageURL  = pinHTML.find('.detailed.Pin.Module .pinWrapper img.pinImage:first').prop('src')
+    pinRequest.fail =>
+      # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road
+    pinRequest.always () =>
       @finalizedAPin(pin)
-      pinFrame.remove()
 
   # =====================
   # = Processing Boards =
@@ -222,7 +225,6 @@ class window.ppImporterClasses.Sources.Pinterest
     succeeded = false
     
     periodicCheck = () ->
-      console.log "Checking... #{checkFn()}"
       if checkFn()
         succeeded = true
         clearInterval(checker)
