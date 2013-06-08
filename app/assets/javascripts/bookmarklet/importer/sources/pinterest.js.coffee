@@ -77,7 +77,7 @@ class window.ppImporterClasses.Sources.Pinterest
       # Now start working on the pins
       @pinsPending = @pinsData.length
       @reportProgress "Done collecting boards.  Now processing pins (#{@pinsPending} remaining)"
-      @processAPin(pin) for pin in @pinsData
+      @startProcessingPins()
 
 
     # Now start actually getting data
@@ -122,6 +122,9 @@ class window.ppImporterClasses.Sources.Pinterest
       # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road
     pinRequest.always () =>
       @finalizedAPin(pin)
+
+  startProcessingPins: () ->
+    @processAPin(pin) for pin in @pinsData
 
   # =====================
   # = Processing Boards =

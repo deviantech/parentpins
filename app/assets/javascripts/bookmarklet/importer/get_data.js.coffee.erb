@@ -5,7 +5,7 @@ window.ppImporterClasses ?= {}
 
 class window.ppImporterClasses.GetData
   
-  useTestData   = <%= Rails.env.production? ? false : true %> && false
+  useTestData   = <%= Rails.env.production? ? false : true %>
 
   constructor: (@parent) ->
     @dataSourceName = if useTestData then 'Test' else @parent.options.dataSource
@@ -15,6 +15,7 @@ class window.ppImporterClasses.GetData
     @source.bookmarkletClosing && @source.bookmarkletClosing()
   
   canGetData: () ->
+    if useTestData then return true
     if @source.checkIfCanGetData then @source.checkIfCanGetData() else true
   
   getData: (callback) ->
