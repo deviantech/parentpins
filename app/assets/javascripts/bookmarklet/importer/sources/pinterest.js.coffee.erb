@@ -58,10 +58,10 @@ class window.ppImporterClasses.Sources.Pinterest
         else
           @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
         baseURLs
-      else if $('.userStats li:first a').length || $('.BoardInfoBar .BoardFollowButton').length # Other user's profile
+      else if $('.userStats li:first a').length || $('.BoardInfoBar .counts li:first a').hasClass('active') # Other user's profile
         name = $('meta[name="og:title"], meta[property="og:title"]').attr('content') || username
         baseURLs = ["/#{username}/", "/#{username}/boards/"]
-        if $('.BoardInfoBar .BoardFollowButton').length
+        if $('.BoardInfoBar .counts li:first a').hasClass('active')
           @singleBoardOnly = true
           @parent.Interactivity.setHeader "Importing pins from #{username}'s board (#{$('.BoardHeader h1').text()})"
           baseURLs.push window.location.pathname
@@ -104,10 +104,7 @@ class window.ppImporterClasses.Sources.Pinterest
 
 
     # Now start actually getting data
-    if @singleBoardOnly
-      @processSingleBoardFromBoardDetailPage()
-      @processingAllBoards.resolve()
-    else if $(boardSelector).length 
+    if @singleBoardOnly || $(boardSelector).length 
       @processBoards() 
     else
       @reportProgress "No boards found!", 'red'    
@@ -172,68 +169,69 @@ class window.ppImporterClasses.Sources.Pinterest
   # = Processing Boards =
   # =====================
   processBoards: () ->
-    @boardQueue = $.makeArray $(boardSelector)
+    unless @singleBoardOnly
+      @boardQueue = $.makeArray $(boardSelector)
     @boardDetailFrame ?= $('<iframe class="ppBoardDetailFrame">').appendTo( appendTarget ).css({position: 'absolute', top: '-100px', left: '-1000px', height: '50px', width: '50px', visibility: 'hidden'})
+    # @boardDetailFrame.css({visibility: 'visible', left: '100px', top: '100px', height: '500px', width: '500px'})
     @processAnotherBoard()
-  
-  processSingleBoardFromBoardDetailPage: () ->
-    board = ({
-      name: $('.BoardHeader h1').text(),
-      pinterestURL: window.location + '',
-      id: @hashFromString(window.location + '')
-    })
-    @boardsData.push board
-    @collectPinsFromBoard(board.id)
     
-  collectPinsFromBoard: (boardID, frameDoc) ->
-    frameDoc ?= document
-    $(pinSelector, frameDoc).each (pidx, pin) =>
-      pin = $(pin)
-      pinData = {
-        board_id:       boardID,
-        description:    pin.find('.pinDescription').text(),
-        domain:         pin.find('.pinDomain').text(),
-        price:          pin.find('.priceValue').text(),
-        smallImageURL:  pin.find('.pinImg.loaded').prop('src'), # May not be lazy loaded yet
-        pinterestURL:   pin.find('a.pinImageWrapper').prop('href')
-      }
-      pinData.id = @hashFromString "#{boardID}:#{pinData.pinterestURL}"
-      if pinData.pinterestURL.length > 4
-        @pinsData.push pinData
-  
   # To avoid overwhelming either the browser or the server, we load the boards sequentially
-  processAnotherBoard: () ->    
-    board         = $( @boardQueue.pop() )
-    boardURL      = board.prop('href')
-    boardName     = $.trim( board.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
-    boardID       = @hashFromString(boardURL)
-    expectedPins  = parseInt board.find('.boardPinCount').text().replace(/pins?/, ''), 10
-
-    boardMsg = "Processing Board: #{boardName} (#{@boardQueue.length + 1} remaining)"
-    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{expectedPins} pins."
-
+  processAnotherBoard: () ->
     frameDoc = null
     processingThisBoard = new $.Deferred()
+    
+    board = if @singleBoardOnly
+      {
+        name: $('.BoardHeader h1').text(),
+        pinterestURL: window.location + '',
+        expectedPins: $('.BoardInfoBar .counts li:first a')
+      }
+    else
+      li = $( @boardQueue.pop() )
+      {
+        name: $.trim( li.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
+        pinterestURL: li.prop('href'),
+        expectedPins: li.find('.boardPinCount')
+      }
+    
+    board.expectedPins = parseInt(board.expectedPins.text().replace(/pins?/, ''), 10)
+    board.id = @hashFromString(board.pinterestURL)
+      
+    boardMsg = if @boardQueue?.length then "Processing Board: #{board.name} (#{@boardQueue.length + 1} remaining)" else "Processing Board: #{board.name}"
+    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{board.expectedPins} pins."
 
     processingThisBoard.done () =>
-      @boardsData.push({name: boardName, pinterestURL: boardURL, id: boardID, numPins: expectedPins})
-      if @boardQueue.length == 0 then @processingAllBoards.resolve() else @processAnotherBoard()
+      @boardsData.push board
+      if (@singleBoardOnly || @boardQueue.length == 0) then @processingAllBoards.resolve() else @processAnotherBoard()
 
-    processBoardDetails = () =>      
-      @collectPinsFromBoard(boardID, frameDoc)
+    processBoardDetails = () =>
+      $(pinSelector, frameDoc).each (pidx, pin) =>
+        pin = $(pin)
+        pinData = {
+          board_id:       board.id,
+          description:    pin.find('.pinDescription').text(),
+          domain:         pin.find('.pinDomain').text(),
+          price:          pin.find('.priceValue').text(),
+          smallImageURL:  pin.find('.pinImg.loaded').prop('src'), # May not be lazy loaded yet
+          pinterestURL:   pin.find('a.pinImageWrapper').prop('href')
+        }
+        pinData.id = @hashFromString "#{board.id}:#{pinData.pinterestURL}"
+        if pinData.pinterestURL.length > 4
+          @pinsData.push pinData
+      
       processingThisBoard.resolve()
 
-    if expectedPins == 0
+    if board.expectedPins == 0
       processingThisBoard.resolve()
     else      
       @boardDetailFrame.off 'load' # Remove any previous listeners
 
-      # After load, wait for various ajax events to finish
+      # After load scroll down to be sure all pins have been loaded via ajax, then parse
       @boardDetailFrame.on 'load', () =>
         frameDoc = @boardDetailFrame.contents()
-    
-        if isNaN(expectedPins)
-          console.log "Unable to parse number of expected pins for board (#{boardName}), so waiting two seconds and hoping for the best"
+        
+        if isNaN(board.expectedPins)
+          console.log "Unable to parse number of expected pins for board (#{board.name}), so waiting two seconds and hoping for the best"
           setTimeout processBoardDetails, 3000
         else
           timeout = 15 * 1000
@@ -254,7 +252,8 @@ class window.ppImporterClasses.Sources.Pinterest
                     
           periodicCheck = () =>
             seen = frameDoc.find('.Pin.Module').length
-            if expectedPins == seen
+            
+            if board.expectedPins == seen
               foundAllPins = true
               clearInterval(pinCountChecker)
               clearInterval(prettyDisplay)
@@ -263,7 +262,7 @@ class window.ppImporterClasses.Sources.Pinterest
               frameDoc.scrollTop( frameDoc.height() )
               
               if seenLastIteration != seen
-                @reportProgress "#{boardMsg}. Discovered <span class='counter'>#{seenLastIteration}</span> of #{expectedPins} pins."
+                @reportProgress "#{boardMsg}. Discovered <span class='counter'>#{seenLastIteration}</span> of #{board.expectedPins} pins."
                 seenLastIteration = seen
                 scrollCounterTo(seen)
       
@@ -272,15 +271,16 @@ class window.ppImporterClasses.Sources.Pinterest
           timeOutIfRequired = () ->
             unless foundAllPins
               clearInterval(pinCountChecker)
-              console.log "Board (#{boardName}) timed out trying to load all pins"
+              console.log "Board (#{board.name}) timed out trying to load all pins"
               processBoardDetails() # Will fail to find all pins, but can at least work with what we have
               # TODO: somehow indicate to user that some pins weren't collected
       
           setTimeout timeOutIfRequired, timeout
-      
-      # Now that listeners are in place, update the frame SRC
-      @boardDetailFrame.attr('src', boardURL)
-  
+        
+      # Now that listeners are in place, update the frame SRC (adding random param if necessary, because if src is same as current page iframe won't load)
+      needsExtraParams = board.pinterestURL == (window.location + '') || board.pinterestURL == window.location.pathname
+      theNewSrc = if needsExtraParams then "#{board.pinterestURL}?seed=#{Math.random()}" else board.pinterestURL
+      @boardDetailFrame.attr('src', theNewSrc)
   
   # FUTURE: extracted general form out, but isn't yet used
   waitFor: (checkFn, successFn, failFn, interval, timeout) ->
