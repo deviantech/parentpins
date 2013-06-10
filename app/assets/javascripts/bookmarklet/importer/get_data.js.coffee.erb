@@ -5,7 +5,7 @@ window.ppImporterClasses ?= {}
 
 class window.ppImporterClasses.GetData
   
-  useTestData   = <%= Rails.env.production? ? false : true %>
+  useTestData   = <%= Rails.env.production? ? false : true %> && false
 
   constructor: (@parent) ->
     @dataSourceName = if useTestData then 'Test' else @parent.options.dataSource

@@ -7,7 +7,7 @@ class window.ppImporterClasses.Sources.Pinterest
   outputDiv         = $('#ppBookmarkletContent')
   progressDiv       = outputDiv.find('#noPotentialImages')
   appendTarget      = outputDiv
-  debug             = true
+  maxPinConnections    = 5
   
   # Data selectors
   boardSelector = '.boardLinkWrapper'
@@ -26,9 +26,9 @@ class window.ppImporterClasses.Sources.Pinterest
   constructor: (@parent) ->
     @boardsData = []
     @pinsData = []    
-    @pinsPending = 'unknown'
     @boardDetailFrame = null
     @boardQueue = []
+    @pinURLsToProcess = []
     
 
 
@@ -46,16 +46,24 @@ class window.ppImporterClasses.Sources.Pinterest
     else if !P.currentUser.attributes?.username
       showError "It appears the Pinterest API has changed -- please contact us so we can investigate further!"
     else
-      startURL = if $('.userStats li:first a').length # Other user's profile
-        name = $('meta[name="og:title"], meta[property="og:title"]').attr('content') || window.location.pathname.split('/')[1]
-        @parent.Interactivity.setHeader "Importing boards and pins from: #{name}"
-        $('.userStats li:first a').attr('href')
-      else
-        @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
-        "/#{P.currentUser.attributes.username}/boards/"
+      # TODO -- sometimes OWN profile has the thing we thought was only for others
       
-      if window.location.pathname != startURL
-        showError "To import your Pinterest pins, please run this bookmarklet from <a href='#{startURL}'>your Pinterest Boards page</a>."
+      # startURLs = if $('.userStats li:first a').length # Other user's profile
+      #   name = $('meta[name="og:title"], meta[property="og:title"]').attr('content') || window.location.pathname.split('/')[1]
+      #   @parent.Interactivity.setHeader "Importing boards and pins from: #{name}"
+      #   [$('.userStats li:first a').attr('href')]
+      # else
+      #   @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
+      #   ["/#{P.currentUser.attributes.username}/boards/", "/#{P.currentUser.attributes.username}/"]
+      # 
+      # onStartPage = () ->
+      #   (return true if thisURL == window.location.pathname) for thisURL in startURLs
+      #   return false
+      # 
+      # console.log "Given #{startURLs[0]} and #{startURLs[1]}, and currently on #{window.location.pathname}, we say: #{onStartPage()}"
+      # 
+      # unless onStartPage()
+      #   showError "To import your Pinterest pins, please run this bookmarklet from <a href='#{startURLs[0]}'>your Pinterest Boards page</a>."
         
     return seemsLegit
 
@@ -75,8 +83,8 @@ class window.ppImporterClasses.Sources.Pinterest
       @boardDetailFrame = null
       
       # Now start working on the pins
-      @pinsPending = @pinsData.length
-      @reportProgress "Done collecting boards.  Now processing pins (#{@pinsPending} remaining)"
+      @pinURLsToProcess = @pinsData.map (pin) -> pin.pinterestURL
+      @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining)."
       @startProcessingPins()
 
 
@@ -86,7 +94,6 @@ class window.ppImporterClasses.Sources.Pinterest
 
     
   reportProgress: (message, color) ->
-    console.log "ReportProgress: #{message}"
     progressDiv.html(message)    
     progressDiv.addClass('red') if color == 'red' # TODO: add ability to set color
     toggleWindowRepaint()
@@ -101,30 +108,42 @@ class window.ppImporterClasses.Sources.Pinterest
       hash = hash & hash # Convert to 32bit integer      
     Math.abs(hash) + ''
 
+  pinForURL: (url) ->
+    for pin in @pinsData
+      return pin if pin.pinterestURL == url
+    return null
+
   # ===================
   # = Processing Pins =
   # ===================
-  finalizedAPin: (pin) ->
-    @pinsPending -= 1
-    if @pinsPending == 0 then @processingAllPins.resolve()
+  startProcessingPins: () ->    
+    processOnePin = () =>
+      thisURL = @pinURLsToProcess.pop()
+      srcPin = @pinForURL(thisURL)
+      
+      if !(thisURL && srcPin)
+        @processingAllPins.resolve()
+      else
+        # Note: if can get pin URL, could skip ajax entirely. Can get big image name from small one by changing URL (/236x/ -> /736x/): 
+        # http://media-cache-ak2.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg -> http://media-cache-ak2.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg      
+        @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining)."
+        pinRequest = $.get thisURL
+        pinRequest.done (pinHTML) =>
+          pinHTML       = $(pinHTML)
+          srcPin.url       = pinHTML.find('.detailed.Pin.Module .pinWrapper a:first').prop('href')
+          srcPin.imageURL  = pinHTML.find('.detailed.Pin.Module .pinWrapper img.pinImage:first').prop('src')          
 
-  processAPin: (pin) ->
-    unless pin.pinterestURL
-      @finalizedAPin(pin)
-      return
-
-    pinRequest = $.get pin.pinterestURL
-    pinRequest.done (pinHTML) =>
-      pinHTML       = $(pinHTML)
-      pin.url       = pinHTML.find('.detailed.Pin.Module .pinWrapper a:first').prop('href')
-      pin.imageURL  = pinHTML.find('.detailed.Pin.Module .pinWrapper img.pinImage:first').prop('src')
-    pinRequest.fail =>
-      # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road
-    pinRequest.always () =>
-      @finalizedAPin(pin)
-
-  startProcessingPins: () ->
-    @processAPin(pin) for pin in @pinsData
+          # Sometimes it may not have been lazy loaded yet, but we can fill in based on big filename
+          if !srcPin.smallImageURL && srcPin.imageURL.match('/736x/')
+            srcPin.smallImageURL = srcPin.imageURL.replace('/736x/', '/236x/')
+            
+        pinRequest.fail =>
+          # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road?
+        pinRequest.always () =>
+          processOnePin()  
+    
+    for i in [1..maxPinConnections]
+      processOnePin()
 
   # =====================
   # = Processing Boards =
@@ -142,8 +161,8 @@ class window.ppImporterClasses.Sources.Pinterest
     boardID       = @hashFromString(boardURL)
     expectedPins  = parseInt board.find('.boardPinCount').text().replace(/pins?/, ''), 10
 
-    boardMsg = "Collecting boards (#{@boardQueue.length} remaining). Working on: #{boardName}"
-    @reportProgress boardMsg
+    boardMsg = "Processing Board: #{boardName} (#{@boardQueue.length + 1} remaining)"
+    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{expectedPins} pins."
 
     frameDoc = null
     processingThisBoard = new $.Deferred()
@@ -164,7 +183,8 @@ class window.ppImporterClasses.Sources.Pinterest
           pinterestURL:   pin.find('a.pinImageWrapper').prop('href')
         }
         pinData.id = @hashFromString "#{boardID}:#{pinData.pinterestURL}"
-        @pinsData.push pinData
+        if pinData.pinterestURL.length > 4
+          @pinsData.push pinData
       processingThisBoard.resolve()
 
     if expectedPins == 0
@@ -182,16 +202,34 @@ class window.ppImporterClasses.Sources.Pinterest
         else
           timeout = 15 * 1000
           foundAllPins = null
-      
+          seenLastIteration = 0
+          prettyDisplay = null
+          
+          scrollCounterTo = (max) ->
+            clearInterval(prettyDisplay)
+            updateCounter = () ->
+              if asString = progressDiv.find('.counter').text()
+                displayedSeen = parseInt asString, 10
+                if !isNaN(displayedSeen) && displayedSeen < max
+                  progressDiv.find('.counter').text(displayedSeen + 1)
+                else
+                  clearInterval updateCounter
+            prettyDisplay = setInterval updateCounter, 40
+                    
           periodicCheck = () =>
             seen = frameDoc.find('.Pin.Module').length
             if expectedPins == seen
               foundAllPins = true
               clearInterval(pinCountChecker)
+              clearInterval(prettyDisplay)
               processBoardDetails()
             else if seen > 0 # Page requires scrolling to spur loading additional pins
               frameDoc.scrollTop( frameDoc.height() )
-              @reportProgress "#{boardMsg} - discovered #{seen} of #{expectedPins}"
+              
+              if seenLastIteration != seen
+                @reportProgress "#{boardMsg}. Discovered <span class='counter'>#{seenLastIteration}</span> of #{expectedPins} pins."
+                seenLastIteration = seen
+                scrollCounterTo(seen)
       
           pinCountChecker = setInterval periodicCheck, 500
       
