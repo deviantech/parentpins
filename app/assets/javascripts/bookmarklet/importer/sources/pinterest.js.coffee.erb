@@ -7,11 +7,9 @@ class window.ppImporterClasses.Sources.Pinterest
   host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   outputDiv         = $('#ppBookmarkletContent')
   progressDiv       = outputDiv.find('#noPotentialImages')
-  progressSpinner   = if outputDiv.find('.progressSpinner').length then outputDiv.find('.progressSpinner') else $('<img src="' + host + '<%= asset_path "ui/loader.gif" %>" alt="Loading" class="centered progressSpinner"/>').hide().insertAfter(progressDiv).fadeIn()
+  progressSpinner   = if outputDiv.find('.progressSpinner').length then outputDiv.find('.progressSpinner') else $('<img src="' + host + '<%= asset_path "ui/loader.gif" %>" alt="Loading" class="centered progressSpinner"/>').hide().insertAfter(progressDiv)
   appendTarget      = outputDiv
   maxPinConnections    = 5
-  
-  console.log progressSpinner
   
   # Data selectors
   boardSelector = '.boardLinkWrapper'
@@ -50,24 +48,22 @@ class window.ppImporterClasses.Sources.Pinterest
     else if !P.currentUser.attributes?.username
       showError "It appears the Pinterest API has changed -- please contact us so we can investigate further!"
     else
-      # TODO -- sometimes OWN profile has the thing we thought was only for others
+      startURLs = if $('a.myBoards').length && $('a.myBoards').attr('href').split('/')[1] == window.location.pathname.split('/')[1] # On your own profile somewhere
+        @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
+        ["/#{P.currentUser.attributes.username}/boards/", "/#{P.currentUser.attributes.username}/"]
+      else if $('.userStats li:first a').length # Other user's profile
+        name = $('meta[name="og:title"], meta[property="og:title"]').attr('content') || window.location.pathname.split('/')[1]
+        @parent.Interactivity.setHeader "Importing boards and pins from: #{name}"
+        ["/#{window.location.pathname.split('/')[1]}/", "/#{window.location.pathname.split('/')[1]}/boards/"]
+      else
+        []
       
-      # startURLs = if $('.userStats li:first a').length # Other user's profile
-      #   name = $('meta[name="og:title"], meta[property="og:title"]').attr('content') || window.location.pathname.split('/')[1]
-      #   @parent.Interactivity.setHeader "Importing boards and pins from: #{name}"
-      #   [$('.userStats li:first a').attr('href')]
-      # else
-      #   @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
-      #   ["/#{P.currentUser.attributes.username}/boards/", "/#{P.currentUser.attributes.username}/"]
-      # 
-      # onStartPage = () ->
-      #   (return true if thisURL == window.location.pathname) for thisURL in startURLs
-      #   return false
-      # 
-      # console.log "Given #{startURLs[0]} and #{startURLs[1]}, and currently on #{window.location.pathname}, we say: #{onStartPage()}"
-      # 
-      # unless onStartPage()
-      #   showError "To import your Pinterest pins, please run this bookmarklet from <a href='#{startURLs[0]}'>your Pinterest Boards page</a>."
+      onStartPage = () ->
+        (return true if thisURL == window.location.pathname) for thisURL in startURLs
+        return false
+        
+      unless onStartPage()
+        showError "To import your Pinterest pins, please run this bookmarklet from <a href='#{startURLs[0]}'>your Pinterest Boards page</a>."
         
     return seemsLegit
 
@@ -99,6 +95,7 @@ class window.ppImporterClasses.Sources.Pinterest
 
     
   reportProgress: (message, color) ->
+    progressSpinner.fadeIn()
     progressDiv.html(message)    
     if color == 'red' # TODO: add ability to set color
       progressDiv.addClass('red') 
