@@ -4,10 +4,14 @@ window.ppImporterClasses.Sources ?= {}
 class window.ppImporterClasses.Sources.Pinterest
 
   # Global class config
+  host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   outputDiv         = $('#ppBookmarkletContent')
   progressDiv       = outputDiv.find('#noPotentialImages')
+  progressSpinner   = if outputDiv.find('.progressSpinner').length then outputDiv.find('.progressSpinner') else $('<img src="' + host + '<%= asset_path "ui/loader.gif" %>" alt="Loading" class="centered progressSpinner"/>').hide().insertAfter(progressDiv).fadeIn()
   appendTarget      = outputDiv
   maxPinConnections    = 5
+  
+  console.log progressSpinner
   
   # Data selectors
   boardSelector = '.boardLinkWrapper'
@@ -75,6 +79,7 @@ class window.ppImporterClasses.Sources.Pinterest
     @processingAllPins.done () =>
       @reportProgress('Done processing. Passing data over to our servers...')
       progressDiv.hide()
+      progressSpinner.hide()
       callback({boards: @boardsData, pins: @pinsData})
 
     @processingAllBoards.done () =>
@@ -95,7 +100,9 @@ class window.ppImporterClasses.Sources.Pinterest
     
   reportProgress: (message, color) ->
     progressDiv.html(message)    
-    progressDiv.addClass('red') if color == 'red' # TODO: add ability to set color
+    if color == 'red' # TODO: add ability to set color
+      progressDiv.addClass('red') 
+      progressSpinner.hide()
     toggleWindowRepaint()
 
   # http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ , converted to coffeescript, returning absolute value. Generating IDs for pinterest pins/boards, return as string.
