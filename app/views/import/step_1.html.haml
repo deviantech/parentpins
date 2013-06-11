@@ -2,6 +2,7 @@
 
   #pinterest_section
     .importing_boards
+      %h2 Drag entire boards
       %ul
         %li.board-all.selected Show All Pins
         - @external_boards.each do |board|
@@ -10,7 +11,7 @@
 
     .pin_lists
       = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'
-      %h2 Drag your pins to your boards below.
+      %h2 or drag your individual pins to your boards below.
       .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
         %h3 Pins previously imported
         %ul
