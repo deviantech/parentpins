@@ -21,6 +21,11 @@ class window.ppImporterClasses.Sources.Pinterest
     curHeight = body.height()
     body.height(curHeight - 1).height(curHeight)
   
+  # Because parseInt chokes on e.g. 12,345 (returns 12)
+  asInteger = (str) ->
+    val = parseInt(str.replace(/\D/g, ''), 10)
+    if isNaN(val) then null else val
+  
   # Clean up after ourselves when bookmarklet closes
   bookmarkletClosing: () ->
     outputDiv.find('iframe.ppBoardDetailFrame').remove()
@@ -193,8 +198,9 @@ class window.ppImporterClasses.Sources.Pinterest
         pinterestURL: li.prop('href'),
         expectedPins: li.find('.boardPinCount')
       }
-    
-    board.expectedPins = parseInt(board.expectedPins.text().replace(/pins?/, ''), 10)
+
+    board.expectedPins = asInteger( board.expectedPins.text() )
+
     board.id = @hashFromString(board.pinterestURL)
       
     boardMsg = if @boardQueue?.length then "Processing Board: #{board.name} (#{@boardQueue.length + 1} remaining)" else "Processing Board: #{board.name}"
@@ -239,16 +245,19 @@ class window.ppImporterClasses.Sources.Pinterest
           seenLastIteration = 0
           prettyDisplay = null
           
-          scrollCounterTo = (max) ->
+          prettilyScrollCounter = () ->
             clearInterval(prettyDisplay)
             updateCounter = () ->
-              if asString = progressDiv.find('.counter').text()
-                displayedSeen = parseInt asString, 10
-                if !isNaN(displayedSeen) && displayedSeen < max
+              counter = progressDiv.find('.counter')
+              if str = counter.text()
+                displayedSeen = asInteger(str)
+                max = counter.data('max')
+                
+                if displayedSeen && displayedSeen < max
                   progressDiv.find('.counter').text(displayedSeen + 1)
                 else
                   clearInterval updateCounter
-            prettyDisplay = setInterval updateCounter, 40
+            prettyDisplay = setInterval updateCounter, 50
                     
           periodicCheck = () =>
             seen = frameDoc.find('.Pin.Module').length
@@ -262,9 +271,9 @@ class window.ppImporterClasses.Sources.Pinterest
               frameDoc.scrollTop( frameDoc.height() )
               
               if seenLastIteration != seen
-                @reportProgress "#{boardMsg}. Discovered <span class='counter'>#{seenLastIteration}</span> of #{board.expectedPins} pins."
+                @reportProgress "#{boardMsg}. Discovered <span class='counter' data-min='#{seenLastIteration}' data-max='#{seen}'>#{seenLastIteration}</span> of #{board.expectedPins} pins."
                 seenLastIteration = seen
-                scrollCounterTo(seen)
+                prettilyScrollCounter()
       
           pinCountChecker = setInterval periodicCheck, 500
       
