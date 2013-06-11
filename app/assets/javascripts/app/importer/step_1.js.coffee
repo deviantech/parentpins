@@ -155,8 +155,7 @@ initBoardBackgroundOnHover = () ->
 
    
 tellParentOurHeight = () ->
-  console.log "Telling parents our current height: #{$(document).height()} or #{$('body').height()}"
-  sendMessage('step1:setHeight:' + $(document).height())
+  sendMessage('step1:setHeight:' + ($('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15))
   
 window.initStep1 = () ->
   initial = $('.importing_pins.previously_imported').data('initial')
