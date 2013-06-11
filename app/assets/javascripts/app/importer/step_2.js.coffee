@@ -52,7 +52,7 @@ window.toggleImportingThisPin = (link) ->
     $('#'+li.attr('id')+'_pin_info').insertAfter( li.find('.pin_photo') ).show()
     li.find('.pin_errors').show()
     li.find('.status_boxes').show()
-    li.find('.open_close_controls a').text('Skip this Pin')
+    li.find('.open_close_controls a').text('Remove from Import')
   else
     li.addClass('skip-this-pin')
     

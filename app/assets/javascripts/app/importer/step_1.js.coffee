@@ -83,6 +83,7 @@ checkIfAnyDraggableLeft = () ->
       section.find('ul').append("<div class='no-more'>List of "+kind+" pins "+board_label+" is empty.</div>")
     else
       section.find('.no-more').remove()
+  tellParentOurHeight()
 
 
 # Add draggable/droppable effects
@@ -153,12 +154,19 @@ initBoardBackgroundOnHover = () ->
   $('#our_section li.board').hover(showImageBG, hideImageBG)
 
    
+tellParentOurHeight = () ->
+  console.log "Telling parents our current height: #{$(document).height()} or #{$('body').height()}"
+  sendMessage('step1:setHeight:' + $(document).height())
+  
 window.initStep1 = () ->
   initial = $('.importing_pins.previously_imported').data('initial')
   if typeof(initial) == 'string' then initial = $.parseJSON(raw)
   handlePreviouslyImportedData(initial)
   initDragDrop()
   initBoardBackgroundOnHover()
+
+  # Tell parent how tall we are
+  tellParentOurHeight()
 
   # Handle Submit Button
   $('#ppSubmitBoardsSortedLink').on 'click', () =>
@@ -173,12 +181,15 @@ window.initStep1 = () ->
     imported = $('.importing_pins.previously_imported')
     link = $(e.currentTarget)
     if imported.is(':visible')
-      imported.slideUp()
       link.text('Show Previously Imported')
+      imported.slideUp () ->
+        checkIfAnyDraggableLeft()
     else
-      imported.slideDown()
       link.text('Hide Previously Imported')
-    checkIfAnyDraggableLeft()
+      imported.slideDown () ->
+        checkIfAnyDraggableLeft()
+
+    
 
   # Only show pins from selected board
   $('body').on 'click', '.importing_boards li', (e) =>

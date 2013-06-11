@@ -19,7 +19,7 @@
                   .pin_photo
                     = image_tag pin.remote_image_url || pin.cached_remote_image_url
                     .open_close_controls
-                      = link_to_function 'Skip this Pin', "toggleImportingThisPin(this)"
+                      = link_to_function 'Remove from Import', "toggleImportingThisPin(this)"
                     
                   .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
                     .status_boxes

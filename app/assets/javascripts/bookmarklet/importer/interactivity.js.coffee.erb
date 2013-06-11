@@ -111,7 +111,11 @@ class window.ppImporterClasses.Interactivity
       [step, command, extra...] = event.data.split(':')
       extra = extra.join(':')
       if step == 'step1'
-        if command == 'next' then @transitionToStepTwo(extra)
+        switch command
+          when 'next' then @transitionToStepTwo(extra)
+          when 'setHeight' 
+            console.log "Got setHeight to #{extra}"
+            @stepOneFrame.height( extra )
       else if step == 'step2'
         switch command
           when 'previous'
