@@ -1220,7 +1220,7 @@ ul.boards {
       text-decoration: none;
       text-shadow: 0 1px 0 rgba(255, 255, 255, 0.64);
     &:hover {
-      color: #b6457a;
+      color: $themeCOLOR;
       text-decoration: underline; } } }
   h4 {
     color: #888888;
@@ -1283,14 +1283,17 @@ ul.boards {
         width: 160px;
         height: 18px;
         background-color: $themeCOLOR;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479');
-        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = '#e5579a', endColorstr = '#cd2479')";
-        background-image: -moz-linear-gradient(top, #e5579a, #cd2479);
-        background-image: -ms-linear-gradient(top, #e5579a, #cd2479);
-        background-image: -o-linear-gradient(top, #e5579a, #cd2479);
-        background-image: -webkit-gradient(linear, center top, center bottom, from(#e5579a), to(#cd2479));
-        background-image: -webkit-linear-gradient(top, #e5579a, #cd2479);
-        background-image: linear-gradient(top, #e5579a, #cd2479);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0, 0, 0, 0.15)');
+        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0,0,0,0.15)')";
+        background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+        background-image: -ms-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+        background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+        background-image: -webkit-gradient(linear, center top, center bottom, from(transparent), to(rgba(0, 0, 0, 0.15)));
+        background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+        background-image: linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
         text-align: center;
         color: #fff;
         font-size: 15px;
