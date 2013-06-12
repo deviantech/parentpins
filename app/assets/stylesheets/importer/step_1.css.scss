@@ -84,10 +84,13 @@ body.step_1 {
     }
     .importing_boards {
       width: 200px;
-      margin: 12px;
+      margin: 0;
       position:absolute;
       top:24px;
       left:24px;
+      h2 {
+        margin:0 0 12px 0;
+      }
       ul {
         li {
           margin: 0 0 6px 0;
