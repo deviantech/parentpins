@@ -74,7 +74,7 @@ hideShowPinsForSelectedBoard = () ->
 checkIfAnyDraggableLeft = () ->
   $('.importing_pins').each (i, section) =>
     section = $(section)
-    if section.find('li.pin:visible').length == 0
+    if section.find('li.pin').length == 0
       kind = if section.hasClass('not_yet_imported') 
        'not-yet-imported'
       else
