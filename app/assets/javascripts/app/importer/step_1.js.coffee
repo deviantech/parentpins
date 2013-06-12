@@ -1,5 +1,10 @@
 prevImported = null
 
+tellParentOurHeight = () ->
+  if $('body').is(':visible')
+    height = $('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15
+    sendMessage("step1:setHeight:#{height}")
+
 handleSubmission = () ->
   data = dataToSubmit()
   if data.length == 0
@@ -136,7 +141,8 @@ initDragDrop = () ->
   
   # Used when boards added via ajax
   window.stepOneAddDroppableBoard = (board) ->
-    $(board).droppable(dropOpts).hide().appendTo( $('#our_section ul.boards') ).fadeIn();
+    $(board).droppable(dropOpts).hide().appendTo( $('#our_section ul.boards') ).fadeIn () ->
+      tellParentOurHeight()
   
   if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable(dragOpts)
   if $('.importing_boards li').length   then $('.importing_boards li').draggable(pinterestBoardDragOpts)
@@ -152,10 +158,6 @@ initBoardBackgroundOnHover = () ->
     $(e.currentTarget).css({'background-image': ""})
     
   $('#our_section li.board').hover(showImageBG, hideImageBG)
-
-   
-tellParentOurHeight = () ->
-  sendMessage('step1:setHeight:' + ($('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15))
   
 window.initStep1 = () ->
   initial = $('.importing_pins.previously_imported').data('initial')

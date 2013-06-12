@@ -4,7 +4,7 @@ window.importedPins = (pins_as_string) ->
 window.importCompleted = () ->
   sendMessage("step2:done")
 
-window.previousStep = () ->
+window.backToStepOne = () ->
   sendMessage("step2:previous", 'load previous step')  
 
 
@@ -64,8 +64,13 @@ window.toggleImportingThisPin = (link) ->
 
     # Now actually move .pin_info outside the form, so it doesn't submit
     li.find('.pin_info').insertAfter( li.parents('form') )
-  
+
+tellParentOurHeight = () ->
+  height = $('body .importing').height() + $('body .importing').offset().top + 55
+  sendMessage('step2:setHeight:' + height)
+
 window.initStep2 = () ->
+  tellParentOurHeight()
   form = $('form.import_form')  
   
   form.on 'submit', () ->

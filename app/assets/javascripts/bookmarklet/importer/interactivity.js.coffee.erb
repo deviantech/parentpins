@@ -113,11 +113,10 @@ class window.ppImporterClasses.Interactivity
       if step == 'step1'
         switch command
           when 'next' then @transitionToStepTwo(extra)
-          when 'setHeight' 
-            console.log "Got setHeight to #{extra}"
-            @stepOneFrame.height( extra )
+          when 'setHeight' then @stepOneFrame.height( extra )
       else if step == 'step2'
         switch command
+          when 'setHeight' then @stepTwoFrame.height( extra )
           when 'previous'
             @stepTwoFrame.hide()
             @stepOneFrame.show()

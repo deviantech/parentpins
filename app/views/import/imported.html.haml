@@ -8,7 +8,7 @@
     %strong Next Steps:
     %ul
       %li= link_to 'View your newly-imported pins', pins_profile_url(current_user), :target => '_top'
-      %li= link_to_function 'Go back and import more pins', 'window.previousStep()'
+      %li= link_to_function 'Go back and import more pins', 'window.backToStepOne()'
 
 - content_for :footer_js do
   :javascript
