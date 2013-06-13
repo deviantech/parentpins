@@ -48,10 +48,10 @@ class window.ppImporterClasses.Sources.Pinterest
       toggleWindowRepaint()
       seemsLegit = false
     
-    if !P?.currentUser
+    if !P?.currentUser?.attributes
+      showError "It appears the Pinterest API has changed -- please contact us so we can investigate further!"      
+    else if !P.currentUser.attributes.username
       showError "You'll need to log into pinterest to import your pins."
-    else if !P.currentUser.attributes?.username
-      showError "It appears the Pinterest API has changed -- please contact us so we can investigate further!"
     else
       username = window.location.pathname.split('/')[1]
       startURLs = if $('a.myBoards').length && $('a.myBoards').attr('href').split('/')[1] == username # On your own profile somewhere - current location matches the nav link path
@@ -74,7 +74,8 @@ class window.ppImporterClasses.Sources.Pinterest
           @parent.Interactivity.setHeader "Importing boards and pins from: #{name}"
         baseURLs
       else
-        []
+        # Slight possibility username isn't URL-valid... but this should usually work
+        ["/#{P.currentUser.attributes.username}/boards/"]
       
       onStartPage = () ->
         (return true if thisURL == window.location.pathname) for thisURL in startURLs

@@ -76,7 +76,6 @@ do(document = document, jQuery = window.jQuery) ->
       if (window.ppImporter && window.ppImporter.bookmarkletClosing)
         window.ppImporter.bookmarkletClosing()
       
-      window.ppBookmarklet = null
       return false
     
     closeBookmarkletIfEscapePressed = (e) ->
