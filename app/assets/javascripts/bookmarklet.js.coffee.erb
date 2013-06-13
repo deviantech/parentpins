@@ -75,7 +75,8 @@ do(document = document, jQuery = window.jQuery) ->
       # If the pinterest importer is running, notify it that we're closing.
       if (window.ppImporter && window.ppImporter.bookmarkletClosing)
         window.ppImporter.bookmarkletClosing()
-        
+      
+      window.ppBookmarklet = null
       return false
     
     closeBookmarkletIfEscapePressed = (e) ->

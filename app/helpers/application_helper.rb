@@ -83,7 +83,7 @@ module ApplicationHelper
   end
     
   def bookmarklet_link
-    link_to 'ParentPin It!', %Q{javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src',"//#{host}#{asset_path('bookmarklet.js')}?r="+Math.random()*9999999);b.body.appendChild(s)})(document));}
+    link_to 'ParentPin It!', %Q{javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src',"//#{host}#{asset_path('bookmarklet.js')}?r="+Math.random()*999);b.body.appendChild(s);setTimeout(function(){if (!window.ppBookmarklet){alert("It seems we were unable to connect to the server. Please try again shortly.")}},4000);})(document))}
   end
 
   def pagination_link

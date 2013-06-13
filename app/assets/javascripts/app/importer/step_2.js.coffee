@@ -98,6 +98,7 @@ window.initStep2 = () ->
       extrafield.removeClass('hidden')
     else
       extrafield.addClass('hidden')
+    tellParentOurHeight()
   
   # Handle marking age group selected
   form.on 'change', 'select.age_group_id', () ->
