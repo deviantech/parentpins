@@ -82,7 +82,10 @@ class window.ppImporterClasses.Sources.Pinterest
         return false
         
       unless onStartPage()
-        showError "To import your Pinterest pins, please run this bookmarklet from <a href='#{startURLs[0]}'>your Pinterest Boards page</a>."
+        if P?.currentUser?.attributes?.username
+          showError "To import your Pinterest pins, please run this bookmarklet from <a href='#{startURLs[0]}'>your Pinterest Boards page</a>."
+        else
+          showError "To import your Pinterest pins, please log into Pinterest and run this bookmarklet from your profile page."
         
     return seemsLegit
 
