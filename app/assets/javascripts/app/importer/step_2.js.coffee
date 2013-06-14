@@ -66,8 +66,9 @@ window.toggleImportingThisPin = (link) ->
     li.find('.pin_info').insertAfter( li.parents('form') )
 
 tellParentOurHeight = () ->
-  height = $('body .importing').height() + $('body .importing').offset().top + 55
-  sendMessage('step2:setHeight:' + height)
+  if false # We don't want to update the containing iframe height, because we want the footer w/ mass editing to always be visible on screen
+    height = $('body .importing').height() + $('body .importing').offset().top + 55
+    sendMessage('step2:setHeight:' + height)
 
 updatePinSelectionFromBoardCheckbox = (checkbox) ->
   $(checkbox).parents('li.importing_board').find('input[name=mass-select]').each (idx, pinbox) ->

@@ -4,11 +4,12 @@ window.ppImporterClasses ?= {}
 class window.ppImporterClasses.Interactivity
   
   # Global Class Config
-  outputDiv         = $('#ppBookmarkletContent')
-  outputDivWrapper  = outputDiv.parents('#ppBookmarkletContentWrapper')
-  host              = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
-  stepOneURL        = host + '<%= Rails.application.routes.url_helpers.pin_import_step_1_path %>'   # Loaded in iframe directly from PP
-  stepTwoURL        = host + '<%= Rails.application.routes.url_helpers.pin_import_step_2_path %>'   # Loaded in iframe directly from PP
+  outputDiv           = $('#ppBookmarkletContent')
+  outputDivWrapper    = outputDiv.parents('#ppBookmarkletContentWrapper')
+  host                = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
+  stepOneURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_1_path %>'   # Loaded in iframe directly from PP
+  stepTwoURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_2_path %>'   # Loaded in iframe directly from PP
+  frameWrapperMargin  = 50
                 
   # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
   appendTarget      = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
@@ -136,8 +137,8 @@ class window.ppImporterClasses.Interactivity
     @transitionToStepOne = () ->
       @ensureFrameWrapper()
       @stepTwoFrame.hide() if (@stepTwoFrame)
-      @stepOneFrame ?= $('<iframe class="ppParentPinsImporter">').appendTo( @iframeWrapper )
-      @stepOneFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
+      @stepOneFrame ?= $('<iframe class="ppParentPinsImporter stepOne">').appendTo( @iframeWrapper )
+      @stepOneFrame.height( outputDivWrapper.height() - frameWrapperMargin ).show()
 
       doc = @stepOneFrame.contents()[0]
       if doc
@@ -159,8 +160,8 @@ class window.ppImporterClasses.Interactivity
       @ensureFrameWrapper()
       @stepOneFrame.hide()
       @stepTwoFrame.remove() if @stepTwoFrame
-      @stepTwoFrame = $('<iframe class="ppParentPinsImporter" name="ppParentPinsImporterStep2Frame">').appendTo( @iframeWrapper )
-      @stepTwoFrame.height( outputDivWrapper.height() - outputDiv.offset().top ).show()
+      @stepTwoFrame = $('<iframe class="ppParentPinsImporter stepTwo" name="ppParentPinsImporterStep2Frame">').appendTo( @iframeWrapper )
+      @stepTwoFrame.height( outputDivWrapper.height() - frameWrapperMargin ).show()
 
       # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
       @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: @paramsForStepTwo(dataString), url: stepTwoURL}) )
