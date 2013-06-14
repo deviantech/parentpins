@@ -3,6 +3,7 @@
   #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
 %p{ :style => 'margin:0 0 0 24px;padding:0;'}
   Please complete the information for each pin below to finish importing your pins.
+
 = form_for :import, :url => pin_import_step_2_path, :html => {:class => 'import_form'} do |f|
   %ul.importing_boards
     - @boards.each do |board|
@@ -11,6 +12,11 @@
           .board_info
             %h3= board.name
             = image_tag board.cover.url
+            %br
+            %label
+              = check_box_tag 'mass-select-board'
+              Toggle mass editing all in board
+            
           %ul.importing_pins
             - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
               = b.fields_for "pins[#{idx}]", pin do |p|
@@ -24,6 +30,7 @@
                     
                   .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
                     .status_boxes
+                      .line &nbsp;
                       .status_box.ageGroupStatus Age
                       .status_box.pinTypeStatus Type
                       .status_box.otherStatus Other
@@ -31,11 +38,15 @@
                     = p.hidden_field :smallImageURL, :value => pin.cached_remote_small_image_url
                     = p.hidden_field :external_id
                     = p.hidden_field :via_url
+                    .line.select
+                      %label
+                        = check_box_tag 'mass-select'
+                        Select for Mass Editing
                     .line
                       %strong Age Group
                       = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all), {}, :class => 'age_group_id'
                     .line
-                      %strong Pin Kind
+                      %strong Pin Type
                       - Pin::VALID_TYPES.each do |kind|
                         %label.radio_opt
                           = p.radio_button :kind, kind, :class => 'pin_type'
@@ -52,11 +63,31 @@
                       %strong Pin Description
                       = p.text_area :description, :class => 'other_input'
                   .clearfix
+    .clearfix
+  .clearfix
   .form_button_bar 
     %span.js-if-post-message.hidden
       = link_to_function 'Go Back and Modify Selection', 'backToStepOne()', :style => 'display:block;float:left;padding:12px;'
-
     = f.submit 'Import Pins', :class => 'btn tertiary_action'
+    #mass-edit-controls
+      %h3 
+        Mass Editing:
+        .count
+          Changes will modify
+          %span.number 0
+      .fields
+        .field
+          %strong Pin Type:
+          - Pin::VALID_TYPES.each do |kind|
+            %label.radio_opt
+              = radio_button_tag :kind, kind
+              = kind.titleize
+        .field
+          %strong Pin Age Group:
+          = select_tag :age_group_id, options_for_select([['Select an Age Group', '']] + select_options(AgeGroup.all))
+      .clearfix
+      
+    
 .clearfix
 
 - if @imported

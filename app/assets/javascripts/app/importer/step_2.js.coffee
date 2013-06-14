@@ -69,6 +69,28 @@ tellParentOurHeight = () ->
   height = $('body .importing').height() + $('body .importing').offset().top + 55
   sendMessage('step2:setHeight:' + height)
 
+updatePinSelectionFromBoardCheckbox = (checkbox) ->
+  $(checkbox).parents('li.importing_board').find('input[name=mass-select]').each (idx, pinbox) ->
+    $(pinbox).prop('checked', $(checkbox).is(':checked'))
+    updatePinSelectionFromCheckbox(pinbox)
+
+updatePinSelectionFromCheckbox = (checkbox) ->
+  checkbox = $(checkbox)
+  pin = checkbox.parents('li.importing_pin')
+  if checkbox.is(':checked') then pin.addClass('mass-selected') else pin.removeClass('mass-selected')
+  updateMassEditingControlsVisibility()
+
+updateMassEditingControlsVisibility = () ->
+  mass = $('#mass-edit-controls')
+  if count = $('input[name=mass-select]:checked').length
+    mass.find('.count .number').text(count)
+    unless mass.is(':visible')
+      mass.find('select').val('')
+      mass.find('input:checked').prop('checked', null)
+      mass.fadeIn()
+  else
+    mass.fadeOut()
+    
 window.initStep2 = () ->
   tellParentOurHeight()
   form = $('form.import_form')  
@@ -112,3 +134,29 @@ window.initStep2 = () ->
   if (!!window.postMessage)
     $('.js-if-post-message').removeClass('hidden')
 
+  # Set up pin/board selection checkboxes (initial + when changed)
+  
+  form.find('input[name=mass-select]').each () ->
+    updatePinSelectionFromCheckbox(this)
+    
+  form.on 'change', 'input[name=mass-select]', () ->
+    updatePinSelectionFromCheckbox(this)
+
+  form.find('input[name=mass-select-board]').each () ->
+    updatePinSelectionFromBoardCheckbox(this)
+    
+  form.on 'change', 'input[name=mass-select-board]', () ->
+    updatePinSelectionFromBoardCheckbox(this)
+
+  mass = $('#mass-edit-controls')
+  mass.on 'change', 'select[name=age_group_id]', () ->
+    newVal = $(this).val()
+    form.find('.mass-selected select.age_group_id').val( newVal ).each () ->
+      updateAgeGroupStatus(this)
+  
+  mass.on 'change', 'input', () ->
+    if $(this).is(':checked')
+      form.find(".mass-selected input.pin_type[value='#{$(this).val()}']").prop('checked', 'checked').each () ->
+        updatePinTypeStatus(this)
+      
+  # TODO: fire change events...
