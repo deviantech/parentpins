@@ -48,9 +48,8 @@ class window.ppImporterClasses.Sources.Pinterest
       toggleWindowRepaint()
       seemsLegit = false
     
-    if !P?.currentUser?.attributes
-      showError "It appears the Pinterest API has changed -- please contact us so we can investigate further!"      
-    else if !P.currentUser.attributes.username
+
+    if !P?.currentUser?.attributes?.username
       showError "You'll need to log into pinterest to import your pins."
     else
       username = window.location.pathname.split('/')[1]
