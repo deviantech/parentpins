@@ -7,6 +7,7 @@ class window.ppImporterClasses.Interactivity
   host                = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   stepOneURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_1_path %>'   # Loaded in iframe directly from PP
   stepTwoURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_2_path %>'   # Loaded in iframe directly from PP
+  loaderImageURL      = host + '<%= asset_path("ui/loader.gif") %>'
   frameWrapperMargin  = 50
                 
   # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
@@ -66,18 +67,20 @@ class window.ppImporterClasses.Interactivity
     @externalPinData = []     # Expects an array with an id, board_id, and various pin fields
     @externalBoardData = []   # Expects an array with at least id and name fields
 
-    # Pull in some from bookmarklet
+    # Pull in some variables from bookmarklet
     @outputDiv = window.ppBookmarklet.contentBase
     @outputDivWrapper = @outputDiv.parents('#ppBookmarkletContentWrapper')
+
+    # Preload loader img
+    loader = new Image()
+    loader.src = loaderImageURL
 
     $(window).on 'message', (evt) =>
       # Only process this message if it was meant for the current instance (e.g. if bookmarklet opened multiple times)
       # TODO: Why aren't we properly removing ourselves / our listeners on bookmarklet close? (This works, but hackish)
       if this == window.ppImporter?.Interactivity
         @handleAnyPostedMessage(evt)
-  
-  
-    
+      
     
     # =================================
     # = Implementation helper methods =
