@@ -4,8 +4,6 @@ window.ppImporterClasses ?= {}
 class window.ppImporterClasses.Interactivity
   
   # Global Class Config
-  outputDiv           = $('#ppBookmarkletContent')
-  outputDivWrapper    = outputDiv.parents('#ppBookmarkletContentWrapper')
   host                = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
   stepOneURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_1_path %>'   # Loaded in iframe directly from PP
   stepTwoURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_2_path %>'   # Loaded in iframe directly from PP
@@ -42,20 +40,25 @@ class window.ppImporterClasses.Interactivity
     @externalPinData = data.pins
     @externalBoardData = data.boards
     if @externalPinData.length == 0
-      outputDiv.find('#noPotentialImages').html('No importable pins found.').addClass('red')
+      @outputDiv.find('#noPotentialImages').html('No importable pins found.').addClass('red')
     else if window['postMessage']
       @transitionToStepOne()
     else
-      outputDiv.find('#noPotentialImages').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
+      @outputDiv.find('#noPotentialImages').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
       @bookmarkletClosing()
     toggleWindowRepaint()
 
   bookmarkletClosing: () ->
     $(window).off 'message', @handleAnyPostedMessage
     @iframeWrapper.find('iframe').remove() if @iframeWrapper
+    
   
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
+    unless window.ppBookmarklet
+      alert("Importer must be loaded from the ParentPins bookmarklet!")
+      return false
+
     # Instance variable declarations
     @iframeWrapper = null
     @stepOneFrame = null
@@ -63,8 +66,18 @@ class window.ppImporterClasses.Interactivity
     @externalPinData = []     # Expects an array with an id, board_id, and various pin fields
     @externalBoardData = []   # Expects an array with at least id and name fields
 
+    # Pull in some from bookmarklet
+    @outputDiv = window.ppBookmarklet.contentBase
+    @outputDivWrapper = @outputDiv.parents('#ppBookmarkletContentWrapper')
+
     $(window).on 'message', (evt) =>
-      @handleAnyPostedMessage(evt)
+      # Only process this message if it was meant for the current instance (e.g. if bookmarklet opened multiple times)
+      # TODO: Why aren't we properly removing ourselves / our listeners on bookmarklet close? (This works, but hackish)
+      if this == window.ppImporter?.Interactivity
+        @handleAnyPostedMessage(evt)
+  
+  
+    
     
     # =================================
     # = Implementation helper methods =
@@ -100,7 +113,7 @@ class window.ppImporterClasses.Interactivity
       return $.param({from: 'importer', import: {boards: pinsByBoard}})
     
     @ensureFrameWrapper = () ->
-      @iframeWrapper ?= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
+      @iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( @outputDiv )  
 
     @handleAnyPostedMessage = (event) ->
       if event.originalEvent.origin.replace(/^https?:/, '') != host
@@ -114,10 +127,10 @@ class window.ppImporterClasses.Interactivity
       if step == 'step1'
         switch command
           when 'next' then @transitionToStepTwo(extra)
-          when 'setHeight' then @stepOneFrame.height( extra )
+          when 'setHeight' then @stepOneFrame?.height( extra )
       else if step == 'step2'
         switch command
-          when 'setHeight' then @stepTwoFrame.height( extra )
+          when 'setHeight' then @stepTwoFrame?.height( extra )
           when 'previous'
             @stepTwoFrame.hide()
             @stepOneFrame.show()
@@ -136,9 +149,9 @@ class window.ppImporterClasses.Interactivity
 
     @transitionToStepOne = () ->
       @ensureFrameWrapper()
-      @stepTwoFrame.hide() if (@stepTwoFrame)
+      @stepTwoFrame?.hide()
       @stepOneFrame ?= $('<iframe class="ppParentPinsImporter stepOne">').appendTo( @iframeWrapper )
-      @stepOneFrame.height( outputDivWrapper.height() - frameWrapperMargin ).show()
+      @stepOneFrame.height( @outputDivWrapper.height() - frameWrapperMargin ).show()
 
       doc = @stepOneFrame.contents()[0]
       if doc
@@ -154,14 +167,13 @@ class window.ppImporterClasses.Interactivity
     # ==============================================================================
 
     @transitionToStepTwo = (dataString) ->
-      # TODO: should we just have one iframe (maybe with another nested) rather than going back to parent on different domain for step1/step2 transitions?
-      
       # Now display the Step 2 iframe
       @ensureFrameWrapper()
-      @stepOneFrame.hide()
+      @stepOneFrame?.hide()
       @stepTwoFrame.remove() if @stepTwoFrame
+  
       @stepTwoFrame = $('<iframe class="ppParentPinsImporter stepTwo" name="ppParentPinsImporterStep2Frame">').appendTo( @iframeWrapper )
-      @stepTwoFrame.height( outputDivWrapper.height() - frameWrapperMargin ).show()
+      @stepTwoFrame.height( @outputDivWrapper.height() - frameWrapperMargin ).show()
 
       # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
       @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/iframe_loader']({data_string: @paramsForStepTwo(dataString), url: stepTwoURL}) )
