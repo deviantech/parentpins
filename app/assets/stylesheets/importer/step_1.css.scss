@@ -145,6 +145,14 @@ body.step_1 {
           cursor:hand;
         }
       }
+      &.previously_imported {
+        max-height: 170px;
+        overflow: auto;
+      }
+      &.not_yet_imported {
+        max-height: 310px;
+        overflow: auto;
+      }
     }
   }
   .previously_imported, .not_yet_imported {
