@@ -3,231 +3,219 @@
 //= require templates/bookmarklet/form
 //= require templates/bookmarklet/popup-placeholder
 
-  
-# TODO - how to not mess with calling page's jquery version?
-# TODO - how to wrap template includes in our bigger function to protect it from including page's content?
+class Bookmarklet
 
-do(document = document, jQuery = window.jQuery) -> 
-  # Config
-  obeyMetaRestrictions = <%= Rails.env.development? ? 'false' : 'true' %> # Only set to false when testing in development
-  host = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
-  popupName = 'ParentPinBookmarklet'
-  cssUrl = host + "<%= asset_path('bookmarklet.css') %>"
-  importerScriptURL = host + "<%= asset_path('bookmarklet/importer.js') %>"
-  minJQversion = '1.7.0'
-  desiredJQversion = '1.8.2'
-  imgDisplayWidth = 192
-  minImageWidth = 175
-  minImageHeight = 100
-  pinBaseUrl = host + '<%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
-  popupHeight = 462
-  popupWidth = 640
+  # Class Config
+  obeyMetaRestrictions  = <%= Rails.env.development? ? 'false' : 'true' %> # Only set to false when testing in development
+  host                  = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
+  popupName             = 'ParentPinBookmarklet'
+  cssUrl                = host + "<%= asset_path('bookmarklet.css') %>"
+  importerScriptURL     = host + "<%= asset_path('bookmarklet/importer.js') %>"
+  minJQversion          = '1.7.0'
+  desiredJQversion      = '1.8.2'
+  imgDisplayWidth       = 192
+  minImageWidth         = 175
+  minImageHeight        = 100
+  pinBaseUrl            = host + '<%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
+  popupHeight           = 462
+  popupWidth            = 640
+  
   # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
-  appendTarget = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
+  appendTarget      = document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]
   
-  # Our global to share variables within nested coffeescript
-  window.ppBookmarklet = {potentials: {}}
-
-  prepForBookmarklet = ->
-    includeBookmarkletStyles()
+  # Need to scope $ (jQuery) to within this class, but don't want to refer to is as @$ or this.$
+  $                 = null
+  
+  constructor: (jquery_from_window) ->
+    @potentials = {}
     
-    # check prior inclusion and version
-    if (not jQuery? || jQuery.fn.jquery < minJQversion)
-      done = false
-      script = document.createElement("script")
-      script.src = "//ajax.googleapis.com/ajax/libs/jquery/" + desiredJQversion + "/jquery.min.js"
-      script.onload = script.onreadystatechange = ->
-        if !done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")
-          done = true;
-          jQuery = window.jQuery
-          weHavejQuery()
-      appendTarget.appendChild(script)
-    else
-      weHavejQuery()
-
-  # Just to be sure $ is available and not in compatibility mode on the host site
-  weHavejQuery = ->
-    # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with.
-    # Note that we were using the sprockets-commonjs gem to include via .module.js, but 1) this is more direct in this case, and 2) it threw odd errors only on http://piccsy.com/2012/03/twins-2l9ffupx/
-    `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'bookmarklet', 'jquery-imagesloaded-min.js') ) %>`
-    initBookmarkletWithjQuery(jQuery)
-
-  # Using straight JS so we can start loading the stylesheet while pulling in jquery, etc. -- trying to avoid flash of unstyled content
-  includeBookmarkletStyles = () ->
+    # Using straight JS so we can start loading the stylesheet while pulling in jquery, etc. -- trying to avoid flash of unstyled content
     if !document.getElementById(popupName + 'CSS')
       style = document.createElement('link')
-      style.setAttribute "href", cssUrl + '?r=' + (Math.random() * 9999999)
+      style.setAttribute "href", cssUrl + '?r=' + (Math.random() * 999)
       style.setAttribute "type", 'text/css'
       style.setAttribute "id", popupName + 'CSS'
       style.setAttribute "rel", "stylesheet"
       style.setAttribute "media", 'all'
       appendTarget.appendChild(style)
-        
-  # Now we have jQuery, let's get started
-  initBookmarkletWithjQuery = ($) ->
-
-    closeBookmarklet = ->
-      $(document).off 'keyup', closeBookmarkletIfEscapePressed
-      $('#'+popupName).fadeOut ->
-        $(this).remove()
-      
-      # If the pinterest importer is running, notify it that we're closing.
-      if (window.ppImporter && window.ppImporter.bookmarkletClosing)
-        window.ppImporter.bookmarkletClosing()
-      
-      return false
     
-    closeBookmarkletIfEscapePressed = (e) ->
-      closeBookmarklet() if e.keyCode == 27
-        
-    $(document).on 'keyup', closeBookmarkletIfEscapePressed  
-
-    # Once it's been evaluated, add this image (actually, image data)
-    addImage = (data) ->
-      if !ppBookmarklet.contentBase
-        console.log('Attempting to add image before template has been processed')
-      else
-        if `!(data.src in ppBookmarklet.potentials)` # No duplicates
-          ppBookmarklet.potentials[data.src] = data
-          ppBookmarklet.contentBase.find('#noPotentialImages').hide();
-          # Max-height will prevent getting too big, but without this firefox will leave box with no height
-          added = $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( ppBookmarklet.contentBase ).height( data.scaledHeight )
-
-    isImageBigEnough = (data) ->
-      data.width && data.width >= minImageWidth && data.height && data.height >= minImageHeight
-    
-    # Given one or more versions of the same image, continue processing with at most ONE of the versions (largest)
-    evaluateImageSet = (images...) ->
-      mapping = {}
-      sizes = []
-
-      for img in images
-        do (img) ->
-          # If images are the same size, it doesn't matter which we choose, so OK to use hash here
-          data = imgToData(img)
-          mapping[data.area] = data
-          sizes.push(data.area)
-    
-      # Grab largest
-      biggest = mapping[ Math.max.apply(Math, sizes) ]    
-      if isImageBigEnough(biggest)
-        addImage(biggest)
-
-
-    # Some images need to be inserted into the DOM in order to load properly... hence our image test bed
-    inTestBed = (toTest, fnWhenLoaded) ->
-      $toTest = $(toTest)
-      $toTest.imagesLoaded ->
-        fnWhenLoaded && fnWhenLoaded()
-      $toTest.appendTo(ppBookmarklet.imageTestbed) 
-  
-    startEvaluatingPotentialImages = ->
-      evaluatePotentialImages()
-      # FUTURE: if we want to check again when ajax completes...
-      # $(document).bind('ajaxComplete', evaluatePotentialImages)
-    
-    evaluatePotentialImages = ->
-      allImages = $("img:not('.nonPinnable')")
-  
-      # For every image, if it's in a link to another image, use the linked one instead. Otherwise, add to considering list if img is large enough
-      for img in allImages
-        do (img) ->
-          $img = $(img)
-          src = $img.attr('src') || $img.data('src')
-          if src && !$img.attr('nopin') # Some google images results don't have a src set, allow blocking pins on specific images
-            imgExt = src.match(/\.\w+?$/)
-            link = $img.parents('a').first().attr('href')
-      
-            # If small image linking to larger image with same extension, use larger image instead
-            if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
-              linked = new Image()
-              linked.src = link
-              inTestBed linked, ->
-                evaluateImageSet(img, linked)
-            
-            else
-              if $img.is(':visible') 
-                evaluateImageSet(img)
-              else 
-                inTestBed img, ->
-                  evaluateImageSet(img)
-                   
-    # Convert image object to a hash containing the relevant keys
-    imgToData = (img) ->
-      $img   = $(img)
-      height = $img.height()  || 0
-      width  = $img.width()   || 0
-      area   = height * width
-      
-      # What would height be if width was imgDisplayWidth?
-      scaledHeight = if width == 0
-        0
-      else
-        (imgDisplayWidth / width) * height
-    
-      return {
-        src:    $img.attr('src') || $img.data('src'),
-        link:   $img.parents('a').first().attr('href'),
-        height: height,
-        width:  width,
-        area:   area,
-        scaledHeight: scaledHeight
-      }
-
-    ensureDefinedAndLimited = (str, limit) ->
-      return '' if (!str? || typeof(str) == 'undefined' || str == 'undefined')
-      return str.substr(0, limit) + '...' if (str.length > limit)
-      return str
-
-
-    switchToPinView = (e) ->
-      e.preventDefault()
-      potential = $(e.currentTarget)
-  
-      args = [
-        ['url',         '' + window.location],
-        ['media',       potential.find('img').attr('src')],
-        ['title',       ensureDefinedAndLimited(document.title, 100)],
-        ['description', ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)]
-      ]
-        
-      # If image was in a link, pass the link as well
-      args.push(['link', potential.data('link')]) if potential.data('link').length
-    
-      # Submit via POST (open pin window, then submit a form to it)
-      popupWindowName = popupName + 'PinWindow';
-      theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( ppBookmarklet.bookmarkletBase )
-      pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no,directories=no,scrollbars=yes')      
-      pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
-      theForm.submit()
-      pinWindow.focus() if (window.focus)
-      closeBookmarklet() # Once selected an image, close bookmarklet overlay
-      return false      
-
-    beginIfAllowed = ->
-      if obeyMetaRestrictions && ($('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length)
-        msg = $('meta[name="pinning"][content="nopin"]').first().attr('description') || $('meta[name="pinterest"][content="nopin"]').first().attr('description')
-        msg = msg || "This site doesn't allow pinning to external websites. Please contact the owner with any questions."
-        alert(msg)
-      else
-        ppBookmarklet.bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( document.body ).on('click', '#ppClose', closeBookmarklet)
-        ppBookmarklet.contentBase = ppBookmarklet.bookmarkletBase.find('#ppBookmarkletContent')
-        ppBookmarklet.contentBase.on('click', 'a.potentialImage', switchToPinView)
-        # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
-        ppBookmarklet.imageTestbed = $('<div class="imageTestbed"></div>').appendTo(ppBookmarklet.bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
-        
-        if window.location.host == 'pinterest.com'
-          ppBookmarklet.contentBase.find('#noPotentialImages').text("Evaluating Pinterest pins...");
-          $.getScript(importerScriptURL)
-        else
-          startEvaluatingPotentialImages()
-      
-
-    # Now that everything's been defined and wrapped in jQuery, start running things
-    if ($('#'+popupName).length)
-      closeBookmarklet() # Already open? Close
+    # check prior inclusion and version
+    curVersion = jquery_from_window?.fn?.jquery
+    if (curVersion && curVersion >= minJQversion)
+      $ = jquery_from_window
+      @weHavejQuery()
     else
-      beginIfAllowed()
+      done = false
+      script = document.createElement("script")
+      script.src = "//ajax.googleapis.com/ajax/libs/jquery/" + desiredJQversion + "/jquery.min.js"
+      
+      withRemotejQuery = () =>
+        $ = window.jQuery
+        @weHavejQuery()
+        
+      script.onload = script.onreadystatechange = ->
+        if !done && (!this.readyState || this.readyState == "loaded" || this.readyState == "complete")
+          done = true;
+          withRemotejQuery()
+      appendTarget.appendChild(script)
 
-  prepForBookmarklet(jQuery);
-  null
+  # Just to be sure $ is available and not in compatibility mode on the host site
+  weHavejQuery: () ->
+    # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with.
+    # Note that we were using the sprockets-commonjs gem to include via .module.js, but 1) this is more direct in this case, and 2) it threw odd errors only on http://piccsy.com/2012/03/twins-2l9ffupx/
+    `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'bookmarklet', 'jquery-imagesloaded-min.js') ) %>`
+
+    # TODO: pull out jquery from iframe here so we don't pollute parent page's jquery namespace/version?
+    
+    # Now that everything's been defined and wrapped in jQuery, start running things (close if bookmarklet is already open)
+    if ($('#'+popupName).length) then @closeBookmarklet() else @beginIfAllowed()
+    
+  
+  closeBookmarklet: ->
+    $(document).off 'keyup', @closeBookmarkletIfEscapePressed
+    $('#'+popupName).fadeOut -> $(this).remove()
+    
+    # If the pinterest importer is running, notify it that we're closing.
+    window.ppImporter.bookmarkletClosing() if (window.ppImporter && window.ppImporter.bookmarkletClosing)
+    return false
+  
+  closeBookmarkletIfEscapePressed: (e) ->
+    @closeBookmarklet() if e.keyCode == 27
+        
+  # Once it's been evaluated, add this image (actually, image data)
+  addImage: (data) ->
+    if !@contentBase?
+      console.log('Attempting to add image before template has been processed')
+    else      
+      if `!(data.src in this.potentials)` # No duplicates
+        @potentials[data.src] = data
+        @contentBase.find('#noPotentialImages').hide();
+        # Max-height will prevent getting too big, but without this firefox will leave box with no height
+        $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( @contentBase ).height( data.scaledHeight )
+  
+
+  isImageBigEnough: (data) ->
+    data.width && data.width >= minImageWidth && data.height && data.height >= minImageHeight
+  
+  # Given one or more versions of the same image, continue processing with at most ONE of the versions (largest)
+  evaluateImageSet: (images...) ->
+    mapping = {}
+    sizes = []
+
+    for img in images
+      do (img) =>
+        # If images are the same size, it doesn't matter which we choose, so OK to use hash here
+        data = @imgToData(img)
+        mapping[data.area] = data
+        sizes.push(data.area)
+  
+    # Grab largest
+    biggest = mapping[ Math.max.apply(Math, sizes) ]    
+    if @isImageBigEnough(biggest) then @addImage(biggest)
+
+
+  # Some images need to be inserted into the DOM in order to load properly... hence our image test bed
+  inTestBed: (toTest, fnWhenLoaded) ->
+    toTest.imagesLoaded ->
+      fnWhenLoaded && fnWhenLoaded()
+    toTest.appendTo(@imageTestbed).show()
+
+  evaluatePotentialImages: ->
+    allImages = $("img:not('.nonPinnable')")
+
+    # For every image, if it's in a link to another image, use the linked one instead. Otherwise, add to considering list if img is large enough
+    for img in allImages
+      do (img) =>
+        $img = $(img)
+        src = $img.attr('src') || $img.data('src')
+        if src && !$img.attr('nopin') # Some google images results don't have a src set, allow blocking pins on specific images
+          imgExt = src.match(/\.\w{1,4}$/)
+          link = $img.parents('a').first().attr('href')
+    
+          # If small image linking to larger image with same extension, use larger image instead
+          if link and imgExt and (endsWithSameExtension = new RegExp(imgExt+'$')) and link.match(endsWithSameExtension)          
+            linked = $("""<img src="#{link}"/>""")
+            @inTestBed linked, => @evaluateImageSet(img, linked)
+          
+          else
+            if $img.is(':visible') 
+              @evaluateImageSet(img)
+            else 
+              @inTestBed $img.clone(), => @evaluateImageSet(img)
+
+                 
+  # Convert image object to a hash containing the relevant keys
+  imgToData: (img) ->
+    $img   = $(img)
+    height = $img.height()  || 0
+    width  = $img.width()   || 0
+    area   = height * width
+    
+    # What would height be if width was imgDisplayWidth?
+    scaledHeight = if width == 0
+      0
+    else
+      (imgDisplayWidth / width) * height
+  
+    return {
+      src:    $img.attr('src') || $img.data('src'),
+      link:   $img.parents('a').first().attr('href'),
+      height: height,
+      width:  width,
+      area:   area,
+      scaledHeight: scaledHeight
+    }
+
+  ensureDefinedAndLimited: (str, limit) ->
+    return '' if (!str? || typeof(str) == 'undefined' || str == 'undefined')
+    return str.substr(0, limit) + '...' if (str.length > limit)
+    return str
+
+  switchToPinView: (e) ->
+    e.preventDefault()
+    potential = $(e.currentTarget)
+
+    args = [
+      ['url',         '' + window.location],
+      ['media',       potential.find('img').attr('src')],
+      ['title',       ensureDefinedAndLimited(document.title, 100)],
+      ['description', ensureDefinedAndLimited($("meta[name='description']").attr('content'), 250)]
+    ]
+      
+    # If image was in a link, pass the link as well
+    args.push(['link', potential.data('link')]) if potential.data('link').length
+  
+    # Submit via POST (open pin window, then submit a form to it)
+    popupWindowName = popupName + 'PinWindow';
+    theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( @bookmarkletBase )
+    pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no,directories=no,scrollbars=yes')      
+    pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
+    theForm.submit()
+    pinWindow.focus() if (window.focus)
+    closeBookmarklet() # Once selected an image, close bookmarklet overlay
+    return false      
+
+  beginIfAllowed: ->
+    if obeyMetaRestrictions && ($('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length)
+      msg = $('meta[name="pinning"][content="nopin"]').first().attr('description') || $('meta[name="pinterest"][content="nopin"]').first().attr('description')
+      msg = msg || "This site doesn't allow pinning to external websites. Please contact the owner with any questions."
+      alert(msg)
+    else
+      $(document).on 'keyup', @closeBookmarkletIfEscapePressed
+      @bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( document.body ).on('click', '#ppClose', @closeBookmarklet)
+      @contentBase = @bookmarkletBase.find('#ppBookmarkletContent')
+      @contentBase.on('click', 'a.potentialImage', @switchToPinView)
+      # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
+      @imageTestbed = $('<div class="imageTestbed"></div>').appendTo(@bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
+      
+      if window.location.host == 'pinterest.com'
+        @contentBase.find('#noPotentialImages').text("Evaluating Pinterest pins...");
+        $.getScript(importerScriptURL)
+      else
+        @evaluatePotentialImages()
+        
+
+# TODO - how to not mess with calling page's jquery version?
+# TODO - how to wrap template includes in our bigger function to protect it from including page's content?
+# do(document = document, jQuery = window.jQuery) -> 
+window.ppBookmarklet = new Bookmarklet(window.jQuery)
