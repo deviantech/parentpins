@@ -36,6 +36,8 @@ class window.ppImporterClasses.Sources.Pinterest
     @boardDetailFrame = null
     @boardQueue = []
     @pinURLsToProcess = []
+    @progressQueue = []
+    @canUpdateProgress = true
     
 
 
@@ -107,24 +109,39 @@ class window.ppImporterClasses.Sources.Pinterest
       
       # Now start working on the pins
       @pinURLsToProcess = @pinsData.map (pin) -> pin.pinterestURL
-      @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining)."
+      @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining).", {delay: 10}
       @startProcessingPins()
-
 
     # Now start actually getting data
     if @singleBoardOnly || $(boardSelector).length 
       @processBoards() 
     else
-      @reportProgress "No boards found!", 'red'    
+      @reportProgress "No boards found!", {color: 'red'}
 
     
-  reportProgress: (message, color) ->
-    progressSpinner.fadeIn()
-    progressDiv.html(message)    
-    if color == 'red' # TODO: add ability to set color
-      progressDiv.addClass('red') 
-      progressSpinner.hide()
-    toggleWindowRepaint()
+  reportProgress: (message, opts = {}) ->
+    @progressQueue.push({msg: message, color: opts.color, delay: opts.delay || 60})
+    if @canUpdateProgress then @checkProgressQueue()
+    
+  checkProgressQueue: () ->
+    if next = @progressQueue.shift()
+      @canUpdateProgress = false
+      progressSpinner.fadeIn()
+      progressDiv.html(next.msg)    
+      if next.color == 'red' # TODO: add ability to set color
+        progressDiv.addClass('red') 
+        progressSpinner.hide()
+      toggleWindowRepaint()
+      
+      nextStep = () =>
+        @canUpdateProgress = true
+        @checkProgressQueue()
+        
+      setTimeout(nextStep, next.delay)
+    else
+      @canUpdateProgress = true
+      
+  
 
   # http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/ , converted to coffeescript, returning absolute value. Generating IDs for pinterest pins/boards, return as string.
   hashFromString: (string) ->
@@ -246,37 +263,21 @@ class window.ppImporterClasses.Sources.Pinterest
           timeout = 15 * 1000
           foundAllPins = null
           seenLastIteration = 0
-          prettyDisplay = null
           
-          prettilyScrollCounter = () ->
-            clearInterval(prettyDisplay)
-            updateCounter = () ->
-              counter = progressDiv.find('.counter')
-              if str = counter.text()
-                displayedSeen = asInteger(str)
-                max = counter.data('max')
-                
-                if displayedSeen && displayedSeen < max
-                  progressDiv.find('.counter').text(displayedSeen + 1)
-                else
-                  clearInterval updateCounter
-            prettyDisplay = setInterval updateCounter, 50
-                    
           periodicCheck = () =>
             seen = frameDoc.find('.Pin.Module').length
+
+            if seenLastIteration != seen
+              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.") for i in [seenLastIteration..(seen-1)]
+              @reportProgress("#{boardMsg}. Discovered #{seen} of #{board.expectedPins} pins.", {delay: 400})
+              seenLastIteration = seen
             
             if board.expectedPins == seen
               foundAllPins = true
               clearInterval(pinCountChecker)
-              clearInterval(prettyDisplay)
               processBoardDetails()
             else if seen > 0 # Page requires scrolling to spur loading additional pins
               frameDoc.scrollTop( frameDoc.height() )
-              
-              if seenLastIteration != seen
-                @reportProgress "#{boardMsg}. Discovered <span class='counter' data-min='#{seenLastIteration}' data-max='#{seen}'>#{seenLastIteration}</span> of #{board.expectedPins} pins."
-                seenLastIteration = seen
-                prettilyScrollCounter()
       
           pinCountChecker = setInterval periodicCheck, 500
       
