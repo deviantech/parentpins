@@ -22,7 +22,7 @@
           - @external_boards.each do |board|
             - board.pins.each do |pin|
               %li.pin.board-all{:class => "board-#{board.id}", :data => {'pin-external-id' => pin.external_id, 'pin-url' => pin.url, 'pin-image' => pin.image_filename}}
-                .thumb= image_tag pin.cached_remote_small_image_url.blank? ? pin.cached_remote_image_url : pin.cached_remote_small_image_url, :alt => "Pin Image"
+                .thumb= image_tag (pin.cached_remote_small_image_url.blank? ? pin.cached_remote_image_url : pin.cached_remote_small_image_url) || pin.image.url, :alt => "Pin Image"
                 .clearfix
 
       .clearfix
