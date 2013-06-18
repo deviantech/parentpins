@@ -97,7 +97,6 @@ class window.ppImporterClasses.Sources.Pinterest
     # Once collected all data, pass it along to the callback function
     @processingAllPins.done () =>
       @reportProgress('Done processing. Passing data over to our servers...')
-      progressDiv.hide()
       progressSpinner.hide().remove()
       callback({boards: @boardsData, pins: @pinsData})
 
@@ -125,6 +124,7 @@ class window.ppImporterClasses.Sources.Pinterest
     
   checkProgressQueue: () ->
     if next = @progressQueue.shift()
+      return if progressDiv.hasClass('no-auto-updates')
       @canUpdateProgress = false
       progressSpinner.fadeIn()
       progressDiv.html(next.msg)    
@@ -224,7 +224,7 @@ class window.ppImporterClasses.Sources.Pinterest
     board.id = @hashFromString(board.pinterestURL)
       
     boardMsg = if @boardQueue?.length then "Processing Board: #{board.name} (#{@boardQueue.length + 1} remaining)" else "Processing Board: #{board.name}"
-    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{board.expectedPins} pins."
+    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{board.expectedPins} pins.", {delay: 5}
 
     processingThisBoard.done () =>
       @boardsData.push board
@@ -268,11 +268,11 @@ class window.ppImporterClasses.Sources.Pinterest
             seen = frameDoc.find('.Pin.Module').length
 
             if seenLastIteration != seen
-              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.") for i in [seenLastIteration..(seen-1)]
-              @reportProgress("#{boardMsg}. Discovered #{seen} of #{board.expectedPins} pins.", {delay: 400})
+              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.") for i in [seenLastIteration..seen]
               seenLastIteration = seen
             
             if board.expectedPins == seen
+              @reportProgress("#{boardMsg}. Discovered #{seen} of #{board.expectedPins} pins.", {delay: 800})
               foundAllPins = true
               clearInterval(pinCountChecker)
               processBoardDetails()

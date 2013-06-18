@@ -162,6 +162,8 @@ initBoardBackgroundOnHover = () ->
   $('#our_section li.board').hover(showImageBG, hideImageBG)
   
 window.initStep1 = () ->
+  sendMessage("step1:loaded")
+  
   initial = $('.importing_pins.previously_imported').data('initial')
   if typeof(initial) == 'string' then initial = $.parseJSON(raw)
   handlePreviouslyImportedData(initial)
