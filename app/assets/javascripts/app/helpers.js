@@ -206,16 +206,26 @@ function viewAllComments(link) {
 
 // Wrap $.scrollTo to take into account the height of the fixed header
 function scrollToHeightFor(elem) {
-  if (!$(elem).length) return 0;
+  elem = $(elem);
+  if (!elem.length) return 0;
+  var elemOffset = elem.offset() ? elem.offset().top : 0;
+  
+  // Handle case of pin in modal, need to consider how far modal already scrolled
+  var modal_top_offset = elem.parents('.modal_overlay').find('.pin-context');
+  modal_top_offset = modal_top_offset.length ? modal_top_offset.first().offset().top : 0;
+
+  return elemOffset - $('#header_wrapper').height() - 10 - modal_top_offset;
+}
+
+function scrollTo(elem) {
+  $.scrollTo( elem );
   
   // Handle case of pin in modal, need to consider how far modal already scrolled
   var modal_top_offset = $(elem).parents('.modal_overlay').find('.pin-context');
-  modal_top_offset = modal_top_offset.length ? $(modal_top_offset).offset().top : 0;
-
-  return $(elem).offset().top - $('#header_wrapper').height() - 10 - modal_top_offset;
-}
-function scrollTo(elem) {
-  $.scrollTo( scrollToHeightFor(elem) );
+  modal_top_offset = modal_top_offset.length ? modal_top_offset.first().offset().top : 0;
+  var extraBuffer = modal_top_offset + $('#header_wrapper').height() + 10;
+  
+  $.scrollTo( '-='+extraBuffer+'px' );
 }
 
 function updateFollowingButtonsAfterClickOn(clicked) {

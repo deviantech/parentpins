@@ -124,6 +124,7 @@ initDragDrop = () ->
     revert: 'invalid',
     stack: $('#our_section li.board'),
     helper: 'clone',
+    scroll: true,
     start: (event, ui) ->
       $(event.target).css({opacity: 0.5})
     stop: (event, ui) ->
@@ -133,6 +134,7 @@ initDragDrop = () ->
     revert: 'invalid',
     stack: $('.importing_boards li'),
     helper: 'clone',
+    scroll: true,
     start: (event, ui) ->
       $(event.target).css({opacity: 0.5})
     stop: (event, ui) ->
@@ -165,10 +167,10 @@ window.initStep1 = () ->
   handlePreviouslyImportedData(initial)
   initDragDrop()
   initBoardBackgroundOnHover()
-
+ 
   # Tell parent how tall we are
   tellParentOurHeight()
-
+ 
   # Handle Submit Button
   $('#ppSubmitBoardsSortedLink').on 'click', () =>
     handleSubmission()
@@ -176,7 +178,7 @@ window.initStep1 = () ->
   # Handle Reset Button
   $('#ppResetDragDropLink').on 'click', () =>
     handlePreviouslyImportedData(null, true)
-
+ 
   # Handle show/hide previous
   $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
     imported = $('.importing_pins.previously_imported')
@@ -189,9 +191,9 @@ window.initStep1 = () ->
       link.text('Hide Previously Imported')
       imported.slideDown () ->
         checkIfAnyDraggableLeft()
-
+ 
     
-
+ 
   # Only show pins from selected board
   $('body').on 'click', '.importing_boards li', (e) =>
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
