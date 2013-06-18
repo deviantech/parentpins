@@ -29,6 +29,9 @@ class Bookmarklet
   constructor: (jquery_from_window) ->
     @potentials = {}
     
+    # To share with other bookmarklets (e.g. importer)
+    @host = host
+    
     # Using straight JS so we can start loading the stylesheet while pulling in jquery, etc. -- trying to avoid flash of unstyled content
     if !document.getElementById(popupName + 'CSS')
       style = document.createElement('link')
@@ -166,15 +169,15 @@ class Bookmarklet
       scaledHeight: scaledHeight
     }
 
-  ensureDefinedAndLimited: (str, limit) ->
-    return '' if (!str? || typeof(str) == 'undefined' || str == 'undefined')
-    return str.substr(0, limit) + '...' if (str.length > limit)
-    return str
-
   switchToPinView: (e) ->
     e.preventDefault()
     potential = $(e.currentTarget)
 
+    ensureDefinedAndLimited = (str, limit) ->
+      return '' if (!str? || typeof(str) == 'undefined' || str == 'undefined')
+      return str.substr(0, limit) + '...' if (str.length > limit)
+      return str
+    
     args = [
       ['url',         '' + window.location],
       ['media',       potential.find('img').attr('src')],
@@ -189,11 +192,11 @@ class Bookmarklet
     popupWindowName = popupName + 'PinWindow';
     theForm = $( JST['templates/bookmarklet/form']({url: pinBaseUrl, target: popupWindowName, args: args}) ).appendTo( @bookmarkletBase )
     pinWindow = window.open('', popupWindowName,'height='+popupHeight+',width='+popupWidth+',menubar=no,status=no,toolbar=no,location=no,directories=no,scrollbars=yes')      
-    pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']() )
+    pinWindow.document.write( JST['templates/bookmarklet/popup-placeholder']({host: host}) )
     theForm.submit()
     pinWindow.focus() if (window.focus)
-    closeBookmarklet() # Once selected an image, close bookmarklet overlay
-    return false      
+    @closeBookmarklet() # Once selected an image, close bookmarklet overlay
+    return false
 
   beginIfAllowed: ->
     if obeyMetaRestrictions && ($('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length)
@@ -204,7 +207,9 @@ class Bookmarklet
       $(document).on 'keyup', @closeBookmarkletIfEscapePressed
       @bookmarkletBase = $( JST['templates/bookmarklet/base']({popupName: popupName}) ).appendTo( document.body ).on('click', '#ppClose', @closeBookmarklet)
       @contentBase = @bookmarkletBase.find('#ppBookmarkletContent')
-      @contentBase.on('click', 'a.potentialImage', @switchToPinView)
+      @contentBase.on 'click', 'a.potentialImage', (e) =>
+        @switchToPinView(e)
+        
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
       @imageTestbed = $('<div class="imageTestbed"></div>').appendTo(@bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
       

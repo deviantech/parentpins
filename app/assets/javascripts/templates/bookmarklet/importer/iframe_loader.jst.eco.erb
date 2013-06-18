@@ -8,7 +8,7 @@
   <div style="margin: 50px auto; font-size: 25px; color: #555; text-align: center; font-family: sans-serif;">
     Loading...
     <br>
-    <img src="//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %><%= asset_path "ui/loader.gif" %>" alt="Spinner" class="loadingSpinner" style="margin-top: 50px;"/>
+    <img src="//<%%= @host %><%= asset_path "ui/loader.gif" %>" alt="Spinner" class="loadingSpinner" style="margin-top: 50px;"/>
   </div>
   <form action="<%%= @url %>" method="POST" id="loader">
     <input type="hidden" name='data_string' value="<%%= @data_string %>" />

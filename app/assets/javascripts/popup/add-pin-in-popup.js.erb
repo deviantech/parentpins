@@ -2,8 +2,9 @@
 // For reference, see pinning e.g. http://www.flickr.com/photos/heidihope/4831849906/
 
 $(document).ready(function(){
-  // Preload img.
-  $('<img src="<%= asset_path('ui/ball-loader.gif') %>" title="Preload">').hide().appendTo($('body'));
+  // Preload loader image
+  var img = new Image();
+  img.src = "<%= asset_path('ui/ball-loader.gif') %>";
   
   $('textarea').on('keyup', function() {
     // Size is specified in CSS, so this doesn't affect UI
