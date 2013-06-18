@@ -2,5 +2,27 @@
 //= require bookmarklet/importer/interactivity
 //= require bookmarklet/importer/importer_base
 
-window.ppImporter = new window.ppImporterClasses.ImporterBase({dataSource: 'Pinterest'});
+host                 = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
+loggedInURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_login_check_path %>'
+
+# TODO: rewrite ppBookmarklet as a class, call a message function there (to e.g. handle setting to red on errors)
+message = (str) ->
+  if window.ppBookmarklet
+    ppBookmarklet.contentBase.find('#noPotentialImages').html(str);
+  else
+    alert(str)
+
+onSuccess = (json) ->
+  if json.logged_in
+    window.ppImporter = new window.ppImporterClasses.ImporterBase({dataSource: 'Pinterest'});
+  else
+    message("""You'll need to <a href="#{host}" target="_blank">log into your ParentPins account</a> before continuing.""")
+    
+onFailure = () ->
+  message("Unable to connect with server -- please try again later.")
+    
+    
+$.getJSON("#{loggedInURL}?callback=?").done(onSuccess).fail(onFailure)
+  
+
 

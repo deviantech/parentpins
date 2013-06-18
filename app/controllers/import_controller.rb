@@ -1,8 +1,12 @@
 class ImportController < ApplicationController
   skip_before_filter :verify_authenticity_token # Coming from JS, no way for bookmarklet to know proper CSRF token
-  before_filter :authenticate_user!
-  before_filter :parse_params
+  before_filter :authenticate_user!,  :except => [:login_check]
+  before_filter :parse_params,        :except => [:login_check]
   layout 'import'
+
+  def login_check
+    render :json => {:logged_in => current_user.try(:id)}, :callback => params[:callback]
+  end
 
 
   # Assign pins to boards
