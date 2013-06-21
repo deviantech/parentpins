@@ -41,6 +41,7 @@ group :test do
 end
 
 gem 'jquery-rails', '2.1.4' # 2.2.1 breaks pagination - maybe the jquery 1.9 part?
+gem 'jquery-ui-rails'
 gem 'will_paginate'
 gem 'roadie'
 

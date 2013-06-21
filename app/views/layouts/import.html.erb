@@ -25,9 +25,6 @@
     <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
     <div class="clearfix"></div>
     <%= javascript_include_tag "application" %>
-    <% if params[:action] == 'step_1' %>
-      <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-    <% end %>
     <%= javascript_include_tag "app/importer" %>
     <%= yield :footer_js %>
 </body>

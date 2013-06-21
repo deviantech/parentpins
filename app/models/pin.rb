@@ -62,6 +62,10 @@ class Pin < ActiveRecord::Base
       result[p.url] ||= []; result[p.url] << p.image_filename
     }.to_json
   end
+  
+  def import_json
+    to_json(:only => [:id, :age_group_id, :category_id, :description, :kind, :price, :url, :via_url], :methods => [:cached_remote_image_url])
+  end
 
   def repinned?
     !repinned_from_id.blank?

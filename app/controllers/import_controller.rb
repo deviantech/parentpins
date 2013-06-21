@@ -22,6 +22,32 @@ class ImportController < ApplicationController
   end
 
 
+  def step_2_new
+    @pins_to_import = []
+    @boards = []
+    @imported = []
+
+    @data[:import][:boards].each do |board_id, board_info|
+      next unless board = current_user.boards.find_by_id(board_id)
+
+      board_info[:pins].each do |idx, data|
+        pin = Pin.from_pinterest(current_user, board, data)
+
+        if @data[:from] == 'importer' || !pin.save
+          @pins_to_import << pin
+          @boards << board unless @boards.include?(board)
+        else
+          @imported << pin
+        end
+      end
+    end
+
+    if !@imported.empty? && @pins_to_import.empty?
+      @body_class = 'import_completed'
+      render 'imported'
+    end
+  end
+
   # Collect info & save new pins
   def step_2
     @pins_to_import = []

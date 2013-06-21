@@ -1,0 +1,21 @@
+%h1 
+  Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
+  #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
+%p{ :style => 'margin:0 0 0 24px;padding:0;'}
+  Please drag each pin to a box to assign pin types.
+
+
+.drop_section_wrapper.clearfix
+  %ul
+    - Pin::VALID_TYPES.each do |kind|
+      %li.drop_target
+        %h3= kind.humanize
+        %ul.collection
+
+.drag_section_wrapper.clearfix
+  %ul
+    - @pins_to_import.each do |pin|
+      %li.pin{:data => {:attributes => pin.import_json}}
+        = image_tag pin.remote_image_url || pin.cached_remote_image_url
+    
+

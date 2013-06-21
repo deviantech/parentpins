@@ -1,4 +1,51 @@
 /*
  *= require importer/step_1
  *= require importer/step_2
+ *= require jquery.ui.selectable
+ *= require_self
  */
+ 
+ body.step_2_new {
+  .drop_section_wrapper {
+    ul {
+      list-style-type: none;
+      li.drop_target {
+        float: left;
+        width: 30%;
+        border: 1px solid #CCC;
+        background: rgba(255, 255, 255, 0.9);
+        margin-right: 10px;
+        padding: 5px;
+      } 
+      li.pin {
+        margin: 3px;
+        width: 50px;
+        img {
+          max-width: 50px;
+        }
+      } } }
+    
+    
+  li.pin {
+    margin: 5px;
+    float: left;
+    border: 1px solid #CCC;
+    &.ui-selected {
+      border: 2px solid red;
+    }
+    &.ui-selecting {
+      border: 2px solid yellow;
+    }
+  }
+
+  .drag_section_wrapper {
+    margin-top: 20px;
+    ul {
+      list-style-type: none;
+      li.pin {
+        width: 100px;
+        img {
+          max-width: 100px;
+        }
+      } } }
+}
