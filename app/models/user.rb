@@ -107,6 +107,7 @@ class User < ActiveRecord::Base
   
 
   def twitter_account=(str)
+    return if str.blank?
     val = str.gsub(/@/, '').split('/').last.split('?').first
     if val.blank? 
       @twitter_error = str
@@ -120,6 +121,7 @@ class User < ActiveRecord::Base
   end
   
   def facebook_account=(str)
+    return if str.blank?
     val = str.split('/').last.split('?').first
     if val.blank? 
       @facebook_error = str
