@@ -30,7 +30,7 @@
   var newComment = $("<%= escape_javascript(render "/board/comment", :comment => @comment, :first => true) %>");
   $('li.recent_comment').find('.user_info .count').remove();
   $('ul.comments').first().prepend(newComment);
-  $('#comment_body').val('');
+  $('#comment_body').val('').focus().select();
 
 
 <% else %>

@@ -11,7 +11,7 @@
   <%= render 'shared/filters' %>
   <div class="empty-results">
     <% if @profile == current_user %>
-      <h2>You haven't followed anyone with pins <%= 'matching these filters' if @kind || @category || @age_group %> yet!</h2>
+      <h2>You haven't followed anyone with pins <%= 'matching these filters' if @filtered %> yet!</h2>
       <p>
         To find users you'd like to follow (and have their pins populate this page), 
         check out a few of our <%= link_to 'trending boards', boards_path %> or <%= link_to 'featured users', featured_path %>.

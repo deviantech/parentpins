@@ -52,6 +52,8 @@ class ApplicationController < ActionController::Base
     
     age_id = params[:age_group_id] || params[:age_group]
     @age_group = AgeGroup.find_by_id(age_id) unless age_id.blank?
+    
+    @filtered = @kind || @category || @age_group
   end
   
   def consider_ajax_layout

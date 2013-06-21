@@ -2,7 +2,7 @@
 
   <div class="board_comments">
     <% if user_signed_in? || @board.comments_count > 1 %>
-      <a href="#" id="message_toggle" class="btn sec_action comment_button right">
+      <a href="#" id="comment_toggle" class="btn sec_action comment_button right">
         <% if user_signed_in? %>
           <% if @board.comments_count.zero? %>
             Add first comment!
@@ -18,18 +18,16 @@
     <% end %>
   
     <h2>Board Talk</h2>
-  
+    
     <% if user_signed_in? %>
-      <div id="comment_form_wrapper">
+      <div id="comment_form_wrapper" class="clear">
         <%= render 'comments/form', :commentable => @board %>
       </div>
     <% end %>
 
-    <% if @board.comments_count > 0 %>
-      <ul class="comments">
-        <%= render :partial => 'comment', :object => @board.comments.first, :locals => {:first => true} %>
-      </ul>
-    <% end %>
+    <ul class="comments">
+      <%= render(:partial => 'comment', :object => @board.comments.first, :locals => {:first => true}) if @board.comments_count > 0 %>
+    </ul>
   
     <% if @board.comments_count > 1 %>
       <div id="more_comments">
@@ -44,7 +42,7 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function(){
   
-        $("#message_toggle").click(function() {
+        $("#comment_toggle").click(function() {
           var wrapper = $("#comment_form_wrapper");
           var link = $(this);
           
@@ -53,8 +51,10 @@
             wrapper.slideUp("slow");
           } else {
             link.data('origText', link.text());
-            wrapper.slideDown("slow");
             link.text('Collapse Comments');
+            wrapper.slideDown("slow", function() {
+              wrapper.find('textarea:visible').first().focus().select();
+            });
           }
           $("#more_comments").is(':visible') ? $("#more_comments").slideUp("slow") : $("#more_comments").slideDown("slow");
         

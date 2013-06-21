@@ -1,9 +1,11 @@
-<%= render 'shared/filters' %>
+<%= render 'shared/filters' unless @pins.blank? && !@filtered %>
 
 <% if @pins.blank? %>
   <div class="empty-results">
     <% if @profile.blank? %>
       <h2>No pins to show</h2>
+    <% elsif @board %>
+      <h2>No pins <%= 'matching these filters' if @filtered %> on this board yet.</h2>
     <% else %>
       <% if params[:action] == 'likes' %>
         <% if @profile == current_user %>
@@ -23,7 +25,7 @@
             <%= link_to 'Add a Pin', new_pin_path, :class => 'ajax btn large primary' %>
           </p>
         <% else %>
-          <h2><%= @profile.name %> has no pins to show.</h2>
+          <h2><%= @profile.name %> has no pins <%= 'matching these filters' if @filtered %> to show.</h2>
         <% end %>
       <% end %>
     <% end %>
