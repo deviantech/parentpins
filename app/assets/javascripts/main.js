@@ -66,6 +66,7 @@ $(document).ready(function() {
     var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
     $.ajax({type: $(this).data('ajax-method') || 'POST', url: url});
     updateFollowingButtonsAfterClickOn(this);
+    e.preventDefault();
   });
     
   // Add custom trucation
@@ -117,6 +118,16 @@ $(document).ready(function() {
   $('ul.masonry').on('click', 'li.pin .actions', function(e) {
     if (e.target.className.match(/actions/)) {
       $(e.target).siblings('a.image_link').click();
+    }
+  });
+  
+  // Anchor links
+  $('.internal_nav a').on('click', function(e) {
+    var href = $(e.target).attr('href');
+    if (href && href[0] == '#' && $(href)) {
+      e.preventDefault();
+      e.stopPropagation();
+      scrollTo($(href), {duration: 300});
     }
   });
   

@@ -217,15 +217,13 @@ function scrollToHeightFor(elem) {
   return elemOffset - $('#header_wrapper').height() - 10 - modal_top_offset;
 }
 
-function scrollTo(elem) {
-  $.scrollTo( elem );
-  
+function scrollTo(elem, opts) {
   // Handle case of pin in modal, need to consider how far modal already scrolled
   var modal_top_offset = $(elem).parents('.modal_overlay').find('.pin-context');
   modal_top_offset = modal_top_offset.length ? modal_top_offset.first().offset().top : 0;
-  var extraBuffer = modal_top_offset + $('#header_wrapper').height() + 10;
+  var totalOffset = modal_top_offset + $('#header_wrapper').height() + 10;
   
-  $.scrollTo( '-='+extraBuffer+'px' );
+  $.scrollTo(elem, $.extend(opts || {}, {offset: -1 * totalOffset}));
 }
 
 function updateFollowingButtonsAfterClickOn(clicked) {
