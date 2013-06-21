@@ -17,8 +17,8 @@
   </h1>
   <p class="description"><%= @board.description.blank? ? 'No description provided.' : @board.description %></p>
   <div class="board_stats">
-    <span><%= pluralize @board.pins_count, 'pin', 'pins' %></span>
-    <span><%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %></span>
+    <span class="pins_count"><%= pluralize @board.pins_count, 'pin', 'pins' %></span>
+    <span class="followers_count"><%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %></span>
     <span>Category: <%= @board.category.name %></span>
   </div>
   
