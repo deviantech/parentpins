@@ -1,8 +1,8 @@
 <h1>
   <% if current_user == @profile %>
-    People You Are Following
+    You Are Following Boards From These Users
   <% else %>
-    People <%= @profile.name %> Is Following
+    <%= @profile.name %> Is Following Boards From These Users
   <% end %>
 </h1>
 
