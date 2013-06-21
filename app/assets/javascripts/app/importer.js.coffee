@@ -3,7 +3,7 @@
 //= require app/importer/step_1
 //= require app/importer/step_2
 
-$(document).ready () ->
+$(document).ready () ->  
   if $('body').hasClass('step_2')
     window.initStep2()
   if $('body').hasClass('step_1')

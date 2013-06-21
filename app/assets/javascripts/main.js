@@ -5,6 +5,9 @@ $(document).ready(function() {
   // TODO - replace character-based truncation with line-based
   applyTruncationTo('li.pin .description span.truncate-me', 120);
   applyTruncationTo('li.board .description span.truncate-me', 12);
+
+  $('[rel=tooltip]').tooltip({container: 'body', trigger: 'hover'});
+  $('[rel=popover]').popover({container: 'body', trigger: 'hover'});
   
   // Pin actions
   function getContainingClassNameForPinAction(btn) {

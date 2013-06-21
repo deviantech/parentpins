@@ -18,7 +18,7 @@
 //= require jquery.history
 //= require app/modernizr
 //= require app/jquery-sortable
-//= require bootstrap/alerts
+//= require bootstrap-components
 //= require app/helpers
 //= require app/flash
 //= require app/modal

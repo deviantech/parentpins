@@ -2,6 +2,7 @@ prevImported = null
 
 tellParentOurHeight = () ->
   if $('body').is(':visible')
+    updateBoardHeight()
     height = $('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15
     sendMessage("step1:setHeight:#{height}")
 
@@ -12,6 +13,10 @@ handleSubmission = () ->
   else
     sendMessage('step1:next:' + data.join(':'), 'continue to step 2')
 
+updateBoardHeight = () ->
+  max = $('#pinterest_section').height() - $('.importing_boards ul').offset().top - 20
+  $('.importing_boards ul').css({'max-height': max})
+  
 
 dataToSubmit = () ->
   toImport = []

@@ -2,16 +2,21 @@
 
   #pinterest_section
     .importing_boards
-      %h2 Drag entire boards
+      %h2
+        Your Pinterest Boards
+        %i{tooltip("Click a board to show only its pins. Drag a board to move all its pins.", :class => 'icon-question-sign')}
       %ul
         %li.board-all.selected Show All Pins
         - @external_boards.each do |board|
-          %li{:class => "board-#{board.id}"}
-            Pinterest Board: #{board.name}
+          %li{:class => "board-#{board.id}"}= board.name
+      .clear
+      
 
     .pin_lists
       = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'
-      %h2 or drag your individual pins to your boards below.
+      %h2 
+        Your Pinterest Pins
+        %i{tooltip("Assign the pins you want to import to a ParentPins board by dragging them.", :class => 'icon-question-sign')}
       .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
         %h3 Pins previously imported
         %ul
@@ -25,7 +30,9 @@
                 .thumb= image_tag (pin.cached_remote_small_image_url.blank? ? pin.cached_remote_image_url : pin.cached_remote_small_image_url) || pin.image.url, :alt => "Pin Image"
                 .clearfix
 
-      .clearfix
+      .clear
+    .clear
+  .clear
 
   #our_section
     %ul.boards

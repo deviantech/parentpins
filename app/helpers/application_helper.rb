@@ -1,5 +1,14 @@
 module ApplicationHelper
 
+  def tooltip(title, opts = {})
+    opts.merge({:rel => 'tooltip', :title => title, 'data-placement' => opts.delete(:placement) || 'right'})
+  end
+  
+  def popover(title, content, opts = {})
+    opts.merge({:rel => 'popover', :title => title, :data => {:content => content, :placement => 'right'}})
+  end
+
+
   def display_teacher_info(user)
     return 'Not a teacher' unless user.teacher?
     base = [content_tag(:strong, "#{h user.name} is a teacher")]
