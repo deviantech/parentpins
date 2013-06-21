@@ -11,6 +11,8 @@
     <%= pluralize board.pins_count, 'pin', 'pins' %>
     /
     <%= pluralize board.followers_even_indirectly_count, 'follower', 'followers' %>    
+    /
+    <%= board.category.name.downcase %>
   </h4>
   <div class="holder">
     <%= link_to '', profile_board_path(board.user, board), :class => "link" %>
@@ -28,12 +30,6 @@
       <% thumbnails_for_board(board).each do |src| %>
         <%= image_tag src, :class => 'board_image' %>
       <% end %>
-    </div>
-    <div class="description">
-      <p>
-        <strong><%= board.category.name %></strong>
-        <span class="<%= 'truncate-me' unless board.description.blank? %>">: <%= board.description.blank? ? 'No description provided' : board.description %></span>
-      </p>
     </div>
   </div>
   <% if user_signed_in? && current_user != board.user %>

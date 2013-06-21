@@ -157,11 +157,9 @@ class User < ActiveRecord::Base
     
   # TODO: make uses of this more efficient   
   def following_even_indirectly
-    @following_even_indirectly ||= begin
-      uids = users_following_ids
-      uids += Board.where(:id => boards_following_ids).select('DISTINCT(user_id)')
-      User.where(:id => uids.uniq)
-    end
+    uids = users_following_ids
+    uids += Board.where(:id => boards_following_ids).select('DISTINCT(user_id)')
+    User.where(:id => uids.uniq)
   end
 
   def following_even_indirectly_count
@@ -169,11 +167,9 @@ class User < ActiveRecord::Base
   end
 
   def followed_by_even_indirectly
-    @followed_by_even_indirectly ||= begin
-      uids = followed_by_ids
-      uids += boards.collect {|b| b.directly_followed_by_ids}
-      User.where(:id => uids.flatten.uniq)
-    end
+    uids = followed_by_ids
+    uids += boards.collect {|b| b.directly_followed_by_ids}
+    User.where(:id => uids.flatten.uniq)
   end
 
   def followed_by_even_indirectly_count

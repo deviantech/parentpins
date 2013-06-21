@@ -1402,7 +1402,7 @@ form .field {
 }
 
 .form .field {
-  input, textarea, select[multiple="multiple"] {
+  input, textarea, select[multiple="multiple"], select {
     display: block;
     width: 240px;
     background: none repeat scroll 0 0 white;
@@ -1417,14 +1417,15 @@ form .field {
     font-weight: normal;
     padding: 8px 10px;
     resize: none; } 
-  select[multiple="multiple"] {
+  select[multiple="multiple"], select {
     width: 260px;
     option {
       color: #666;
       font-size: 13px;
       padding: 2px 0;
     }
-  }}
+  }
+}
   
 .form .field.checkbox {
   overflow:hidden;
