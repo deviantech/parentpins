@@ -64,7 +64,7 @@ class Pin < ActiveRecord::Base
   end
   
   def import_json
-    to_json(:only => [:id, :age_group_id, :category_id, :description, :kind, :price, :url, :via_url], :methods => [:cached_remote_image_url])
+    to_json(:only => [:id, :age_group_id, :board_id, :description, :kind, :price, :url, :via_url], :methods => [:cached_remote_image_url])
   end
 
   def repinned?

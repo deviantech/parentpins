@@ -1,0 +1,76 @@
+dragSection = $('.drag_section_wrapper')
+dropSection = $('.drop_section_wrapper')
+
+dropOpts = {
+  hoverClass: "ui-state-active",
+  drop: (event, ui) ->
+    helper = $(ui.helper)
+    target = $(this).find('.collection')
+
+    if helper.hasClass('pins')
+      target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected') )
+      $(ui.draggable).remove()
+    else if helper.hasClass('board')
+      dragSection.find('li.pin.board_'+helper.data('board-id')).appendTo(target)
+}
+
+dragOpts = {
+  revert: 'invalid',
+  stack: '.drag_section_wrapper li',
+  delay: 0, # Needed to prevent accidental drag when trying to select
+  revert: 0,
+  start: (event, ui) ->
+    item = $(event.target).css({opacity: 0.5})
+  stop: (e, ui) ->
+    ui.helper.data('item').css({opacity: 1.0})
+  helper: (e) ->
+    helper = $('<ul class="pins"/>')
+    item = $(e.currentTarget)
+    if !item.hasClass('ui-selected')
+      item.addClass('ui-selected').siblings().removeClass('ui-selected')
+    elements = item.parent().children('.ui-selected').clone()
+    item.siblings('.ui-selected').remove()
+    helper.data('multidrag', elements).data('item', item).append(elements)
+}
+boardDragOpts = {
+  revert: 'invalid',
+  stack: '.drag_section_wrapper li',
+  delay: 0, # Needed to prevent accidental drag when trying to select
+  revert: 0,
+  helper: 'clone',
+  start: (event, ui) ->
+    item = $(event.target).css({opacity: 0.5})
+  stop: (e, ui) ->
+    $(this).css({opacity: 1.0})
+}
+
+window.initStep2New = () ->
+  dropSection.find('li.drop_target').droppable(dropOpts)
+  # dragSection.find('ul.pin').selectable({delay: 50})
+  dragSection.find('li.pin').draggable(dragOpts)
+  dragSection.find('li.board').draggable(boardDragOpts)
+
+  #
+  # TODO: hook up multi drag
+  #
+  
+  $('#import_form').on 'submit', (e) ->
+    if $('.drag_section_wrapper li.pin').length
+      alert("Please drag ALL pins to one of the boxes on top first.")
+      return false
+    else
+      data = []
+      dropSection.find('.drop_target').each () ->
+        kind = $(this).data('kind')
+        $(this).find('li.pin').each (idx, pin) ->
+          data.push $.extend($(this).data('attributes'), {kind: kind})
+      
+      # Because .param requires an object, not an array of objects
+      dataAsObject = {}
+      $.each data, (idx, item) ->
+        dataAsObject[idx] = item
+      
+      window.kt = dataAsObject
+      
+      $(this).find('input[name=data_string]').val( $.param({pins: dataAsObject}) )
+      true

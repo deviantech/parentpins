@@ -1,0 +1,18 @@
+%h1 
+  Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
+  #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
+%p{ :style => 'margin:0 0 0 24px;padding:0;'}
+  Please drag each pin to a box to assign age groups.
+
+
+.drop_section_wrapper.clearfix
+  %ul
+    - AgeGroup.all.each do |age|
+      %li.drop_target{:data => {:age_group_id => age.id}}
+        %h3= age.name
+        %ul.collection
+
+= render 'drag_section'
+    
+.submit_bar
+  %button#submit Assign Age Groups
