@@ -12,6 +12,7 @@ dropOpts = {
       $(ui.draggable).remove()
     else if helper.hasClass('board')
       dragSection.find('li.pin.board_'+helper.data('board-id')).appendTo(target)
+    checkIfAnyDraggableLeft()
 }
 
 dragOpts = {
@@ -44,7 +45,26 @@ boardDragOpts = {
     $(this).css({opacity: 1.0})
 }
 
-window.initStep2New = () ->
+
+hideShowPinsForSelectedBoard = () ->
+  id = dragSection.find('ul.boards li.selected').data('board-id')
+  soon = () =>
+    dragSection.find('li.pin').hide()
+    dragSection.find("li.pin.board_#{id}").show()
+    checkIfAnyDraggableLeft()
+
+  # Give JS time to reset to having dropped pin (not sure why, but required)
+  setTimeout soon, 1
+
+checkIfAnyDraggableLeft = () ->
+  section = dragSection.find('ul.pins')
+  section.find('.no-more').remove()
+  unless section.find('li.pin:visible').length
+    scope = if dragSection.find('ul.boards li.selected').data('board-id') == 'all' then '' else " in this board "
+    section.append("<div class='no-more'>List of pins #{scope} to assign is empty.</div>")
+
+
+window.initStepDragToAssign = () ->
   dropSection.find('li.drop_target').droppable(dropOpts)
   # dragSection.find('ul.pin').selectable({delay: 50})
   dragSection.find('li.pin').draggable(dragOpts)
@@ -53,6 +73,11 @@ window.initStep2New = () ->
   #
   # TODO: hook up multi drag
   #
+  dragSection.on 'click', 'li.board', (e) ->
+    console.log e
+    $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
+    hideShowPinsForSelectedBoard()
+  
   
   $('#import_form').on 'submit', (e) ->
     if $('.drag_section_wrapper li.pin').length

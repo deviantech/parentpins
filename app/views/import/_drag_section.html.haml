@@ -1,9 +1,10 @@
 .drag_section_wrapper.clearfix
   %ul.boards
+    %li.board{:data => {'board-id' => 'all'}} Show All Pins
     - @boards.each do |board|
       %li.board{:data => {'board-id' => board.id}}= board.name
   
   %ul.pins
     - @pins_to_import.each do |pin|
-      %li.pin{:class => "board_#{pin.board_id}", :data => {:attributes => pin.import_json}}
+      %li.pin.board_all{:class => "board_#{pin.board_id}", :data => {:attributes => pin.import_json}}
         = image_tag pin.remote_image_url || pin.cached_remote_image_url

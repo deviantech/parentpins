@@ -22,7 +22,7 @@ class ImportController < ApplicationController
   end
 
 
-  def step_2_new
+  def step_2
     @pins_to_import = []
     @boards = []
 
@@ -44,7 +44,7 @@ class ImportController < ApplicationController
   end
 
   # Collect info & save new pins
-  def step_2
+  def step_4
     @pins_to_import = []
     @boards = []
     @imported = []

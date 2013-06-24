@@ -4,13 +4,16 @@
 //= require jquery.ui.droppable
 //= require app/importer/shared
 //= require app/importer/step_1
-//= require app/importer/step_2
-//= require app/importer/step_2_new
+//= require app/importer/step_4
+//= require app/importer/steps_drag_to_assign
 
 $(document).ready () ->  
-  if $('body').hasClass('step_2')
-    window.initStep2()
   if $('body').hasClass('step_1')
     window.initStep1()    
-  if $('body').hasClass('step_2_new')
-    window.initStep2New()
+  if $('body').hasClass('step_drag_to_assign')
+    window.initStepDragToAssign()
+  if $('body').hasClass('step_4')
+    window.initStep4()
+
+
+

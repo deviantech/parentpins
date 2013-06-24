@@ -1,11 +1,11 @@
 window.importedPins = (pins_as_string) ->
-  sendMessage("step2:imported:#{pins_as_string}")
+  sendMessage("step4:imported:#{pins_as_string}")
 
 window.importCompleted = () ->
-  sendMessage("step2:done")
+  sendMessage("step4:done")
 
 window.backToStepOne = () ->
-  sendMessage("step2:previous", 'load previous step')  
+  sendMessage("step4:previous", 'load previous step')  
 
 
 
@@ -68,7 +68,7 @@ window.toggleImportingThisPin = (link) ->
 tellParentOurHeight = () ->
   if false # We don't want to update the containing iframe height, because we want the footer w/ mass editing to always be visible on screen
     height = $('body .importing').height() + $('body .importing').offset().top + 55
-    sendMessage('step2:setHeight:' + height)
+    sendMessage('step4:setHeight:' + height)
 
 updatePinSelectionFromBoardCheckbox = (checkbox) ->
   $(checkbox).parents('li.importing_board').find('input[name=mass-select]').each (idx, pinbox) ->
@@ -92,7 +92,7 @@ updateMassEditingControlsVisibility = () ->
   else
     mass.fadeOut()
     
-window.initStep2 = () ->
+window.initStep4 = () ->
   tellParentOurHeight()
   form = $('form.import_form')  
   
