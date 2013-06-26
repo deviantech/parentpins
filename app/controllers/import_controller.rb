@@ -1,8 +1,9 @@
 class ImportController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:step_1, :login_check] # Coming from JS, no way for bookmarklet to know proper CSRF token
   before_filter :authenticate_user!,  :except => [:login_check]
-  before_filter :parse_params,        :except => [:login_check]
+  before_filter :parse_params,        :except => [:login_check, :show]
   before_filter :get_profile_info,    :except => [:login_check, :step_1]
+  before_filter :set_filters,         :only =>   [:show]
 
   def login_check
     render :json => {:logged_in => current_user.try(:id)}, :callback => params[:callback]
@@ -61,9 +62,9 @@ class ImportController < ApplicationController
     @import && @import.increment(:completed, @imported.length)
 
     if @pins_to_import.empty?
-      flash.now[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
+      flash[:success] = "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
       session.delete(:import_id)
-      @pins = @imported
+      redirect_to profile_import_path(current_user, @import)
     else
       if @imported.empty?
         flash.now[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    
@@ -74,6 +75,15 @@ class ImportController < ApplicationController
       @boards = @pins_to_import.map(&:board).uniq
       @context = :step_4
       render 'step_4'
+    end
+  end
+  
+  def show
+    if @import = current_user.imports.find(params[:id])
+      paginate_pins @import.pins
+    else
+      flash[:error] = "Unable to locate specified import"
+      redirect_to profile_path(current_user)
     end
   end
 

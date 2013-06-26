@@ -35,6 +35,7 @@ ParentPins::Application.routes.draw do
   scope :profile_id => /[^\/]*/, :id => /[^\/]*/ do
     get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
     get "/profile/:profile_id/board/:id/comments" => 'board#comments', :as => :profile_board_comments
+    get "/profile/:profile_id/import/:id" => 'import#show', :as => :profile_import
     resources :profile do
       member do
         get 'activity'
