@@ -3,7 +3,7 @@
 %p.instructions
   Please drag each pin to a box to assign pin types.
 
-.drop_section_wrapper.clearfix
+.drop_section_wrapper.clearfix{:data => {:extra_key => :kind}}
   %ul
     - Pin::VALID_TYPES.each do |kind|
       %li.drop_target{:data => {:kind => kind}}

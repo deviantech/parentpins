@@ -3,7 +3,7 @@
 %p.instructions
   Please drag each pin to a box to assign age groups.
 
-.drop_section_wrapper.clearfix
+.drop_section_wrapper.clearfix{:data => {:extra_key => :age_group_id}}
   %ul
     - AgeGroup.all.each do |age|
       %li.drop_target{:data => {:age_group_id => age.id}}

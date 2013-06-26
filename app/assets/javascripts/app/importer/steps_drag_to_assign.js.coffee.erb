@@ -67,7 +67,8 @@ checkIfAnyDraggableLeft = () ->
 collectPinDataFrom = (selector, extraKey) ->
   data = []
   selector.each () ->
-    extraVal = extraKey && $(this).data(extraKey)
+    extraVal = extraKey && $(this).data(extraKey.replace(/_/g, '-'))
+    
     $(this).find('li.pin').each (idx, pin) ->
       attribs = $(this).data('attributes')
       toSet = {}
@@ -109,7 +110,7 @@ $(document).ready () ->
       data = if form.data('go-back')
         collectPinDataFrom( $('.context.step_drag_to_assign') )
       else
-        collectPinDataFrom( dropSection.find('.drop_target'), 'kind' )
+        collectPinDataFrom( dropSection.find('.drop_target'), dropSection.data('extra-key') )
       
       # Because .param requires an object, not an array of objects
       dataAsObject = {}
