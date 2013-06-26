@@ -1,0 +1,7 @@
+.drop_section_wrapper.clearfix{:data => {:extra_key => attribute_to_set}}
+  %ul
+    - droppables.each do |key, value|
+      %li.drop_target{:data => {attribute_to_set => value}}
+        %h3= key
+        %ul.collection
+          = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set) == value }

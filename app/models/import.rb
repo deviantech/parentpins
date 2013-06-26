@@ -1,5 +1,5 @@
 class Import < ActiveRecord::Base
-  attr_accessible :count, :source
+  attr_accessible :attempted, :source, :user_agent
   belongs_to :user
   has_many :pins
   

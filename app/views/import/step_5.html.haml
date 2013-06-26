@@ -1,11 +1,6 @@
 .import_completed
   %h1 Import Completed
 
-  .instructions
-    %strong Next Steps:
-    %ul
-      %li= link_to 'View your newly-imported pins', pins_profile_url(current_user), :target => '_top'
-
 - content_for :footer_js do
   :javascript
     importedPins("#{escape_javascript Pin.json_for_pins(@imported)}");

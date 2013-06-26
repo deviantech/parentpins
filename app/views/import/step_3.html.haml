@@ -3,14 +3,8 @@
 %p.instructions
   Please drag each pin to a box to assign age groups.
 
-.drop_section_wrapper.clearfix{:data => {:extra_key => :age_group_id}}
-  %ul
-    - AgeGroup.all.each do |age|
-      %li.drop_target{:data => {:age_group_id => age.id}}
-        %h3= age.name
-        %ul.collection
-
-= render 'drag_section'
+= render 'drop_section', :attribute_to_set => :age_group_id, :droppables => AgeGroup.all.collect{|a| [a.name, a.id]}
+= render 'drag_section', :attribute_to_set => :age_group_id
     
 .submit_bar
   = form_tag pin_import_step_4_path, :id => 'import_form', :data => {:previous => pin_import_step_2_path} do

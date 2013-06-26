@@ -5,6 +5,4 @@
       %li.board{:data => {'board-id' => board.id}}= board.name
   
   %ul.pins
-    - @pins_to_import.each do |pin|
-      %li.pin.board_all{:class => "board_#{pin.board_id}", :data => {:attributes => pin.import_json}}
-        = image_tag pin.remote_image_url || pin.cached_remote_image_url
+    = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set).blank? }

@@ -3,14 +3,8 @@
 %p.instructions
   Please drag each pin to a box to assign pin types.
 
-.drop_section_wrapper.clearfix{:data => {:extra_key => :kind}}
-  %ul
-    - Pin::VALID_TYPES.each do |kind|
-      %li.drop_target{:data => {:kind => kind}}
-        %h3= kind.humanize
-        %ul.collection
-
-= render 'drag_section'
+= render 'drop_section', :attribute_to_set => :kind, :droppables => Pin::VALID_TYPES.collect{|t| [t.humanize, t]}
+= render 'drag_section', :attribute_to_set => :kind
     
 .submit_bar
   = form_tag pin_import_step_3_path, :id => 'import_form' do

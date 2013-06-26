@@ -18,16 +18,16 @@ class ImportController < ApplicationController
       @external_boards << board
     end
     
-    import = current_user.imports.create(:source => 'pinterest', :attempted => @external_import.sum{|b| b.pins.count}, :user_agent => request.user_agent)
-    session[:import_id] = import.try(:id)
     render :layout => 'external_import'
   end
 
-  def step_2
+  def step_2    
     @context = :step_drag_to_assign
     # Allow mass assignment, since we'll sanity check before saving the final version
     @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
     @boards = @pins_to_import.map(&:board).uniq
+    
+    session[:import_id] = current_user.imports.create(:source => 'pinterest', :attempted => @pins_to_import.length, :user_agent => request.user_agent).try(:id)
   end
   
   def step_3
