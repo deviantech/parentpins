@@ -51,8 +51,8 @@ class ImportController < ApplicationController
     @import = session[:import_id] && current_user.imports.find(session[:import_id])
           
     @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }.each do |pin|
-      pin.user_id = current_user
-      pin.import_id = @import.try(:id)
+      pin.user = current_user
+      pin.import = @import
       
       if pin.save then @imported << pin
       else @pins_to_import << pin
@@ -61,13 +61,13 @@ class ImportController < ApplicationController
     @import && @import.increment(:completed, @imported.length)
 
     if @pins_to_import.empty?
-      flash[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
+      flash.now[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
       session.delete(:import_id)
     else
       if @imported.empty?
-        flash[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    
+        flash.now[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    
       else
-        flash[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}! #{@pins_to_import.length} still need#{'s' if @pins_to_import.length == 1} tweaking, though."
+        flash.now[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}! #{@pins_to_import.length} still need#{'s' if @pins_to_import.length == 1} tweaking, though."
       end
     
       @boards = @pins_to_import.map(&:board).uniq

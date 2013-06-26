@@ -112,7 +112,7 @@ $(document).ready () ->
   
   form.on 'submit', () ->
     if form.find('li.importing_pin.complete').length == 0 && !form.data('go-back')
-      alert('You need to set the Type and Age Group for each Pinterest pin before we can import it into ParentPins.')
+      alert('You need to fill in all required fields for each pin before we can complete the import.')
       return false;
   
   form.find('li.importing_pin').each () ->
