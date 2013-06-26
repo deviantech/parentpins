@@ -3,7 +3,7 @@
 %p.instructions
   Please complete the information for each pin below to finish importing your pins.
 
-= form_for :import, :url => pin_import_step_4_path, :html => {:class => 'import_form'} do |f|
+= form_for :import, :url => pin_import_step_5_path, :html => {:class => 'import_form'} do |f|
   %ul.importing_boards
     - @boards.each do |board|
       = f.fields_for "boards[#{board.id}]", board do |b|
@@ -64,10 +64,10 @@
                   .clearfix
     .clearfix
   .clearfix
-  .form_button_bar
-    %span.js-if-post-message.hidden
-      = link_to_function 'Go Back and Modify Selection', 'backToStepOne()', :style => 'display:block;float:left;padding:12px;'
-    = f.submit 'Import Pins', :class => 'btn primary'
+
+  .submit_bar
+    = f.submit '&larr; Previous'.html_safe, :class => 'btn secondary previous'
+    = f.submit 'Import Pins &rarr;'.html_safe, :class => 'btn primary'
     #mass-edit-controls
       %h3 
         Mass Editing:

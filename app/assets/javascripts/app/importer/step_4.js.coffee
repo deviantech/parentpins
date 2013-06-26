@@ -1,13 +1,16 @@
+sendMessage = (msg, explanation) ->
+  if (!window.opener)
+    console.log("Sorry, browser doesn't appear to support connecting to the parent window.")
+  else if (!window.opener.postMessage)
+    console.log("Sorry, your browser appears too old to support modern web standards.")
+  else
+    window.opener.postMessage(msg, '*')
+
 window.importedPins = (pins_as_string) ->
   sendMessage("step4:imported:#{pins_as_string}")
 
 window.importCompleted = () ->
   sendMessage("step4:done")
-
-window.backToStepOne = () ->
-  sendMessage("step4:previous", 'load previous step')  
-
-
 
 updateOtherStatus = (fields) ->
   updateStatusField fields, '.otherStatus'
@@ -65,11 +68,6 @@ window.toggleImportingThisPin = (link) ->
     # Now actually move .pin_info outside the form, so it doesn't submit
     li.find('.pin_info').insertAfter( li.parents('form') )
 
-tellParentOurHeight = () ->
-  if false # We don't want to update the containing iframe height, because we want the footer w/ mass editing to always be visible on screen
-    height = $('body .importing').height() + $('body .importing').offset().top + 55
-    sendMessage('step4:setHeight:' + height)
-
 updatePinSelectionFromBoardCheckbox = (checkbox) ->
   $(checkbox).parents('li.importing_board').find('input[name=mass-select]').each (idx, pinbox) ->
     $(pinbox).prop('checked', $(checkbox).is(':checked'))
@@ -95,7 +93,6 @@ updateMassEditingControlsVisibility = () ->
 $(document).ready () ->
   return unless $('.context.step_4').length
   
-  tellParentOurHeight()
   form = $('form.import_form')  
   
   form.on 'submit', () ->
@@ -123,7 +120,6 @@ $(document).ready () ->
       extrafield.removeClass('hidden')
     else
       extrafield.addClass('hidden')
-    tellParentOurHeight()
   
   # Handle marking age group selected
   form.on 'change', 'select.age_group_id', () ->
@@ -132,10 +128,6 @@ $(document).ready () ->
   # Handle updating on other inputs
   form.on 'change keyup keypress', '.other_input', () ->
     updateOtherStatus( $(this).parents('li.importing_pin').find('.other_input') )
-  
-  # Show back button, if we can communicate with parent frame  
-  if (!!window.postMessage)
-    $('.js-if-post-message').removeClass('hidden')
 
   # Set up pin/board selection checkboxes (initial + when changed)
   

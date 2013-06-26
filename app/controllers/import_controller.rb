@@ -36,7 +36,7 @@ class ImportController < ApplicationController
 
   # Collect info & save new pins
   def step_4
-    @context = :step_5
+    @context = :step_4
     @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
     @boards = @pins_to_import.map(&:board).uniq
     @imported = []
@@ -66,7 +66,7 @@ class ImportController < ApplicationController
   end
 
   def step_5
-    
+    @context = :step_5
   end
 
   protected

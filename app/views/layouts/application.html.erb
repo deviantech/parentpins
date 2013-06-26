@@ -29,6 +29,7 @@
     <div class="clearfix"></div>
     <%= render 'shared/footer' %>
     <%= javascript_include_tag "application" %>
+    <%= yield :pre_footer_js %>
     <%= yield :footer_js %>
   </body>
 </html>

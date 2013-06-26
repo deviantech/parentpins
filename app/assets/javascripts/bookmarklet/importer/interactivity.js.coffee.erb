@@ -109,6 +109,15 @@ class window.ppImporterClasses.Interactivity
         switch command
           when 'loaded' then @handleFrameOneLoaded()
           when 'setHeight' then @stepOneFrame?.height( extra )
+      else if step == 'step4'
+        switch command
+          when 'done' then null # We could hide the iframe, if we wanted...
+          when 'imported'
+            if @stepOneFrame && @stepOneFrame[0]
+              step1 = @parent.getIframeWindow(@stepOneFrame[0])
+              step1.postMessage "imported:#{extra}", '*'
+              toggleWindowRepaint()
+  
 
 
     # =================================================================

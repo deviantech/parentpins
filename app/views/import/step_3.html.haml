@@ -13,6 +13,7 @@
 = render 'drag_section'
     
 .submit_bar
-  = form_tag pin_import_step_4_path, :id => 'import_form' do
+  = form_tag pin_import_step_4_path, :id => 'import_form', :data => {:previous => pin_import_step_2_path} do
+    = submit_tag "&larr; Previous".html_safe, :class => 'btn secondary previous'
     = hidden_field_tag 'data_string', ''
-    = submit_tag "Assign Age Groups", :class => 'btn primary'
+    = submit_tag "Assign Age Groups &rarr;".html_safe, :class => 'btn primary'

@@ -15,4 +15,4 @@
 .submit_bar
   = form_tag pin_import_step_3_path, :id => 'import_form' do
     = hidden_field_tag 'data_string', ''
-    = submit_tag "Assign Pin Types", :class => 'btn primary'
+    = submit_tag "Assign Pin Types &rarr;".html_safe, :class => 'btn primary'
