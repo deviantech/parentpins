@@ -13,6 +13,7 @@ class Pin < ActiveRecord::Base
   friendly_id :uuid
 
   belongs_to :user
+  belongs_to :import
   belongs_to :via,              :class_name => 'User'
   belongs_to :original_poster,  :class_name => 'User'
   belongs_to :board,            :inverse_of => :pins,     :counter_cache => :pins_count
@@ -30,7 +31,7 @@ class Pin < ActiveRecord::Base
   validates :user, :description, :board, :category, :age_group, :kind, :presence => true
   validates :kind,          :inclusion => {:in => VALID_TYPES, :message => "must be one of the supported types", :allow_blank => true}
   validates :description,   :length => {:maximum => 1024, :allow_blank => true}
-  validate :validate_url_format, :not_previously_pinned, :on => :create
+  validate :validate_url_format, :not_previously_pinned, :valid_board, :on => :create
   
   before_save     :filter_url_before_save
   before_update   :update_board_images_on_change
@@ -262,6 +263,11 @@ class Pin < ActiveRecord::Base
     if future = Board.find_by_id(board_id)
       future.auto_set_cover_from_pin(self)
     end
+  end
+  
+  def valid_board
+    return true unless board && user
+    errors.add(:board, "must be one you own") unless board.user == user
   end
 
   def update_board_add_image

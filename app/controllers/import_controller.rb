@@ -17,6 +17,9 @@ class ImportController < ApplicationController
       board.pins = (board_info[:pins] || []).collect {|idx, p| Pin.from_pinterest(current_user, nil, p) }
       @external_boards << board
     end
+    
+    import = current_user.imports.create(:source => 'pinterest', :attempted => @external_import.sum{|b| b.pins.count}, :user_agent => request.user_agent)
+    session[:import_id] = import.try(:id)
     render :layout => 'external_import'
   end
 
@@ -43,21 +46,33 @@ class ImportController < ApplicationController
   end
 
   def step_5
-    @context = :step_5
     @imported = []
     @pins_to_import = []
-    
-    @data[:pins].collect do |idx, attribs|
-      pin = Pin.new(attribs, :without_protection => true) 
+    @import = session[:import_id] && current_user.imports.find(session[:import_id])
+          
+    @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }.each do |pin|
+      pin.user_id = current_user
+      pin.import_id = @import.try(:id)
+      
       if pin.save then @imported << pin
       else @pins_to_import << pin
       end
     end
+    @import && @import.increment(:completed, @imported.length)
+
+    if @pins_to_import.empty?
+      flash[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
+      session.delete(:import_id)
+    else
+      if @imported.empty?
+        flash[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    
+      else
+        flash[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}! #{@pins_to_import.length} still need#{'s' if @pins_to_import.length == 1} tweaking, though."
+      end
     
-    @boards = @pins_to_import.map(&:board).uniq
-    if !@imported.empty? && @pins_to_import.empty?
-      @body_class = 'import_completed'
-      render 'imported'
+      @boards = @pins_to_import.map(&:board).uniq
+      @context = :step_4
+      render 'step_4'
     end
   end
 

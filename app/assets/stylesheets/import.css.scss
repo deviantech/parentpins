@@ -240,19 +240,6 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       }
     }
   }
-  &.import_completed {
-    background: #F6FFF6;
-    .import_completed {
-      h1, .centered {
-        text-align: center;
-      }
-      .instructions {
-        width: 400px;
-        margin: 0 auto;
-        margin-top: 25px;
-      }
-    }
-  }
   .open_close_controls {
     display:block;
     width:140px;
@@ -270,8 +257,13 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     }
     li {
       display: inline-block;
-
       margin-left: 20px;
+      &.current {
+        font-weight: bold;
+        &:before {
+          content: '\00bb';
+        }
+      }
     }
   }
   .drop-target {
