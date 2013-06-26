@@ -37,36 +37,28 @@ class ImportController < ApplicationController
   # Collect info & save new pins
   def step_4
     @context = :step_4
+    # Allow mass assignment, since we'll sanity check before saving the final version
     @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
     @boards = @pins_to_import.map(&:board).uniq
-    @imported = []
-    # @pins_to_import = []
-    # @boards = []
-    # @imported = []
-    # 
-    # @data[:import][:boards].each do |board_id, board_info|
-    #   next unless board = current_user.boards.find_by_id(board_id)
-    # 
-    #   board_info[:pins].each do |idx, data|
-    #     pin = Pin.from_pinterest(current_user, board, data)
-    # 
-    #     if @data[:from] == 'importer' || !pin.save
-    #       @pins_to_import << pin
-    #       @boards << board unless @boards.include?(board)
-    #     else
-    #       @imported << pin
-    #     end
-    #   end
-    # end
-    # 
-    # if !@imported.empty? && @pins_to_import.empty?
-    #   @body_class = 'import_completed'
-    #   render 'imported'
-    # end
   end
 
   def step_5
     @context = :step_5
+    @imported = []
+    @pins_to_import = []
+    
+    @data[:pins].collect do |idx, attribs|
+      pin = Pin.new(attribs, :without_protection => true) 
+      if pin.save then @imported << pin
+      else @pins_to_import << pin
+      end
+    end
+    
+    @boards = @pins_to_import.map(&:board).uniq
+    if !@imported.empty? && @pins_to_import.empty?
+      @body_class = 'import_completed'
+      render 'imported'
+    end
   end
 
   protected

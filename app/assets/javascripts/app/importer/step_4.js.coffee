@@ -103,10 +103,15 @@ handleHideShowPriceField = (input) ->
 $(document).ready () ->
   return unless $('.context.step_4').length
   
+  
   form = $('form.import_form')
   
+  form.on 'click', '.btn.previous', () ->
+    form.data('go-back', true)
+    form.attr('action', form.data('previous'))
+  
   form.on 'submit', () ->
-    if (form.find('li.importing_pin.complete').length == 0)
+    if form.find('li.importing_pin.complete').length == 0 && !form.data('go-back')
       alert('You need to set the Type and Age Group for each Pinterest pin before we can import it into ParentPins.')
       return false;
   

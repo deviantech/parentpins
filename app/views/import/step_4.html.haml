@@ -3,65 +3,67 @@
 %p.instructions
   Please complete the information for each pin below to finish importing your pins.
 
-= form_for :import, :url => pin_import_step_5_path, :html => {:class => 'import_form'} do |f|
+= form_for :pins, :url => pin_import_step_5_path, :html => {:class => 'import_form', :data => {:previous => pin_import_step_3_path}} do |f|
   %ul.importing_boards
     - @boards.each do |board|
-      = f.fields_for "boards[#{board.id}]", board do |b|
-        %li.importing_board
-          .board_info
-            %h3= board.name
-            = image_tag board.cover.url
-            %br
-            %label
-              = check_box_tag 'mass-select-board'
-              Toggle mass editing all in board
-            
-          %ul.importing_pins
-            - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
-              = b.fields_for "pins[#{idx}]", pin do |p|
-                %li.importing_pin{:class => cycle('even', 'odd'), :id => "board_#{board.id}_pin_#{idx}"}
-                  - if pin.errors.count > 0
-                    .pin_errors= pin.errors.full_messages.uniq.map(&:downcase).to_sentence.capitalize
-                  .pin_photo
-                    = image_tag pin.remote_image_url || pin.cached_remote_image_url
-                    .open_close_controls
-                      = link_to_function 'Remove from Import', "toggleImportingThisPin(this)"
-                    
-                  .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
-                    .status_boxes
-                      .line &nbsp;
-                      .status_box.ageGroupStatus Age
-                      .status_box.pinTypeStatus Type
-                      .status_box.otherStatus Other
-                    = p.hidden_field :remote_image_url, :value => pin.remote_image_url || pin.cached_remote_image_url
-                    = p.hidden_field :smallImageURL, :value => pin.cached_remote_small_image_url
-                    = p.hidden_field :external_id
-                    = p.hidden_field :via_url
-                    .line.select
-                      %label
-                        = check_box_tag 'mass-select'
-                        Select for Mass Editing
-                    .line
-                      %strong Age Group
-                      = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all), {}, :class => 'age_group_id'
-                    .line
-                      %strong Pin Type
-                      - Pin::VALID_TYPES.each do |kind|
-                        %label.radio_opt
-                          = p.radio_button :kind, kind, :class => 'pin_type'
-                          = kind.titleize
-                    .line.field-price
-                      %strong 
-                        Price
-                        %span (optional)
-                      = p.text_field :price
-                    .line
-                      %strong Pin Link
-                      = p.text_field :url, :class => 'other_input'
-                    .line
-                      %strong Description
-                      = p.text_area :description, :class => 'other_input'
-                  .clearfix
+      %li.importing_board
+        .board_info
+          %h3= board.name
+          = image_tag board.cover.url
+          %br
+          %label
+            = check_box_tag 'mass-select-board'
+            Toggle mass editing all in board
+          
+        %ul.importing_pins
+          - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
+            = f.fields_for "[#{board.id}.#{idx}]", pin do |p|
+              %li.importing_pin{:class => cycle('even', 'odd'), :id => "board_#{board.id}_pin_#{idx}"}
+                - if pin.errors.count > 0
+                  .pin_errors= pin.errors.full_messages.uniq.map(&:downcase).to_sentence.capitalize
+                .pin_photo
+                  = image_tag pin.remote_image_url || pin.cached_remote_image_url
+                  .open_close_controls
+                    = link_to_function 'Remove from Import', "toggleImportingThisPin(this)"
+                  
+                .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
+                  .status_boxes
+                    .line &nbsp;
+                    .status_box.ageGroupStatus Age
+                    .status_box.pinTypeStatus Type
+                    .status_box.otherStatus Other
+                  
+                  = p.hidden_field :remote_image_url, :value => pin.remote_image_url || pin.cached_remote_image_url
+                  = p.hidden_field :cached_remote_image_url
+                  = p.hidden_field :cached_remote_small_image_url
+                  = p.hidden_field :external_id
+                  = p.hidden_field :via_url
+                  = p.hidden_field :board_id
+                  .line.select
+                    %label
+                      = check_box_tag 'mass-select'
+                      Select for Mass Editing
+                  .line
+                    %strong Age Group
+                    = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all), {}, :class => 'age_group_id'
+                  .line
+                    %strong Pin Type
+                    - Pin::VALID_TYPES.each do |kind|
+                      %label.radio_opt
+                        = p.radio_button :kind, kind, :class => 'pin_type'
+                        = kind.titleize
+                  .line
+                    %strong Pin Link
+                    = p.text_field :url, :class => 'other_input'
+                  .line.field-price
+                    %strong 
+                      Price
+                      %span (optional)
+                    = p.text_field :price
+                  .line
+                    %strong Description
+                    = p.text_area :description, :class => 'other_input'
+                .clearfix
     .clearfix
   .clearfix
 

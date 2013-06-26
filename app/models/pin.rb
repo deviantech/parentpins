@@ -63,12 +63,14 @@ class Pin < ActiveRecord::Base
     }.to_json
   end
   
+  
   def import_json
-    to_json(:only => [:id, :age_group_id, :board_id, :description, :kind, :price, :url, :via_url], :methods => [:cached_remote_image_url])
+    # Awkward wrapper, but just trying to DRY up to_json options
+    Pin.step_one_json(self)
   end
 
   def self.step_one_json(pins)
-    Array(pins).to_json(:methods => [:external_id, :cached_remote_image_url, :cached_remote_small_image_url], :only => [:age_group_id, :board_id, :kind, :description, :price, :url, :via_url])
+    pins.to_json(:only => [:age_group_id, :board_id, :description, :kind, :price, :url, :via_url], :methods => [:cached_remote_image_url, :cached_remote_small_image_url, :external_id])
   end
 
   def repinned?
