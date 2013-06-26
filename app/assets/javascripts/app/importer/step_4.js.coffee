@@ -89,11 +89,21 @@ updateMassEditingControlsVisibility = () ->
       mass.fadeIn()
   else
     mass.fadeOut()
-    
+
+handleHideShowPriceField = (input) ->
+  input = $(input)
+  extrafield = input.parents('li').first().find('.field-price')
+  if input.val() == 'product'
+    extrafield.slideDown()
+  else
+    if input.data('animate') then extrafield.slideUp() else extrafield.hide()
+  input.data('animate', true)
+  
+
 $(document).ready () ->
   return unless $('.context.step_4').length
   
-  form = $('form.import_form')  
+  form = $('form.import_form')
   
   form.on 'submit', () ->
     if (form.find('li.importing_pin.complete').length == 0)
@@ -108,19 +118,16 @@ $(document).ready () ->
     else
       $(this).find('input.pin_type').first()
     updatePinTypeStatus( inputToTest )
+    handleHideShowPriceField(inputToTest)
 
   form.find('select.age_group_id').each () ->
     updateAgeGroupStatus(this)
     
   # Handle marking pin type selected, toggle price fields
   form.on 'change', 'input.pin_type', () ->
+    handleHideShowPriceField(this)
     updatePinTypeStatus(this)
-    extrafield = $(this).parents('li').first().find('.field-price')
-    if $(this).val() == 'product'
-      extrafield.removeClass('hidden')
-    else
-      extrafield.addClass('hidden')
-  
+      
   # Handle marking age group selected
   form.on 'change', 'select.age_group_id', () ->
     updateAgeGroupStatus(this)

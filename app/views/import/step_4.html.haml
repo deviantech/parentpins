@@ -50,7 +50,7 @@
                         %label.radio_opt
                           = p.radio_button :kind, kind, :class => 'pin_type'
                           = kind.titleize
-                    .line.field-price.hidden
+                    .line.field-price
                       %strong 
                         Price
                         %span (optional)
@@ -59,7 +59,7 @@
                       %strong Pin Link
                       = p.text_field :url, :class => 'other_input'
                     .line
-                      %strong Pin Description
+                      %strong Description
                       = p.text_area :description, :class => 'other_input'
                   .clearfix
     .clearfix
