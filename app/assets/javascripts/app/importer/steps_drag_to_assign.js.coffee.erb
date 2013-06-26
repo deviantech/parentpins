@@ -68,6 +68,7 @@ handleSubmission = () ->
 
 dropOpts = {
   hoverClass: "ui-state-active",
+  tolerance: 'pointer',
   drop: (event, ui) ->
     helper = $(ui.helper)
     target = $(this).find('.collection')
@@ -75,29 +76,30 @@ dropOpts = {
     if helper.hasClass('from-board')
       target.append(ui.draggable)
     else if helper.hasClass('pins')
-      target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected').addClass('from-board').draggable(dragOnceDroppedOpts) )
+      target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected').draggable(dragOnceDroppedOpts) )
       $(ui.draggable).remove()
     else if helper.hasClass('board')
       dragSection.find('li.pin.board_'+helper.data('board-id')).appendTo(target)
+    target.find('li.pin').addClass('from-board')
     checkIfAnyDraggableLeft()
 }
 dropOptsBackToDraggable = {
   hoverClass: 'ui-state-active',
+  accept: 'li.pin.from-board',
+  tolerance: 'pointer',
   drop: (event, ui) ->
     target = $(this).find('ul.pins')
-    target.append(ui.draggable)
+    target.append($(ui.draggable).removeClass('from-board'))
     hideShowPinsForSelectedBoard()
 }
 dragOpts = {
   revert: 'invalid',
   stack: 'li.pin',
   delay: 0, # Needed to prevent accidental drag when trying to select
-  cursor: "move", 
+  distance: 10,
+  cursor: "move",
   cursorAt: { top: -5, left: -5 },
-  start: (event, ui) ->
-    item = $(event.target).css({opacity: 0.5})
-  stop: (e, ui) ->
-    ui.helper.data('item').css({opacity: 1.0})
+  opacity: 0.8,
   helper: (e) ->
     helper = $('<ul class="pins"/>')
     item = $(e.currentTarget)
@@ -105,13 +107,16 @@ dragOpts = {
       item.addClass('ui-selected').siblings().removeClass('ui-selected')
     elements = item.parent().children('.ui-selected').clone()
     item.siblings('.ui-selected').remove()
-    helper.data('multidrag', elements).data('item', item).append(elements)
+    helper.data('multidrag', elements).data('item', item).append(elements).css({'z-index': 99999})
 }
 boardDragOpts = {
   revert: 'invalid',
   stack: 'li.pin',
   delay: 0, # Needed to prevent accidental drag when trying to select
   helper: 'clone',
+  cursor: "move", 
+  opacity: 0.8,  
+  cursorAt: { top: -5, left: -5 },
   start: (event, ui) ->
     item = $(event.target).css({opacity: 0.5})
   stop: (e, ui) ->

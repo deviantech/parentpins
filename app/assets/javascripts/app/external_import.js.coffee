@@ -118,6 +118,7 @@ checkIfAnyDraggableLeft = () ->
 initDragDrop = () ->
   dropOpts = {
     hoverClass: "ui-state-active",
+    tolerance: 'pointer',
     drop: (event, ui) ->
       li = $(ui.draggable)
       target = $(this).find('.ourBoardPins')
@@ -133,6 +134,7 @@ initDragDrop = () ->
   dropToPinterestOpts = {
     hoverClass: "ui-state-active",
     accept: 'li.pin',
+    tolerance: 'pointer',
     drop: (event, ui) ->
       li = $(ui.draggable)
       base = if li.hasClass('already-imported')
@@ -178,15 +180,6 @@ initDragDrop = () ->
   if $('#our_section li.board').length  then $('#our_section li.board').droppable(dropOpts)
   $('#pinterest_section').droppable(dropToPinterestOpts)
 
-initBoardBackgroundOnHover = () ->
-  showImageBG = (e) ->
-    img = $(e.currentTarget).data('cover-image')
-    if img? then $(e.currentTarget).css({'background-image': "url(#{img})"})
-
-  hideImageBG = (e) ->
-    $(e.currentTarget).css({'background-image': ""})
-
-  $('#our_section li.board').hover(showImageBG, hideImageBG)
 
 $(document).ready () ->
   sendMessage("step1:loaded")
@@ -195,7 +188,6 @@ $(document).ready () ->
   if typeof(initial) == 'string' then initial = $.parseJSON(raw)
   handlePreviouslyImportedData(initial)
   initDragDrop()
-  initBoardBackgroundOnHover()
 
   # Tell parent how tall we are
   tellParentOurHeight()

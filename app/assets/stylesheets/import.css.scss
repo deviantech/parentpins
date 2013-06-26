@@ -4,6 +4,12 @@ $themeLinkCOLOR: #2886B4;
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
 
 .context.import {
+  .ui-draggable-dragging {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
   &.step_drag_to_assign {
     .drop_section_wrapper {
       ul {
@@ -19,6 +25,10 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
           min-height: 75px;
           h3 {
             text-align: center;
+          }
+          &.ui-state-active {
+            border-color: #000;
+            background: rgba(0, 0, 0, 0.1);
           }
         } 
         li.pin {
@@ -51,7 +61,13 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
         text-align: center;
       }
     }
-
+    .drag_section_wrapper.ui-state-active {
+      ul.pins {
+        border-color: #000;
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+    
     .drag_section_wrapper {
       margin-top: 20px;
       ul {

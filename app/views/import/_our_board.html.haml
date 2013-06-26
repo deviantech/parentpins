@@ -1,4 +1,4 @@
-%li.board{:data => {'cover-image' => board.cover.url, 'board-id' => board.id}}
+%li.board{:data => {'board-id' => board.id}}
   .ourBoardTitle= board.name
   .ourBoardInfo
     = pluralize board.pins_count, 'pin', 'pins'
