@@ -1,8 +1,5 @@
 = render 'progress', :step => 4
 
-%p.instructions
-  Please complete the information for each pin below to finish importing your pins.
-
 = form_for :pins, :url => pin_import_step_5_path, :html => {:class => 'import_form', :data => {:previous => pin_import_step_3_path}} do |f|
   %ul.importing_boards
     - @boards.each do |board|

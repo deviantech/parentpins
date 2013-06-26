@@ -1,5 +1,6 @@
 dragSection = $('.drag_section_wrapper')
 dropSection = $('.drop_section_wrapper')
+footer = $('.submit_bar')
 
 hideShowPinsForSelectedBoard = () ->
   id = dragSection.find('ul.boards li.selected').data('board-id')
@@ -17,7 +18,14 @@ checkIfAnyDraggableLeft = () ->
   unless section.find('li.pin:visible').length
     scope = if dragSection.find('ul.boards li.selected').data('board-id') == 'all' then '' else " in this board "
     section.append("<div class='no-more'>List of pins #{scope} to assign is empty.</div>")
-
+  
+  if section.find('li.pin').length
+    footer.find('.instructions').show()
+    footer.find('.hide_until_complete').hide()
+  else
+    footer.find('.instructions').hide()
+    footer.find('.hide_until_complete').show()
+  
 # DATA -- assign kind or age group to handle both steps
 collectPinDataFrom = (selector, extraKey) ->
   data = []

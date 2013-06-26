@@ -1,13 +1,12 @@
 = render 'progress', :step => 3
 
-%p.instructions
-  Please drag each pin to a box to assign age groups.
-
 = render 'drop_section', :attribute_to_set => :age_group_id, :droppables => AgeGroup.all.collect{|a| [a.name, a.id]}
 = render 'drag_section', :attribute_to_set => :age_group_id
     
 .submit_bar
+  .instructions
+    Please drag each pin to a box to assign age groups.
   = form_tag pin_import_step_4_path, :id => 'import_form', :data => {:previous => pin_import_step_2_path} do
     = submit_tag "&larr; Previous".html_safe, :class => 'btn secondary previous'
     = hidden_field_tag 'data_string', ''
-    = submit_tag "Assign Age Groups &rarr;".html_safe, :class => 'btn primary'
+    = submit_tag "Assign Age Groups &rarr;".html_safe, :class => 'btn primary hide_until_complete'

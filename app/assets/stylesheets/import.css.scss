@@ -273,13 +273,22 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     }
   }
   .submit_bar {
-    border-top: 1px solid #999;
+    border: 1px solid #DDD;
     height: 50px;
-    width: 100%;
+    width: 98%;
     padding: 10px;
     margin-top: 20px;
     text-align: center;
     background: #F0F0F0;
+    .instructions {
+      font-size: 1.2em;
+      color: #333;
+      text-shadow: 0px 2px 3px #FFF;
+      margin-top: 15px;
+    }
+    .hide_until_complete {
+      display: none;
+    }
     input[type=submit] {
       float: right;
       margin: 5px;

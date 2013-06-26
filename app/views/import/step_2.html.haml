@@ -1,12 +1,11 @@
 = render 'progress', :step => 2
 
-%p.instructions
-  Please drag each pin to a box to assign pin types.
-
 = render 'drop_section', :attribute_to_set => :kind, :droppables => Pin::VALID_TYPES.collect{|t| [t.humanize, t]}
 = render 'drag_section', :attribute_to_set => :kind
     
 .submit_bar
-  = form_tag pin_import_step_3_path, :id => 'import_form' do
+  .instructions
+    Please drag each pin to a box to assign pin types.
+  = form_tag pin_import_step_3_path, :id => 'import_form', :class => 'hide_until_complete' do
     = hidden_field_tag 'data_string', ''
     = submit_tag "Assign Pin Types &rarr;".html_safe, :class => 'btn primary'
