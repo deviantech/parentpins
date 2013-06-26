@@ -91,7 +91,7 @@ class window.ppImporterClasses.Interactivity
       for board in @externalBoardData
         boards[board.id] = {name: board.name, pins: @pinsForBoard(board.id)}
 
-      return $.param({import: {boards: boards}})
+      return $.param({import: {boards: boards}, source: window.location.href})
     
     @ensureFrameWrapper = () ->
       @iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  

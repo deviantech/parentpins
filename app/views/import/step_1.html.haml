@@ -50,6 +50,7 @@
     .right
       = form_tag pin_import_step_2_path, :target => "_blank", :id => 'ppSubmitBoardsSortedForm' do
         = hidden_field_tag :data_string
+        = hidden_field_tag :source, @data[:source]
         = submit_tag 'Import These Pins', :id => 'ppSubmitBoardsSortedLink', :class => 'btn tertiary_action'
       
     .clearfix
