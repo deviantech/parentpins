@@ -8,7 +8,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     .drop_section_wrapper {
       ul {
         list-style-type: none;
-        li.drop_target {
+        li.drop-target {
           float: left;
           width: 30%;
           border: 1px solid #CCC;
@@ -16,6 +16,10 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
           margin-right: 10px;
           margin-bottom: 10px;
           padding: 5px;
+          min-height: 75px;
+          h3 {
+            text-align: center;
+          }
         } 
         li.pin {
           margin: 3px;
@@ -287,11 +291,6 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
           content: '\00bb';
         }
       }
-    }
-  }
-  .drop-target {
-    h3 {
-      text-align: center;
     }
   }
   .submit_bar {

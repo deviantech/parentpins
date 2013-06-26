@@ -1,6 +1,6 @@
 .drag_section_wrapper.clearfix
   %ul.boards
-    %li.board{:data => {'board-id' => 'all'}} Show All Pins
+    %li.selected.board{:data => {'board-id' => 'all'}} Show All Pins
     - @boards.each do |board|
       %li.board{:data => {'board-id' => board.id}}= board.name
   

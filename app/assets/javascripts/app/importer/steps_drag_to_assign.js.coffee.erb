@@ -56,7 +56,7 @@ handleSubmission = () ->
     data = if form.data('go-back')
       collectPinDataFrom( $('.context.step_drag_to_assign') )
     else
-      collectPinDataFrom( dropSection.find('.drop_target'), dropSection.data('extra-key') )
+      collectPinDataFrom( dropSection.find('.drop-target'), dropSection.data('extra-key') )
     
     # Because .param requires an object, not an array of objects
     dataAsObject = {}
@@ -72,18 +72,26 @@ dropOpts = {
     helper = $(ui.helper)
     target = $(this).find('.collection')
 
-    if helper.hasClass('pins')
-      target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected') )
+    if helper.hasClass('from-board')
+      target.append(ui.draggable)
+    else if helper.hasClass('pins')
+      target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected').addClass('from-board').draggable(dragOnceDroppedOpts) )
       $(ui.draggable).remove()
     else if helper.hasClass('board')
       dragSection.find('li.pin.board_'+helper.data('board-id')).appendTo(target)
     checkIfAnyDraggableLeft()
 }
+dropOptsBackToDraggable = {
+  hoverClass: 'ui-state-active',
+  drop: (event, ui) ->
+    target = $(this).find('ul.pins')
+    target.append(ui.draggable)
+    hideShowPinsForSelectedBoard()
+}
 dragOpts = {
   revert: 'invalid',
-  stack: '.drag_section_wrapper li',
+  stack: 'li.pin',
   delay: 0, # Needed to prevent accidental drag when trying to select
-  revert: 0,
   start: (event, ui) ->
     item = $(event.target).css({opacity: 0.5})
   stop: (e, ui) ->
@@ -99,9 +107,17 @@ dragOpts = {
 }
 boardDragOpts = {
   revert: 'invalid',
-  stack: '.drag_section_wrapper li',
+  stack: 'li.pin',
   delay: 0, # Needed to prevent accidental drag when trying to select
-  revert: 0,
+  helper: 'clone',
+  start: (event, ui) ->
+    item = $(event.target).css({opacity: 0.5})
+  stop: (e, ui) ->
+    $(this).css({opacity: 1.0})
+}
+dragOnceDroppedOpts = {
+  revert: 'invalid',
+  stack: 'li.pin',
   helper: 'clone',
   start: (event, ui) ->
     item = $(event.target).css({opacity: 0.5})
@@ -118,11 +134,14 @@ $(document).ready () ->
 
   checkIfAnyDraggableLeft()
   
-  dropSection.find('li.drop_target').droppable(dropOpts)
+  dropSection.find('li.drop-target').droppable(dropOpts)
+  dragSection.droppable(dropOptsBackToDraggable)
+  
   # dragSection.find('ul.pin').selectable({delay: 50})
   dragSection.find('li.pin').draggable(dragOpts)
-  # wrapper.find('li.pin').draggable(dragOpts) # TODO - draggable out of the board once drug in?
+  dropSection.find('li.pin').draggable(dragOnceDroppedOpts)
   dragSection.find('li.board').draggable(boardDragOpts)
+
 
   #
   # TODO: hook up multi drag
