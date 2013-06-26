@@ -165,5 +165,3 @@ $(document).ready () ->
     if $(this).is(':checked')
       form.find(".mass-selected input.pin_type[value='#{$(this).val()}']").prop('checked', 'checked').each () ->
         updatePinTypeStatus(this)
-      
-  # TODO: fire change events...

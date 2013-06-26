@@ -64,7 +64,7 @@ class ImportController < ApplicationController
     if @pins_to_import.empty?
       flash[:success] = "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
       session.delete(:import_id)
-      redirect_to profile_import_path(current_user, @import)
+      redirect_to profile_import_path(current_user, @import, :just_completed => true)
     else
       if @imported.empty?
         flash.now[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    

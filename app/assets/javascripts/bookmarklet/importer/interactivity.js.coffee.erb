@@ -112,7 +112,7 @@ class window.ppImporterClasses.Interactivity
       else if step == 'step4'
         switch command
           when 'done'
-            alert('wooo')
+            @setHeader "Successfully imported pins!"
           when 'imported'
             if @stepOneFrame && @stepOneFrame[0]
               step1 = @parent.getIframeWindow(@stepOneFrame[0])

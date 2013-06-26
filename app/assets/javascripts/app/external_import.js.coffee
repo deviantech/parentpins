@@ -148,6 +148,8 @@ initDragDrop = () ->
     stack: $('#our_section li.board'),
     helper: 'clone',
     scroll: true,
+    cursor: "move", 
+    cursorAt: { top: -5, left: -5 },
     start: (event, ui) ->
       $(event.target).css({opacity: 0.5})
     stop: (event, ui) ->
@@ -158,6 +160,8 @@ initDragDrop = () ->
     stack: $('.importing_boards li'),
     helper: 'clone',
     scroll: true,
+    cursor: "move", 
+    cursorAt: { top: -5, left: -5 },
     start: (event, ui) ->
       $(event.target).css({opacity: 0.5})
     stop: (event, ui) ->
@@ -232,10 +236,13 @@ $(document).ready () ->
  # Allow step 2 to tell parent to tell step 1 when new pins have been imported
  $(window).on 'message', (evt) =>
    [command, extra...] = evt.originalEvent.data.split(':')
-   extra = extra.join(':')
-   if command == 'imported'
-      pins = $.parseJSON(extra)
-      handlePreviouslyImportedData(pins)
-      setTimeout(checkIfAnyDraggableLeft, 1) # Doesn't seem like it should be necessary... but is, or else sections leave the 'empty' div in place while showing pins
+   if command == 'step4' # Pass events from opened window on to parent
+     sendMessage(evt.originalEvent.data)
+   else
+     extra = extra.join(':')
+     if command == 'imported'
+        pins = $.parseJSON(extra)
+        handlePreviouslyImportedData(pins)
+        setTimeout(checkIfAnyDraggableLeft, 1) # Doesn't seem like it should be necessary... but is, or else sections leave the 'empty' div in place while showing pins
 
   $(window).on 'resize', tellParentOurHeight

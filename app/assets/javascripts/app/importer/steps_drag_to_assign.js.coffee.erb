@@ -92,6 +92,8 @@ dragOpts = {
   revert: 'invalid',
   stack: 'li.pin',
   delay: 0, # Needed to prevent accidental drag when trying to select
+  cursor: "move", 
+  cursorAt: { top: -5, left: -5 },
   start: (event, ui) ->
     item = $(event.target).css({opacity: 0.5})
   stop: (e, ui) ->
@@ -119,6 +121,8 @@ dragOnceDroppedOpts = {
   revert: 'invalid',
   stack: 'li.pin',
   helper: 'clone',
+  cursor: "move", 
+  cursorAt: { top: -5, left: -5 },
   start: (event, ui) ->
     item = $(event.target).css({opacity: 0.5})
   stop: (e, ui) ->

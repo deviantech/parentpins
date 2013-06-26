@@ -2,7 +2,8 @@
 
 = render 'pins/pins'
 
-- content_for :footer_js do
-  :javascript
-    importedPins("#{escape_javascript Pin.json_for_pins(@imported)}");
-    importCompleted();
+- if params[:just_completed]
+  - content_for :footer_js do
+    :javascript
+      importedPins("#{escape_javascript Pin.json_for_pins(@pins)}");
+      importCompleted();
