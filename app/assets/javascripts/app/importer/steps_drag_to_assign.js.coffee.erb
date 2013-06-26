@@ -64,7 +64,9 @@ checkIfAnyDraggableLeft = () ->
     section.append("<div class='no-more'>List of pins #{scope} to assign is empty.</div>")
 
 
-window.initStepDragToAssign = () ->
+$(document).ready () ->
+  return unless $('.context.step_drag_to_assign').length
+  
   dropSection.find('li.drop_target').droppable(dropOpts)
   # dragSection.find('ul.pin').selectable({delay: 50})
   dragSection.find('li.pin').draggable(dragOpts)
@@ -73,8 +75,8 @@ window.initStepDragToAssign = () ->
   #
   # TODO: hook up multi drag
   #
+  
   dragSection.on 'click', 'li.board', (e) ->
-    console.log e
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
     hideShowPinsForSelectedBoard()
   

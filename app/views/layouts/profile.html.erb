@@ -44,7 +44,7 @@
 
     <div class="profile_content_wrapper">
       <div class="content">
-        <%= yield %>
+        <%= content_for?(:profile_content) ? yield(:profile_content) : yield %>
       </div>
     </div>
 

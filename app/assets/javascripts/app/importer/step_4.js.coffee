@@ -92,7 +92,9 @@ updateMassEditingControlsVisibility = () ->
   else
     mass.fadeOut()
     
-window.initStep4 = () ->
+$(document).ready () ->
+  return unless $('.context.step_4').length
+  
   tellParentOurHeight()
   form = $('form.import_form')  
   

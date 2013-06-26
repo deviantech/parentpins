@@ -21,12 +21,14 @@ class ImportController < ApplicationController
   end
 
   def step_2
+    @context = :step_drag_to_assign
     # Allow mass assignment, since we'll sanity check before saving the final version
     @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
     @boards = @pins_to_import.map(&:board).uniq
   end
   
   def step_3
+    @context = :step_drag_to_assign
     # Allow mass assignment, since we'll sanity check before saving the final version
     @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
     @boards = @pins_to_import.map(&:board).uniq
@@ -34,6 +36,7 @@ class ImportController < ApplicationController
 
   # Collect info & save new pins
   def step_4
+    @context = :step_5
     @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
     @boards = @pins_to_import.map(&:board).uniq
     @imported = []
