@@ -120,7 +120,7 @@ initDragDrop = () ->
     hoverClass: "ui-state-active",
     tolerance: 'pointer',
     drop: (event, ui) ->
-      li = $(ui.draggable)
+      li = $(ui.draggable).addClass('assigned')
       target = $(this).find('.ourBoardPins')
 
       if li.hasClass('pin')      
@@ -133,10 +133,10 @@ initDragDrop = () ->
   }
   dropToPinterestOpts = {
     hoverClass: "ui-state-active",
-    accept: 'li.pin',
+    accept: 'li.pin.assigned',
     tolerance: 'pointer',
     drop: (event, ui) ->
-      li = $(ui.draggable)
+      li = $(ui.draggable).removeClass('assigned')
       base = if li.hasClass('already-imported')
         $(this).find('.importing_pins.previously_imported ul')
       else
@@ -150,6 +150,7 @@ initDragDrop = () ->
     stack: $('#our_section li.board'),
     helper: 'clone',
     scroll: true,
+    scrollSensitivity: 150,
     cursor: "move", 
     cursorAt: { top: -5, left: -5 },
     start: (event, ui) ->
