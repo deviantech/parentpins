@@ -1,6 +1,7 @@
 dragSection = $('.drag_section_wrapper')
 dropSection = $('.drop_section_wrapper')
 footer = $('.submit_bar')
+form = null
 
 hideShowPinsForSelectedBoard = () ->
   id = dragSection.find('ul.boards li.selected').data('board-id')
@@ -12,6 +13,10 @@ hideShowPinsForSelectedBoard = () ->
   # Give JS time to reset to having dropped pin (not sure why, but required)
   setTimeout soon, 1
 
+submitOnEnter = (e) ->
+  if e.which == 13 # Enter pressed
+    form.submit()
+
 checkIfAnyDraggableLeft = () ->
   section = dragSection.find('ul.pins')
   section.find('.no-more').remove()
@@ -22,9 +27,11 @@ checkIfAnyDraggableLeft = () ->
   if section.find('li.pin').length
     footer.find('.instructions').show()
     footer.find('.hide_until_complete').hide()
+    $(window).off 'keypress', submitOnEnter
   else
     footer.find('.instructions').hide()
     footer.find('.hide_until_complete').show()
+    $(window).on 'keypress', submitOnEnter
   
 # DATA -- assign kind or age group to handle both steps
 collectPinDataFrom = (selector, extraKey) ->
@@ -41,6 +48,23 @@ collectPinDataFrom = (selector, extraKey) ->
       
   return data
 
+handleSubmission = () ->
+  if $('.drag_section_wrapper li.pin').length && !form.data('go-back')
+    alert("Please drag ALL pins to one of the boxes on top first.")
+    return false
+  else
+    data = if form.data('go-back')
+      collectPinDataFrom( $('.context.step_drag_to_assign') )
+    else
+      collectPinDataFrom( dropSection.find('.drop_target'), dropSection.data('extra-key') )
+    
+    # Because .param requires an object, not an array of objects
+    dataAsObject = {}
+    $.each data, (idx, item) ->
+      dataAsObject[idx] = item
+    
+    form.find('input[name=data_string]').val( $.param({pins: dataAsObject}) )
+    true
 
 dropOpts = {
   hoverClass: "ui-state-active",
@@ -116,19 +140,4 @@ $(document).ready () ->
       form.attr('action', form.data('previous'))
     
   form.on 'submit', (e) ->
-    if $('.drag_section_wrapper li.pin').length && !form.data('go-back')
-      alert("Please drag ALL pins to one of the boxes on top first.")
-      return false
-    else
-      data = if form.data('go-back')
-        collectPinDataFrom( $('.context.step_drag_to_assign') )
-      else
-        collectPinDataFrom( dropSection.find('.drop_target'), dropSection.data('extra-key') )
-      
-      # Because .param requires an object, not an array of objects
-      dataAsObject = {}
-      $.each data, (idx, item) ->
-        dataAsObject[idx] = item
-      
-      $(this).find('input[name=data_string]').val( $.param({pins: dataAsObject}) )
-      true
+    handleSubmission()
