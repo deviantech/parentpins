@@ -14,6 +14,10 @@ class window.ppImporterClasses.Sources.Pinterest
   boardSelector = '.boardLinkWrapper'
   pinSelector   = '.pinWrapper'
 
+  # Because sometimes pinterest uses meta name, and sometimes meta property. Why? Good question.
+  getMeta = (title, scope) ->
+    $(scope).find("""meta[name="#{title}"], meta[property="#{title}"]""").first().attr('content')
+
   waitFor = (opts = {}) ->
     succeeded = false
     
@@ -80,7 +84,7 @@ class window.ppImporterClasses.Sources.Pinterest
           @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
         baseURLs
       else if $('.userStats li:first a').length || $('.BoardInfoBar .counts li:first a').hasClass('active') # Other user's profile
-        name = $('meta[name="og:title"], meta[property="og:title"]').attr('content') || username
+        name = getMeta('og:title', document) || username
         baseURLs = ["/#{username}/", "/#{username}/boards/"]
         if $('.BoardInfoBar .counts li:first a').hasClass('active')
           @singleBoardOnly = true
@@ -188,37 +192,17 @@ class window.ppImporterClasses.Sources.Pinterest
         # http://media-cache-ak2.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg -> http://media-cache-ak2.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg      
         @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining)."
 
-        failFn = () =>
-          # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road?
-          console.log('failed')
-
-        processHTML = (pinHTML) =>
-          console.log '------------------'
-          # <meta property="og:see_also" name="og:see_also" content="http://www.quickmeme.com/popular/2days/12/" data-app>
-          # <meta property="og:image" name="og:image" content="http://media-cache-ec3.pinimg.com/736x/8f/0f/a1/8f0fa1c397fc429d263fdfb8094844c7.jpg" data-app>
-          
-          console.log(pinHTML)
-          pinHTML          = $(pinHTML)
-          srcPin.url       = pinHTML.find('.detailed.Pin.Module .pinWrapper a:first').prop('href')
-          srcPin.imageURL  = pinHTML.find('.detailed.Pin.Module .pinWrapper img.pinImage:first').prop('src')          
-          
         pinRequest = $.get thisURL
         pinRequest.done (pinHTML) =>
-          waitFor({
-            check_every: 500,
-            timeout_after: 1 * 1000,
-            checkFn: () =>
-              processHTML(pinHTML)
-              return srcPin.url?
-            onFail: failFn,
-          })
-
-          # # Sometimes it may not have been lazy loaded yet, but we can fill in based on big filename
+          head  = '<div>'+pinHTML.split('</head>')[0].split('</title>')[1]+'</div>' # Just grab the <head> section after the title, then wrap it in a DIV so jquery will parse
+          srcPin.url        = getMeta 'og:see_also', head
+          srcPin.imageURL   = getMeta 'og:image', head
+          # If can get pin URL from main page, can (often?) extract full image URL from small image URL and skip ajax loads entirely.
           # if !srcPin.smallImageURL && srcPin.imageURL.match('/736x/')
           #   srcPin.smallImageURL = srcPin.imageURL.replace('/736x/', '/236x/')
             
         pinRequest.fail =>
-          failFn()
+          # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road?
         pinRequest.always () =>
           processOnePin()  
     
