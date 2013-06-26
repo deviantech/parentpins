@@ -22,6 +22,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
           width: 50px;
           img {
             max-width: 50px;
+            min-height: 15px;
           }
         } } }
 
@@ -30,6 +31,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     }
 
     li.pin {
+      position: relative;
       margin: 5px;
       float: left;
       border: 1px solid #CCC;
@@ -39,6 +41,10 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       }
       &.ui-selecting {
         border: 2px solid yellow;
+      }
+      .hover_info {
+        display: none;
+        text-align: center;
       }
     }
 
@@ -66,8 +72,22 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
         width: 100px;
         img {
           max-width: 100px;
+          min-height: 25px;
         }
-      } 
+      }
+      li.pin:hover {
+        overflow: hidden;
+        .hover_info {
+          display: block;
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          height: 100%;
+          width: 100%;
+          background: rgba(0, 0, 0, 0.7);
+          color: #EEE;
+        }
+      }
     }
   }
 
