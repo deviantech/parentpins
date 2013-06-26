@@ -63,6 +63,7 @@ class ImportController < ApplicationController
     if @pins_to_import.empty?
       flash.now[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
       session.delete(:import_id)
+      @pins = @imported
     else
       if @imported.empty?
         flash.now[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    

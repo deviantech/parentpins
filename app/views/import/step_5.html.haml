@@ -1,5 +1,6 @@
-.import_completed
-  %h1 Import Completed
+= render 'progress', :step => 4, :title => "Congrats -- you've just imported #{pluralize @pins.length, 'pin', 'pins'}!"
+
+= render 'pins/pins'
 
 - content_for :footer_js do
   :javascript

@@ -1,7 +1,10 @@
 %ol.import_progress
   %h3
-    Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
-    #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
+    - if defined?(title)
+      = title
+    - else
+      Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
+      #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
   %li{:class => progress_class(step, 1)} Select External Pins
   %li{:class => progress_class(step, 2)} Assign Pin Types
   %li{:class => progress_class(step, 3)} Assign Age Groups
