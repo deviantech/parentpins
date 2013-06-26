@@ -67,6 +67,10 @@ class Pin < ActiveRecord::Base
     to_json(:only => [:id, :age_group_id, :board_id, :description, :kind, :price, :url, :via_url], :methods => [:cached_remote_image_url])
   end
 
+  def self.step_one_json(pins)
+    Array(pins).to_json(:methods => [:external_id, :cached_remote_image_url, :cached_remote_small_image_url], :only => [:age_group_id, :board_id, :kind, :description, :price, :url, :via_url])
+  end
+
   def repinned?
     !repinned_from_id.blank?
   end
@@ -103,7 +107,7 @@ class Pin < ActiveRecord::Base
       :via_url => params[:link] ? params[:url] : nil
     })
   end
-  
+    
   def user_id=(uid)
     super
     self.board_id ||= User.find(uid).last_board_pinned_to_id

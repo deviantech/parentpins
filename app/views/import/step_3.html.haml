@@ -1,9 +1,7 @@
-%h1 
-  Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
-  #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
-%p{ :style => 'margin:0 0 0 24px;padding:0;'}
-  Please drag each pin to a box to assign age groups.
+= render 'progress', :step => 3
 
+%p.instructions
+  Please drag each pin to a box to assign age groups.
 
 .drop_section_wrapper.clearfix
   %ul
@@ -15,4 +13,6 @@
 = render 'drag_section'
     
 .submit_bar
-  %button#submit Assign Age Groups
+  = form_tag pin_import_step_4_path, :id => 'import_form' do
+    = hidden_field_tag 'data_string', ''
+    = submit_tag "Assign Age Groups"

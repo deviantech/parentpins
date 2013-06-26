@@ -79,6 +79,7 @@ ParentPins::Application.routes.draw do
   match '/import/step_2' => "import#step_2",                :as => 'pin_import_step_2'
   match '/import/step_3' => "import#step_3",                :as => 'pin_import_step_3'
   match '/import/step_4' => "import#step_4",                :as => 'pin_import_step_4'
+  match '/import/step_5' => "import#step_5",                :as => 'pin_import_step_5'
   match '/import/login_check' => "import#login_check",      :as => 'pin_import_login_check'
     
   if ALLOW_MAIL_PREVIEW

@@ -1,4 +1,4 @@
-#pp_pinterest_import_wrapper
+#pp_pinterest_import_wrapper{:data => {:all_pins => Pin.step_one_json(@external_boards.map(&:pins).flatten)}}
 
   #pinterest_section
     .importing_boards
@@ -48,7 +48,9 @@
       
     
     .right
-      = link_to_function 'Import These Pins', 'return false', :id => 'ppSubmitBoardsSortedLink', :class => 'btn tertiary_action'
+      = form_tag pin_import_step_2_path, :target => "_blank", :id => 'ppSubmitBoardsSortedForm' do
+        = hidden_field_tag :data_string
+        = submit_tag 'Import These Pins', :id => 'ppSubmitBoardsSortedLink', :class => 'btn tertiary_action'
       
     .clearfix
   .clearfix

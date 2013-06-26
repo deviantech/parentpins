@@ -6,7 +6,6 @@ class window.ppImporterClasses.Interactivity
   # Global Class Config
   host                = window.ppBookmarklet.host
   stepOneURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_1_path %>'   # Loaded in iframe directly from PP
-  stepTwoURL          = host + '<%= Rails.application.routes.url_helpers.pin_import_step_2_path %>'   # Loaded in iframe directly from PP
   loaderImageURL      = host + '<%= asset_path("ui/loader.gif") %>'
   frameWrapperMargin  = 50
 
@@ -20,8 +19,6 @@ class window.ppImporterClasses.Interactivity
   # Share pp info retreived via ajax among any multiple instances (there should only be one, but still)
   ppPins = null
   ppBoards = null
-  
-  
   
   # ==================================================================
   # = Private functions that don't need access to instance variables =
@@ -56,7 +53,6 @@ class window.ppImporterClasses.Interactivity
   bookmarkletClosing: () ->
     $(window).off 'message', @handleAnyPostedMessage
     @iframeWrapper.find('iframe').remove() if @iframeWrapper
-    
   
   # Note we define all methods under constructor to keep them private
   constructor: (@parent) ->
@@ -67,7 +63,6 @@ class window.ppImporterClasses.Interactivity
     # Instance variable declarations
     @iframeWrapper = null
     @stepOneFrame = null
-    @stepTwoFrame = null
     @externalPinData = []     # Expects an array with an id, board_id, and various pin fields
     @externalBoardData = []   # Expects an array with at least id and name fields
 
@@ -98,23 +93,6 @@ class window.ppImporterClasses.Interactivity
 
       return $.param({import: {boards: boards}})
     
-    @paramsForStepTwo = (dataString) ->
-      # Helper to get full data from pin ID
-      dataForPinID = (pid) =>
-        for pin in @externalPinData
-          return pin if pin.id == pid
-        null
-
-      # Get full data for all pins to import
-      pinsByBoard = {}
-      for dataPair in dataString.split(':')
-        [boardID, pinID] = dataPair.split('.')
-        if pinData = dataForPinID(pinID)
-          pinsByBoard[boardID] ?= {pins: []}
-          pinsByBoard[boardID].pins.push pinData
-
-      return $.param({from: 'importer', import: {boards: pinsByBoard}})
-    
     @ensureFrameWrapper = () ->
       @iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
 
@@ -130,21 +108,7 @@ class window.ppImporterClasses.Interactivity
       if step == 'step1'
         switch command
           when 'loaded' then @handleFrameOneLoaded()
-          when 'next' then @transitionToStepTwo(extra)
           when 'setHeight' then @stepOneFrame?.height( extra )
-      else if step == 'step2'
-        switch command
-          when 'setHeight' then @stepTwoFrame?.height( extra )
-          when 'previous'
-            @stepTwoFrame.hide()
-            @stepOneFrame.show()
-            toggleWindowRepaint()
-          when 'done' then null # We could hide the iframe, if we wanted...
-          when 'imported'
-            if @stepOneFrame && @stepOneFrame[0]
-              step1 = @parent.getIframeWindow(@stepOneFrame[0])
-              step1.postMessage "imported:#{extra}", '*'
-              toggleWindowRepaint()
 
 
     # =================================================================
@@ -153,7 +117,6 @@ class window.ppImporterClasses.Interactivity
 
     @transitionToStepOne = () ->
       @ensureFrameWrapper()
-      @stepTwoFrame?.hide()
       hideInitially = !@stepOneFrame?.length
       @stepOneFrame ?= $('<iframe class="ppParentPinsImporter stepOne">').appendTo( @iframeWrapper )
       @stepOneFrame.height( outputDivWrapper.height() - frameWrapperMargin )
@@ -176,20 +139,3 @@ class window.ppImporterClasses.Interactivity
           progressDiv.slideUp()
           @stepOneFrame.fadeIn()
         ), 700
-
-    # ==============================================================================
-    # = Step 2 - set the extra required info for each pin, then actually save them =
-    # ==============================================================================
-
-    @transitionToStepTwo = (dataString) ->
-      # Now display the Step 2 iframe
-      @ensureFrameWrapper()
-      @stepOneFrame?.hide()
-      @stepTwoFrame.remove() if @stepTwoFrame
-  
-      @stepTwoFrame = $('<iframe class="ppParentPinsImporter stepTwo" name="ppParentPinsImporterStep2Frame">').appendTo( @iframeWrapper )
-      @stepTwoFrame.height( outputDivWrapper.height() - frameWrapperMargin ).show()
-
-      # Note: loading the data as a param string inside a form so we can send a POST request (no URL length limit), but not via ajax (had authentication issues)
-      @stepTwoFrame.contents()[0].write( JST['templates/bookmarklet/importer/iframe_loader']({host: host, data_string: @paramsForStepTwo(dataString), url: stepTwoURL}) )
-      toggleWindowRepaint()

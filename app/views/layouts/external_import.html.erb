@@ -14,21 +14,18 @@
     <meta name="viewport" content="width=device-width">
     
     <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= csrf_meta_tags %>    
-    <%= yield :header %>
+    <%= stylesheet_link_tag "external_import", :media => "all" %>
+    <%= csrf_meta_tags %>
   </head>
   
-  <body class="<%= body_class %>">
+  <body class="importing <%= params[:action] %> <%= @body_class %> <%= 'step_drag_to_assign' if %w(step_2 step_3).include?(params[:action]) %>">
     <!--[if lt IE 7]>
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
     <![endif]-->
-    <%= render 'shared/flash', :flash => flash %>
-    <%= render 'shared/navigation' %>
-    <div id="top"></div>
-    <%= content_for?(:content) ? yield(:content) : yield %>
+    <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
     <div class="clearfix"></div>
-    <%= render 'shared/footer' %>
     <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "app/external_import" %>
     <%= yield :footer_js %>
 </body>
 </html>

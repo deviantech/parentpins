@@ -1,31 +1,9 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<% content_for :header do %>
+  <%= stylesheet_link_tag "importer/step_4", :media => "all" %>
+<% end %>
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>ParentPins - Interesting Pins Just for Parents</title>
-    <meta name="description" content="Parent Pins">
-    <meta name="keywords" content="ParentPins, keywords, here">
-    <meta name="viewport" content="width=device-width">
-    
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= stylesheet_link_tag "import", :media => "all" %>
-    <%= csrf_meta_tags %>
-  </head>
-  
-  <body class="importing <%= params[:action] %> <%= @body_class %> <%= 'step_drag_to_assign' if %w(step_2 step_3).include?(params[:action]) %>">
-    <!--[if lt IE 7]>
-        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-    <![endif]-->
-    <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
-    <div class="clearfix"></div>
-    <%= javascript_include_tag "application" %>
-    <%= javascript_include_tag "app/importer" %>
-    <%= yield :footer_js %>
-</body>
-</html>
+<% content_for :footer_js do %>
+  <%= javascript_include_tag "app/importer" %>
+<% end %>
+
+<%= render :template => 'layouts/profile' %>
