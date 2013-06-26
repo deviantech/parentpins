@@ -180,34 +180,38 @@ class window.ppImporterClasses.Sources.Pinterest
   # ===================
   # = Processing Pins =
   # ===================
-  startProcessingPins: () ->    
+  startProcessingPins: () ->
+    @pinsNeedingToComplete = maxPinConnections
+    
     processOnePin = () =>
       thisURL = @pinURLsToProcess.pop()
       srcPin = @pinForURL(thisURL)
-      
-      if !(thisURL && srcPin)
-        @processingAllPins.resolve()
-      else
+
+      if thisURL && srcPin
         # Note: if can get pin URL, could skip ajax entirely. Can get big image name from small one by changing URL (/236x/ -> /736x/): 
         # http://media-cache-ak2.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg -> http://media-cache-ak2.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg      
-        @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining)."
+        @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length + 1} remaining)."
 
         pinRequest = $.get thisURL
         pinRequest.done (pinHTML) =>
           head  = '<div>'+pinHTML.split('</head>')[0].split('</title>')[1]+'</div>' # Just grab the <head> section after the title, then wrap it in a DIV so jquery will parse
           srcPin.url        = getMeta 'og:see_also', head
           srcPin.imageURL   = getMeta 'og:image', head
-          # If can get pin URL from main page, can (often?) extract full image URL from small image URL and skip ajax loads entirely.
-          # if !srcPin.smallImageURL && srcPin.imageURL.match('/736x/')
-          #   srcPin.smallImageURL = srcPin.imageURL.replace('/736x/', '/236x/')
-            
+
         pinRequest.fail =>
           # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road?
+
         pinRequest.always () =>
-          processOnePin()  
+          processOnePin()
+          if @pinURLsToProcess.length == 0 # We've just finished one of the last ones
+            @pinsNeedingToComplete -= 1
+            if @pinsNeedingToComplete == 0 # OK, we've just finished the actual last one
+              @processingAllPins.resolve()
     
+
     for i in [1..maxPinConnections]
       processOnePin()
+
 
   # =====================
   # = Processing Boards =
