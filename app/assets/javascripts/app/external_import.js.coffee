@@ -145,26 +145,14 @@ initDragDrop = () ->
       base.append( li.css({left: 0, top: 0}) )
       hideShowPinsForSelectedBoard()
   }
-  dragOpts = {
+  generalDragOpts = {
     revert: 'invalid',
-    stack: $('#our_section li.board'),
     helper: 'clone',
+    cursor: "move", 
+    cursorAt: { top: -5, left: -5 },
     scroll: true,
     scrollSensitivity: 150,
-    cursor: "move", 
-    cursorAt: { top: -5, left: -5 },
-    start: (event, ui) ->
-      $(event.target).css({opacity: 0.5})
-    stop: (event, ui) ->
-      $(event.target).css({opacity: 1.0})
-  }
-  pinterestBoardDragOpts = {
-    revert: 'invalid',
-    stack: $('.importing_boards li'),
-    helper: 'clone',
-    scroll: true,
-    cursor: "move", 
-    cursorAt: { top: -5, left: -5 },
+    containment: '#pp_pinterest_import_wrapper',
     start: (event, ui) ->
       $(event.target).css({opacity: 0.5})
     stop: (event, ui) ->
@@ -176,9 +164,12 @@ initDragDrop = () ->
     $(board).droppable(dropOpts).hide().appendTo( $('#our_section ul.boards') ).fadeIn () ->
       tellParentOurHeight()
 
-  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable(dragOpts)
-  if $('.importing_boards li').length   then $('.importing_boards li').draggable(pinterestBoardDragOpts)
-  if $('#our_section li.board').length  then $('#our_section li.board').droppable(dropOpts)
+  if $('.importing_pins li.pin').length
+    $('.importing_pins li.pin').draggable $.extend({}, generalDragOpts, {stack: $('#our_section li.board')})
+  if $('.importing_boards li').length
+    $('.importing_boards li').draggable   $.extend({}, generalDragOpts, {stack: $('.importing_boards li')})
+  if $('#our_section li.board').length
+    $('#our_section li.board').droppable(dropOpts)
   $('#pinterest_section').droppable(dropToPinterestOpts)
 
 
