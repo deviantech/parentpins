@@ -96,7 +96,7 @@ drop = {
 
       if helper.hasClass('from-board')
         target.append(ui.draggable)
-      else if helper.hasClass('pins')
+      else if helper.hasClass('multi-drag-helper')
         target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected').draggable(drag.pinsFromDroppable) )
         helper.data('origElements').remove()
       else if helper.hasClass('board')
@@ -121,71 +121,57 @@ drop = {
 # Click on LI if not selected should add to selection
 # Click on LI if selected should begin drag 
 drag = {
-  pinsFromDroppable: {
+  general: {
     revert: 'invalid',
     stack: 'li.pin',
     helper: 'clone',
-    cursor: "move", 
     cursorAt: { top: -5, left: -5 },
     containment: '.context.import',
-    start: (e, ui) ->
-      $(e.target).css({opacity: 0.5})
-    stop: (e, ui) ->
-      $(e.target).css({opacity: 1.0})
-  },
-  boardsToDroppable: {
-    revert: 'invalid',
-    stack: 'li.pin',
-    helper: 'clone',
-    cursor: "move", 
-    opacity: 0.8,  
-    cursorAt: { top: -5, left: -5 },
-    containment: '.context.import',
-    start: (e, ui) ->
-      $(e.target).css({opacity: 0.5})
-    stop: (e, ui) ->
-      $(e.target).css({opacity: 1.0})
-  },
-  pinsToDroppable: {
-    revert: 'invalid',
-    revertDuration: 0,
-    stack: 'li.pin',
     delay: 0,
     distance: 0,
-    cursor: "move",
-    cursorAt: { top: -5, left: -5 },
-    opacity: 0.8,
-    containment: '.context.import',
-    helper: (e) ->
-      item = $(e.currentTarget)
-      if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
-        # Build the actual helper
-        item.addClass('ui-selected')
-        helper = $('<ul class="pins drag-helper"/>')
-        origElements = item.parent().children('.ui-selected')
-        clones = origElements.clone().removeClass('ui-selected')
-        helper.data('multidrag', clones).data('origElements', origElements).append(clones).css({'z-index': 99999})
-      else
-        # Return default helper -- start function will kill the drag
-        item.clone().removeAttr("id")
     start: (e, ui) ->
-      item = $(e.currentTarget)
-      
-      # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging
-      if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
-        item.addClass('ui-selected')
-        elements = item.parent().children('.ui-selected').clone()
-        elements.css('opacity', '0.5')
-              
-      # Other things are selected, we're not, and we were clicked on == skip dragging, allow selectable to do it's thing
-      else
-        return false
+      $(e.target).css({opacity: 0.5})
+      $('body').css('cursor', 'move')
     stop: (e, ui) ->
-      item = $(e.currentTarget)
-      elements = item.parent().children('.ui-selected').clone()
-      elements.css('opacity', '1.0')
+      $(e.target).css({opacity: 1.0})
+      $('body').css('cursor', 'auto')
   }
 }  
+drag.pinsFromDroppable = $.extend({}, drag.general)
+drag.boardsToDroppable = $.extend({}, drag.general)
+drag.pinsToDroppable = $.extend({}, drag.general, {
+  revertDuration: 0,
+  opacity: 0.8,
+  helper: (e) ->
+    item = $(e.currentTarget)
+    if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
+      # Build the actual helper
+      item.addClass('ui-selected')
+      helper = $('<ul class="multi-drag-helper"/>')
+      origElements = item.parent().children('.ui-selected')
+      clones = origElements.clone().removeClass('ui-selected')
+      helper.data('multidrag', clones).data('origElements', origElements).append(clones).css({'z-index': 99999})
+    else
+      # Return default helper -- start function will kill the drag
+      item.clone().removeAttr("id")
+  start: (e, ui) ->
+    item = $(e.currentTarget)
+    
+    # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging
+    if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
+      item.addClass('ui-selected')
+      elements = item.parent().children('.ui-selected').clone()
+      elements.css('opacity', '0.5')
+      $('body').css('cursor', 'move')
+    # Other things are selected, we're not, and we were clicked on == skip dragging, allow selectable to do it's thing
+    else
+      return false
+  stop: (e, ui) ->
+    item = $(e.currentTarget)
+    elements = item.parent().children('.ui-selected').clone()
+    elements.css('opacity', '1.0')
+    $('body').css('cursor', 'auto')
+})
 
 $(document).ready () ->
   wrapper = $('.context.step_drag_to_assign')

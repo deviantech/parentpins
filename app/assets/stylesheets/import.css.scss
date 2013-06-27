@@ -14,14 +14,18 @@ $highlight: #ffffe0;
   .ui-draggable {
     cursor: move;
   }
-  .ui-draggable-dragging {
-    margin: 0 !important;
-    border: none !important;
-    box-shadow: 1px 1px 3px rgba(155, 155, 155, 0.3) !important;
+  .ui-draggable-dragging.pin, .ui-draggable-dragging.board, .ui-draggable-dragging.multi-drag-helper .pin  {
+    margin: 0;
+    border: none;
+    box-shadow: 0 0 3px 3px rgba(155, 155, 155, 0.4);
     min-width: 20px !important;
-    &.pin {
-      padding: 0 !important;
-    }
+  }
+  .ui-draggable-dragging.multi-drag-helper .pin {
+    margin: 5px;
+  }
+  .ui-draggable-dragging.multi-drag-helper {
+    margin: 0;
+    padding: 0;
   }
   li.pin {
     text-align: center;
@@ -80,11 +84,10 @@ $highlight: #ffffe0;
       float: left;
       border: 1px solid #CCC;
       &.ui-selected {
-        border: 2px solid red;
-        box-shadow: 0 0 5px 5px #999;
+        border: 2px solid $themeCOLOR;
       }
       &.ui-selecting {
-        border: 2px solid yellow;
+        border: 2px solid $themeCOLORLight;
       }
       .hover_info {
         display: none;
@@ -161,6 +164,10 @@ $highlight: #ffffe0;
           width: 100%;
           background: rgba(0, 0, 0, 0.7);
           color: #EEE;
+          .board_name {
+            font-weight: bold;
+            margin-bottom: 3px;
+          }
         }
       }
     }
