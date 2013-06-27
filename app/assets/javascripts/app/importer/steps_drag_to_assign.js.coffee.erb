@@ -118,6 +118,7 @@ dragOpts = {
   cursor: "move",
   cursorAt: { top: -5, left: -5 },
   opacity: 0.8,
+  containment: '.context.import',
   helper: (e) ->
     helper = $('<ul class="pins"/>')
     item = $(e.currentTarget)

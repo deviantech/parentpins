@@ -4,14 +4,15 @@ $themeLinkCOLOR: #2886B4;
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
 
 .context.import {
+  .ui-draggable {
+    cursor: move;
+  }
   .ui-draggable-dragging {
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
     box-shadow: 1px 1px 3px rgba(155, 155, 155, 0.3) !important;
-  }
-  .ui-draggable {
-    cursor: move;
+    min-width: 20px !important;
   }
 }
 .context.import {
