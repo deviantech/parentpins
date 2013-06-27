@@ -116,21 +116,26 @@ body.step_1 {
          font-size: 14px;
          line-height: 18px;
          background: $themeCOLOR;
-         color:#fff;
+         color:#EEE;
          border-radius:2px;
          -webkit-border-radius:2px;
          -moz-border-radius:2px;
          &:hover {
-           background: #000;
            color:#fff;
          }
        }
        li.selected {
-         color:#222;
-         background: #CCC;
+         color:#DDD;
+         background: #000;
          &:hover {
-           color:#222;
+           color:#fff;
          }
+       }
+       li.empty {
+         background: #CCC;
+       }
+       li.empty.selected {
+         background: #999;
        }
      }
    }

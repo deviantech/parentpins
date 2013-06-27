@@ -9,7 +9,9 @@
         %ul
           %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pins
           - @external_boards.each do |board|
-            %li.board{:data => {:class => "board-#{board.id}"}}= board.name
+            %li.board{:data => {:class => "board-#{board.id}"}}
+              %span.board_name= board.name
+              %span.counter
         .clear
       
 

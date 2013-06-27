@@ -97,6 +97,7 @@ hideShowPinsForSelectedBoard = () ->
   setTimeout soon, 1
 
 checkIfAnyDraggableLeft = () ->
+  updateBoardPendingPinsCounters()
   $('.importing_pins').each (i, section) =>
     section = $(section)
     if section.find('li.pin:visible').length == 0
@@ -176,9 +177,26 @@ initDragDrop = () ->
     $('#our_section li.board').droppable  drop.overOurBoards
   $('#pinterest_section').droppable       drop.overPinterestBoards
 
+updateBoardPendingPinsCounters = () ->
+  boards = $('#pinterest_section .importing_boards li.board')
+  if boards.length
+    allEmpty = true
+    boards.each () ->
+      board = $(this)
+      counter = board.find('.counter')
+      if counter.length
+        count = $("#pinterest_section .pin_lists li.pin.#{board.data('class')}").length
+        counter.html("(#{count})")
+        allEmpty = false unless count == 0
+        if count == 0 then board.addClass('empty') else board.removeClass('empty')
+
+    firstBoard = boards.first()
+    if allEmpty then firstBoard.addClass('empty') else firstBoard.removeClass('empty')
+
 
 $(document).ready () ->
   sendMessage("step1:loaded")
+  updateBoardPendingPinsCounters()
 
   initial = $('.importing_pins.previously_imported').data('initial')
   if typeof(initial) == 'string' then initial = $.parseJSON(raw)
