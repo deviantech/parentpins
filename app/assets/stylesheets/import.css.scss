@@ -29,9 +29,12 @@ $highlight: #ffffe0;
   }
   li.pin {
     text-align: center;
+    width: 100px;
+    height: 120px;
+    overflow: hidden;
     img {
       max-width: 100px;
-      max-height: 200px;
+      min-height: 25px;
     }
   }
 }
@@ -67,9 +70,9 @@ $highlight: #ffffe0;
         li.pin {
           margin: 3px;
           width: 50px;
+          height: 60px;
           img {
             max-width: 50px;
-            max-height: 75px;
             min-height: 15px;
           }
         } } }
@@ -145,13 +148,6 @@ $highlight: #ffffe0;
         float: none;
         margin: 10px auto;
         width: 70%;
-      }
-      li.pin {
-        width: 100px;
-        img {
-          max-width: 100px;
-          min-height: 25px;
-        }
       }
       li.pin:hover:not(.ui-selected) {
         overflow: hidden;
