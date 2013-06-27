@@ -243,3 +243,22 @@ function updateFollowingButtonsAfterClickOn(clicked) {
     $('.following-action-for-board-owned-by-'+uid+' .following-action.'+to_show).removeClass('hidden');
   }
 }
+
+(function($){
+  $.fn.disableSelection = function() {
+    this
+    .attr('unselectable', 'on')
+    .css({
+      '-webkit-touch-callout': 'none',
+      '-webkit-user-select': 'none',
+      '-khtml-user-select': 'none',
+      '-moz-user-select': 'none',
+      '-ms-user-select': 'none',
+      'user-select': 'none'
+    }).on('selectstart', false);
+    
+    this.children().disableSelection();
+    
+    return this;
+  };
+})(jQuery);

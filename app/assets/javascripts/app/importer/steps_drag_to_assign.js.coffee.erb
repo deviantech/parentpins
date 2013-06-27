@@ -164,13 +164,16 @@ $(document).ready () ->
 
   checkIfAnyDraggableLeft()
   
-  dropSection.find('li.drop-target').droppable(dropOpts)
-  dragSection.droppable(dropOptsBackToDraggable)
-  
-  # dragSection.find('ul.pin').selectable({delay: 50})
-  dragSection.find('li.pin').draggable(dragOpts)
-  dropSection.find('li.pin').draggable(dragOnceDroppedOpts)
-  dragSection.find('li.board').draggable(boardDragOpts)
+  # dropSection.find('li.drop-target').droppable(dropOpts)
+  # dragSection.droppable(dropOptsBackToDraggable)
+  # 
+  # dragSection.find('li.pin').draggable(dragOpts)
+  # dropSection.find('li.pin').draggable(dragOnceDroppedOpts)
+  # dragSection.find('li.board').draggable(boardDragOpts)
+
+  dragSection.find('ul.pins').disableSelection().selectable({
+    appendTo: '.context.import',
+  })
 
 
   #
