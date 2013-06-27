@@ -5,7 +5,7 @@
     - @boards.each do |board|
       %li.importing_board
         .board_info
-          %h3= board.name
+          %h3 Board: #{board.name}
           = image_tag board.cover.url
           %br
           %label

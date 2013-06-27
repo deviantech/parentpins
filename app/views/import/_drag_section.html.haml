@@ -1,11 +1,12 @@
 .drag_section_wrapper.clearfix
-  %ul.boards
-    %li.selected.board{:data => {'board-id' => 'all'}}
-      %span.label Show All Pins
-    - @boards.each do |board|
-      %li.board{:data => {'board-id' => board.id}}
-        %span.label= board.name
-        %span.counter
+  - if @boards.length > 1
+    %ul.boards
+      %li.selected.board{:data => {'board-id' => 'all'}}
+        %span.label Show All Pins
+      - @boards.each do |board|
+        %li.board{:data => {'board-id' => board.id}}
+          %span.label= board.name
+          %span.counter
   
-  %ul.pins
+  %ul.pins{:class => @boards.length > 1 ? '' : 'no-boards'}
     = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set).blank? }

@@ -37,7 +37,7 @@ checkIfAnyDraggableLeft = () ->
   section = dragSection.find('ul.pins')
   section.find('.no-more').remove()
   unless section.find('li.pin:visible').length
-    msg = if dragSection.find('ul.boards li.selected').data('board-id') == 'all'
+    msg = if dragSection.find('ul.boards').length == 0 || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
       "Congrats, you've assigned all pins!"
     else
       "You've already assigned all pins in this board."
@@ -173,7 +173,7 @@ drag = {
         elements = item.parent().children('.ui-selected').clone()
         elements.css('opacity', '0.5')
       else
-        console.log "Skip dragging, let selection try"
+        # Skip dragging, let selection try
         return false
     stop: (e, ui) ->
       item = $(e.currentTarget)
@@ -198,23 +198,7 @@ $(document).ready () ->
   dragSection.find('li.board').draggable drag.boardsToDroppable
 
   selectTarget = dragSection.find('ul.pins').disableSelection()
-  selectTarget.selectable({
-    distance: 0,
-    delay: 0,
-    start: () ->
-      console.log "start selecting"
-    stop: () ->
-      console.log "stop selecting"
-    unselecting: () ->
-      console.log "unselecting"
-    unselected: () ->
-      console.log "unselected"
-    selecting: () ->
-      console.log "selecting"
-    selected: () ->
-      console.log "selected"
-      
-  })
+  selectTarget.selectable({})
 
 
   #

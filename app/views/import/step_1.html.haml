@@ -1,18 +1,19 @@
 #pp_pinterest_import_wrapper{:data => {:all_pins => Pin.step_one_json(@external_boards.map(&:pins).flatten)}}
 
   #pinterest_section
-    .importing_boards
-      %h2
-        Your Pinterest Boards
-        %i{tooltip("Click a board to show only its pins. Drag a board to move all its pins.", :class => 'icon-question-sign')}
-      %ul
-        %li.board-all.selected Show All Pins
-        - @external_boards.each do |board|
-          %li{:class => "board-#{board.id}"}= board.name
-      .clear
+    - if @external_boards.length > 1
+      .importing_boards
+        %h2
+          Your Pinterest Boards
+          %i{tooltip("Click a board to show only its pins. Drag a board to move all its pins.", :class => 'icon-question-sign')}
+        %ul
+          %li.board-all.selected Show All Pins
+          - @external_boards.each do |board|
+            %li{:class => "board-#{board.id}"}= board.name
+        .clear
       
 
-    .pin_lists
+    .pin_lists{:class => @external_boards.length > 1 ? '' : 'no-boards'}
       = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'
       %h2 
         Your Pinterest Pins

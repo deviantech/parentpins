@@ -123,6 +123,17 @@ $highlight: #ffffe0;
         background: rgba(255, 255, 255, 0.7);
         padding: 10px;
         min-width: 500px;
+        .no-more {
+          text-align: center;
+          font-size: 1.2em;
+          color: #444;
+          padding: 10px;
+        }
+      }
+      ul.pins.no-boards {
+        float: none;
+        margin: 10px auto;
+        width: 70%;
       }
       li.pin {
         width: 100px;

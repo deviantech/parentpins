@@ -43,9 +43,11 @@ tellParentOurHeight = () ->
     height = $('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15
     sendMessage("step1:setHeight:#{height}")    
 
+# TODO: Remove this once CSS fixed for modifying board height
 updateBoardHeight = () ->
-  max = $('#pinterest_section').height() - $('.importing_boards ul').offset().top - 20
-  $('.importing_boards ul').css({'max-height': max})
+  if $('.importing_boards ul').length
+    max = $('#pinterest_section').height() - $('.importing_boards ul').offset().top - 20
+    $('.importing_boards ul').css({'max-height': max})
 
 
 handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
@@ -85,7 +87,7 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
 
 
 hideShowPinsForSelectedBoard = () ->
-  class_to_show = $('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')
+  class_to_show = if $('.importing_boards li.selected').length then $('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '') else 'board-all'
   soon = () =>
     $('.importing_pins li.pin').hide()
     $('.importing_pins li.pin.' + class_to_show).show()
@@ -102,7 +104,7 @@ checkIfAnyDraggableLeft = () ->
        'not-yet-imported'
       else
        'previously imported'
-      board_label = if $('.importing_boards li.selected').first().hasClass('board-all')
+      board_label = if $('.importing_boards').length == 0 || $('.importing_boards li.selected').first().hasClass('board-all')
         ''
       else
         'on this board'
