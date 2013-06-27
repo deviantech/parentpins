@@ -1,6 +1,7 @@
 dragSection = $('.drag_section_wrapper')
 dropSection = $('.drop_section_wrapper')
 footer = $('.submit_bar')
+selectTarget = null
 form = null
 
 updateBoardPendingPinsCounters = () ->
@@ -97,7 +98,7 @@ drop = {
         target.append(ui.draggable)
       else if helper.hasClass('pins')
         target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected').draggable(drag.pinsFromDroppable) )
-        $(ui.draggable).remove()
+        helper.data('origElements').remove()
       else if helper.hasClass('board')
         dragSection.find('li.pin.board_'+helper.data('board-id')).appendTo(target)
       target.find('li.pin').addClass('from-board')
@@ -115,25 +116,11 @@ drop = {
   }
 }
 
+
+# Lasso selection if start off all LIs.
+# Click on LI if not selected should add to selection
+# Click on LI if selected should begin drag 
 drag = {
-  pinsToDroppable: {
-    revert: 'invalid',
-    stack: 'li.pin',
-    delay: 150, # Needed to prevent accidental drag when trying to select
-    distance: 5,
-    cursor: "move",
-    cursorAt: { top: -5, left: -5 },
-    opacity: 0.8,
-    containment: '.context.import',
-    helper: (e) ->
-      helper = $('<ul class="pins"/>')
-      item = $(e.currentTarget)
-      if !item.hasClass('ui-selected')
-        item.addClass('ui-selected').siblings().removeClass('ui-selected')
-      elements = item.parent().children('.ui-selected').clone()
-      item.siblings('.ui-selected').remove()
-      helper.data('multidrag', elements).data('item', item).append(elements).css({'z-index': 99999})
-  },
   pinsFromDroppable: {
     revert: 'invalid',
     stack: 'li.pin',
@@ -141,10 +128,10 @@ drag = {
     cursor: "move", 
     cursorAt: { top: -5, left: -5 },
     containment: '.context.import',
-    start: (event, ui) ->
-      item = $(event.target).css({opacity: 0.5})
+    start: (e, ui) ->
+      $(e.target).css({opacity: 0.5})
     stop: (e, ui) ->
-      $(this).css({opacity: 1.0})
+      $(e.target).css({opacity: 1.0})
   },
   boardsToDroppable: {
     revert: 'invalid',
@@ -154,10 +141,44 @@ drag = {
     opacity: 0.8,  
     cursorAt: { top: -5, left: -5 },
     containment: '.context.import',
-    start: (event, ui) ->
-      item = $(event.target).css({opacity: 0.5})
+    start: (e, ui) ->
+      $(e.target).css({opacity: 0.5})
     stop: (e, ui) ->
-      $(this).css({opacity: 1.0})
+      $(e.target).css({opacity: 1.0})
+  },
+  pinsToDroppable: {
+    revert: 'invalid',
+    revertDuration: 0,
+    stack: 'li.pin',
+    delay: 0,
+    distance: 0,
+    cursor: "move",
+    cursorAt: { top: -5, left: -5 },
+    opacity: 0.8,
+    containment: '.context.import',
+    helper: (e) ->
+      item = $(e.currentTarget)
+      if item.hasClass('ui-selected')
+        # Build the actual helper
+        helper = $('<ul class="pins drag-helper"/>')
+        origElements = item.parent().children('.ui-selected')
+        clones = origElements.clone().removeClass('ui-selected')
+        helper.data('multidrag', clones).data('origElements', origElements).append(clones).css({'z-index': 99999})
+      else
+        # Return default helper -- start function will kill the drag
+        item.clone().removeAttr("id")
+    start: (e, ui) ->
+      item = $(e.currentTarget)
+      if item.hasClass('ui-selected')
+        elements = item.parent().children('.ui-selected').clone()
+        elements.css('opacity', '0.5')
+      else
+        console.log "Skip dragging, let selection try"
+        return false
+    stop: (e, ui) ->
+      item = $(e.currentTarget)
+      elements = item.parent().children('.ui-selected').clone()
+      elements.css('opacity', '1.0')
   }
 }  
 
@@ -166,6 +187,8 @@ $(document).ready () ->
   return unless wrapper.length
 
   checkIfAnyDraggableLeft()
+
+
   
   dropSection.find('li.drop-target').droppable drop.onDroppable
   dragSection.droppable drop.onDraggable
@@ -174,8 +197,23 @@ $(document).ready () ->
   dropSection.find('li.pin').draggable drag.pinsFromDroppable
   dragSection.find('li.board').draggable drag.boardsToDroppable
 
-  dragSection.find('ul.pins').disableSelection().selectable({
-    distance: 0
+  selectTarget = dragSection.find('ul.pins').disableSelection()
+  selectTarget.selectable({
+    distance: 0,
+    delay: 0,
+    start: () ->
+      console.log "start selecting"
+    stop: () ->
+      console.log "stop selecting"
+    unselecting: () ->
+      console.log "unselecting"
+    unselected: () ->
+      console.log "unselected"
+    selecting: () ->
+      console.log "selecting"
+    selected: () ->
+      console.log "selected"
+      
   })
 
 
