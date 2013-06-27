@@ -237,7 +237,7 @@ $(document).ready () ->
 
 
   # Only show pins from selected board
-  $('body').on 'click', '.importing_boards li', (e) =>
+  $('body').on 'mousedown', '.importing_boards li', (e) =>
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
     hideShowPinsForSelectedBoard()
 

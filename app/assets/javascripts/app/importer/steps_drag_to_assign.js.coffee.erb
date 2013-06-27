@@ -119,9 +119,6 @@ drop = {
 }
 
 
-# Lasso selection if start off all LIs.
-# Click on LI if not selected should add to selection
-# Click on LI if selected should begin drag 
 drag = {
   general: {
     revert: 'invalid',
@@ -140,7 +137,7 @@ drag = {
   }
 }  
 drag.pinsFromDroppable = $.extend({}, drag.general)
-drag.boardsToDroppable = $.extend({}, drag.general)
+drag.boardsToDroppable = $.extend({}, drag.general, {cursorAt: null})
 drag.pinsToDroppable = $.extend({}, drag.general, {
   revertDuration: 0,
   cursorAt: null,
@@ -194,12 +191,8 @@ $(document).ready () ->
   selectTarget = dragSection.find('ul.pins').disableSelection()
   selectTarget.selectable({})
 
-
-  #
-  # TODO: hook up multi drag
-  #
   
-  dragSection.on 'click', 'li.board', (e) ->
+  dragSection.on 'mousedown', 'li.board', (e) ->
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
     hideShowPinsForSelectedBoard()
   
