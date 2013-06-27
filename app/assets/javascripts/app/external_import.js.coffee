@@ -204,14 +204,16 @@ $(document).ready () ->
   # Handle show/hide previous
   $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
     imported = $('.importing_pins.previously_imported')
+    ul = imported.find('ul.collection')
     link = $(e.currentTarget)
-    if imported.is(':visible')
-      link.text('Show Previously Imported')
-      imported.slideUp () ->
+    if ul.is(':visible')
+      link.text('(show)')
+      ul.slideUp () ->
         checkIfAnyDraggableLeft()
     else
-      link.text('Hide Previously Imported')
-      imported.slideDown () ->
+      imported.find('.no-more').remove()
+      link.text('(hide)')
+      ul.slideDown () ->
         checkIfAnyDraggableLeft()
 
 

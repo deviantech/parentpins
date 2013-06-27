@@ -80,13 +80,6 @@ body.step_1 {
    .pin_lists.no-boards {
      margin-left: 0px;
    }
-   #ppTogglePreviouslyImportedPins {
-     position:absolute;
-     top:24px;
-     right:24px;
-     font-size:13px;
-     line-height:18px;
-   }
    h2 {
      font-size:15px;
      line-height:18px;
@@ -98,8 +91,11 @@ body.step_1 {
      font-size:13px;
      line-height:18px;
      padding:0;
-     margin:12px 0 0 12px;
+     margin: 10px;
      font-weight:normal;
+   }
+   ul.collection {
+     margin-top: -10px;
    }
    .importing_boards {
      width: 200px;

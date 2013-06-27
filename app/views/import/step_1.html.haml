@@ -14,17 +14,18 @@
       
 
     .pin_lists{:class => @external_boards.length > 1 ? '' : 'no-boards'}
-      = link_to_function 'Hide Previously Imported', 'return false', :id => 'ppTogglePreviouslyImportedPins'
       %h2 
         Your Pinterest Pins
         %i{tooltip("Assign the pins you want to import to a ParentPins board by dragging them.", :class => 'icon-question-sign')}
       .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
-        %h3 Pins previously imported
-        %ul
+        %h3 
+          Pins previously imported
+          = link_to_function '(hide)', 'return false', :id => 'ppTogglePreviouslyImportedPins'
+        %ul.collection
     
       .importing_pins.not_yet_imported
         %h3 Pins not yet imported
-        %ul
+        %ul.collection
           - @external_boards.each do |board|
             - board.pins.each do |pin|
               %li.pin.board-all{:class => "board-#{board.id}", :data => {'pin-external-id' => pin.external_id, 'pin-url' => pin.url, 'pin-image' => pin.image_filename}}
