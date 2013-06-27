@@ -33,24 +33,26 @@ submitOnEnter = (e) ->
     form.submit()
 
 checkIfAnyDraggableLeft = () ->
-  updateBoardPendingPinsCounters()
-  section = dragSection.find('ul.pins')
-  section.find('.no-more').remove()
-  unless section.find('li.pin:visible').length
-    msg = if dragSection.find('ul.boards').length == 0 || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
-      "Congrats, you've assigned all pins!"
-    else
-      "You've already assigned all pins in this board."
-    section.append("<div class='no-more'>#{msg}</div>")
+  soon = () ->
+    updateBoardPendingPinsCounters()
+    section = dragSection.find('ul.pins')
+    section.find('.no-more').remove()
+    unless section.find('li.pin:visible').length
+      msg = if dragSection.find('ul.boards').length == 0 || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
+        "Congrats, you've assigned all pins!"
+      else
+        "You've already assigned all pins in this board."
+      section.append("<div class='no-more'>#{msg}</div>")
   
-  if section.find('li.pin').length
-    footer.find('.instructions').show()
-    footer.find('.hide_until_complete').hide()
-    $(window).off 'keypress', submitOnEnter
-  else
-    footer.find('.instructions').hide()
-    footer.find('.hide_until_complete').show()
-    $(window).on 'keypress', submitOnEnter
+    if section.find('li.pin').length
+      footer.find('.instructions').show()
+      footer.find('.hide_until_complete').hide()
+      $(window).off 'keypress', submitOnEnter
+    else
+      footer.find('.instructions').hide()
+      footer.find('.hide_until_complete').show()
+      $(window).on 'keypress', submitOnEnter
+  setTimeout soon, 10 # Let drag complete first
   
 # DATA -- assign kind or age group to handle both steps
 collectPinDataFrom = (selector, extraKey) ->
