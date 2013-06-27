@@ -153,7 +153,7 @@ $highlight: #ffffe0;
           min-height: 25px;
         }
       }
-      li.pin:hover {
+      li.pin:hover:not(.ui-selected) {
         overflow: hidden;
         .hover_info {
           display: block;
