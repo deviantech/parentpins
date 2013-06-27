@@ -166,7 +166,12 @@ drag.pinsToDroppable = $.extend({}, drag.general, {
   start: (e, ui) ->
     item = $(e.currentTarget)
     
-    # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging
+    # If already selected, and ctrl-click, just unselect
+    if item.hasClass('ui-selected') && (e.metaKey || e.altKey || e.ctrlKey)
+      setTimeout (() -> item.removeClass('ui-selected')), 10
+      return false
+
+    # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging    
     if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
       item.addClass('ui-selected')
       elements = item.parent().children('.ui-selected').clone()
