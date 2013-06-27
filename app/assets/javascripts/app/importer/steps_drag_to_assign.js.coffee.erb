@@ -158,8 +158,9 @@ drag = {
     containment: '.context.import',
     helper: (e) ->
       item = $(e.currentTarget)
-      if item.hasClass('ui-selected')
+      if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
         # Build the actual helper
+        item.addClass('ui-selected')
         helper = $('<ul class="pins drag-helper"/>')
         origElements = item.parent().children('.ui-selected')
         clones = origElements.clone().removeClass('ui-selected')
@@ -169,11 +170,15 @@ drag = {
         item.clone().removeAttr("id")
     start: (e, ui) ->
       item = $(e.currentTarget)
-      if item.hasClass('ui-selected')
+      
+      # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging
+      if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
+        item.addClass('ui-selected')
         elements = item.parent().children('.ui-selected').clone()
         elements.css('opacity', '0.5')
+              
+      # Other things are selected, we're not, and we were clicked on == skip dragging, allow selectable to do it's thing
       else
-        # Skip dragging, let selection try
         return false
     stop: (e, ui) ->
       item = $(e.currentTarget)

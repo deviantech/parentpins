@@ -23,6 +23,13 @@ $highlight: #ffffe0;
       padding: 0 !important;
     }
   }
+  li.pin {
+    text-align: center;
+    img {
+      max-width: 100px;
+      max-height: 200px;
+    }
+  }
 }
 .context.import {
   &.step_drag_to_assign {
@@ -58,6 +65,7 @@ $highlight: #ffffe0;
           width: 50px;
           img {
             max-width: 50px;
+            max-height: 75px;
             min-height: 15px;
           }
         } } }
