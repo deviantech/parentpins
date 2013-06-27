@@ -85,7 +85,8 @@ handleSubmission = () ->
     true
 
 dropOpts = {
-  hoverClass: "ui-state-active",
+  hoverClass: "ui-droppable-hovering",
+  activeClass: "ui-droppable-active",
   tolerance: 'pointer',
   drop: (event, ui) ->
     helper = $(ui.helper)
@@ -102,7 +103,8 @@ dropOpts = {
     checkIfAnyDraggableLeft()
 }
 dropOptsBackToDraggable = {
-  hoverClass: 'ui-state-active',
+  activeClass: "ui-droppable-active",
+  hoverClass: 'ui-droppable-hovering',
   accept: 'li.pin.from-board',
   tolerance: 'pointer',
   drop: (event, ui) ->

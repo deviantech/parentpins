@@ -2,6 +2,7 @@
 $themeCOLOR: #76A613;
 $themeLinkCOLOR: #2886B4;
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
+$highlight: #ffffe0;
 
 .context.import {
   .ui-draggable {
@@ -32,11 +33,18 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
           h3 {
             text-align: center;
           }
-          &.ui-state-active {
+          &.ui-droppable-active {
+            border-color: #777;
+            background: rgba(0, 0, 0, 0.01);
+          }
+          &.ui-droppable-hovering {
             border-color: #000;
             background: rgba(0, 0, 0, 0.1);
           }
-        } 
+        }
+        ul.collection {
+          padding: 0px;
+        }
         li.pin {
           margin: 3px;
           width: 50px;
@@ -67,7 +75,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
         text-align: center;
       }
     }
-    .drag_section_wrapper.ui-state-active {
+    .drag_section_wrapper.ui-droppable-hovering {
       ul.pins {
         border-color: #000;
         background: rgba(0, 0, 0, 0.1);
@@ -95,6 +103,9 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
             .label {
               font-weight: normal;
             }
+          }
+          &.selected {
+            background: $highlight;
           }
         }
       }
@@ -307,7 +318,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   ol.import_progress {
     margin: 0;
     margin-bottom: 25px;
-    background: #ffffe0;
+    background: $highlight;
     padding: 10px;
     text-align:center;
     h3 {

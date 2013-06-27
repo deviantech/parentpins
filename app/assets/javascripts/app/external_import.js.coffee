@@ -117,7 +117,7 @@ checkIfAnyDraggableLeft = () ->
 # Add draggable/droppable effects
 initDragDrop = () ->
   dropOpts = {
-    hoverClass: "ui-state-active",
+    hoverClass: "ui-droppable-hovering",
     tolerance: 'pointer',
     drop: (event, ui) ->
       li = $(ui.draggable).addClass('assigned')
@@ -132,7 +132,7 @@ initDragDrop = () ->
         hideShowPinsForSelectedBoard()
   }
   dropToPinterestOpts = {
-    hoverClass: "ui-state-active",
+    hoverClass: "ui-droppable-hovering",
     accept: 'li.pin.assigned',
     tolerance: 'pointer',
     drop: (event, ui) ->
