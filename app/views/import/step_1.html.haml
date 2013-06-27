@@ -7,9 +7,9 @@
           Your Pinterest Boards
           %i{tooltip("Click a board to show only its pins. Drag a board to move all its pins.", :class => 'icon-question-sign')}
         %ul
-          %li.board-all.selected Show All Pins
+          %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pins
           - @external_boards.each do |board|
-            %li{:class => "board-#{board.id}"}= board.name
+            %li.board{:data => {:class => "board-#{board.id}"}}= board.name
         .clear
       
 

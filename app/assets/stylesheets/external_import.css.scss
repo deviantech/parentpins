@@ -8,10 +8,13 @@ $themeCOLOR: #76A613;
 $themeLinkCOLOR: #2886B4;
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
 
-.ui-draggable-dragging {
+.ui-draggable-dragging.pin {
   margin: 0 !important;
   padding: 0 !important;
   box-shadow: 1px 1px 3px rgba(155, 155, 155, 0.3);
+}
+.ui-draggable-dragging.board {
+  width: 200px;
 }
 .ui-draggable {
   cursor: move;

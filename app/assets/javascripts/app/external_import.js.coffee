@@ -87,7 +87,7 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
 
 
 hideShowPinsForSelectedBoard = () ->
-  class_to_show = if $('.importing_boards li.selected').length then $('.importing_boards li.selected').attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '') else 'board-all'
+  class_to_show = if $('.importing_boards li.selected').length then $('.importing_boards li.selected').data('class') else 'board-all'
   soon = () =>
     $('.importing_pins li.pin').hide()
     $('.importing_pins li.pin.' + class_to_show).show()
@@ -99,7 +99,7 @@ hideShowPinsForSelectedBoard = () ->
 checkIfAnyDraggableLeft = () ->
   $('.importing_pins').each (i, section) =>
     section = $(section)
-    if section.find('li.pin').length == 0
+    if section.find('li.pin:visible').length == 0
       kind = if section.hasClass('not_yet_imported') 
        'not-yet-imported'
       else
@@ -118,45 +118,49 @@ checkIfAnyDraggableLeft = () ->
 
 # Add draggable/droppable effects
 initDragDrop = () ->
-  dropOpts = {
-    hoverClass: "ui-droppable-hovering",
-    tolerance: 'pointer',
-    drop: (event, ui) ->
-      li = $(ui.draggable).addClass('assigned')
-      target = $(this).find('.ourBoardPins')
+  drop = {
+    overOurBoards: {
+      hoverClass: "ui-droppable-hovering",
+      tolerance: 'pointer',
+      drop: (event, ui) ->
+        li = $(ui.draggable).addClass('assigned')
+        target = $(this).find('.ourBoardPins')
 
-      if li.hasClass('pin')      
-        target.append( li.css({left: 0, top: 0}) )
-        hideShowPinsForSelectedBoard()
-      else # Dropped a pinterest board. If currently showing previously imported, move ALL in board. Otherwise, only move not-yet-imported over.
-        $('.importing_pins li.pin.' + li.attr('class').replace(/\s*selected\s*/, '').replace(/\s*ui-\w+\s*/g, '')+':visible').each () ->
-          $(this).appendTo(target)
-        hideShowPinsForSelectedBoard()
-  }
-  dropToPinterestOpts = {
-    hoverClass: "ui-droppable-hovering",
-    accept: 'li.pin.assigned',
-    tolerance: 'pointer',
-    drop: (event, ui) ->
-      li = $(ui.draggable).removeClass('assigned')
-      base = if li.hasClass('already-imported')
-        $(this).find('.importing_pins.previously_imported ul')
-      else
-        $(this).find('.importing_pins.not_yet_imported ul')
+        if li.hasClass('pin')      
+          target.append( li.css({left: 0, top: 0}) )
+          hideShowPinsForSelectedBoard()
+        else # Dropped a pinterest board. If currently showing previously imported, move ALL in board. Otherwise, only move not-yet-imported over.
+          $('.importing_pins li.pin.' + li.data('class') + ':visible').each () ->
+            $(this).appendTo(target)
+          hideShowPinsForSelectedBoard()
+    },
+    overPinterestBoards: {
+      hoverClass: "ui-droppable-hovering",
+      accept: 'li.pin.assigned',
+      tolerance: 'pointer',
+      drop: (event, ui) ->
+        li = $(ui.draggable).removeClass('assigned')
+        base = if li.hasClass('already-imported')
+          $(this).find('.importing_pins.previously_imported ul')
+        else
+          $(this).find('.importing_pins.not_yet_imported ul')
 
-      base.append( li.css({left: 0, top: 0}) )
-      hideShowPinsForSelectedBoard()
+        base.append( li.css({left: 0, top: 0}) )
+        hideShowPinsForSelectedBoard()
+    }
   }
-  generalDragOpts = {
-    revert: 'invalid',
-    helper: 'clone',
-    cursor: "move", 
-    cursorAt: { top: -5, left: -5 },
-    containment: '#pp_pinterest_import_wrapper',
-    start: (event, ui) ->
-      $(event.target).css({opacity: 0.5})
-    stop: (event, ui) ->
-      $(event.target).css({opacity: 1.0})
+  drag = {
+    general: {
+      revert: 'invalid',
+      helper: 'clone',
+      cursor: "move", 
+      cursorAt: { top: -5, left: -5 },
+      containment: '#pp_pinterest_import_wrapper',
+      start: (event, ui) ->
+        $(event.target).css({opacity: 0.5})
+      stop: (event, ui) ->
+        $(event.target).css({opacity: 1.0})
+    }
   }
 
   # Used when boards added via ajax
@@ -165,12 +169,12 @@ initDragDrop = () ->
       tellParentOurHeight()
 
   if $('.importing_pins li.pin').length
-    $('.importing_pins li.pin').draggable $.extend({}, generalDragOpts, {stack: $('#our_section li.board')})
+    $('.importing_pins li.pin').draggable $.extend({}, drag.general, {stack: $('#our_section li.board')})
   if $('.importing_boards li').length
-    $('.importing_boards li').draggable   $.extend({}, generalDragOpts, {stack: $('.importing_boards li')})
+    $('.importing_boards li').draggable   $.extend({}, drag.general, {stack: $('.importing_boards li')})
   if $('#our_section li.board').length
-    $('#our_section li.board').droppable(dropOpts)
-  $('#pinterest_section').droppable(dropToPinterestOpts)
+    $('#our_section li.board').droppable  drop.overOurBoards
+  $('#pinterest_section').droppable       drop.overPinterestBoards
 
 
 $(document).ready () ->
