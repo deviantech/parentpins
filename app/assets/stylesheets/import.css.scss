@@ -16,10 +16,12 @@ $highlight: #ffffe0;
   }
   .ui-draggable-dragging {
     margin: 0 !important;
-    padding: 0 !important;
     border: none !important;
     box-shadow: 1px 1px 3px rgba(155, 155, 155, 0.3) !important;
     min-width: 20px !important;
+    &.pin {
+      padding: 0 !important;
+    }
   }
 }
 .context.import {
@@ -100,7 +102,6 @@ $highlight: #ffffe0;
           border: 1px solid #DDD;
           box-shadow: none;
           margin: 2px;
-          padding: 5px;
           .label {
             font-weight: bold;
           }

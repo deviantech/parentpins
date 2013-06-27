@@ -84,79 +84,82 @@ handleSubmission = () ->
     form.find('input[name=data_string]').val( $.param({pins: dataAsObject}) )
     true
 
-dropOpts = {
-  hoverClass: "ui-droppable-hovering",
-  activeClass: "ui-droppable-active",
-  tolerance: 'pointer',
-  drop: (event, ui) ->
-    helper = $(ui.helper)
-    target = $(this).find('.collection')
+drop = {
+  onDroppable: {
+    activeClass: "ui-droppable-active",
+    hoverClass: "ui-droppable-hovering",
+    tolerance: 'pointer',
+    drop: (event, ui) ->
+      helper = $(ui.helper)
+      target = $(this).find('.collection')
 
-    if helper.hasClass('from-board')
-      target.append(ui.draggable)
-    else if helper.hasClass('pins')
-      target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected').draggable(dragOnceDroppedOpts) )
-      $(ui.draggable).remove()
-    else if helper.hasClass('board')
-      dragSection.find('li.pin.board_'+helper.data('board-id')).appendTo(target)
-    target.find('li.pin').addClass('from-board')
-    checkIfAnyDraggableLeft()
-}
-dropOptsBackToDraggable = {
-  activeClass: "ui-droppable-active",
-  hoverClass: 'ui-droppable-hovering',
-  accept: 'li.pin.from-board',
-  tolerance: 'pointer',
-  drop: (event, ui) ->
-    target = $(this).find('ul.pins')
-    target.append($(ui.draggable).removeClass('from-board'))
-    hideShowPinsForSelectedBoard()
-}
-dragOpts = {
-  revert: 'invalid',
-  stack: 'li.pin',
-  delay: 0, # Needed to prevent accidental drag when trying to select
-  distance: 10,
-  cursor: "move",
-  cursorAt: { top: -5, left: -5 },
-  opacity: 0.8,
-  containment: '.context.import',
-  helper: (e) ->
-    helper = $('<ul class="pins"/>')
-    item = $(e.currentTarget)
-    if !item.hasClass('ui-selected')
-      item.addClass('ui-selected').siblings().removeClass('ui-selected')
-    elements = item.parent().children('.ui-selected').clone()
-    item.siblings('.ui-selected').remove()
-    helper.data('multidrag', elements).data('item', item).append(elements).css({'z-index': 99999})
-}
-boardDragOpts = {
-  revert: 'invalid',
-  stack: 'li.pin',
-  delay: 0, # Needed to prevent accidental drag when trying to select
-  helper: 'clone',
-  cursor: "move", 
-  opacity: 0.8,  
-  cursorAt: { top: -5, left: -5 },
-  start: (event, ui) ->
-    item = $(event.target).css({opacity: 0.5})
-  stop: (e, ui) ->
-    $(this).css({opacity: 1.0})
-}
-dragOnceDroppedOpts = {
-  revert: 'invalid',
-  stack: 'li.pin',
-  helper: 'clone',
-  cursor: "move", 
-  cursorAt: { top: -5, left: -5 },
-  start: (event, ui) ->
-    item = $(event.target).css({opacity: 0.5})
-  stop: (e, ui) ->
-    $(this).css({opacity: 1.0})
+      if helper.hasClass('from-board')
+        target.append(ui.draggable)
+      else if helper.hasClass('pins')
+        target.append( helper.data('multidrag').css({left: 0, top: 0}).removeClass('ui-selected').draggable(drag.pinsFromDroppable) )
+        $(ui.draggable).remove()
+      else if helper.hasClass('board')
+        dragSection.find('li.pin.board_'+helper.data('board-id')).appendTo(target)
+      target.find('li.pin').addClass('from-board')
+      checkIfAnyDraggableLeft()
+  },
+  onDraggable: {
+    activeClass: "ui-droppable-active",
+    hoverClass: 'ui-droppable-hovering',
+    accept: 'li.pin.from-board',
+    tolerance: 'pointer',
+    drop: (event, ui) ->
+      target = $(this).find('ul.pins')
+      target.append($(ui.draggable).removeClass('from-board'))
+      hideShowPinsForSelectedBoard()
+  }
 }
 
-
-  
+drag = {
+  pinsToDroppable: {
+    revert: 'invalid',
+    stack: 'li.pin',
+    delay: 150, # Needed to prevent accidental drag when trying to select
+    distance: 5,
+    cursor: "move",
+    cursorAt: { top: -5, left: -5 },
+    opacity: 0.8,
+    containment: '.context.import',
+    helper: (e) ->
+      helper = $('<ul class="pins"/>')
+      item = $(e.currentTarget)
+      if !item.hasClass('ui-selected')
+        item.addClass('ui-selected').siblings().removeClass('ui-selected')
+      elements = item.parent().children('.ui-selected').clone()
+      item.siblings('.ui-selected').remove()
+      helper.data('multidrag', elements).data('item', item).append(elements).css({'z-index': 99999})
+  },
+  pinsFromDroppable: {
+    revert: 'invalid',
+    stack: 'li.pin',
+    helper: 'clone',
+    cursor: "move", 
+    cursorAt: { top: -5, left: -5 },
+    containment: '.context.import',
+    start: (event, ui) ->
+      item = $(event.target).css({opacity: 0.5})
+    stop: (e, ui) ->
+      $(this).css({opacity: 1.0})
+  },
+  boardsToDroppable: {
+    revert: 'invalid',
+    stack: 'li.pin',
+    helper: 'clone',
+    cursor: "move", 
+    opacity: 0.8,  
+    cursorAt: { top: -5, left: -5 },
+    containment: '.context.import',
+    start: (event, ui) ->
+      item = $(event.target).css({opacity: 0.5})
+    stop: (e, ui) ->
+      $(this).css({opacity: 1.0})
+  }
+}  
 
 $(document).ready () ->
   wrapper = $('.context.step_drag_to_assign')
@@ -164,14 +167,16 @@ $(document).ready () ->
 
   checkIfAnyDraggableLeft()
   
-  dropSection.find('li.drop-target').droppable(dropOpts)
-  dragSection.droppable(dropOptsBackToDraggable)
+  dropSection.find('li.drop-target').droppable drop.onDroppable
+  dragSection.droppable drop.onDraggable
   
-  dragSection.find('li.pin').draggable(dragOpts)
-  dropSection.find('li.pin').draggable(dragOnceDroppedOpts)
-  dragSection.find('li.board').draggable(boardDragOpts)
+  dragSection.find('li.pin').draggable drag.pinsToDroppable
+  dropSection.find('li.pin').draggable drag.pinsFromDroppable
+  dragSection.find('li.board').draggable drag.boardsToDroppable
 
-  dragSection.find('ul.pins').disableSelection().selectable({})
+  dragSection.find('ul.pins').disableSelection().selectable({
+    distance: 0
+  })
 
 
   #
