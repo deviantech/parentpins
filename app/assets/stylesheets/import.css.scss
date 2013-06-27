@@ -86,6 +86,15 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
           box-shadow: none;
           margin: 2px;
           padding: 5px;
+          .label {
+            font-weight: bold;
+          }
+          &.empty {
+            color: #999;
+            .label {
+              font-weight: normal;
+            }
+          }
         }
       }
       ul.pins {
