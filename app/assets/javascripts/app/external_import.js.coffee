@@ -131,7 +131,7 @@ initDragDrop = () ->
           hideShowPinsForSelectedBoard()
         else # Dropped a pinterest board. If currently showing previously imported, move ALL in board. Otherwise, only move not-yet-imported over.
           $('.importing_pins li.pin.' + li.data('class') + ':visible').each () ->
-            $(this).appendTo(target)
+            $(this).addClass('assigned').appendTo(target)
           hideShowPinsForSelectedBoard()
     },
     overPinterestBoards: {
