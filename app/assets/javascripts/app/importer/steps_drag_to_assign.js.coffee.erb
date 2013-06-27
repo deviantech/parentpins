@@ -147,10 +147,17 @@ drag.pinsToDroppable = $.extend({}, drag.general, {
     if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
       # Build the actual helper
       item.addClass('ui-selected')
-      helper = $('<ul class="multi-drag-helper"/>')
+      helper = $('<div class="multi-drag-helper"/>')
+      wrapper = $('<div class="multi-drag-helper-inner-wrapper"/>')
       origElements = item.parent().children('.ui-selected')
-      clones = origElements.clone().removeClass('ui-selected')
-      helper.data('origElements', origElements).append(clones).css({'z-index': 99999})
+      clones = origElements.clone().removeClass('ui-selected')      
+      helper.data('origElements', origElements).append( wrapper.append(clones) )
+      total = helper.find('li').length
+      helper.find('li').each (idx, clone) ->
+        offset = total - idx
+        $(clone).css({top: offset * 2, left: offset * 5, position: 'absolute', zIndex: idx})
+      return helper
+      
     else
       # Return default helper -- start function will kill the drag
       item.clone().removeAttr("id")

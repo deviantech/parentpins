@@ -14,18 +14,24 @@ $highlight: #ffffe0;
   .ui-draggable {
     cursor: move;
   }
+  .multi-drag-helper {
+    z-index: 999999;
+  }
+  .multi-drag-helper-inner-wrapper {
+    position: relative;
+  }
   .ui-draggable-dragging.pin, .ui-draggable-dragging.board, .ui-draggable-dragging.multi-drag-helper .pin  {
     margin: 0;
     border: none;
     box-shadow: 0 0 3px 3px rgba(155, 155, 155, 0.4);
     min-width: 20px !important;
   }
-  .ui-draggable-dragging.multi-drag-helper .pin {
-    margin: 5px;
-  }
   .ui-draggable-dragging.multi-drag-helper {
     margin: 0;
     padding: 0;
+  }
+  .ui-draggable-dragging.multi-drag-helper .pin {
+    margin: 5px;
   }
   li.pin {
     text-align: center;
