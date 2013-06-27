@@ -185,6 +185,7 @@ function stopSorting(toSort) {
 
 function applyMasonry(selector) {
   selector = selector || '.masonry';
+
   $(selector).masonry({
     columnWidth: 10,
     gutterWidth: 6,

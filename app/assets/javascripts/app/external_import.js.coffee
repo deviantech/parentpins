@@ -150,8 +150,6 @@ initDragDrop = () ->
     helper: 'clone',
     cursor: "move", 
     cursorAt: { top: -5, left: -5 },
-    scroll: true,
-    scrollSensitivity: 150,
     containment: '#pp_pinterest_import_wrapper',
     start: (event, ui) ->
       $(event.target).css({opacity: 0.5})

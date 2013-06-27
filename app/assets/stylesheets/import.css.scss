@@ -8,8 +8,13 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
-    box-shadow: none !important;
+    box-shadow: 1px 1px 3px rgba(155, 155, 155, 0.3) !important;
   }
+  .ui-draggable {
+    cursor: move;
+  }
+}
+.context.import {
   &.step_drag_to_assign {
     .drop_section_wrapper {
       ul {
@@ -89,6 +94,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
         border: 1px solid #CCC;
         background: rgba(255, 255, 255, 0.7);
         padding: 10px;
+        min-width: 500px;
       }
       li.pin {
         width: 100px;

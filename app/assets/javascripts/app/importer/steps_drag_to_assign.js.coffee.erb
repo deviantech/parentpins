@@ -21,8 +21,11 @@ checkIfAnyDraggableLeft = () ->
   section = dragSection.find('ul.pins')
   section.find('.no-more').remove()
   unless section.find('li.pin:visible').length
-    scope = if dragSection.find('ul.boards li.selected').data('board-id') == 'all' then '' else " in this board "
-    section.append("<div class='no-more'>List of pins #{scope} to assign is empty.</div>")
+    msg = if dragSection.find('ul.boards li.selected').data('board-id') == 'all'
+      "Congrats, you've assigned all pins!"
+    else
+      "You've already assigned all pins in this board."
+    section.append("<div class='no-more'>#{msg}</div>")
   
   if section.find('li.pin').length
     footer.find('.instructions').show()
