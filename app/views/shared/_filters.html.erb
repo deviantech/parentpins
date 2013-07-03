@@ -3,7 +3,7 @@
   <ol>
     <% if defined?(@pins) %>
       <li>
-        <a href="#" class="selected"><%= @kind.try(:titleize) || 'All Pin Types' %></a>
+        <a href="#" class="selected centered"><%= @kind.try(:titleize) || 'All Pin Types' %></a>
         <ol>
           <li><%= link_to 'All Pin Types', url_for(params.merge(:kind => nil)), :class => @kind.blank? ? 'current' : '' %></li>
           <% Pin::VALID_TYPES.each do |kind| %>
@@ -13,7 +13,7 @@
       </li>
 
       <li class="<%= 'last' if defined?(@board) %>">
-        <a href="#" class="selected"><%= @age_group.try(:name) || 'All Age Groups' %></a>
+        <a href="#" class="selected centered"><%= @age_group.try(:name) || 'All Age Groups' %></a>
         <ol>
           <li><%= link_to 'All Age Groups', url_for(params.merge(:age_group => nil)), :class => @age_group.blank? ? 'current' : '' %></li>
           <% AgeGroup.all.each do |age| %>
@@ -25,7 +25,7 @@
     
     <% unless defined?(@board) %>
       <li class="last categories">
-        <a href="#" class="selected"><%= @category.try(:name) || 'All Categories' %></a>
+        <a href="#" class="selected centered"><%= @category.try(:name) || 'All Categories' %></a>
         <ol>
           <li><%= link_to 'All Categories', url_for(params.merge(:category => nil)), :class => @category.blank? ? 'current' : '' %></li>
           <% Category.all.each do |cat| %>

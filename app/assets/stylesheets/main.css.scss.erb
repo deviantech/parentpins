@@ -245,8 +245,11 @@ ul li .handle {
   margin: 0 auto;
   display: block;
   text-align: center;
-  color: #fff;
+  color: #ddd;
+  margin-bottom: 5px;
+  margin-top: -10px;
   a {
+    padding: 5px;
     text-decoration:none;
     &:hover {
       color:#000; } } }
@@ -345,6 +348,7 @@ ul li .handle {
     margin-top: 6px;
     font-weight: normal;
     @include rounded(5px);
+    text-shadow: 0 0 3px #ccc;
     &:hover {
       background:transparent;
       -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) inset;
@@ -1676,6 +1680,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
       margin:0 12px 0 0;
       float:left;
       position:relative;
+      .centered {
+        text-align: center;
+      }
       a {
         text-decoration:none;
         font-weight:normal; 
@@ -1714,7 +1721,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
             font-size:13px; 
             &:hover {
               color:#fff;
-              background:$themeLinkCOLOR; } }
+              background:$themeCOLOR; } }
           .current {
             background:#eee;
             &:hover {
@@ -1967,6 +1974,11 @@ body.profile {
     h1 {
       @include page-header;
       width:980px;
+      line-height: 1.2em;
+      font-size: 2.1429em;
+      span {
+        font-size: 18px;
+        margin-top: 3px; }
       .count {
         font-size:13px;
         line-height:18px;
@@ -2651,4 +2663,22 @@ li.pin .comment .user_info {
 }
 a.following-action.unfollow {
   color: #CCC;
+}
+a.following-action.unfollow:hover {
+  color: #999;
+}
+hr.header-divider {
+  height: 1px;
+  background: #ddd;
+  width: 600px;
+  border: none;
+  margin: 0 auto;
+  margin-bottom: 4px;
+}
+form .field.checkbox.remember_me {
+  text-align: center;
+  input, label {
+    display: inline;
+    float: none !important;
+  }
 }

@@ -6,7 +6,7 @@
     <%= @profile.name %> Follows
   <% end %>
 </h1>
-
+<hr class="header-divider">
 <% if @profile_counters[:following].zero? || @pins.blank? %>
   <%= render 'shared/filters' %>
   <div class="empty-results">
