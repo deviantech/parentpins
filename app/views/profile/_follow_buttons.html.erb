@@ -1,5 +1,5 @@
 <% if user_signed_in? && current_user != to_follow %>
-  <span class="following-action-for-profile" data-profile-id="<%= to_follow.id %>">
+  <span class="following-action-for-profile following-action-for-profile-<%= to_follow.id %>" data-profile-id="<%= to_follow.id %>">
     <a href="#" data-url="<%= follow_profile_path(to_follow) %>" class="<%= 'follow-in-list' if defined?(in_list) %> following-action follow <%= 'hidden' if current_user.following?(to_follow) %>">follow all boards</a>
     <a href="#" data-url="<%= unfollow_profile_path(to_follow) %>" class="<%= 'follow-in-list' if defined?(in_list) %> following-action unfollow <%= 'hidden' unless current_user.following?(to_follow) %>">unfollow all boards</a>
   </span>

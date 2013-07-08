@@ -239,6 +239,8 @@ function updateFollowingButtonsAfterClickOn(clicked) {
   // If for a user, also update toggles of any owned boards shown on this page
   if (wrapper.hasClass('following-action-for-profile')) {
     var uid = wrapper.data('profile-id');
+    $('.following-action-for-profile-'+uid+' .following-action').addClass('hidden');
+    $('.following-action-for-profile-'+uid+' .following-action.'+to_show).removeClass('hidden');
     $('.following-action-for-board-owned-by-'+uid+' .following-action').addClass('hidden');
     $('.following-action-for-board-owned-by-'+uid+' .following-action.'+to_show).removeClass('hidden');
   }
