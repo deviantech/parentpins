@@ -7,9 +7,6 @@ namespace :trends do
     puts "[#{Time.now}] Updating trends"
     batch_size = 1_000
     
-    # Filter out boards with fewer than 5 pins
-    Board.update_all ['trend_position=?', 0], ['pins_count < ?', 5]
-    
     [Pin, Board].each do |klass|
       iterations = -1
       klass.update_all ['trend_position = ?', -1]

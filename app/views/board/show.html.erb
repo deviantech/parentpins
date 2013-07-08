@@ -17,8 +17,9 @@
   </h1>
   <p class="description"><%= @board.description %></p>
   <div class="board_stats">
-    <span class="pins_count"><%= pluralize @board.pins_count, 'pin', 'pins' %></span>
-    <span class="followers_count"><%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %></span>
+    <span class="stat pins_count"><%= pluralize @board.pins_count, 'pin', 'pins' %></span>
+    <span class="stat followers_count"><%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %></span>
+    <span class="stat comments_count"><span class="comment-count-for-board-<%= @board.id %>"><%= @board.comments.count %></span> <%= @board.comments.count == 1 ? 'comment' : 'comments' %></span>
     <span>Category: <%= @board.category.name %></span>
   </div>
   

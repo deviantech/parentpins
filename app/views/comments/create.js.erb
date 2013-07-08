@@ -31,6 +31,7 @@
   $('li.recent_comment').find('.user_info .count').remove();
   $('ul.comments').first().prepend(newComment);
   $('#comment_body').val('').focus().select();
+  $('.comment-count-for-board-<%= @comment.commentable.id %>').text('<%= @comment.commentable.comments.count %>');
 
 
 <% else %>
