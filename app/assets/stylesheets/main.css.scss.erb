@@ -265,11 +265,12 @@ ul li .handle {
   text-decoration: none;
   color: $themeCOLOR;
   font-family:times;
-  font-size: 1.7143em; /* 24px */ 
+  font-size: 1.85em;
   line-height: 45px;
   font-weight:600;
   padding:3px 6px 0 54px;
   margin:0;
+  margin-top: 1px;
   width:114px;
   &:before {
     content:"\e014";
@@ -299,21 +300,21 @@ ul li .handle {
   padding-bottom: 10px;
   input {
     display: block;
-    width: 54px;
+    width: 64px;
     float:left;
     background: #fff;
     border: 1px solid #D2D2D2;
     -moz-border-radius: 4px 0 0 4px;
     -webkit-border-radius: 4px 0 0 4px;
     border-radius: 4px 0 0 4px;
-    -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.13) inset;
-    -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.13) inset;
-    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.13) inset;
+    -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.10) inset;
+    -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.10) inset;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.10) inset;
     font-size: 15px;
     line-height:18px;
-    font-weight: normal;
-    padding: 8px 9px 3px 9px;
-    margin-top: 3px;
+    font-weight: lighter;
+    padding: 5px 9px 3px 9px;
+    margin-top: 5px;
     resize: none;
     -webkit-transition: all 0.4s ease-in-out;
     -moz-transition: all 0.4s ease-in-out;
@@ -331,8 +332,9 @@ ul li .handle {
     -moz-border-radius: 0 4px 4px 0;
     -webkit-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0; 
-    padding:7px;
-    margin-top: 3px;
+    padding:6px;
+    padding-bottom:5px;
+    margin-top: 5px;
     @include pinli-font;
     font-size:15px; } }
 
@@ -348,7 +350,6 @@ ul li .handle {
     margin-top: 6px;
     font-weight: normal;
     @include rounded(5px);
-    text-shadow: 0 0 3px #ccc;
     &:hover {
       background:transparent;
       -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.25) inset;
@@ -2099,7 +2100,7 @@ body.profile {
 .header {
   margin: 0 auto;
   position: relative;
-  width: 1020px; }
+  width: 100%; }
 
 .wrapper {
   margin: 0 auto;

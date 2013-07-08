@@ -1,41 +1,43 @@
 <div class="header_wrapper" id="header_wrapper">
   <div class="header">
-    <a href="/" class="logo ir">Parent<span>Pins</span></a>
     <div class="nav_wrapper">
+      <a href="/" class="logo ir">Parent<span>Pins</span></a>
+
       <ul class="nav_main">
-      <li class="drop_down">
-        <%= nav_link 'Trending', pins_path, :also_accept => '/', :class => 'top' %>
-        <ul class="inner">
-          <li><%= nav_link 'Articles', articles_path %></li>
-          <li><%= nav_link 'Ideas', ideas_path %></li>
-          <li><%= nav_link 'Products', products_path %></li>
-        </ul>
-      </li>
-      <li>
-        <%= nav_link 'Boards', boards_path %>
-      </li>
-      <li>
-        <%= nav_link 'Featured', featured_path %>
-      </li>
-    </ul>
+        <li class="drop_down">
+          <%= nav_link 'Trending', pins_path, :also_accept => '/', :class => 'top' %>
+          <ul class="inner">
+            <li><%= nav_link 'Articles', articles_path %></li>
+            <li><%= nav_link 'Ideas', ideas_path %></li>
+            <li><%= nav_link 'Products', products_path %></li>
+          </ul>
+        </li>
+        <li>
+          <%= nav_link 'Boards', boards_path %>
+        </li>
+        <li>
+          <%= nav_link 'Featured', featured_path %>
+        </li>
+      </ul>
+
       <%= form_tag '/search', :class => 'search' do %>
-        <%= text_field_tag :q, params[:q], :placeholder => 'Search...' %>
-        <%= hidden_field_tag 'kind', @kind %>
-        <button class="btn search_button primary"></button>
+      <%= text_field_tag :q, params[:q], :placeholder => 'Search...' %>
+      <%= hidden_field_tag 'kind', @kind %>
+      <button class="btn search_button primary"></button>
       <% end %>
       <ul class="nav_login">    
-      <li class="drop_down">
-        <a href="/faq.html" class="top">About</a>
-        <ul class="inner">
-          <li><a href="/faq.html">FAQs</a></li>
-          <li><a href="/legal.html">Terms of Service</a></li>
-          <li><a href="/copyright.html">Copyright</a></li>
-          <li><a href="/privacy.html">Privacy</a></li>
-          
-          <li><a href="/feedback/new">Contact Us</a></li>
-        </ul>
-      </li>  
-      <% if user_signed_in? %>
+        <li class="drop_down">
+          <a href="/faq.html" class="top">About</a>
+          <ul class="inner">
+            <li><a href="/faq.html">FAQs</a></li>
+            <li><a href="/legal.html">Terms of Service</a></li>
+            <li><a href="/copyright.html">Copyright</a></li>
+            <li><a href="/privacy.html">Privacy</a></li>
+
+            <li><a href="/feedback/new">Contact Us</a></li>
+          </ul>
+        </li>  
+        <% if user_signed_in? %>
         <li class="drop_down">
           <%= link_to '+ Add', '#', :class => "add top" %>
           <ul class="inner">
@@ -56,15 +58,15 @@
             </li>
           </ul>
         </li>
-      <% else %>
+        <% else %>
         <li>
           <%= nav_link 'Log In', new_user_session_path, :class => "login ajax" %>
         </li>
         <li>
           <%= nav_link 'Sign Up', new_user_registration_path, :class => "signup" %>
         </li>
-      <% end %>
-    </ul>
+        <% end %>
+      </ul>
       <div class="clearfix"></div>
     </div>
   </div>
