@@ -7,7 +7,12 @@ class BoardController < ApplicationController
   layout :set_layout
 
   def index
-    paginate_boards @profile ? @profile.boards : Board.includes([:user]).trending    
+    if @profile
+      paginate_boards @profile.boards
+    else
+      # Not paginating in any general contexts to avoid showing users exactly how few boards we have
+      @results = @boards = Board.includes([:user, :category]).in_category(@category).trending.where('pins_count > ?', 5).limit(75)
+    end
   end
 
   def show

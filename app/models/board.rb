@@ -25,8 +25,8 @@ class Board < ActiveRecord::Base
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
   }
   scope :newest_first, order('id DESC')
-  scope :with_pins, where('pins_count > 0')
-  scope :trending, order('trend_position DESC')
+  scope :with_pins, where('pins_count > ?', 0)
+  scope :trending, order('trend_position DESC').where('pins_count > ?', 0)
     
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
   def thumbnail_urls(n = 4)

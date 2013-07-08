@@ -66,7 +66,8 @@ $(document).ready(function() {
       
   // Follow/unfollow buttons
   $(document).on('click', '.following-action', function(e) {    
-    var url = urlPlusParamString($(this).data('url'), 'context=' + $('.nav_profile').data('profileId'));
+    var context = $('.nav_profile').length ? ('context=' + $('.nav_profile').data('profileId')) : '';
+    var url = urlPlusParamString($(this).data('url'), context);
     $.ajax({type: $(this).data('ajax-method') || 'POST', url: url});
     updateFollowingButtonsAfterClickOn(this);
     e.preventDefault();

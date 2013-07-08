@@ -35,7 +35,7 @@
 <% else %>
   <div class="wrapper">
       <div class="content board_wide">
-        <h1>Trending Boards<% if @category %> :: <%= @category.name %><% end %></h1>
+        <h1><% if @category %>Trending Boards :: <%= @category.name %><% else %>Top 75 Trending Boards<% end %></h1>
     
         <%= render 'board/boards' %>
       </div>

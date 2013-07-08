@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
     support_ajax_pagination
   end
 
+  # NOTE: similar to pins logic. Currently not used on general pages because we don't want to allow users to see how few boards we actually have.
   def paginate_boards(base_scope)
     @results = @boards = base_scope.includes(:category).in_category(@category).page(params[:page])
     support_ajax_pagination
