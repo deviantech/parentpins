@@ -2,9 +2,9 @@ Global.addFlashMsg = (msg, name) ->
   name ||= 'notice'
   box = $('#flash').removeClass('hidden')
   content = """
-    <div class="flashmsg alert alert-#{name}">
+    <div class="alert alert-#{name}">
       <a class="close" data-dismiss="alert">&#215;</a>
-      <div class="flash_msg">#{msg}</div>
+      #{msg}
     </div>
   """  
   $(content).hide().appendTo(box).slideDown()

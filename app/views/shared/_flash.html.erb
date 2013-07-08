@@ -6,9 +6,9 @@
   <% unless flash.blank? %>    
     <% flash.each do |name, msg| %>
       <% if msg.is_a?(String) && !msg.blank? %>
-        <div class="flashmsg alert alert-<%= name %>">
+        <div class="alert alert-<%= name %>">
           <a class="close" data-dismiss="alert">&#215;</a>
-          <%= content_tag :div, msg, :class => "flash_wrapper" %>
+          <%= msg %>
         </div>
       <% end %>
     <% end %>

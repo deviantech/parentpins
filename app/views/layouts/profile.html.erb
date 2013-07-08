@@ -44,6 +44,7 @@
 
     <div class="profile_content_wrapper">
       <div class="content">
+        <%= render 'shared/flash', :flash => flash %>
         <%= content_for?(:profile_content) ? yield(:profile_content) : yield %>
       </div>
     </div>

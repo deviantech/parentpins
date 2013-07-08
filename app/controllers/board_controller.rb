@@ -7,6 +7,7 @@ class BoardController < ApplicationController
   layout :set_layout
 
   def index
+    flash.now[:error] = "Testing board errors"
     if @profile
       paginate_boards @profile.boards
     else

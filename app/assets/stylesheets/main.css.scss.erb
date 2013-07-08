@@ -2033,39 +2033,20 @@ body.profile {
 /* flash messaging */
 
 #flash {
-  margin-bottom: 20px; 
-  margin-top: -20px;
+  margin: auto 50px;
+}
+.wrapper #flash {
+  margin: 0px
+}
+#flash a.close {
+  color: #777;
+  float: right;
+}
+#flash a.close:hover {
+  color: #333;
+  cursor: pointer
 }
 
-.flashmsg {
-  position: relative;
-  width: auto;
-  background: blue;
-  text-align: center;
-  font-size: 17px;
-  line-height:24px;
-  padding: 12px 0;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
-  .close {
-    color: #666;
-    font-size: 20px;
-    line-height:24px;
-    font-weight:bold;
-    padding: 0 4px 4px;
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    &:hover {
-      cursor: pointer;
-      color:#000;
-   } }
-  &.alert, &.alert-success {
-    background: #D2FFE2; }
-  &.alert-error {
-    background: #FECFD7; }
-  &.alert-bookmarklet {
-    background: #FFFEDE; }     
-}
 
 /* footer styles */
 
