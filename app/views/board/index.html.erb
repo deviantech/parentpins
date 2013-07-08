@@ -7,8 +7,8 @@
           <% end %>
   </h1>
 
-  <% if @profile == current_user %>
-    <div class="page-controls my-board-controls">
+  <div class="page-controls my-board-controls">
+    <% if @profile == current_user %>
       <%= link_to 'Add Board', new_profile_board_path(current_user), :class => 'ajax' %>
       |
       <% if params[:category].blank? %>
@@ -20,8 +20,11 @@
         <%= link_to 'Remove filters', profile_boards_path(@profile) %>
         to reorder boards
       <% end %>
-    </div>
-  <% end %>
+    <% else %>
+      <%= render 'profile/follow_buttons', :to_follow => @profile %>
+    <% end %>
+  </div>
+  
   
 
 

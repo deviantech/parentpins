@@ -1,12 +1,13 @@
 <li class="board" data-sort-id="<%= board.id %>">
-  <h3><%= link_to board.name, profile_board_path(board.user, board) %></h3>
-  <% unless @profile %>
-    <h4>
-      <%= link_to pins_profile_path(board.user) do %>
-        <%= image_tag board.user.avatar.v50.url, :alt => "#{board.user.name}'s avatar" %><%= board.user.name %>
-      <% end %>
-    </h4>
-  <% end %>
+  <h3>
+    <% unless @profile %>
+        <%= link_to pins_profile_path(board.user), tooltip("Click to view #{board.user.name}'s profile", :placement => 'top', :class => 'no-decoration') do %>
+          <%= image_tag board.user.avatar.v50.url, :alt => "#{board.user.name}'s avatar" %>
+        <% end %>
+    <% end %>
+    <%= link_to board.name, profile_board_path(board.user, board) %>
+  </h3>
+
   <h4>
     <%= pluralize board.pins_count, 'pin', 'pins' %>
     /
@@ -14,6 +15,7 @@
     /
     <%= board.category.name.downcase %>
   </h4>
+
   <div class="holder">
     <%= link_to '', profile_board_path(board.user, board), :class => "link" %>
     

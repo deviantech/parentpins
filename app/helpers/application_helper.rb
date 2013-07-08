@@ -8,6 +8,16 @@ module ApplicationHelper
     opts.merge({:rel => 'popover', :title => title, :data => {:content => content, :placement => 'right'}})
   end
 
+  def popover_for(obj, opts = {})
+    title, content = case obj
+    when User
+      desc = pluralize(obj.boards.count, 'board', 'boards') + ' and ' + pluralize(obj.pins.count, 'pin', 'pins')
+      [obj.name, desc]
+    else nil
+    end
+        
+    title ? popover(title, content, opts) : {}
+  end
 
   def display_teacher_info(user)
     return 'Not a teacher' unless user.teacher?
