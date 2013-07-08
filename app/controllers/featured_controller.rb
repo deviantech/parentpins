@@ -30,7 +30,8 @@ class FeaturedController < ApplicationController
   def ensure_profile_owner
     @profile = User.find(params[:profile_id])
     unless user_signed_in? && @profile == current_user
-      redirect_to(profile_path(@profile), :notice => "You don't own this profile.") and return
+      flash[:error] = "You don't own this profile."
+      redirect_to(profile_path(@profile)) and return
     end
   end
   

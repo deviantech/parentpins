@@ -1,8 +1,14 @@
-<% if user_signed_in? && !current_user.got_bookmarklet? %>
-  <% flash[:bookmarklet] = "Drag this link to your toolbar to pin images from other sites: #{bookmarklet_link}".html_safe %>
-<% end %>
+<% show_bookmarklet_flash = user_signed_in? && !current_user.got_bookmarklet? %>
 
-<div id="flash" class="<%= 'hidden' if flash.blank? %>">
+<div id="flash" class="<%= 'hidden' if flash.blank? && !show_bookmarklet_flash %>"> 
+  <% if show_bookmarklet_flash %>
+    <div class="alert alert-block alert-bookmarklet alert-info">
+      <a class="close" data-dismiss="alert">&#215;</a>
+      <h4>ParentPins Bookmarklet</h4>
+      Drag this link to your toolbar to pin images from other sites: <%= bookmarklet_link %>
+    </div>
+  <% end %>
+  
   <% unless flash.blank? %>    
     <% flash.each do |name, msg| %>
       <% if msg.is_a?(String) && !msg.blank? %>
