@@ -19,7 +19,8 @@ ParentPins::Application.routes.draw do
   match  "/popup/login"         => "popup#login",   :as => 'popup_login'
   
   # Pretty URLs for pin subtypes
-  root :to => redirect("/pins")
+  root :to => redirect { |p, req| req.flash.keep; "/pins" }
+  
   match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
   match '/products' => 'pins#index',  :kind => 'product',   :as => 'products'
   match '/ideas'    => 'pins#index',  :kind => 'idea',      :as => 'ideas'
@@ -84,7 +85,7 @@ ParentPins::Application.routes.draw do
   match '/import/login_check' => "import#login_check",      :as => 'pin_import_login_check'
   
   # External-published API
-  match '/js/bookmarklet' => 'import#external_bookmarklet_link_endpoint', :format => 'js'
+  match '/widgets/bookmarklet' => 'import#external_embedded'
   
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'

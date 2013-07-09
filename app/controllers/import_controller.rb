@@ -1,14 +1,15 @@
 class ImportController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:step_1, :login_check] # Coming from JS, no way for bookmarklet to know proper CSRF token
-  before_filter :authenticate_user!,  :except => [:login_check, :external_bookmarklet_link_endpoint]
-  before_filter :parse_params,        :except => [:login_check, :external_bookmarklet_link_endpoint, :show]
-  before_filter :get_profile_info,    :except => [:login_check, :external_bookmarklet_link_endpoint, :step_1]
+  before_filter :authenticate_user!,  :except => [:login_check, :external_embedded]
+  before_filter :parse_params,        :except => [:login_check, :external_embedded, :show]
+  before_filter :get_profile_info,    :except => [:login_check, :external_embedded, :step_1]
   before_filter :set_filters,         :only =>   [:show]
 
-  def external_bookmarklet_link_endpoint
-    render :js => bookmarklet_link_target_js
+  def external_embedded
+    flash[:error] = "Unable to initiate ParentPin process -- it appears javascript wasn't enabled on the referring page."
+    redirect_to '/'
   end
-
+  
   def login_check
     render :json => {:logged_in => current_user.try(:id)}, :callback => params[:callback]
   end

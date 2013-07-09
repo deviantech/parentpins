@@ -1,0 +1,16 @@
+//= require jquery 
+# TODO: rewrite this to not pull in all of jquery (upsetting parent page no less) in order to do our minimal work
+
+<% host = '//' + ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>
+host = '<%= host %>'
+
+$(document).on 'click', 'a[data-pin-action="buttonBookmarklet"]', (e) ->
+  e.preventDefault()
+  `(function(b){
+    var s=b.createElement('script');
+    s.setAttribute('charset','UTF-8');
+    s.setAttribute('type','text/javascript');
+    s.setAttribute('src',"<%= host %>/assets/bookmarklet.js?r="+Math.random()*999);
+    b.body.appendChild(s);
+  })(document)`
+  false

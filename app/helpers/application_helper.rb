@@ -99,10 +99,6 @@ module ApplicationHelper
     link_to 'ParentPin It!', bookmarklet_link_target_js
   end  
 
-  def bookmarklet_remote_site_embed
-    link_to 'ParentPin It!', "#{host}/js/bookmarklet"
-  end
-
   def pagination_link
     # No link if we're not paginating or don't have additional pages to show
     return unless @results && @results.respond_to?(:total_entries) && @results.total_entries > @results.length
