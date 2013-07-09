@@ -90,12 +90,12 @@
         <p>Yup! If you're a website owner, you can add a ParentPin It! button to your website by following two steps.</p>
         <p>First, add a link where you want the button to be:
         <code>
-          <%= %Q{<a href="//#{host}/widgets/bookmarklet" data-pin-action="buttonBookmarklet" ><img src="//#{host}#{asset_path('widgets/pin_button.png')}" /></a>} %>
+          <%= %Q{<a href="//#{host}/widgets/bookmarklet" data-pin-action="buttonBookmarklet" ><img src="//#{host}/assets/widgets/pin_button.png" /></a>} %>
         </code>
         </p>
         <p>Second, add this script tag just above the closing &lt;/body&gt; tag:
         <code>
-          <%= %Q{<script type="text/javascript" src="//#{host}#{asset_path('widgets.js')}"></script>} %>
+          <%= %Q{<script type="text/javascript" src="//#{host}/assets/widgets.js"></script>} %>
         </code>
         </p>
         <p>You can add as many links as you'd like, but only include the script tag once per page.</p>
