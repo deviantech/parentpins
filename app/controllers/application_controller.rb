@@ -1,10 +1,21 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :consider_ajax_layout
-
+  helper_method :host, :bookmarklet_link_target_js
   
   
   private
+  
+  def host
+    port = ActionMailer::Base.default_url_options[:port]
+    host = ActionMailer::Base.default_url_options[:host]
+    port == 80 ? host : "#{host}:#{port}"
+  end
+    
+  # Note: not using asset-path, because that uses a URL with a digest of the asset contents
+  def bookmarklet_link_target_js
+    %Q{javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src',"//#{host}/assets/bookmarklet.js?r="+Math.random()*999);b.body.appendChild(s);setTimeout(function(){if (!window.ppBookmarklet){alert("It seems we were unable to connect to the server. Please try again shortly.")}},4000);})(document))}
+  end
   
   def get_profile_counters
     return true unless @profile 

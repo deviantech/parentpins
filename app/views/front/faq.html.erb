@@ -11,8 +11,9 @@
       <li><a href="#f">Where can I see all the pins from the users and boards I follow?</a></li>
       <li><a href="#g">What is the Featured page?  How can I get featured?</a></li>
       <li><a href="#h">Can I opt out of allowing someone else to pin my content?</a></li>
-      <li><a href="#i">How can I advertise with ParentPins?</a></li>
-      <li><a href="#j">I have a problem that isn't addressed here; who can I contact?</a></li>
+      <li><a href="#i">Can I encourage others to pin my content?</a></li>
+      <li><a href="#j">How can I advertise with ParentPins?</a></li>
+      <li><a href="#k">I have a problem that isn't addressed here; who can I contact?</a></li>
     </ul>
 
     <dl>
@@ -84,13 +85,21 @@
         </p>
       </dd>
 
+      <dt id="i">Can I encourage others to pin my content?</dt>
+      <dd>
+        <p>Yup! If you're a website owner, you can copy/paste this code to add a ParentPin It! button to your website.</p>
+        <code>
+          TODO: FIXME
+          <%= bookmarklet_remote_site_embed %>
+        </code>
+      </dd>
 
-      <dt id="i">How can I advertise with ParentPins?</dt>
+      <dt id="j">How can I advertise with ParentPins?</dt>
       <dd>
         <p>If you'd like to learn about options for advertising with ParentPins, please <%= mail_to "advertising@parentpins.com", 'send us an inquiry email', :encode => 'javascript' %>.</p>
       </dd>
 
-      <dt id="j">I have a problem that isn't addressed here; who can I contact?</dt>
+      <dt id="k">I have a problem that isn't addressed here; who can I contact?</dt>
       <dd>
         <p>If you have a problem or issue - or feedback of any kind! - please don't hesitate to contact us.  You can <%= mail_to "info@parentpins.com", 'send us an email', :encode => 'javascript' %> or use the <%= link_to 'contact submission form', new_feedback_path %>.</p>
       </dd>

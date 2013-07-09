@@ -82,7 +82,10 @@ ParentPins::Application.routes.draw do
   match '/import/step_4' => "import#step_4",                :as => 'pin_import_step_4'
   match '/import/step_5' => "import#step_5",                :as => 'pin_import_step_5'
   match '/import/login_check' => "import#login_check",      :as => 'pin_import_login_check'
-    
+  
+  # External-published API
+  match '/js/bookmarklet' => 'import#external_bookmarklet_link_endpoint', :format => 'js'
+  
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'
     mount UserPreview   => '/preview/mail/user'
