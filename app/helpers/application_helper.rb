@@ -1,5 +1,14 @@
 module ApplicationHelper
 
+  def meta_description
+    # TODO -- add additional cases (e.g. specific board or specific pin)
+    if @profile 
+      "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
+    else
+      "ParentPins: kid and parenting-related resources curated from around the web by parents and educators like you."
+    end
+  end
+
   def tooltip(title, opts = {})
     opts.merge({:rel => 'tooltip', :title => title, 'data-placement' => opts.delete(:placement) || 'right'})
   end
