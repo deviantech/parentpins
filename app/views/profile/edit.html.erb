@@ -14,7 +14,12 @@
       <%= render 'form_fields', :f => f %>
 
       <div class="field <%= 'with_image' if @profile.avatar? %>">
-        <%= f.label :avatar, "#{@profile.avatar? ? 'Update' : 'Upload an'} Avatar" %>
+        <label>
+          <%= @profile.avatar? ? 'Update' : 'Upload an' %> Avatar
+          <% if @profile.avatar? %>
+            <small>(<%= link_to 'remove', remove_profile_avatar_path(@profile), :method => :post, :confirm => "Are you sure you want to remove your avatar?" %>)</small>
+          <% end %>
+        </label>
         <%= image_tag(@profile.avatar.v50.url) if @profile.avatar? %>
         <%= f.file_field :avatar %>
         <%= f.hidden_field :avatar_cache %>
@@ -23,8 +28,7 @@
 
       <div class="field">
         <label>
-          <%= @profile.cover_image? ? 'Update' : 'Upload a' %>
-          Cover Image 
+          <%= @profile.cover_image? ? 'Update' : 'Upload a' %> Cover Image 
           <% if @profile.cover_image? %>
             <small>(<%= link_to 'remove', remove_profile_cover_image_path(@profile), :method => :post, :confirm => "Are you sure you want to remove your cover image?" %>)</small>
           <% end %>
