@@ -19,48 +19,52 @@ module ApplicationHelper
     tags << meta_tag( 'og:site_name',  'ParentPins')
     
     # TODO  - ensure url generates ok, image url includes host
-    if @pin
+    title, desc, url, img = if @pin
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins"
       desc  = @pin.description || ''
       url   = pin_url(@pin)
       img   = absolutize @pin.image.v222.url
       
-      tags << meta_tag( 'og:title',        truncate(title, :length => 90))
-      tags << meta_tag( 'og:description',  truncate(desc, :length => 295))
-      tags << meta_tag( 'og:url',          url)
-      tags << meta_tag( 'og:image',        img)
       tags << meta_tag( 'og:type',         @pin.kind == 'idea' ? 'website' : @pin.kind)
       if @pin.kind == 'product'
         tags << meta_tag( 'product:price:amount',    @pin.price)
         tags << meta_tag( 'product:price:currency',  'USD')
       end
+      tags << meta_tag( 'twitter:card',    'photo')
       
-      tags << meta_tag( 'twitter:card',        'photo')
-      tags << meta_tag( 'twitter:url',         url)
-      tags << meta_tag( 'twitter:title',       truncate(title, :length => 65))
-      tags << meta_tag( 'twitter:description', truncate(desc, :length => 195))
-      tags << meta_tag( 'twitter:image',       img)
+      [title, desc, url, img]
     elsif @board
       title = "#{@board.user.name}'s ParentPins board: #{@board.name}"
       desc  = @board.description || ''
       url   = profile_board_url(@board.user, @board)
       img   = absolutize @board.cover.url
       
+      tags << meta_tag( 'og:type',        'website')      
+      tags << meta_tag( 'twitter:card',   'summary')
+      
+      [title, desc, url, img]
+    elsif @profile
+      title = "#{@profile.name}'s ParentPins Profile"
+      desc  = @profile.bio || ''
+      url   = profile_url(@profile)
+      img   = absolutize @profile.avatar.url
+      
+      tags << meta_tag( 'og:type',        'website')      
+      tags << meta_tag( 'twitter:card',   'summary')
+      
+      [title, desc, url, img]
+    end
+
+    if title && url
       tags << meta_tag( 'og:title',        truncate(title, :length => 90))
       tags << meta_tag( 'og:description',  truncate(desc, :length => 295))
       tags << meta_tag( 'og:url',          url)
       tags << meta_tag( 'og:image',        img)
-      tags << meta_tag( 'og:type',         'website')      
 
-      tags << meta_tag( 'twitter:card',        'summary')
-      tags << meta_tag( 'twitter:url',         url)
       tags << meta_tag( 'twitter:title',       truncate(title, :length => 65))
       tags << meta_tag( 'twitter:description', truncate(desc, :length => 195))
+      tags << meta_tag( 'twitter:url',         url)
       tags << meta_tag( 'twitter:image',       img)
-    elsif @profile
-      
-    else
-      
     end
     
     tags.join("\n").html_safe
