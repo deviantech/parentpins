@@ -9,6 +9,48 @@ module ApplicationHelper
     end
   end
 
+  def meta_tags
+    tags = []
+    tags << meta_tag( 'fb:app_id',      AUTH[:facebook][:key])
+    tags << meta_tag( 'og:site_name',  'ParentPins')
+    
+    # TODO  - ensure url generates ok, image url includes host
+    if @pin
+      title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins"
+      desc  = @pin.description || ''
+      url   = pin_url(@pin)
+      img   = @pin.image.v222.url
+      
+      tags << meta_tag( 'og:title',        truncate(title, :length => 90))
+      tags << meta_tag( 'og:description',  truncate(desc, :length => 295))
+      tags << meta_tag( 'og:url',          url)
+      tags << meta_tag( 'og:image',        img)
+      tags << meta_tag( 'og:type',         @pin.kind == 'idea' ? 'website' : @pin.kind)
+      if @pin.kind == 'product'
+        tags << meta_tag( 'product:price:amount',    @pin.price)
+        tags << meta_tag( 'product:price:currency',  'USD')
+      end
+      
+      tags << meta_tag( 'twitter:card',        'photo')
+      tags << meta_tag( 'twitter:url',         url)
+      tags << meta_tag( 'twitter:title',       truncate(title, :length => 65))
+      tags << meta_tag( 'twitter:description', truncate(desc, :length => 195))
+      tags << meta_tag( 'twitter:image',       img)
+    elsif @board
+      
+    elsif @profile
+      
+    else
+      
+    end
+    
+    tags.join("\n").html_safe
+  end
+  
+  def meta_tag(prop, content)
+    tag(:meta, :property => prop, :content => content)
+  end
+
   def tooltip(title, opts = {})
     opts.merge({:rel => 'tooltip', :title => title, 'data-placement' => opts.delete(:placement) || 'right'})
   end
