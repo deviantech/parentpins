@@ -1,7 +1,8 @@
 module ApplicationHelper
 
   def fb_invite_url
-    url = @profile ? profile_url(@profile) : root_url
+    user = current_user || @profile
+    url = user ? profile_url(user) : root_url
     "https://www.facebook.com/dialog/send?app_id=#{AUTH[:facebook][:key]}&link=#{url}&redirect_uri=#{url}"
   end
 
