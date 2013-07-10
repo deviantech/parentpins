@@ -9,6 +9,10 @@ module ApplicationHelper
     end
   end
 
+  def absolutize(str)
+    str.to_s.starts_with?('http') ? str : ['http://', host, str.to_s.starts_with?('/') ? nil : '/', str].compact.join('')
+  end
+
   def meta_tags
     tags = []
     tags << meta_tag( 'fb:app_id',      AUTH[:facebook][:key])
@@ -19,7 +23,7 @@ module ApplicationHelper
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins"
       desc  = @pin.description || ''
       url   = pin_url(@pin)
-      img   = @pin.image.v222.url
+      img   = absolutize @pin.image.v222.url
       
       tags << meta_tag( 'og:title',        truncate(title, :length => 90))
       tags << meta_tag( 'og:description',  truncate(desc, :length => 295))
@@ -37,7 +41,22 @@ module ApplicationHelper
       tags << meta_tag( 'twitter:description', truncate(desc, :length => 195))
       tags << meta_tag( 'twitter:image',       img)
     elsif @board
+      title = "#{@board.user.name}'s ParentPins board: #{@board.name}"
+      desc  = @board.description || ''
+      url   = profile_board_url(@board.user, @board)
+      img   = absolutize @board.cover.url
       
+      tags << meta_tag( 'og:title',        truncate(title, :length => 90))
+      tags << meta_tag( 'og:description',  truncate(desc, :length => 295))
+      tags << meta_tag( 'og:url',          url)
+      tags << meta_tag( 'og:image',        img)
+      tags << meta_tag( 'og:type',         'website')      
+
+      tags << meta_tag( 'twitter:card',        'summary')
+      tags << meta_tag( 'twitter:url',         url)
+      tags << meta_tag( 'twitter:title',       truncate(title, :length => 65))
+      tags << meta_tag( 'twitter:description', truncate(desc, :length => 195))
+      tags << meta_tag( 'twitter:image',       img)
     elsif @profile
       
     else
