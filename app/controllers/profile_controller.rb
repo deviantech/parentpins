@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity]
-  before_filter :get_profile,         :except => [:got_bookmarklet]
+  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_cover_image]
+  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_cover_image]
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :set_filters,         :only => [:pins, :likes, :activity]
   
@@ -41,7 +41,12 @@ class ProfileController < ApplicationController
       render 'edit'
     end
   end
-    
+  
+  def remove_cover_image
+    current_user.update_attribute :remove_cover_image, 1
+    redirect_to edit_profile_path(current_user)
+  end
+  
   def follow
     current_user.follow(@profile) if user_signed_in?
   end

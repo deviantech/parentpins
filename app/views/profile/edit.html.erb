@@ -22,7 +22,14 @@
       </div>      
 
       <div class="field">
-        <%= f.label :avatar, "#{@profile.cover_image? ? 'Update' : 'Upload a'} Cover Image <span>(1020x160)</span>".html_safe %>
+        <label>
+          <%= @profile.cover_image? ? 'Update' : 'Upload a' %>
+          Cover Image 
+          <% if @profile.cover_image? %>
+            <small>(<%= link_to 'remove', remove_profile_cover_image_path(@profile), :method => :post, :confirm => "Are you sure you want to remove your cover image?" %>)</small>
+          <% end %>
+          <span>(1020x160)</span>  
+        </label>
         <% if @profile.cover_image? %>
         <div class="cover_image_preview">
           <%= image_tag(@profile.cover_image.url) %>

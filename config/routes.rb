@@ -37,6 +37,7 @@ ParentPins::Application.routes.draw do
     get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
     get "/profile/:profile_id/board/:id/comments" => 'board#comments', :as => :profile_board_comments
     get "/profile/:profile_id/import/:id" => 'import#show', :as => :profile_import
+    post "/profile/:profile_id/remove_cover_image" => 'profile#remove_cover_image', :as => :remove_profile_cover_image
     resources :profile do
       member do
         get 'activity'
