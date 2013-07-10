@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  def fb_invite_url
+    url = @profile ? profile_url(@profile) : root_url
+    "https://www.facebook.com/dialog/send?app_id=#{AUTH[:facebook][:key]}&link=#{url}&redirect_uri=#{url}"
+  end
+
   def meta_description
     # TODO -- add additional cases (e.g. specific board or specific pin)
     if @profile 
