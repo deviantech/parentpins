@@ -16,7 +16,7 @@ module ApplicationHelper
     
     # TODO  - ensure url generates ok, image url includes host
     title, desc, url, img = if @pin
-      title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins"
+      title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
       desc  = @pin.description || ''
       url   = pin_url(@pin)
       img   = absolute_url @pin.image.v222.url
@@ -30,7 +30,7 @@ module ApplicationHelper
       
       [title, desc, url, img]
     elsif @board
-      title = "#{@board.user.name}'s ParentPins board: #{@board.name}"
+      title = "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
       desc  = @board.description || ''
       url   = profile_board_url(@board.user, @board)
       img   = absolute_url @board.cover.url
@@ -130,23 +130,10 @@ module ApplicationHelper
   end
 
   def share_pin_via_fb_link(pin)
-    return '' unless pin.board.category && pin.age_group
-    
-    opts = {
-      :s => 100,
-      :p => {
-        :title    => "ParentPins.com: #{pin.board.category.name} > #{pin.age_group.name}",
-        :url      => pin_url(pin),
-        :summary  => %Q{"#{pin.user.name}'s pin on the board "#{pin.board.name}" on ParentPins.com},
-      }
-    }
-    
-    url = "http://www.facebook.com/sharer.php?#{opts.to_param}&p[images][0]=#{URI.escape(absolute_url(pin.image.v222.url))}"
-    
     url = "https://www.facebook.com/sharer/sharer.php?u=#{pin_url(pin)}"
     
     # NOTE: if add image, give it the js-new-window-popup class too
-    link_to 'Share on FB', url, :data => {:height => 217, :width => 548}, :class => 'js-new-window-popup btn sec_action fb_button'
+    link_to 'Share on FB', url, :data => {:height => 436, :width => 626}, :class => 'js-new-window-popup btn sec_action fb_button'
   end
 
   def share_pin_via_email_link(pin)
