@@ -143,6 +143,8 @@ module ApplicationHelper
     
     url = "http://www.facebook.com/sharer.php?#{opts.to_param}&p[images][0]=#{URI.escape(absolute_url(pin.image.v222.url))}"
     
+    url = "https://www.facebook.com/sharer/sharer.php?u=#{pin_url(pin)}"
+    
     # NOTE: if add image, give it the js-new-window-popup class too
     link_to 'Share on FB', url, :data => {:height => 217, :width => 548}, :class => 'js-new-window-popup btn sec_action fb_button'
   end
