@@ -1,8 +1,7 @@
 module ApplicationHelper
 
   def fb_invite_url
-    user = current_user || @profile
-    url = user ? profile_url(user) : root_url
+    url = profile_boards_url(current_user)
     "https://www.facebook.com/dialog/send?app_id=#{AUTH[:facebook][:key]}&link=#{url}&redirect_uri=#{url}"
   end
 
@@ -47,7 +46,7 @@ module ApplicationHelper
     elsif @profile
       title = "#{@profile.name}'s ParentPins Profile"
       desc  = @profile.bio.blank? ? "#{@profile.name} has #{pluralize @profile.pins.count, 'pin', 'pins'} on #{pluralize @profile.boards.count, 'board', 'boards'}." : @profile.bio
-      url   = profile_url(@profile)
+      url   = profile_boards_url(@profile)
       img   = absolute_url @profile.avatar.url
       
       tags << meta_tag( 'og:type',        'website')      
