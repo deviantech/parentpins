@@ -45,9 +45,13 @@ module ApplicationHelper
       [title, desc, url, img]
     elsif @profile
       title = "#{@profile.name}'s ParentPins Profile"
-      desc  = @profile.bio.blank? ? "#{@profile.name} has #{pluralize @profile.pins.count, 'pin', 'pins'} on #{pluralize @profile.boards.count, 'board', 'boards'}." : @profile.bio
       url   = profile_boards_url(@profile)
       img   = absolute_url @profile.avatar.url
+
+      desc = @profile.name
+      desc += @profile.teacher? ? " is a teacher with " : ' has '
+      desc += "#{pluralize @profile.pins.count, 'pin', 'pins'} on #{pluralize @profile.boards.count, 'board', 'boards'}"
+      desc += @profile.bio.blank? ? '.' : ": #{@profile.bio}"
       
       tags << meta_tag( 'og:type',        'website')      
       tags << meta_tag( 'twitter:card',   'summary')
