@@ -9,10 +9,6 @@ module ApplicationHelper
     end
   end
 
-  def absolutize(str)
-    str.to_s.starts_with?('http') ? str : ['http://', host, str.to_s.starts_with?('/') ? nil : '/', str].compact.join('')
-  end
-
   def meta_tags
     tags = []
     tags << meta_tag( 'fb:app_id',      AUTH[:facebook][:key])
@@ -23,7 +19,7 @@ module ApplicationHelper
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins"
       desc  = @pin.description || ''
       url   = pin_url(@pin)
-      img   = absolutize @pin.image.v222.url
+      img   = absolute_url @pin.image.v222.url
       
       tags << meta_tag( 'og:type',         @pin.kind == 'idea' ? 'website' : @pin.kind)
       if @pin.kind == 'product'
@@ -37,7 +33,7 @@ module ApplicationHelper
       title = "#{@board.user.name}'s ParentPins board: #{@board.name}"
       desc  = @board.description || ''
       url   = profile_board_url(@board.user, @board)
-      img   = absolutize @board.cover.url
+      img   = absolute_url @board.cover.url
       
       tags << meta_tag( 'og:type',        'website')      
       tags << meta_tag( 'twitter:card',   'summary')
@@ -47,7 +43,7 @@ module ApplicationHelper
       title = "#{@profile.name}'s ParentPins Profile"
       desc  = @profile.bio || ''
       url   = profile_url(@profile)
-      img   = absolutize @profile.avatar.url
+      img   = absolute_url @profile.avatar.url
       
       tags << meta_tag( 'og:type',        'website')      
       tags << meta_tag( 'twitter:card',   'summary')
@@ -141,12 +137,15 @@ module ApplicationHelper
       :p => {
         :title    => "ParentPins.com: #{pin.board.category.name} > #{pin.age_group.name}",
         :url      => pin_url(pin),
-        :summary  => %Q{"#{pin.user.name}'s Pin in the board "#{pin.board.name}" on ParentPins.com},
+        :summary  => %Q{"#{pin.user.name}'s pin on the board "#{pin.board.name}" on ParentPins.com},
       }
     }
     
     url = "http://www.facebook.com/sharer.php?#{opts.to_param}&p[images][0]=#{URI.escape(absolute_url(pin.image.v222.url))}"
-    # NOTE: if add image, give is the js-new-window-popup class too
+    
+    url = "https://www.facebook.com/sharer/sharer.php"
+    
+    # NOTE: if add image, give it the js-new-window-popup class too
     link_to 'Share on FB', url, :data => {:height => 217, :width => 548}, :class => 'js-new-window-popup btn sec_action fb_button'
   end
 
