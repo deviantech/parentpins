@@ -7,11 +7,10 @@ module ApplicationHelper
   end
 
   def meta_description
-    # TODO -- add additional cases (e.g. specific board or specific pin)
-    if @profile 
-      "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
-    else
-      "ParentPins: kid and parenting-related resources curated from around the web by parents and educators like you."
+    if @pin         then "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
+    elsif @board    then "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
+    elsif @profile  then "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
+    else                 "ParentPins: kid and parenting-related resources curated from around the web by parents and educators like you."
     end
   end
 
