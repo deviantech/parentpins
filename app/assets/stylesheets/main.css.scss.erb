@@ -13,7 +13,7 @@ html{
   
 
 body {
-  padding-top: 71px;
+  padding-top: 50px;
   height:100%;
   background:transparent url(<%= asset_path 'patterns/debut_light_2.png' %>) 0 0 fixed repeat;
   font-size:14px;
@@ -697,7 +697,7 @@ ul li .handle {
 
 .featured {
   background:#222;
-  margin:-20px 0 20px;
+  margin:0 0 20px;
   overflow:hidden;
   padding-bottom:20px;
   .featured_blogger {
@@ -2037,6 +2037,11 @@ body.profile {
 
 #flash {
   margin: auto 50px;
+  .alert {
+    margin: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
 .wrapper #flash {
   margin: 0px
@@ -2071,7 +2076,7 @@ body.profile {
 
 .header_wrapper {
   background: #FEFEFE;
-  margin: 0 0 20px;
+  margin: 0;
   min-width:1020px;
   @include boxshadow(0, 2px, 4px, rgba(0, 0, 0, 0.27));
   position: fixed;
