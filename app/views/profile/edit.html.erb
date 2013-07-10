@@ -69,9 +69,14 @@
       
       
         <div class="field edit-featured-pin">
-          <p>Your featured pin</p>
-          <%= link_to image_tag(f.object.featured_pin.image.v55.url, :class => 'pin_image'), pin_url(f.object.featured_pin), :class => 'ajax' %>
-          To change, <%= link_to 'select new pin', pins_profile_path(f.object, :context => 'select_featured') %>.
+          <p>Your featured pin <small>(<%= link_to 'change', pins_profile_path(f.object, :context => 'select_featured') %>)</small></p>
+          <% if f.object.featured_pin %>
+            <ul class="timeline">
+              <%= render f.object.featured_pin, :skip_comments => true %>
+            </ul>
+          <% else %>
+            <%= link_to image_tag(f.object.featured_pin.image.v55.url, :class => 'pin_image'), pin_url(f.object.featured_pin), :class => 'ajax' %>
+          <% end %>
         </div>
       </div>
     <% end %>

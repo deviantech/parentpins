@@ -32,21 +32,24 @@
       Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
     </p>
   </div>
-  <div class="comments">
-    <% if user_signed_in? && !pin.new_record? %>
-      <div class="comment_form">
-        <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
-      </div>
-    <% end %>
-    <% if pin.comments_count > 0 %>
-      <% pin.comments.each_with_index do |comment, idx| %>
-        <% if idx == 3 %>
-          <div class="comment load-more">
-            <%= link_to_function "View #{pluralize pin.comments_count - 3, 'More Comment', 'More Comments'}", "viewAllComments(this)" %>
-          </div>
-        <% end %>
-        <%= render '/pins/comment', :comment => comment, :idx => idx, :small_avatar => true %>
+  
+  <% unless defined?(skip_comments) && skip_comments %>
+    <div class="comments">
+      <% if user_signed_in? && !pin.new_record? %>
+        <div class="comment_form">
+          <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
+        </div>
       <% end %>
-    <% end %>
-  </div>
+      <% if pin.comments_count > 0 %>
+        <% pin.comments.each_with_index do |comment, idx| %>
+          <% if idx == 3 %>
+            <div class="comment load-more">
+              <%= link_to_function "View #{pluralize pin.comments_count - 3, 'More Comment', 'More Comments'}", "viewAllComments(this)" %>
+            </div>
+          <% end %>
+          <%= render '/pins/comment', :comment => comment, :idx => idx, :small_avatar => true %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 </li>

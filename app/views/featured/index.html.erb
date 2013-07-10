@@ -1,9 +1,11 @@
-<div class="wrapper general">
+<div class="wrapper">
+  <div class="content board_wide">
+    <h1>Featured ParentPinners</h1>
+    <hr class="header-divider">
 
-  <h1>Featured Parent Pinners</h1>
-
-  <div class="feat_carousel">
-    <%= render :partial => 'featured/user', :collection => User.get_featured(4) %>   
-    <div class="clear"></div>
+    <div class="feat_carousel">
+      <%= render :partial => 'featured/user', :collection => User.get_featured(4) %>   
+      <div class="clear"></div>
+    </div>
   </div>
 </div>

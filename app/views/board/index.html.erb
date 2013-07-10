@@ -34,12 +34,12 @@
     
 <% else %>
   <div class="wrapper">
-      <div class="content board_wide">
-        <h1><% if @category %>Trending Boards :: <%= @category.name %><% else %>Top 75 Trending Boards<% end %></h1>
-    
-        <%= render 'board/boards' %>
-      </div>
-  
-      <div class="clearfix"></div>
+    <div class="content board_wide">
+      <h1><% if @category %>Trending Boards :: <%= @category.name %><% else %>Top 75 Trending Boards<% end %></h1>
+      <hr class="header-divider">
+      <%= render 'board/boards' %>
+    </div>
+
+    <div class="clearfix"></div>
   </div>
 <% end %>
