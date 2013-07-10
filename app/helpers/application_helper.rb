@@ -47,7 +47,7 @@ module ApplicationHelper
       [title, desc, url, img]
     elsif @profile
       title = "#{@profile.name}'s ParentPins Profile"
-      desc  = @profile.bio || ''
+      desc  = @profile.bio.blank? ? "#{@profile.name} has #{pluralize @profile.pins.count, 'pin', 'pins'} on #{pluralize @profile.boards.count, 'board', 'boards'}." : @profile.bio
       url   = profile_url(@profile)
       img   = absolute_url @profile.avatar.url
       

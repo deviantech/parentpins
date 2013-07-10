@@ -43,7 +43,7 @@
           <ul class="inner">
             <li><%= link_to '+ Pin', new_pin_path, :class => 'ajax' %></li>
             <li><%= link_to '+ Board', new_profile_board_path(current_user), :class => 'ajax' %></li>
-            <li><%= link_to '+ Friends', fb_invite_url, :rel => 'nofollow', :target => '_blank' %></li>
+            <li><%= link_to '+ Friends', fb_invite_url, :rel => 'nofollow', :target => '_blank', :title => 'Ask FB friends to join you on ParentPins!', :rel => 'tooltip', 'data-placement' => 'bottom' %></li>
           </ul>
         </li>
         <li class="drop_down">
