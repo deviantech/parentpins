@@ -39,6 +39,8 @@
       </p>
       <% end %>
 
+      <iframe src="//www.facebook.com/plugins/like.php?href=<%= URI.escape pin_url(@pin) %>&amp;send=false&amp;layout=standard&amp;width=300&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:300px; height:35px; display: block; margin: 0 auto;" allowTransparency="true"></iframe>
+      
       <div class="comments" id="pinly_comment">
         <% if user_signed_in?%>
           <div class="comment_form">
