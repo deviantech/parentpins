@@ -39,13 +39,13 @@
 </div>
 
 <% modal_footer_js do %>
-  <%= javascript_include_tag 'app/page-specific/slides.jquery' %>
+  <%= javascript_include_tag 'app/page-specific/jquery.slides.js' %>
   <script type="text/javascript" charset="utf-8">
     // Set initial value to first-shown slide (if one is already set, we'll start with that slide instead)
     if ($('#board_cover_source_id').val() == '') $('#board_cover_source_id').val( $('.slides_control div').first().data('source-id') );
     $('.slides_container').show(); // Help give time for images to load before UI updated
   
-    var initial = $('.slides_container .single_slide.current_source') ? $('.slides_container .single_slide').index( $('.slides_container .single_slide.current_source') ) + 1 : 1;
+    var initial = $('.slides_container .single_slide.current_source').length ? $('.slides_container .single_slide').index( $('.slides_container .single_slide.current_source') ) + 1 : 1;
     $('#board-cover-image-slides').slides({
 			preload: true,
 			preloadImage: "<%= image_path('ui/slides/loading.gif') %>",
