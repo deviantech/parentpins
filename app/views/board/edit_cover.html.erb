@@ -8,8 +8,8 @@
         <%= f.hidden_field :cover_source_id %>
         <h1>Edit Cover Image</h1>
         
-        <% if @board.pins.with_image.blank? %>
-          <p>Once you add pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
+        <% if @board.pins.with_image.count < 2 %>
+          <p>Once you add multiple pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
           
           <div class="submit">
             <%= f.button 'Close', :class => 'btn tertiary_action', :onclick => "Global.closeModal();return false;" %>

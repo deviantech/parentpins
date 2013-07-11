@@ -1,3 +1,11 @@
+<% content_for :header do %>
+  <%= stylesheet_link_tag "page-specific/zenburn.css", :media => "all" %>
+  <%= javascript_include_tag "app/page-specific/highlight.js" %>
+  <script type="text/javascript" charset="utf-8">
+    hljs.initHighlightingOnLoad();
+  </script>
+<% end %>
+
 <div class="wrapper general">
 
   <div class="content">
@@ -67,21 +75,15 @@
       <dd>
         <p>
           Absolutely. To prevent users from pinning images on your site, add the following code to the HEAD section of your HTML:
-          <code>
-            <%= '<meta name="pinning" content="nopin" />' %>
-          </code>
+          <pre><code><%= '<meta name="pinning" content="nopin" />' %></code></pre>
         </p>
         <p>
           If you'd like to provide an explanatory message to users to attempt to pin, add a description field:
-          <code>
-            <%= %q{<meta name="pinning" content="nopin" description="Sorry, we don't allow pinning!" />} %>
-          </code>
+          <pre><code><%= %q{<meta name="pinning" content="nopin" description="Sorry, we don't allow pinning!" />} %></code></pre>
         </p>
         <p>
           To disable pinning a specific image, add a "nopin" attribute:
-          <code>
-            <%= %q{<img src="foo.jpg" nopin="nopin" />} %>
-          </code>
+          <pre><code><%= %q{<img src="foo.jpg" nopin="nopin" />} %></code></pre>
         </p>
       </dd>
 
@@ -89,14 +91,10 @@
       <dd>
         <p>Yup! If you're a website owner, you can add a ParentPin It! button to your website by following two steps.</p>
         <p>First, add a link where you want the button to be:
-        <code>
-          <%= %Q{<a href="//#{host}/widgets/bookmarklet" data-pin-action="buttonBookmarklet" ><img src="//#{host}/assets/widgets/pin_button.png" /></a>} %>
-        </code>
+        <pre><code><%= %Q{<a href="//#{host}/widgets/bookmarklet" data-pin-action="buttonBookmarklet" ><img src="//#{host}/assets/widgets/pin_button.png" /></a>} %></code></pre>
         </p>
         <p>Second, add this script tag just above the closing &lt;/body&gt; tag:
-        <code>
-          <%= %Q{<script type="text/javascript" src="//#{host}/assets/widgets.js"></script>} %>
-        </code>
+        <pre><code><%= %Q{<script type="text/javascript" src="//#{host}/assets/widgets.js"></script>} %></code></pre>
         </p>
         <p>You can add as many links as you'd like, but only include the script tag once per page.</p>
       </dd>
