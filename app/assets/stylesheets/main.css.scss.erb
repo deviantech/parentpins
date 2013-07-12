@@ -258,9 +258,7 @@ ul li .handle {
 
 .logo {
   display: block;
-  position: absolute;
-  top: 0;
-  left: 416px;
+  position: relative;
   text-align: center;
   text-decoration: none;
   color: $themeCOLOR;
@@ -269,7 +267,7 @@ ul li .handle {
   line-height: 45px;
   font-weight:600;
   padding:2px 6px 0 54px;
-  margin:0;
+  margin:0 auto;
   margin-top: 1px;
   width:114px;
   &:before {
@@ -1286,42 +1284,19 @@ ul.boards {
     z-index: 1;
     &:hover {
       background: rgba(255, 255, 255, 0.3);
-      opacity: 1;
-      &:before {
-        content: "View this board";
-        display: block;
-        position: absolute;
-        top: 60px;
-        left: 21px;
-        padding: 10px;
-        width: 160px;
-        height: 18px;
-        background-color: $themeCOLOR;
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0, 0, 0, 0.15)');
-        -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0,0,0,0.15)')";
-        background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
-        background-image: -ms-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
-        background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
-        background-image: -webkit-gradient(linear, center top, center bottom, from(transparent), to(rgba(0, 0, 0, 0.15)));
-        background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
-        background-image: linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
-        -moz-background-clip: padding;
-        -webkit-background-clip: padding-box;
-        background-clip: padding-box;
-        text-align: center;
-        color: #fff;
-        font-size: 15px;
-        font-weight: bold;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-        -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
-        -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.4) inset;
-        -moz-border-radius: 6px;
-        -webkit-border-radius: 6px;
-        border-radius: 6px; } } }
-  .link-on-hover {
-    display: none;
-  }
+      opacity: 1; } }
+  .holder {
+    .link-on-hover {
+      display: none; }
+    &:hover {
+      .link-on-hover {
+        display:block;
+        position:absolute;
+        top:60px;
+        left:42px;
+        color:#fff;
+        z-index:2; } }
+    }
 }
         
 
@@ -1487,9 +1462,11 @@ form .field {
   padding: 8px 10px 8px 50px !important;
   font-size:13px;
   line-height:18px;
-  background:#d6ecff;}
+  background:transparent;
+  border-top:1px solid #ddd;}
 .featured_info {
-  background:#FDFFD6;}
+  background:#FDFFD6;
+  border-bottom:1px solid #ddd;}
 .teacher_info.teacher_icon:before, .featured_info.featured_icon:before {
   top:10px;
   left:20px;}
@@ -1537,9 +1514,12 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   color: #222 !important; }
   
 input:focus[placeholder], textarea:focus[placeholder] {
-  background-color:#EDF6FF !important;
-  border-color:blue;
-  color:#000; }
+  background-color:#F7FBFF !important;
+  border-color:#C3C3FF;
+  color:#000;
+  outline-color: transparent;
+  outline-style: none;
+  }
   
 .board-fields {
     background: rgba(0, 0, 0, 0.02);
@@ -1657,6 +1637,14 @@ input:focus[placeholder], textarea:focus[placeholder] {
       font-size: 18px;
       line-height:24px; } } }
 
+.form.wide .section.stacked {
+  width:600px;
+  overflow:hidden;
+  .field {
+    float:left;
+    width:280px;
+  }
+}
 
 .set_filters {
   padding:0;
@@ -1986,7 +1974,7 @@ body.profile {
     width:100%;
     h1 {
       @include page-header;
-      width:980px;
+      margin:12px auto 0;
       line-height: 1.2em;
       font-size: 2.1429em;
       span {
@@ -2542,7 +2530,8 @@ code {
   .feature {
     height:auto;
     padding:0 0 12px 0;
-    margin-bottom:34px; }
+    margin-bottom:34px;
+    min-height:320px; }
   .social_links {
     padding:12px 0 0 56px; }
   .timeline {
@@ -2675,14 +2664,7 @@ a.following-action.unfollow {
 a.following-action.unfollow:hover {
   color: #999;
 }
-hr.header-divider {
-  height: 1px;
-  background: #ddd;
-  width: 600px;
-  border: none;
-  margin: 0 auto;
-  margin-bottom: 4px;
-}
+
 form .field.checkbox.remember_me {
   text-align: center;
   input, label {
