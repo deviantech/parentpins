@@ -13,7 +13,7 @@
     <ul class="internal_nav">
       <li><a href="#a">What is ParentPins?</a></li>
       <li><a href="#b">How do I add the ParentPin It! button to my bookmarks bar?</a></li>
-      <li><a href="#c">What does it mean to endorse a pin?</a></li>
+      <% if false %><li><a href="#c">What does it mean to endorse a pin?</a></li><% end %>
       <li><a href="#d">What is the distinction between an idea, product, or article pin?</a></li>
       <li><a href="#e">How do I change my password or email address?</a></li>
       <li><a href="#f">Where can I see all the pins from the users and boards I follow?</a></li>
@@ -36,6 +36,8 @@
         <p>The ParentPin Bookmarklet allows you to pin from any site on the web.  To add the bookmarklet to your browser, simply drag the following link to your bookmarks bar: <%= bookmarklet_link %></p>
       </dd>
 
+      <%# TODO: ADD THIS IN ONCE ENDORSING IS ADDED%>
+      <% if false %>
       <dt id="c">What does it mean to endorse a pin?</dt>
       <dd>
         <p>Endorsing a pin means you're putting your stamp of approval on it.  While liking a pin simply means you have some level of interest, endorsing acts as a +1 vote.</p>
@@ -47,6 +49,7 @@
           </ul>
         </p>
       </dd>
+      <% end %>
 
       <dt id="d">What is the distinction between an idea, product, or article pin?</dt>
       <dd>
@@ -67,7 +70,7 @@
 
       <dt id="g">What is the Featured page?  How can I get featured?</dt>
       <dd>
-        <p>The Featured page highlights some of our community's most active contributors. This is the place to learn more about popular ParentPinners, discover new names in the Mommy Blogging community, and find new users to follow.</p>
+        <p>The Featured page highlights some of our community's most active contributors. This is the place to learn more about popular ParentPinners, discover new resources in the online parenting community, and find new users to follow.</p>
         <p>If you'd like to be featured and you're prolific on the site, please <%= mail_to "christy@parentpins.com", 'send us an email', :subject => "Request to be Featured", :encode => 'javascript' %> with the subject line "Request to be Featured".</p>
       </dd>
 
