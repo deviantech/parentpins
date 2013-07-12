@@ -9,7 +9,7 @@
 
     <%= error_messages_for @profile %>
 
-    <div class="section">
+    <div class="section stacked">
       <h3>Profile Settings</h3>
       <%= render 'form_fields', :f => f %>
 
@@ -45,7 +45,7 @@
       </div>      
     </div>
     
-    <div class="section">
+    <div class="section stacked">
       <h3>Account Settings</h3>
       <div class="field">
         <%= f.label :email %>
@@ -70,7 +70,7 @@
     </div>
 
     <% if f.object.featured? %>
-      <div class="section">
+      <div class="section stacked">
         <h3>Featured Settings</h3>
 
         <div class="field">
@@ -92,7 +92,7 @@
       </div>
     <% end %>
 
-    <div class="section">
+    <div class="section stacked">
       <h3>Social Media</h3>
       <p>You can either enter your username or copy/paste in your account URL.</p>
       <div class="field">
