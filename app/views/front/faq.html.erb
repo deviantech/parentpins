@@ -11,34 +11,51 @@
   <div class="content">
     <h1>ParentPins: <acronym title="Frequently asked question">FAQ</acronym>s</h1>
     <ul class="internal_nav">
-      <li><a href="#a">What is ParentPins?</a></li>
-      <li><a href="#b">How do I add the ParentPin It! button to my bookmarks bar?</a></li>
-      <% if false %><li><a href="#c">What does it mean to endorse a pin?</a></li><% end %>
-      <li><a href="#d">What is the distinction between an idea, product, or article pin?</a></li>
-      <li><a href="#e">How do I change my password or email address?</a></li>
-      <li><a href="#f">Where can I see all the pins from the users and boards I follow?</a></li>
-      <li><a href="#g">What is the Featured page?  How can I get featured?</a></li>
-      <li><a href="#h">Can I opt out of allowing someone else to pin my content?</a></li>
-      <li><a href="#i">Can I encourage others to pin my content?</a></li>
-      <li><a href="#j">How can I advertise with ParentPins?</a></li>
-      <li><a href="#k">I have a problem that isn't addressed here; who can I contact?</a></li>
+      <li><a href="#what-is">What is ParentPins?</a></li>
+      <li><a href="#bookmarklet">How do I add the ParentPin It! button to my bookmarks bar?</a></li>
+      <li><a href="#importing">I already have a lot of parent and child-related pins on Pinterest.  Is there a way to easily move these over to ParentPins?</a></li>
+      <% if false %><li><a href="#endorse">What does it mean to endorse a pin?</a></li><% end %>
+      <li><a href="#pin-types">What is the distinction between an idea, product, or article pin?</a></li>
+      <li><a href="#change-password">How do I change my password or email address?</a></li>
+      <li><a href="#following">Where can I see all the pins from the users and boards I follow?</a></li>
+      <li><a href="#featured">What is the Featured page?  How can I get featured?</a></li>
+      <li><a href="#pinning-opt-out">Can I opt out of allowing someone else to pin my content?</a></li>
+      <li><a href="#pinning-encouragement">Can I encourage others to pin my content?</a></li>
+      <li><a href="#advertising">How can I advertise with ParentPins?</a></li>
+      <li><a href="#other">I have a problem that isn't addressed here; who can I contact?</a></li>
     </ul>
 
     <dl>
-      <dt id="a">What is ParentPins?</dt>
+      <dt id="what-is">What is ParentPins?</dt>
       <dd>
         <p>ParentPins is a site dedicated to all things kid-related.  Parents, teachers, and older kids can use ParentPins to visually browse and bookmark their favorite ideas and resources.</p>
         <p>Pins are coded with one of seven age groups, a pin type (idea, product, or article), and one of many kid-specific categories.  This advanced filtering system helps users more effectively find relevant content.</p>
       </dd>
 
-      <dt id="b">How do I add the ParentPin It! button to my bookmarks bar?</dt>
+      <dt id="bookmarklet">How do I add the ParentPin It! button to my bookmarks bar?</dt>
       <dd>
         <p>The ParentPin Bookmarklet allows you to pin from any site on the web.  To add the bookmarklet to your browser, simply drag the following link to your bookmarks bar: <%= bookmarklet_link %></p>
       </dd>
 
-      <%# TODO: ADD THIS IN ONCE ENDORSING IS ADDED%>
+
+      <dt id="importing">I already have a lot of parent and child-related pins on Pinterest.  Is there a way to easily move these over to ParentPins?</dt>
+      <dd>
+        <p>
+          Fortunately, yes! To import pins from Pinterest, follow these simple steps:
+          <ul>
+            <li>1. Add the <a href="#bookmarklet" class="internal_nav">ParentPins Bookmarklet</a> to your bookmarks bar. </li>
+            <li>2. Log into your Pinterest account.  </li>
+            <li>3. Click the ParentPins bookmarklet while you are on your Pinterest page.</li>
+          </ul>
+          This will start the importing process.
+        </p>
+        <p>As part of the import you'll have a chance to create new ParentPin boards as you go.  You'll also get to specify category, pin type, and age group for each of the pins you import.  Depending on how many pins you're importing it might take a few minutes to complete, but we've made the process as quick and painless as possible. 
+        </p>
+      </dd>      
+
+      <%# TODO: add this in once endorsing is implemented %>
       <% if false %>
-      <dt id="c">What does it mean to endorse a pin?</dt>
+      <dt id="endorse">What does it mean to endorse a pin?</dt>
       <dd>
         <p>Endorsing a pin means you're putting your stamp of approval on it.  While liking a pin simply means you have some level of interest, endorsing acts as a +1 vote.</p>
         <p>Examples of when you might want to endorse a pin:
@@ -51,30 +68,30 @@
       </dd>
       <% end %>
 
-      <dt id="d">What is the distinction between an idea, product, or article pin?</dt>
+      <dt id="pin-types">What is the distinction between an idea, product, or article pin?</dt>
       <dd>
         <p>An idea can be a game or activity, a clever organizational tip, or photo of a nursery design.  "Idea" is the most all-encompassing pin type, so if you're unclear how to categorize your pin, you should choose this option.</p>
         <p>A product is a physical item that one could potentially purchase.  The product pin doesn't have to link to a store or include a set price, but those things are helpful for other ParentPinners.  Examples of a product pin would include books, toys, items for a classroom, baby wraps, or video games for your teen.</p>
         <p>An article is something that you'll need to click through to the original link to get the full information.  Examples of an article pin would include parenting advice, resource guides, or detailed instructions for a craft or science experiment.</p>
       </dd>
 
-      <dt id="e">How do I change my password or email address?</dt>
+      <dt id="change-password">How do I change my password or email address?</dt>
       <dd>
         <p>You can change your password and email address from the "Edit Profile & Account" link that appears when you hover over your username at the top of the page when logged in.</p>
       </dd>
 
-      <dt id="f">Where can I see all the pins from the users and boards I follow?</dt>
+      <dt id="following">Where can I see all the pins from the users and boards I follow?</dt>
       <dd>
         <p>You can view the pins of everyone you follow from your Activity page.  You can access this page from your profile or by hovering over your username in the top right corner of the site and selecting Activity from the dropdown options.</p>
       </dd>
 
-      <dt id="g">What is the Featured page?  How can I get featured?</dt>
+      <dt id="featured">What is the Featured page?  How can I get featured?</dt>
       <dd>
         <p>The Featured page highlights some of our community's most active contributors. This is the place to learn more about popular ParentPinners, discover new resources in the online parenting community, and find new users to follow.</p>
         <p>If you'd like to be featured and you're prolific on the site, please <%= mail_to "christy@parentpins.com", 'send us an email', :subject => "Request to be Featured", :encode => 'javascript' %> with the subject line "Request to be Featured".</p>
       </dd>
 
-      <dt id="h">Can I opt out of allowing someone else to pin my content?</dt>
+      <dt id="pinning-opt-out">Can I opt out of allowing someone else to pin my content?</dt>
       <dd>
         <p>
           Absolutely. To prevent users from pinning images on your site, add the following code to the HEAD section of your HTML:
@@ -90,7 +107,7 @@
         </p>
       </dd>
 
-      <dt id="i">Can I encourage others to pin my content?</dt>
+      <dt id="pinning-encouragement">Can I encourage others to pin my content?</dt>
       <dd>
         <p>Yup! If you're a website owner, you can add a ParentPin It! button to your website by following two steps.</p>
         <p>First, add a link where you want the button to be:
@@ -102,12 +119,12 @@
         <p>You can add as many links as you'd like, but only include the script tag once per page.</p>
       </dd>
 
-      <dt id="j">How can I advertise with ParentPins?</dt>
+      <dt id="advertising">How can I advertise with ParentPins?</dt>
       <dd>
         <p>If you'd like to learn about options for advertising with ParentPins, please <%= mail_to "advertising@parentpins.com", 'send us an inquiry email', :encode => 'javascript' %>.</p>
       </dd>
 
-      <dt id="k">I have a problem that isn't addressed here; who can I contact?</dt>
+      <dt id="other">I have a problem that isn't addressed here; who can I contact?</dt>
       <dd>
         <p>If you have a problem or issue - or feedback of any kind! - please don't hesitate to contact us.  You can <%= mail_to "info@parentpins.com", 'send us an email', :encode => 'javascript' %> or use the <%= link_to 'contact submission form', new_feedback_path %>.</p>
       </dd>

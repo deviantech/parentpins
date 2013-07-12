@@ -126,7 +126,7 @@ $(document).ready(function() {
   });
   
   // Anchor links
-  $('.internal_nav a').on('click', function(e) {
+  $('.internal_nav a, a.internal_nav').on('click', function(e) {
     var href = $(e.target).attr('href');
     if (href && href[0] == '#' && $(href)) {
       e.preventDefault();
