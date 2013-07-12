@@ -1,7 +1,6 @@
 <div class="header_wrapper" id="header_wrapper">
   <div class="header">
     <div class="nav_wrapper">
-      <a href="/" class="logo ir">Parent<span>Pins</span></a>
 
       <ul class="nav_main">
         <li class="drop_down">
@@ -21,10 +20,11 @@
       </ul>
 
       <%= form_tag '/search', :class => 'search' do %>
-      <%= text_field_tag :q, params[:q], :placeholder => 'Search...' %>
-      <%= hidden_field_tag 'kind', @kind %>
-      <button class="btn search_button primary"></button>
+        <%= text_field_tag :q, params[:q], :placeholder => 'Search...' %>
+        <%= hidden_field_tag 'kind', @kind %>
+        <button class="btn search_button primary"></button>
       <% end %>
+      
       <ul class="nav_login">    
         <li class="drop_down">
           <a href="/faq.html" class="top">About</a>
@@ -68,6 +68,9 @@
         </li>
         <% end %>
       </ul>
+      
+      <a href="/" class="logo ir">Parent<span>Pins</span></a>
+      
       <div class="clearfix"></div>
     </div>
   </div>
