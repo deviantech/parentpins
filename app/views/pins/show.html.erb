@@ -14,7 +14,7 @@
             <%= render 'profile/follow_buttons', :to_follow => @pin.via %>
           <% end %>
         </p>
-        <p class="time"><%= time_ago_in_words @pin.created_at %> ago from <%= link_to @pin.board.name, profile_board_path(@pin.board.user, @pin.board) %></p>
+        <p class="time"><%= time_ago_in_words @pin.created_at %> ago on <%= link_to @pin.board.name, profile_board_path(@pin.board.user, @pin.board) %></p>
       </div>
     </div>
 
