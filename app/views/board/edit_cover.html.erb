@@ -15,15 +15,17 @@
             <%= f.button 'Close', :class => 'btn tertiary_action', :onclick => "Global.closeModal();return false;" %>
           </div>
         <% else %>
-          <div id="board-cover-image-slides">
-            <div class="slides_container" style="display:none;">
-              <% @board.pins.with_image.each do |pin| %>
-                <div data-source-id="<%= pin.id %>" class="single_slide <%= 'current_source' if pin.id == @board.cover_source_id %>"><%= image_tag(pin.image.v222.url) %></div>
-              <% end %>
+          <div class="clearfix">
+            <div id="board-cover-image-slides">
+              <div class="slides_container" style="display:none;">
+                <% (@board.pins.with_image * 10).each do |pin| %>
+                  <div data-source-id="<%= pin.id %>" class="single_slide <%= 'current_source' if pin.id == @board.cover_source_id %>"><%= image_tag(pin.image.v222.url) %></div>
+                <% end %>
+              </div>
+              <a href="#" class="prev"><%= image_tag 'ui/slides/arrow-prev.png', :alt => 'Previous' %></a>
+              <a href="#" class="next"><%= image_tag 'ui/slides/arrow-next.png', :alt => 'Next' %></a>
             </div>
-            <a href="#" class="prev"><%= image_tag 'ui/slides/arrow-prev.png', :alt => 'Previous' %></a>
-            <a href="#" class="next"><%= image_tag 'ui/slides/arrow-next.png', :alt => 'Next' %></a>
-          </div>
+          </div>          
           
           <div class="submit">
             <%= f.submit 'Set Cover', :class => 'btn tertiary_action' %>
@@ -51,6 +53,7 @@
 			preloadImage: "<%= image_path('ui/slides/loading.gif') %>",
 			autoHeight: true,
 			start: initial,
+			customOptionAdditionalContainerWrapper: 'slides_container_wrapper',
 			animationComplete: function(idx) {
 			  var current = $( $('.slides_control .single_slide')[idx - 1]);
 			  $('#board_cover_source_id').val( current.data('source-id') );

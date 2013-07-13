@@ -1,4 +1,13 @@
 /*
+*
+*
+*
+* NOTE THAT THIS HAS BEEN MODIFIED BY PARENTPINS TEAM (sole change: additional of option.customOptionAdditionalContainerWrapper) 
+* to support border around slides combined with controllable pagination positioning while keeping it in the page flow so 
+* variable height is take into account for slides with many options.
+*
+*
+*
 * Slides, A Slideshow Plugin for jQuery
 * Intructions: http://slidesjs.com
 * By: Nathan Searles, http://nathansearles.com
@@ -24,7 +33,11 @@
 
     return this.each(function(){
       // wrap slides in control container, make sure slides are block level
-      $('.' + option.container, $(this)).children().wrapAll('<div class="slides_control"/>');
+      if (option.customOptionAdditionalContainerWrapper) {
+        $('.' + option.container, $(this)).wrapAll('<div class="'+option.customOptionAdditionalContainerWrapper+'"/>').children().wrapAll('<div class="slides_control"/>');
+      } else {
+        $('.' + option.container, $(this)).children().wrapAll('<div class="slides_control"/>');
+      }
 
       var elem = $(this),
         control = $('.slides_control',elem),
