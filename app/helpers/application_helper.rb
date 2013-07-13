@@ -32,6 +32,8 @@ module ApplicationHelper
         tags << meta_tag( 'product:price:currency',  'USD')
         tags << meta_tag( 'twitter:data1',    @pin.price)
         tags << meta_tag( 'twitter:label1',  'Price')
+        tags << meta_tag( 'twitter:data2',    @pin.domain)
+        tags << meta_tag( 'twitter:label2',  'Source')
       end
       
       if @pin.user.twitter_account
