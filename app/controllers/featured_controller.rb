@@ -14,7 +14,11 @@ class FeaturedController < ApplicationController
   def destroy
     profile = User.find(params[:profile_id])
     profile.unfeature if profile && (current_user.admin? || current_user == profile)
-    render :nothing => true
+    if request.xhr?
+      render :nothing => true
+    else # User unfeaturing themselves from form isn't via ajax
+      redirect_to :back
+    end
   end
   
   def set_pin
