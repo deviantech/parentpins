@@ -15,9 +15,9 @@ module ApplicationHelper
 
   def meta_tags
     tags = []
-    tags << meta_tag( 'fb:app_id',        AUTH[:facebook][:key])
-    tags << meta_tag( 'og:site_name',     'ParentPins')
-    tags << meta_tag( 'twitter:site:id',  'ParentPins')
+    tags << meta_tag( 'fb:app_id',      AUTH[:facebook][:key])
+    tags << meta_tag( 'og:site_name',   'ParentPins')
+    tags << meta_tag( 'twitter:site',   '@ParentPins')
     
     title, desc, url, img = if @pin
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
