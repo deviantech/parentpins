@@ -26,15 +26,19 @@ module ApplicationHelper
       img   = absolute_url @pin.image.v222.url
       
       tags << meta_tag( 'og:type',         @pin.kind == 'idea' ? 'website' : @pin.kind)
+      tags << meta_tag( 'twitter:card',    @pin.kind == 'product' ? 'product' : 'photo')
       if @pin.kind == 'product'
         tags << meta_tag( 'product:price:amount',    @pin.price)
         tags << meta_tag( 'product:price:currency',  'USD')
+        tags << meta_tag( 'twitter:data1',    @pin.price)
+        tags << meta_tag( 'twitter:label1',  'Price')
       end
+      
       if @pin.user.twitter_account
         tags << meta_tag( 'twitter:creator',  "@#{@pin.user.twitter_account}")
       end
       
-      tags << meta_tag( 'twitter:card',    'photo')
+
       
       [title, desc, url, img]
     elsif @board
