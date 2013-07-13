@@ -44,7 +44,10 @@ module ApplicationHelper
       img   = absolute_url @board.cover.url
       
       tags << meta_tag( 'og:type',        'website')      
-      tags << meta_tag( 'twitter:card',   'summary')
+      tags << meta_tag( 'twitter:card',   'gallery')
+      @board.pins.with_images.limit(4).each_with_index do |idx, pin|
+        tags << meta_tag( "twitter:card:image#{idx}:src",   absolute_url(pin.image.v222.url))
+      end
       
       [title, desc, url, img]
     elsif @profile
