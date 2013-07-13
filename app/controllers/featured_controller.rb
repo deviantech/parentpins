@@ -1,17 +1,19 @@
 class FeaturedController < ApplicationController
-  before_filter :protect_actions,       :only => [:create, :destroy]
+  before_filter :authenticate_user!,    :only => [:create, :destroy]
   before_filter :ensure_profile_owner,  :only => [:set_pin]
   
   def index
   end
   
   def create
-    @to_feature.try(:feature)
+    profile = User.find(params[:profile_id])
+    profile.feature if profile && current_user.admin?
     render :nothing => true
   end
   
   def destroy
-    @to_feature.try(:unfeature)
+    profile = User.find(params[:profile_id])
+    profile.unfeature if profile && (current_user.admin? || current_user == profile)
     render :nothing => true
   end
   
@@ -22,10 +24,6 @@ class FeaturedController < ApplicationController
   end
   
   protected
-
-  def protect_actions
-    @to_feature = current_user.try(:admin?) && User.find(params[:profile_id])
-  end
 
   def ensure_profile_owner
     @profile = User.find(params[:profile_id])
