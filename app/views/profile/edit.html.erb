@@ -102,7 +102,7 @@
           <%= f.text_area :featured_bio, :placeholder => "Description to be used on the Featured page" %>
         </div>
             
-        <div class="field edit-featured-pin">
+        <div class="field edit-featured-pin feature-preview">
           <p>Your featured pin <small>(<%= link_to 'change', pins_profile_path(f.object, :context => 'select_featured') %>)</small></p>
           <% if f.object.featured_pin %>
             <ul class="timeline">
