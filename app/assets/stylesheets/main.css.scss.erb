@@ -459,6 +459,12 @@ ul li .handle {
       }
       &.marker {
         color:#fff; } } } 
+  .cats {
+    width:282px;
+    li {
+      display:block;
+      width:140px;
+      float:left;} }
   .bookmarklet {
     position:relative;
     border-top:1px solid #ddd;
@@ -756,7 +762,14 @@ ul li .handle {
     font-size:13px;
     line-height:18px; }
   .internal_nav {
-    border-bottom:1px solid #ddd; } }
+    border-bottom:1px solid #ddd; }
+  .faq_nav {
+    margin-top:24px !important;
+    a {
+      display:block;
+      font-size:17px;
+      line-height:24px;
+      padding:6px 0; } } }
 
 .help_list {
   li {
@@ -1438,7 +1451,7 @@ form .field {
     top: 15px;
     left: 15px;
     color: #000;
-    font-size: 26px;
+    font-size: 23px;
     height: 28px;
     width: 28px;} }
     
@@ -1502,11 +1515,10 @@ input:focus[placeholder], textarea:focus[placeholder], [placeholder], *[placehol
   color: #222 !important; }
   
 input:focus[placeholder], textarea:focus[placeholder] {
-  background-color:#F7FBFF !important;
-  border-color:#C3C3FF;
+  background-color:rgba(251, 255, 242, 0.27)!important;
+  border-color:$themeCOLOR;
   color:#000;
-  outline-color: transparent;
-  outline-style: none;
+  outline-color: $themeCOLOR;
   }
   
 .board-fields {
@@ -1586,16 +1598,19 @@ input:focus[placeholder], textarea:focus[placeholder] {
       }
       h3 {
         background: transparent;
-        font-size: 1.7143em; /* 24px */ 
+        font-size: 20px; /* 24px */ 
         line-height: 0.5em; /* 12px */ 
         margin: 0.75em;
         font-weight: 400;
         min-height:auto;
         height:auto;
-        overflow: visible; } 
+        overflow: visible;
+        border-bottom:1px solid #ddd;
+        padding-bottom:12px; } 
       label span {
-        display:inline;
-        color:#555;font-size: 13px;
+        display:block;
+        color:#555;
+        font-size: 13px;
         padding: 2px 0; } } }
   &.signup:after {
     content: "";
@@ -1922,6 +1937,10 @@ body.profile {
         @include circular; } }
     #pin-preview.edit_preview_pin {
       min-height:820px; }
+    .form.wide h1 {
+      font-size:30px;
+      line-height:36px;
+    }
   }
   .wrapper {
     margin-top:15px; } }
@@ -2178,7 +2197,6 @@ body.profile {
   font-size: 14px;
   text-align: center;
   color: #000;
-  text-shadow:0 -1px 0 rgba(0,0,0,0.7);
   text-decoration:none;
   &:hover {
     background:#fff;
