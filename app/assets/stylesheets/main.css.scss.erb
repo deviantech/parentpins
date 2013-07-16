@@ -556,21 +556,13 @@ ul li .handle {
     color: #000; }
   p {
     padding: 0 10px 0 25px; }
-  .kid_count {
+  .info_section {
     position: relative;
-    padding: 8px 10px 8px 50px;
-    margin: 10px 0;
-    &:before {
-  	  @include pinli-font;
-      content: "\e012";
-      position: absolute;
-      top: 8px;
-      left: 20px;
-      height: 30px;
-      width: 40px;
-    	color:#000;
-    	font-size:15px;
-    	line-height: 18px; } }
+    padding: 12px 10px 12px 50px;
+    margin: 0;
+    font-size:14px;
+    background:transparent;
+  }
   .bio {
     font-family: "times new roman", times, georgia, serif;
       font-size: 17px;
@@ -578,7 +570,7 @@ ul li .handle {
       font-style: italic;
       margin: 0;
       position: relative;
-      padding:12px 12px 0;
+      padding:12px 6px;
       color:#585858;
     &:before {
       content:"\201C";
@@ -1439,48 +1431,43 @@ form .field {
     height: 28px;
     width: 28px;} }
     
-.teacher_icon, .featured_icon {
-  position:relative;
-  padding-left:22px;
-  margin:0;
+.kid_count, .teacher_icon, .featured_icon {
   &:before {
     position:absolute;
     @include pinli-font;
-    top: 5px !important;
-    left: 15px !important;
+    top: 15px;
+    left: 15px;
     color: #000;
     font-size: 26px;
     height: 28px;
     width: 28px;} }
+    
 
+.kid_count:before {
+	font-size:18px;
+	left: 18px;
+	top: 11px;
+  content: "\e012"; }
 .featured_icon:before {
+  top: 8px;
   content:"\e014"; }    
 .teacher_icon:before {
   content:"\e017"; }
     
-.teacher_info, .featured_info {
-  padding: 8px 10px 8px 50px !important;
-  font-size:13px;
-  line-height:18px;
-  background:transparent;
-  border-top:1px solid #ddd;}
 .featured_info {
   background:#FDFFD6;
-  border-bottom:1px solid #ddd;}
-.teacher_info.teacher_icon:before, .featured_info.featured_icon:before {
-  top:10px;
-  left:20px;}
+}
 
 .social_links {
-  padding:0 24px 12px 40px;
+  padding: 6px;
   overflow:hidden;
+  text-align: center;
   a {
-    display:block;
+    display:inline-block;
     text-indent:-9999px;
     height:30px;
     width:30px;
-    float:left;
-    margin:0 12px 0 0;
+    margin: 5px;
     background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) 0 0 no-repeat; }
   .blog {
     background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) -30px 0 no-repeat; }
@@ -1488,7 +1475,8 @@ form .field {
     background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) -60px 0 no-repeat; }
   .facebook {
     background: transparent url(<%= asset_path 'ui/social_icons.gif' %>) 0 0 no-repeat; } }
-
+.info .social_links {
+    padding-bottom: 0px; }
 .delete:hover {color:red;}
 
 form.form .field.with_image {
@@ -1591,6 +1579,11 @@ input:focus[placeholder], textarea:focus[placeholder] {
       float:left;
       width:280px;
       margin:0 14px;
+      margin-bottom: 30px;
+      .form_hint {
+        color: #444;
+        text-align: center;
+      }
       h3 {
         background: transparent;
         font-size: 1.7143em; /* 24px */ 
@@ -1601,7 +1594,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
         height:auto;
         overflow: visible; } 
       label span {
-        display:block;
+        display:inline;
         color:#555;font-size: 13px;
         padding: 2px 0; } } }
   &.signup:after {
@@ -2496,21 +2489,12 @@ ul.errors {
   color:#C10000;
   background:#FFF1F1; }
 
-// edit board cover slider
-.board-cover-image-slides {
-  .slides_container {
-    width:222px;
-    height:270px;
-    div {
-      width:222px;
-      height:270px;
-      display:block;
-    }
-  }
-}
 
 form.set_board_cover {
   width: 400px;
+  .submit {
+    margin-top:15px;
+  }
 }
 
 code {
@@ -2521,6 +2505,7 @@ code {
   border: 1px solid #999;
   font-family:Monaco, Menlo, Consolas, "Courier New", monospace;
   color: #333;
+  box-shadow: 1px 1px 4px rgba(0,0,0,0.2);
 }
 
 .feat_carousel {
@@ -2533,7 +2518,7 @@ code {
     margin-bottom:34px;
     min-height:320px; }
   .social_links {
-    padding:12px 0 0 56px; }
+    padding:0px; }
   .timeline {
     width:480px;
     margin:0;
@@ -2561,9 +2546,9 @@ code {
   margin:0 20px 10px;
   position:relative;
   .social_links {
-    padding:0 24px 12px 54px; }
+    padding: 0px; }
   .user {
-    width:220px;
+    width:250px;
     text-align:center;
     margin-right:0;
     padding-right:0;
@@ -2596,14 +2581,17 @@ code {
     .description {
       font-size:13px;
       line-height:18px;
-      padding:12px 24px 0;
+      padding:12px 12px 0;
       color:#000;
       font-style:italic; } }
+    .timeline {
+      top:-30px !important;
+      right:12px !important;
+      margin:0;
+      position:absolute; } }
+  
+.feature, .feature-preview {
   .timeline {
-    top:-30px !important;
-    right:12px !important;
-    margin:0;
-    position:absolute;
     .image_link {
       max-height:192px;
       overflow:hidden; 
@@ -2680,4 +2668,12 @@ form .field.checkbox.remember_me {
   .fb-like {
     float: right;
   }
+}
+hr.header-divider {
+  height: 1px;
+  background: #ddd;
+  width: 600px;
+  border: none;
+  margin: 0 auto;
+  margin-bottom: 4px;
 }

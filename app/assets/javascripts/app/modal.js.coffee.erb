@@ -40,5 +40,5 @@ $(document).on 'click', 'a.ajax', (e) ->
     
   url = urlPlusParamString($(this).attr('href'), 'via=ajax')
   $ajax.load url, () ->
-    $ajax.find('input:visible').first().focus()
+    $ajax.find('input[type=text]:visible').first().focus()
   

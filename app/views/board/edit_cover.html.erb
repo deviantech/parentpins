@@ -8,22 +8,24 @@
         <%= f.hidden_field :cover_source_id %>
         <h1>Edit Cover Image</h1>
         
-        <% if @board.pins.with_image.blank? %>
-          <p>Once you add pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
+        <% if @board.pins.with_image.count < 2 %>
+          <p>Once you add multiple pins with images to this board, you'll be able to choose which image to use on the board's cover.</p>
           
           <div class="submit">
             <%= f.button 'Close', :class => 'btn tertiary_action', :onclick => "Global.closeModal();return false;" %>
           </div>
         <% else %>
-          <div id="board-cover-image-slides">
-            <div class="slides_container" style="display:none;">
-              <% @board.pins.with_image.each do |pin| %>
-                <div data-source-id="<%= pin.id %>" class="single_slide <%= 'current_source' if pin.id == @board.cover_source_id %>"><%= image_tag(pin.image.v222.url) %></div>
-              <% end %>
+          <div class="clearfix">
+            <div id="board-cover-image-slides">
+              <div class="slides_container" style="display:none;">
+                <% @board.pins.with_image.each do |pin| %>
+                  <div data-source-id="<%= pin.id %>" class="single_slide <%= 'current_source' if pin.id == @board.cover_source_id %>"><%= image_tag(pin.image.v222.url) %></div>
+                <% end %>
+              </div>
+              <a href="#" class="prev"><%= image_tag 'ui/slides/arrow-prev.png', :alt => 'Previous' %></a>
+              <a href="#" class="next"><%= image_tag 'ui/slides/arrow-next.png', :alt => 'Next' %></a>
             </div>
-            <a href="#" class="prev"><%= image_tag 'ui/slides/arrow-prev.png', :alt => 'Previous' %></a>
-            <a href="#" class="next"><%= image_tag 'ui/slides/arrow-next.png', :alt => 'Next' %></a>
-          </div>
+          </div>          
           
           <div class="submit">
             <%= f.submit 'Set Cover', :class => 'btn tertiary_action' %>
@@ -39,18 +41,19 @@
 </div>
 
 <% modal_footer_js do %>
-  <%= javascript_include_tag 'app/page-specific/slides.jquery' %>
+  <%= javascript_include_tag 'app/page-specific/jquery.slides.js' %>
   <script type="text/javascript" charset="utf-8">
     // Set initial value to first-shown slide (if one is already set, we'll start with that slide instead)
     if ($('#board_cover_source_id').val() == '') $('#board_cover_source_id').val( $('.slides_control div').first().data('source-id') );
     $('.slides_container').show(); // Help give time for images to load before UI updated
   
-    var initial = $('.slides_container .single_slide.current_source') ? $('.slides_container .single_slide').index( $('.slides_container .single_slide.current_source') ) + 1 : 1;
+    var initial = $('.slides_container .single_slide.current_source').length ? $('.slides_container .single_slide').index( $('.slides_container .single_slide.current_source') ) + 1 : 1;
     $('#board-cover-image-slides').slides({
 			preload: true,
 			preloadImage: "<%= image_path('ui/slides/loading.gif') %>",
 			autoHeight: true,
 			start: initial,
+			customOptionAdditionalContainerWrapper: 'slides_container_wrapper',
 			animationComplete: function(idx) {
 			  var current = $( $('.slides_control .single_slide')[idx - 1]);
 			  $('#board_cover_source_id').val( current.data('source-id') );

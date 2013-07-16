@@ -2,7 +2,9 @@
   <% if user_signed_in? %>
     <div class="board-controls">
       <% if current_user == @profile %>
-        <%= link_to 'Edit', edit_profile_board_path(current_user, @board), :class => "ajax" %>
+        <%= link_to 'Edit Board', edit_profile_board_path(current_user, @board), :class => "ajax" %>
+        |
+        <%= link_to 'Edit Cover Image', edit_cover_profile_board_path(current_user, @board), :class => "ajax" %>
       <% else %>
         <%= render 'board/follow_buttons', :board => @board %>
       <% end %>

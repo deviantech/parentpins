@@ -20,22 +20,21 @@
         <li><%= profile_nav_link :followed_by %></li>
       </ul>
 
-      <p class="kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
-
-      <%= render 'profile/social_media', :profile => @profile %>
+      <p class="info_section kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
             
       <% if @profile.teacher? %>
-        <p class="teacher_info teacher_icon">
+        <p class="info_section teacher_info teacher_icon">
           <%= display_teacher_info @profile %>
         </p>
       <% end %>
 
       <% if @profile.featured? %>
-        <p class="featured_info featured_icon">
+        <p class="info_section featured_info featured_icon">
           Featured Pinner!
         </p>
       <% end %>
       
+      <%= render 'profile/social_media', :profile => @profile %>
 
       <% unless @profile.bio.blank? %>
         <p class="bio"><%= auto_link @profile.bio, :html => { :target => '_blank' } %></p>

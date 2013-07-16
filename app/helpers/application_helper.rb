@@ -16,9 +16,9 @@ module ApplicationHelper
   def meta_tags
     tags = []
     tags << meta_tag( 'fb:app_id',      AUTH[:facebook][:key])
-    tags << meta_tag( 'og:site_name',  'ParentPins')
+    tags << meta_tag( 'og:site_name',   'ParentPins')
+    tags << meta_tag( 'twitter:site',   '@ParentPins')
     
-    # TODO  - ensure url generates ok, image url includes host
     title, desc, url, img = if @pin
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
       desc  = @pin.description || ''
@@ -26,11 +26,21 @@ module ApplicationHelper
       img   = absolute_url @pin.image.v222.url
       
       tags << meta_tag( 'og:type',         @pin.kind == 'idea' ? 'website' : @pin.kind)
+      tags << meta_tag( 'twitter:card',    @pin.kind == 'product' ? 'product' : 'photo')
       if @pin.kind == 'product'
         tags << meta_tag( 'product:price:amount',    @pin.price)
         tags << meta_tag( 'product:price:currency',  'USD')
+        tags << meta_tag( 'twitter:data1',    @pin.price)
+        tags << meta_tag( 'twitter:label1',  'Price')
+        tags << meta_tag( 'twitter:data2',    @pin.domain)
+        tags << meta_tag( 'twitter:label2',  'Source')
       end
-      tags << meta_tag( 'twitter:card',    'photo')
+      
+      if @pin.user.twitter_account
+        tags << meta_tag( 'twitter:creator',  "@#{@pin.user.twitter_account}")
+      end
+      
+
       
       [title, desc, url, img]
     elsif @board
@@ -40,7 +50,10 @@ module ApplicationHelper
       img   = absolute_url @board.cover.url
       
       tags << meta_tag( 'og:type',        'website')      
-      tags << meta_tag( 'twitter:card',   'summary')
+      tags << meta_tag( 'twitter:card',   'gallery')
+      @board.pins.with_image.limit(4).each_with_index do |pin, idx|
+        tags << meta_tag( "twitter:image#{idx}:src",   absolute_url(pin.image.v222.url))
+      end
       
       [title, desc, url, img]
     elsif @profile
@@ -227,7 +240,7 @@ module ApplicationHelper
   
   def nav_link(text, target, opts = {})
     opts[:class] ||= ''
-    opts[:class]  += ' marker' if current_page?(target)
+    opts[:class]  += ' marker' if current_page?(target) && !opts[:skip_marker]
     opts[:class]  += ' marker' if opts[:also_accept] && current_page?(opts[:also_accept])
     link_to(text, target, opts)
   end

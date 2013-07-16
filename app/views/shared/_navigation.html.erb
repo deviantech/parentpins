@@ -4,11 +4,20 @@
 
       <ul class="nav_main">
         <li class="drop_down">
+          <%= nav_link 'Cats', pins_path, :skip_marker => true, :class => 'top' %>
+          <ul class="inner">
+            <% Category.all.each do |cat| %>
+              <li><%= link_to cat.name, pins_path(:category => cat.id) %></li>
+            <% end %>
+          </ul>
+        </li>
+        
+        <li class="drop_down">
           <%= nav_link 'Trending', pins_path, :also_accept => '/', :class => 'top' %>
           <ul class="inner">
-            <li><%= nav_link 'Articles', articles_path %></li>
-            <li><%= nav_link 'Ideas', ideas_path %></li>
-            <li><%= nav_link 'Products', products_path %></li>
+            <li><%= link_to 'Articles', articles_path %></li>
+            <li><%= link_to 'Ideas', ideas_path %></li>
+            <li><%= link_to 'Products', products_path %></li>
           </ul>
         </li>
         <li>
