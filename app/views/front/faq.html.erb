@@ -5,15 +5,7 @@
 <% content_for :footer_js do %>
   <%= javascript_include_tag "app/page-specific/faq.js" %>
   <script type="text/javascript" charset="utf-8">
-    hljs.initHighlightingOnLoad();
-    
-    // Move data-spy stuff to body?
-    $('body').scrollspy({
-      offset: 48,
-      target: '.spy_navbar',
-    }).on('activate', function() {
-      alert(1);
-    })
+    hljs.initHighlightingOnLoad();    
   </script>
 <% end %>
 
@@ -22,8 +14,8 @@
   <div class="content row">
     <h1>ParentPins: <acronym title="Frequently asked questions">FAQ</acronym>s</h1>
     
-    <div class="faq_nav_wrapper span3">
-      <ul class="spy_navbar bs-docs-sidenav internal_nav faq_nav span3" data-spy="affix" data-offset-top="55">
+    <div id="faq_nav_wrapper" class="span3">
+      <ul class="spy_navbar bs-docs-sidenav internal_nav faq_nav nav span3" data-spy="affix" data-offset-top="55">
         <li><a href="#what-is"><i class="icon-chevron-right"></i>What is ParentPins?</a></li>
         <li><a href="#bookmarklet"><i class="icon-chevron-right"></i>How do I Pin things?</a></li>
         <li><a href="#importing"><i class="icon-chevron-right"></i>Can I import from Pinterest?</a></li>
@@ -39,7 +31,7 @@
       </ul>
     </div>
 
-    <dl class="span6 offset1 faq_content" data-spy="scroll" data-target=".spy_navbar">
+    <dl class="span6 offset1 faq_content">
       <dt id="what-is">What is ParentPins?</dt>
       <dd>
         <p>ParentPins is a site dedicated to all things kid-related.  Parents, teachers, and older kids can use ParentPins to visually browse and bookmark their favorite ideas and resources.</p>

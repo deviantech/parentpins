@@ -252,20 +252,31 @@ module ApplicationHelper
   
 
   
-  def body_class
-    return 'profile' if @profile
+  def body_decorations
+    str = ''
     
-    case params[:controller]
-    # full_width also available here but currently depricated due to front end UI support
-    when 'pins'                 then params[:action] == 'index' ? background_class_names : ''
-    when 'search', 'featured'   then background_class_names
-    when 'profile'              then 'profile'
-    when 'board'
-      %w(index).include?(params[:action]) ? background_class_names : nil
-    when 'pins'
-      params[:action] == 'index' ? 'custom' : nil
-    else nil
+    klass = if @profile then 'profile'
+    else
+      case params[:controller]
+      # full_width also available here but currently depricated due to front end UI support
+      when 'pins'                 then params[:action] == 'index' ? background_class_names : ''
+      when 'search', 'featured'   then background_class_names
+      when 'profile'              then 'profile'
+      when 'board'
+        %w(index).include?(params[:action]) ? background_class_names : nil
+      when 'pins'
+        params[:action] == 'index' ? 'custom' : nil
+      else nil
+      end
     end
+    
+    str += %Q{ class="#{klass}"} if klass
+    
+    if params[:controller] == 'front' && params[:action] == 'faq'
+      str += ' data-spy="scroll" data-target="#faq_nav_wrapper"'
+    end
+    
+    str.html_safe
   end
   
 end
