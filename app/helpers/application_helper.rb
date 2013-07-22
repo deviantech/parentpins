@@ -249,6 +249,13 @@ module ApplicationHelper
     "custom"
   end
   
+  
+  
+  def extra_body_tags
+    return unless params[:controller] == 'front' && params[:action] = 'faq'
+    " data-spy=scroll data-target=.spy_navbar"
+  end
+  
   def body_class
     return 'profile' if @profile
     
