@@ -198,7 +198,7 @@ class window.ppImporterClasses.Sources.Pinterest
           if pinDATA['page_info'] # Pinterest is conveniently handing us JSON directly
             srcPin.url      = pinDATA.page_info.meta['og:see_also']
             srcPin.imageURL = pinDATA.page_info.meta['og:image']
-          else # OK, parse what we need out of the raw HTML
+          else if pinDATA['split'] # OK, parse what we need out of the raw HTML
             head  = '<div>'+pinDATA.split('</head>')[0].split('</title>')[1]+'</div>' # Just grab the <head> section after the title, then wrap it in a DIV so jquery will parse
             srcPin.url        = getMeta 'og:see_also', head
             srcPin.imageURL   = getMeta 'og:image', head
