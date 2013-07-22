@@ -6,29 +6,40 @@
   <%= javascript_include_tag "app/page-specific/faq.js" %>
   <script type="text/javascript" charset="utf-8">
     hljs.initHighlightingOnLoad();
+    
+    // Move data-spy stuff to body?
+    $('body').scrollspy({
+      offset: 48,
+      target: '.spy_navbar',
+    }).on('activate', function() {
+      alert(1);
+    })
   </script>
 <% end %>
 
 <div class="wrapper general container">
 
   <div class="content row">
-    <h1>ParentPins: <acronym title="Frequently asked question">FAQ</acronym>s</h1>
-    <ul class="spy_navbar bs-docs-sidenav internal_nav faq_nav span3" data-spy="affix">
-      <li><a href="#what-is"><i class="icon-chevron-right"></i>What is ParentPins?</a></li>
-      <li><a href="#bookmarklet"><i class="icon-chevron-right"></i>How do I Pin things?</a></li>
-      <li><a href="#importing"><i class="icon-chevron-right"></i>Can I import from Pinterest?</a></li>
-      <% if false %><li><a href="#endorse"><i class="icon-chevron-right"></i>What does endorsement mean?</a></li><% end %>
-      <li><a href="#pin-types"><i class="icon-chevron-right"></i>What's with the different pin types?</a></li>
-      <li><a href="#change-password"><i class="icon-chevron-right"></i>How do I change my email/password?</a></li>
-      <li><a href="#following"><i class="icon-chevron-right"></i>Where's recent activity I might like?</a></li>
-      <li><a href="#featured"><i class="icon-chevron-right"></i>How are featured users special?</a></li>
-      <li><a href="#pinning-opt-out"><i class="icon-chevron-right"></i>Can content owners opt out of pinning?</a></li>
-      <li><a href="#pinning-encouragement"><i class="icon-chevron-right"></i>Can content owners encourage pinning?</a></li>
-      <li><a href="#advertising"><i class="icon-chevron-right"></i>How can I advertise with ParentPins?</a></li>
-      <li><a href="#other"><i class="icon-chevron-right"></i>Who can I contact for more info?</a></li>
-    </ul>
+    <h1>ParentPins: <acronym title="Frequently asked questions">FAQ</acronym>s</h1>
+    
+    <div class="faq_nav_wrapper span3">
+      <ul class="spy_navbar bs-docs-sidenav internal_nav faq_nav span3" data-spy="affix" data-offset-top="55">
+        <li><a href="#what-is"><i class="icon-chevron-right"></i>What is ParentPins?</a></li>
+        <li><a href="#bookmarklet"><i class="icon-chevron-right"></i>How do I Pin things?</a></li>
+        <li><a href="#importing"><i class="icon-chevron-right"></i>Can I import from Pinterest?</a></li>
+        <% if false %><li><a href="#endorse"><i class="icon-chevron-right"></i>What does endorsement mean?</a></li><% end %>
+        <li><a href="#pin-types"><i class="icon-chevron-right"></i>What's with the different pin types?</a></li>
+        <li><a href="#change-password"><i class="icon-chevron-right"></i>How do I change my email/password?</a></li>
+        <li><a href="#following"><i class="icon-chevron-right"></i>Where's recent activity I might like?</a></li>
+        <li><a href="#featured"><i class="icon-chevron-right"></i>How are featured users special?</a></li>
+        <li><a href="#pinning-opt-out"><i class="icon-chevron-right"></i>Can content owners opt out of pinning?</a></li>
+        <li><a href="#pinning-encouragement"><i class="icon-chevron-right"></i>Can content owners encourage pinning?</a></li>
+        <li><a href="#advertising"><i class="icon-chevron-right"></i>How can I advertise with ParentPins?</a></li>
+        <li><a href="#other"><i class="icon-chevron-right"></i>Who can I contact for more info?</a></li>
+      </ul>
+    </div>
 
-    <dl class="span6 offset1 faq_content">
+    <dl class="span6 offset1 faq_content" data-spy="scroll" data-target=".spy_navbar">
       <dt id="what-is">What is ParentPins?</dt>
       <dd>
         <p>ParentPins is a site dedicated to all things kid-related.  Parents, teachers, and older kids can use ParentPins to visually browse and bookmark their favorite ideas and resources.</p>
