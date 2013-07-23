@@ -12,17 +12,17 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require contrib/modernizr
 //= require contrib/jquery.masonry
 //= require contrib/jquery.scrollTo
 //= require contrib/jquery.history
+//= require contrib/modernizr
 //= require contrib/jquery-sortable
-//= require contrib/lte-ie7
 //= require contrib/bootstrap-components
-//= require lib/google-analytics
 //= require lib/helpers
 //= require lib/flash
 //= require lib/modal
 //= require lib/scrollToTop
-//= require lib/pagination
 //= require lib/main
+//= require lib/pagination
+//= require lib/google-analytics
+//= require contrib/lte-ie7
