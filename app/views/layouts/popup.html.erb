@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>ParentPins - Add New Pin</title>    
-    <%= stylesheet_link_tag "popup", :media => "all" %>
+    <%= stylesheet_link_tag "popup.css", :media => "all" %>
     <%= csrf_meta_tags %>    
   </head>
   
@@ -14,6 +14,6 @@
         <%= content_for?(:content) ? yield(:content) : yield %>
     </div>
 
-    <%= javascript_include_tag "popup" %>
+    <%= javascript_include_tag "popup.js" %>
   </body>
 </html>

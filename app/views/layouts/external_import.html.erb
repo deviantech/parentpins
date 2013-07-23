@@ -11,8 +11,8 @@
     <title>ParentPins - Interesting Pins Just for Parents</title>
     <meta name="viewport" content="width=device-width">
     
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= stylesheet_link_tag "external-import", :media => "all" %>
+    <%= stylesheet_link_tag "application.css", :media => "all" %>
+    <%= stylesheet_link_tag "external-import.css", :media => "all" %>
     <%= csrf_meta_tags %>
   </head>
   
@@ -22,8 +22,8 @@
     <![endif]-->
     <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
     <div class="clearfix"></div>
-    <%= javascript_include_tag "application" %>
-    <%= javascript_include_tag "external-import" %>
+    <%= javascript_include_tag "application.js" %>
+    <%= javascript_include_tag "external-import.js" %>
     <%= yield :footer_js %>
 </body>
 </html>
