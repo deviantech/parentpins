@@ -3,7 +3,7 @@ $(document).ready(function() {
   var displayed = false;
   var $message = $('#scroll_to_top a');
   var $window = $(window);
-  var top = $(document.body).children(0).position().top;
+  var top = $('#top').length ? $('#top').position().top : $(document.body).children(0).position().top;
 
   $window.scroll(function () {
     window.clearTimeout(scroll_timer);
@@ -15,7 +15,8 @@ $(document).ready(function() {
       } else if (displayed == false) { // show if scrolling down
         displayed = true;
         $message.stop(true, true).show().click(function() { 
-          $message.fadeOut(500); 
+          $message.fadeOut(500);
+          displayed = false;
         });
       }
     }, 100);
