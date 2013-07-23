@@ -8,5 +8,5 @@
           %span.label= board.name
           %span.counter{tooltip("Unassigned pins remaining in this board.")}
   
-  %ul.pins{:class => @boards.length > 1 ? '' : 'no-boards'}
+  %ul.pins.clearfix{:class => @boards.length > 1 ? '' : 'no-boards'}
     = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set).blank? }
