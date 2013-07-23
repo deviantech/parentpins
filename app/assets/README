@@ -1,0 +1,10 @@
+== Directory layout logic for stylesheets and javascripts.
+
+main directory:
+  assets referenced directly, recompilation needed.
+  
+contrib/*
+  3rd-party scripts referenced elsewhere.
+
+lib/*
+  Custom scripts referenced elsewhere.

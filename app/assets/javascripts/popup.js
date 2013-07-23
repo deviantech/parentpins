@@ -11,8 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require app/helpers
+//= require lib/helpers
 //= require add-pin
-//= require popup/add-pin-in-popup
-//= require popup/google-analytics
-//= require popup/success
+//= require lib/popup/add-pin-in-popup
+//= require lib/popup/google-analytics
+//= require lib/popup/success

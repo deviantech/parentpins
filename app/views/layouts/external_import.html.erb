@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width">
     
     <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= stylesheet_link_tag "external_import", :media => "all" %>
+    <%= stylesheet_link_tag "external-import", :media => "all" %>
     <%= csrf_meta_tags %>
   </head>
   
@@ -23,7 +23,7 @@
     <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
     <div class="clearfix"></div>
     <%= javascript_include_tag "application" %>
-    <%= javascript_include_tag "app/external_import" %>
+    <%= javascript_include_tag "external-import" %>
     <%= yield :footer_js %>
 </body>
 </html>

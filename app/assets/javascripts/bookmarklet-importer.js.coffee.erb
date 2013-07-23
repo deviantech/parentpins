@@ -1,6 +1,6 @@
-//= require bookmarklet/importer/get_data
-//= require bookmarklet/importer/interactivity
-//= require bookmarklet/importer/importer_base
+//= require lib/bookmarklet/importer/get_data
+//= require lib/bookmarklet/importer/interactivity
+//= require lib/bookmarklet/importer/importer_base
 
 if (window.ppBookmarklet.host)
   loggedInURL = window.ppBookmarklet.host + '<%= Rails.application.routes.url_helpers.pin_import_login_check_path %>'

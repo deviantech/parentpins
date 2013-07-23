@@ -1,4 +1,4 @@
-//= require underscore.min
+//= require contrib/underscore
 //= require jquery.ui.draggable
 //= require jquery.ui.droppable
 

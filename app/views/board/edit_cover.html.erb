@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'page-specific/slides' %>
+<%= stylesheet_link_tag 'slides' %>
 <div class="<%= modal_class %>">
   <div class="wrapper profile">
 
@@ -41,7 +41,7 @@
 </div>
 
 <% modal_footer_js do %>
-  <%= javascript_include_tag 'app/page-specific/jquery.slides.js' %>
+  <%= javascript_include_tag 'jquery.slides.js' %>
   <script type="text/javascript" charset="utf-8">
     // Set initial value to first-shown slide (if one is already set, we'll start with that slide instead)
     if ($('#board_cover_source_id').val() == '') $('#board_cover_source_id').val( $('.slides_control div').first().data('source-id') );

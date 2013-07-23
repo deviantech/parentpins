@@ -8,13 +8,13 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require normalize
- *= require boilerplate
- *= require main
- *= require modal
- *= require responsive
- *= require masonry
- *= require bootstrap
- *= require bootstrap-components
+ *= require contrib/normalize
+ *= require contrib/boilerplate
+ *= require lib/modal
+ *= require lib/main
+ *= require lib/responsive
+ *= require contrib/masonry
+ *= require contrib/bootstrap
+ *= require contrib/bootstrap-components
  *= require_self
  */
