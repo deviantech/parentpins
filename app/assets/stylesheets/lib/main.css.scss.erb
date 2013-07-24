@@ -33,6 +33,7 @@ body {
 $themeCOLOR: #76A613;
 $themeLinkCOLOR: #2886B4;
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
+$themeHIGHLIGHT: #666688;
 
 /* Mixins */
 
@@ -692,7 +693,7 @@ ul li .handle {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; } }
 
 .featured {
-  background:#668;
+  background: $themeHIGHLIGHT;
   margin:0 0 20px;
   overflow:hidden;
   padding:20px 0;
@@ -2717,15 +2718,14 @@ code {
       margin:0;
       position:absolute; } }
   
-.feature, .feature-preview {
-  .timeline {
-    .image_link {
-      max-height:192px;
-      overflow:hidden; 
-      img {
-        border-radius:0; } }
-    .attribution .image_link {
-      height:auto; } } }
+.feature li.pin, .feature-preview li.pin, ul.select_featured {
+  .image_link {
+    max-height:192px;
+    overflow:hidden; 
+    img {
+      border-radius:0; } }
+  .attribution .image_link {
+    height:auto; } }
 .edit-featured-pin img.pin_image {
   @include rounded(2px);
   @include boxshadow;
@@ -2741,11 +2741,17 @@ li.pin a.select-featured-pin {
   width: 222px;
   margin: -15px 0 0 -15px;
   display: block;
-  background: #CCC;
+  background: $themeHIGHLIGHT;
   text-align: center;
   font-weight: bold;
   padding-top: 10px;
   height: 40px;
+  color: #333;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+li.pin:hover a.select-featured-pin {
+  color: #FFF;
 }
 li.pin .comment .user_info {
   padding: 3px 5px;
