@@ -9,6 +9,16 @@ $(document).ready(function() {
   $('[rel=tooltip]').tooltip({container: 'body', trigger: 'hover'});
   $('[rel=popover]').popover({container: 'body', trigger: 'hover'});
   
+  var windowHash = window.location.hash || window.originalLocationHash;
+  if (windowHash) {
+    try {
+      var target = $(windowHash);
+      if (target.length) scrollTo(target);
+    } catch(e) {
+      // Possible errors jquery-ing user input. Disregard.
+    }
+  }
+  
   // Pin actions
   function getContainingClassNameForPinAction(btn) {
     var classList;

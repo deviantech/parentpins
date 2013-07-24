@@ -1,7 +1,9 @@
 <div class="featured">
   <div class="featured_blogger">
-    <h2>Featured ParentPinners</h2>
     <%= render :partial => 'featured/user', :collection => User.get_featured(2) %>
     <div class="clear"></div>
+    <div class="more-info">
+      <%= link_to 'View All Featured', featured_path %>
+    </div>
   </div>
 </div>
