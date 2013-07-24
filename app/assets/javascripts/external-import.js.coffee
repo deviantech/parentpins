@@ -166,7 +166,7 @@ initDragDrop = () ->
 
   # Used when boards added via ajax
   window.stepOneAddDroppableBoard = (board) ->
-    $(board).droppable(dropOpts).hide().appendTo( $('#our_section ul.boards') ).fadeIn () ->
+    $(board).droppable(drop.overOurBoards).hide().appendTo( $('#our_section ul.boards') ).fadeIn () ->
       tellParentOurHeight()
 
   if $('.importing_pins li.pin').length
