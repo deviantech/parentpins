@@ -427,4 +427,16 @@ $highlight: #ffffe0;
       }
     }
   }
+  &:not(.apply_normal_pin_styling) {
+    li.pin {
+      text-align: center;
+      width: 100px;
+      height: 120px;
+      overflow: hidden;
+      img {
+        max-width: 100px;
+        min-height: 25px;
+      }
+    }
+  }
 }
