@@ -737,7 +737,12 @@ ul li .handle {
       font-size: 18px;
       line-height:2em;
       margin: 0;
-      padding: 0; } }
+      padding: 0; 
+      &.small {
+        line-height: 1em; 
+        margin-top: -3px;
+        font-size: 12px;
+      } } }
   h2 {
     color: #444;
     font-family: arial,trebuchet,helvetica,sans-serif;
@@ -858,7 +863,7 @@ ul li .handle {
 }
 .bs-docs-sidenav .active .icon-chevron-right,
 .bs-docs-sidenav .active a:hover .icon-chevron-right {
-  background-image: url(../img/glyphicons-halflings-white.png);
+  background-image: url(../glyphicons-halflings-white.png);
   opacity: 1;
 }
 .affix {
@@ -2095,7 +2100,6 @@ body.profile {
       line-height: 1.2em;
       font-size: 2.1429em;
       span {
-        font-size: 18px;
         margin-top: 3px; }
       .count {
         font-size:13px;
