@@ -44,14 +44,81 @@ $highlight: #ffffe0;
   .ui-draggable-dragging.multi-drag-helper .pin {
     margin: 5px;
   }
-  li.pin {
+  .open_close_controls {
+    display:block;
+    width:140px;
+    margin:6px 0 0 0;
+  }
+  ol.import_progress {
+    margin: 0;
+    margin-bottom: 25px;
+    background: $highlight;
+    padding: 10px;
+    text-align:center;
+    h3 {
+      margin-bottom: 5px;
+      padding-top: 0px;
+    }
+    li {
+      display: inline-block;
+      margin-left: 20px;
+      &.current {
+        font-weight: bold;
+        &:before {
+          content: '\00bb';
+        }
+      }
+    }
+  }
+  .submit_bar {
+    border: 1px solid #DDD;
+    height: 50px;
+    width: 98%;
+    padding: 10px;
+    margin-top: 20px;
     text-align: center;
-    width: 100px;
-    height: 120px;
-    overflow: hidden;
-    img {
-      max-width: 100px;
-      min-height: 25px;
+    background: #F0F0F0;
+    .instructions {
+      font-size: 1.2em;
+      color: #333;
+      text-shadow: 0px 2px 3px #FFF;
+      margin-top: 15px;
+    }
+    .hide_until_complete {
+      display: none;
+    }
+    input[type=submit] {
+      float: right;
+      margin: 5px;
+    }
+    .btn.previous {
+      float: left;
+    }
+  }
+  #mass-edit-controls {
+    width: 500px;
+    margin: 0 auto;
+    padding: 5px;
+    position: relative;
+    h3 {
+      width: 150px;
+      float: left;
+      margin-top: 0px;
+      .count {
+        display: block;
+        font-size: 0.7em;
+        font-weight: lighter;
+        margin-top: -2px;
+      }
+  
+    }
+    .fields {
+      width: 325px;
+      float: right;
+    }
+    .field {
+      margin: 0px;
+      padding: 0px;
     }
   }
 }
@@ -358,83 +425,6 @@ $highlight: #ffffe0;
         border-bottom:6px solid transparent;
         border-left:6px solid green;
       }
-    }
-  }
-  .open_close_controls {
-    display:block;
-    width:140px;
-    margin:6px 0 0 0;
-  }
-  ol.import_progress {
-    margin: 0;
-    margin-bottom: 25px;
-    background: $highlight;
-    padding: 10px;
-    text-align:center;
-    h3 {
-      margin-bottom: 5px;
-      padding-top: 0px;
-    }
-    li {
-      display: inline-block;
-      margin-left: 20px;
-      &.current {
-        font-weight: bold;
-        &:before {
-          content: '\00bb';
-        }
-      }
-    }
-  }
-  .submit_bar {
-    border: 1px solid #DDD;
-    height: 50px;
-    width: 98%;
-    padding: 10px;
-    margin-top: 20px;
-    text-align: center;
-    background: #F0F0F0;
-    .instructions {
-      font-size: 1.2em;
-      color: #333;
-      text-shadow: 0px 2px 3px #FFF;
-      margin-top: 15px;
-    }
-    .hide_until_complete {
-      display: none;
-    }
-    input[type=submit] {
-      float: right;
-      margin: 5px;
-    }
-    .btn.previous {
-      float: left;
-    }
-  }
-  #mass-edit-controls {
-    width: 500px;
-    margin: 0 auto;
-    padding: 5px;
-    position: relative;
-    h3 {
-      width: 150px;
-      float: left;
-      margin-top: 0px;
-      .count {
-        display: block;
-        font-size: 0.7em;
-        font-weight: lighter;
-        margin-top: -2px;
-      }
-  
-    }
-    .fields {
-      width: 325px;
-      float: right;
-    }
-    .field {
-      margin: 0px;
-      padding: 0px;
     }
   }
 }

@@ -56,7 +56,7 @@ class ImportController < ApplicationController
     @pins_to_import = []
     @import = session[:import_id] && current_user.imports.find(session[:import_id])
           
-    @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }.each do |pin|
+    (@data[:pins] || []).collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }.each do |pin|
       pin.user = current_user
       pin.import = @import
       
@@ -66,9 +66,14 @@ class ImportController < ApplicationController
     end
     @import && @import.increment(:completed, @imported.length)
 
-    if @pins_to_import.empty?
-      flash[:success] = "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
+
+    if @pins_to_import.empty? && @imported.empty?
       session.delete(:import_id)
+      flash[:error] = "You successfully completed your import, but had no pins selected to save."
+      redirect_to profile_path(current_user)
+    elsif @pins_to_import.empty?
+      session.delete(:import_id)
+      flash[:success] = "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
       redirect_to profile_import_path(current_user, @import, :just_completed => true)
     else
       if @imported.empty?
@@ -84,6 +89,7 @@ class ImportController < ApplicationController
   end
   
   def show
+    @context = :apply_normal_pin_styling
     if @import = current_user.imports.find(params[:id])
       paginate_pins @import.pins
     else

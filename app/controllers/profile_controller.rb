@@ -5,6 +5,7 @@ class ProfileController < ApplicationController
   before_filter :set_filters,         :only => [:pins, :likes, :activity]
   
   def show
+    flash.keep
     redirect_to @profile == current_user ? activity_profile_path(@profile) : profile_boards_path(@profile)
   end
   
