@@ -11,7 +11,7 @@
 
   <% unless user.pins.empty? %>
     <ul id="pins" class="timeline">
-      <%= render user.featured_pin %>
+      <%= render user.featured_pin, :skip_comments => true %>
     </ul>
   <% end %>
   <div class="clear"></div>
