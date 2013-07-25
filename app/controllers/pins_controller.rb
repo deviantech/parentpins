@@ -11,12 +11,12 @@ class PinsController < ApplicationController
   
   # New or, if source_id passed, repin
   def new
-    @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
+    @pin, @source = Pin.craft_new_pin(current_user, params[:pin], params[:source_id])
   end
   
   def create
     conditionally_remove_nested_attributes(:pin, :board)
-    @source, @pin = Pin.craft_new_pin(current_user, params[:source_id], params[:pin])
+    @pin, @source = Pin.craft_new_pin(current_user, params[:pin], params[:source_id])
     @pin.save
     success_url = (@pin.board && !@pin.board.new_record?) ? profile_board_path(current_user, @pin.board) : '/'
     respond_with @pin, :location => success_url

@@ -29,26 +29,19 @@ class ImportController < ApplicationController
 
   def step_2
     @context = :step_drag_to_assign
-    # Allow mass assignment, since we'll sanity check before saving the final version
-    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
-    @boards = @pins_to_import.map(&:board).uniq
-    
+    craft_intermediate_pins    
     session[:import_id] = current_user.imports.create(:source => params[:source] || 'pinterest', :attempted => @pins_to_import.length, :user_agent => request.user_agent).try(:id)
   end
   
   def step_3
     @context = :step_drag_to_assign
-    # Allow mass assignment, since we'll sanity check before saving the final version
-    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
-    @boards = @pins_to_import.map(&:board).uniq
+    craft_intermediate_pins
   end
 
   # Collect info & save new pins
   def step_4
     @context = :step_4
-    # Allow mass assignment, since we'll sanity check before saving the final version
-    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
-    @boards = @pins_to_import.map(&:board).uniq
+    craft_intermediate_pins
   end
 
   def step_5
@@ -99,6 +92,12 @@ class ImportController < ApplicationController
   end
 
   protected
+  
+  def craft_intermediate_pins
+    # Allow mass assignment, since we'll sanity check before saving the final version
+    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
+    @boards = @pins_to_import.map(&:board).uniq
+  end
   
   def parse_params
     # Bookmarklet sends initial data encoded in a single parameter, but for testing we may want to send parameters as normal

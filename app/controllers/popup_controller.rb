@@ -7,8 +7,8 @@ class PopupController < ApplicationController
       session[:user_return_to_from_pin] = session[:user_return_to] = url_for(params)
       redirect_to(popup_login_path) and return 
     end
-
-    @pin = params[:pin] ? Pin.new(params[:pin]) : Pin.from_bookmarklet(current_user, params)
+    
+    @pin = params[:pin] ? Pin.craft_new_pin(current_user, params[:pin]) : Pin.new_from_bookmarklet(current_user, params)
   end
   
   def success
@@ -17,8 +17,9 @@ class PopupController < ApplicationController
   
   def create
     session.delete(:user_return_to_from_pin) # Clean up session
+    
     conditionally_remove_nested_attributes(:pin, :board)
-    @pin = current_user.pins.new(params[:pin])
+    @pin = Pin.craft_new_pin(current_user, params[:pin])
     if @pin.save
       render 'success'
     else

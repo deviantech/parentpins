@@ -101,10 +101,10 @@ class Pin < ActiveRecord::Base
     return pin
   end
   
-  def self.from_bookmarklet(user, params)
+  def self.new_from_bookmarklet(user, params)
     # params[:url] is always the URL it was pinned from
     # params[:link], if present, means the image was linking to a new page. Show the new page instead (seems to be Pinterest's logic)
-    pin = user.pins.new({
+    user.pins.new({
       :description => params[:description] || params[:title],
       :url => params[:link] ? params[:link] : params[:url],
       :via_url => params[:link] ? params[:url] : nil
@@ -124,13 +124,8 @@ class Pin < ActiveRecord::Base
   end
   
   # If a source pin was passed in, copy relevant attributes (repin). Otherwise, generate a clean pin record.
-  def self.craft_new_pin(user, source_id, other_params)
-    source = begin
-      !source_id.blank? && Pin.find(source_id)
-    rescue ActiveRecord::RecordNotFound => e
-      nil
-    end
-    
+  def self.craft_new_pin(user, other_params, source_id = nil)
+    source = !source_id.blank? && Pin.where(:id => source_id).first
     pin = Pin.new
     
     if source
@@ -152,12 +147,12 @@ class Pin < ActiveRecord::Base
     pin.user = user
         
     if pin.board # If just created board from scratch
-      pin.board.user_id ||= user.id
+      pin.board.user_id = user.id if pin.board.new_record?
     else
       pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
     end
     
-    [source, pin]
+    source ? [pin, source] : pin
   end
   
   # ===========================================================
