@@ -14,7 +14,7 @@ class Bookmarklet
   minJQversion          = '1.7.0'
   desiredJQversion      = '1.8.2'
   imgDisplayWidth       = 192
-  minImageWidth         = 175
+  minImageWidth         = 160
   minImageHeight        = 100
   pinBaseUrl            = host + '<%= Rails.application.routes.url_helpers.bookmarklet_popup_path %>'
   popupHeight           = 462
@@ -150,15 +150,19 @@ class Bookmarklet
   # Convert image object to a hash containing the relevant keys
   imgToData: (img) ->
     $img   = $(img)
+    
+    # Briefly remove CSS restrictions on height, so if image resized by CSS we get the actual size
+    origHeight = $img.height()  || 0
+    origWidth  = $img.width()   || 0
+    $img.css({height: 'auto', width: 'auto'})
     height = $img.height()  || 0
     width  = $img.width()   || 0
+    $img.css({height: origHeight, width: origWidth})
+    
     area   = height * width
     
     # What would height be if width was imgDisplayWidth?
-    scaledHeight = if width == 0
-      0
-    else
-      (imgDisplayWidth / width) * height
+    scaledHeight = if width == 0 then 0 else (imgDisplayWidth / width) * height
   
     return {
       src:    $img.attr('src') || $img.data('src'),
