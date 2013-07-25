@@ -11,7 +11,7 @@ module Searchable
       base_scope = base_scope.where("#{field_name} LIKE ?", "%#{query}%")
     end
     
-    # TODO - replace with a unique requirement on a digest form source image identifier?
+    # TODO - replace with a unique requirement on a digest form source image identifier? Or else remove, once have more pins in play.
     if self.is_a?(Pin)
       base_scope = base_scope.not_repinned
     end
