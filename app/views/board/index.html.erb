@@ -10,7 +10,7 @@
   <div class="page-controls my-board-controls">
     <% if @profile == current_user %>
       <%= link_to 'Add Board', new_profile_board_path(current_user), :class => 'ajax' %>
-      |
+      <%= '|' unless params[:category].blank? && @boards.blank? %>
       <% if params[:category].blank? %>
         <% unless @boards.blank? %>
           <%= link_to 'Reorder Boards', '#', :class => 'start-sorting', 'data-endpoint' => sort_profile_board_index_path(@profile), 'data-sort' => 'ul.boards' %>

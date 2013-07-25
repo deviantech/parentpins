@@ -40,6 +40,11 @@
 
   #our_section
     %ul.boards
+      - if user_signed_in? && current_user.boards.empty?
+        .no-pp-boards
+          You'll need to 
+          = link_to 'add at least one ParentPins board', new_profile_board_path(current_user), :class => 'ajax'
+          before importing pins.
       - (user_signed_in? ? current_user.boards : []).each do |board|
         = render 'our_board', :board => board
     .clearfix
