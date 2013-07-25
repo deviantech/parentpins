@@ -13,4 +13,12 @@ class AvatarUploader < BaseUploader
   version :v50 do
     process :resize_to_fill => [50, 50]
   end  
+  
+  
+  def filename # OK to use model.id, because avatar never created before user record is created
+    return super unless file
+    @name ||= Digest::MD5.hexdigest("#{model.class.name}.#{model.id}")
+    "#{@name}.#{file.extension}"
+  end
+  
 end

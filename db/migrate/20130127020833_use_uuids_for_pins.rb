@@ -6,7 +6,7 @@ class UseUuidsForPins < ActiveRecord::Migration
     Pin.reset_column_information
     
     Pin.all.each do |p|
-      p.send(:set_uuid)
+      p.send(:uuid)
       p.save
     end
   end

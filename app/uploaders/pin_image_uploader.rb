@@ -16,5 +16,15 @@ class PinImageUploader < BaseUploader
   # Choose what kind of storage to use for this uploader:
   storage :file
   # storage :fog
+  
+  def filename
+    "#{secure_token}.#{file.extension}"
+  end
+  
+  protected
+  
+  def secure_token
+    model.uuid || SecureRandom.uuid
+  end
 
 end

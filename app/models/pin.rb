@@ -5,7 +5,7 @@ class Pin < ActiveRecord::Base
   attr_accessible :kind, :description, :price, :url, :user_id, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id, :cached_remote_image_url, :cached_remote_small_image_url, :external_id
 
   VALID_TYPES = %w(idea product article)
-  REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image)
+  REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image source_url)
 
   mount_uploader :image, PinImageUploader
 
@@ -35,7 +35,7 @@ class Pin < ActiveRecord::Base
   
   before_save     :filter_url_before_save
   before_update   :update_board_images_on_change
-  before_create   :set_uuid
+  before_create   :uuid # Set the UUID before creating
   after_create    :update_board_add_image, :track_board_last_pinned_to
   before_destroy  :update_board_remove_image
   before_destroy  :clean_redis
@@ -64,7 +64,6 @@ class Pin < ActiveRecord::Base
       result[p.url] ||= []; result[p.url] << p.image_filename
     }.to_json
   end
-  
   
   def import_json
     # Awkward wrapper, but just trying to DRY up to_json options
@@ -120,6 +119,7 @@ class Pin < ActiveRecord::Base
   end
   
   def remote_image_url=(str)
+    self.source_url = str
     apply_base64_image(str) || super
   end
   
@@ -200,11 +200,11 @@ class Pin < ActiveRecord::Base
     self['image'] || cached_remote_image_url.to_s.split('/').last
   end
   
-  protected
-    
-  def set_uuid
-    self.uuid ||= UUIDTools::UUID.timestamp_create().to_s
+  def uuid
+    self['uuid'] ||= UUIDTools::UUID.timestamp_create().to_s
   end
+  
+  protected
   
   def apply_base64_image(string)
     return false unless string.match(/base64,?/)
