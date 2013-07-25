@@ -1,5 +1,17 @@
 <% provide :content do %>
-  <%= render 'shared/profile_header' %>
+  <div class="sub_header_wrapper">
+    <div class="sub_header_inner_wrapper">
+      <div class="sub_header">
+        <div class="cap-left">&nbsp;</div>
+        <div class="cap-right">&nbsp;</div>
+        <% if current_user == @profile %>
+          <a href="<%= edit_profile_path(@profile) %>" class="btn primary hover_link">Change Cover Image</a>
+        <% end %>
+        <%= image_tag @profile.cover_image.url, :class => 'cover_photo' %>
+      </div>
+    </div>
+  </div>
+  
   <div class="wrapper profile">
 
     <div class="info">

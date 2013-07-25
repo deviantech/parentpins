@@ -1,8 +1,0 @@
-<div class="sub_header_wrapper">
-  <div class="sub_header">
-    <% if current_user == @profile %>
-      <a href="<%= edit_profile_path(@profile) %>" class="btn primary hover_link">Change Cover Image</a>
-    <% end %>
-    <%= image_tag @profile.cover_image.url, :class => 'cover_photo' %>
-  </div>
-</div>
