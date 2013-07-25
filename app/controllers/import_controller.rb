@@ -48,7 +48,7 @@ class ImportController < ApplicationController
     @imported = []
     @pins_to_import = []
     @import = session[:import_id] && current_user.imports.find(session[:import_id])
-          
+    
     (@data[:pins] || []).collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }.each do |pin|
       pin.user = current_user
       pin.import = @import

@@ -60,8 +60,8 @@ class Pin < ActiveRecord::Base
   default_scope newest_first
 
   def self.json_for_pins(pins)
-    Array(pins).each_with_object({}) {|p, result| 
-      result[p.url] ||= []; result[p.url] << p.image_filename
+    Array(pins).each_with_object({}) {|p, result|
+      result[p.url] ||= []; result[p.url] << p.source_url
     }.to_json
   end
   
