@@ -5,7 +5,7 @@
       <% unless params[:q].blank? %>
         for "<%= params[:q] %>"
       <% end %>
-      <span class="count">(<%= @results.count %>)</span>
+      <span class="count">(<%= @results.length %>)</span>
     </h1>
     
     <div class="search_navigation">
