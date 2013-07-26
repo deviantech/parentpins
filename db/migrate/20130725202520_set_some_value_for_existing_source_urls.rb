@@ -16,7 +16,7 @@ class SetSomeValueForExistingSourceUrls < ActiveRecord::Migration
     
     # MOVE existing files to better location
     Pin.find_each do |p|
-      newpath = p.image.path
+      newpath = to_shared(p.image.path)
       next if newpath.blank? || File.exists?(newpath)
       
       newname = File.basename(newpath)
