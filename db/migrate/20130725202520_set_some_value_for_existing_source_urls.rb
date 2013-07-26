@@ -21,6 +21,10 @@ class SetSomeValueForExistingSourceUrls < ActiveRecord::Migration
       
       newname = File.basename(newpath)
       dir = File.dirname(newpath)
+      unless File.exists?(dir)
+        puts "COULD NOT FIND DIRECTORY FOR PIN #{p.id}: #{dir}"
+        next
+      end
       oldname = Dir.entries(dir).detect {|f| !f.starts_with?('.') && !f.starts_with?(/v\d\d\d?_/)}
       
       Dir.entries(dir).each do |f|
