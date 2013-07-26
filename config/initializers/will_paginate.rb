@@ -1,1 +1,1 @@
-WillPaginate.per_page = 3
+WillPaginate.per_page = 100
