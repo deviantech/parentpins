@@ -15,7 +15,9 @@ class AvatarUploader < BaseUploader
   end
   
   
-  def filename # OK to use model.id, because avatar never created before user record is created
+  def filename 
+    # OK to use model.id, because avatar never created before user record is created
+    # BUT, means next avatar upload will always have same filename. Weird for caching?
     return super unless file
     @name ||= Digest::MD5.hexdigest("#{model.class.name}.#{model.id}")
     "#{@name}.#{file.extension}"

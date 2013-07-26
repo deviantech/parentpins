@@ -9,6 +9,10 @@ class SetSomeValueForExistingSourceUrls < ActiveRecord::Migration
       next unless p.source_url.blank?
       p.update_attribute :source_url, "OLD:#{p.image_filename}"
     end
+
+    def to_shared(path)
+      path.gsub(/\/releases\/\d+?\/public\//, '')
+    end
     
     # MOVE existing files to better location
     Pin.find_each do |p|
@@ -25,7 +29,7 @@ class SetSomeValueForExistingSourceUrls < ActiveRecord::Migration
         
         current_path = File.join(dir, f)
         future_path = File.join(dir, f.gsub(oldname, newname))
-        FileUtils.move current_path, future_path
+        FileUtils.move to_shared(current_path), to_shared(future_path)
       end
     end    
   end
