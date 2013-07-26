@@ -17,15 +17,4 @@ class PinImageUploader < BaseUploader
   storage :file
   # storage :fog
   
-  def filename
-    return super unless file
-    "#{secure_token}.#{file.extension}"
-  end
-  
-  protected
-  
-  def secure_token
-    model.uuid || SecureRandom.uuid
-  end
-
 end

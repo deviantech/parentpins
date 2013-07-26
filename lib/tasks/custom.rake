@@ -44,4 +44,3 @@ def trend_points_for_creation_date(obj)
   else  0
   end
 end
-
