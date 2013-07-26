@@ -15,12 +15,14 @@ class SetSomeValueForExistingSourceUrls < ActiveRecord::Migration
       newpath = p.image.path
       next if newpath.blank? || File.exists?(newpath)
       
-      newname = File.basename(newpath)      
+      newname = File.basename(newpath)
       dir = File.dirname(newpath)
       oldname = Dir.entries(dir).detect {|f| !f.starts_with?('.') && !f.starts_with?(/v\d\d\d?_/)}
       
       Dir.entries(dir).each do |f|
         next if f.starts_with?('.')
+        next unless f.match(oldname)
+        
         current_path = File.join(dir, f)
         future_path = File.join(dir, f.gsub(oldname, newname))
         FileUtils.move current_path, future_path
