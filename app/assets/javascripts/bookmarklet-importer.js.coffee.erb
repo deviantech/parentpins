@@ -16,7 +16,7 @@ if (window.ppBookmarklet.host)
     if json.logged_in
       window.ppImporter = new window.ppImporterClasses.ImporterBase({dataSource: 'Pinterest'});
     else
-      message("""You'll need to <a href="#{host}" target="_blank">log into your ParentPins account</a> before continuing.""")
+      message("""You'll need to <a href="#{window.ppBookmarklet.host}" target="_blank">log into your ParentPins account</a> before continuing.""")
     
   onFailure = () ->
     message("Unable to connect with server -- please try again later.")
