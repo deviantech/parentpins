@@ -124,7 +124,7 @@ class Pin < ActiveRecord::Base
   end
   
   # If a source pin was passed in, copy relevant attributes (repin). Otherwise, generate a clean pin record.
-  def self.craft_new_pin(user, other_params, source_id = nil)
+  def self.craft_new_pin(user, other_params, source_id = nil, opts = {})
     # NOTE: This does NOT work as expected. Using find rather than where, even though have to catch exception, because find is overridden to handle searching ID OR UUID.
     # source = !source_id.blank? && Pin.where(:id => source_id).first
     source = begin
@@ -156,7 +156,9 @@ class Pin < ActiveRecord::Base
     if pin.board # If just created board from scratch
       pin.board.user_id = user.id if pin.board.new_record?
     else
-      pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
+      unless opts[:skip_board]
+        pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
+      end
     end
     
     source ? [pin, source] : pin
