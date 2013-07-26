@@ -5,14 +5,14 @@ class AvatarUploader < BaseUploader
   # storage :fog
 
   process :resize_to_fill => [120, 120]
-
-  version :v30 do
-    process :resize_to_fill => [30, 30]
-  end
   
   version :v50 do
     process :resize_to_fill => [50, 50]
   end  
+
+  version :v30, :from_version => :v50 do
+    process :resize_to_fill => [30, 30]
+  end
   
   
   def filename # OK to use model.id, because avatar never created before user record is created

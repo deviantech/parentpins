@@ -9,7 +9,7 @@ class PinImageUploader < BaseUploader
   end
 
   # Used for board thumbs
-  version :v55 do
+  version :v55, :from_version => :v222 do
     process :resize_to_fill => [55, 55]
   end
   
@@ -18,6 +18,7 @@ class PinImageUploader < BaseUploader
   # storage :fog
   
   def filename
+    return super unless file
     "#{secure_token}.#{file.extension}"
   end
   
