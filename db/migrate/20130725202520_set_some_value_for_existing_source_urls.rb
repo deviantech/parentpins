@@ -11,7 +11,7 @@ class SetSomeValueForExistingSourceUrls < ActiveRecord::Migration
     end
 
     def to_shared(path)
-      path.gsub(/\/releases\/\d+?\/public\//, '/shared/')
+      path.to_s.gsub(/\/releases\/\d+?\/public\//, '/shared/')
     end
     
     # MOVE existing files to better location
