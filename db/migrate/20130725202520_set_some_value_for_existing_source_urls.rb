@@ -29,7 +29,11 @@ class SetSomeValueForExistingSourceUrls < ActiveRecord::Migration
         
         current_path = File.join(dir, f)
         future_path = File.join(dir, f.gsub(oldname, newname))
-        FileUtils.move to_shared(current_path), to_shared(future_path)
+        if File.exists?(to_shared(current_path))
+          FileUtils.move to_shared(current_path), to_shared(future_path)
+        else
+          puts "COULD NOT FIND FILE FOR PIN #{p.id}: #{to_shared(current_path)}"
+        end
       end
     end    
   end
