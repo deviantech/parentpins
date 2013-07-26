@@ -4,6 +4,5 @@
   Global.updateModalContents("<%= escape_javascript(render(:template => 'pins/new')) %>");
   $('.modal_overlay').scrollTo(0);
 <% else %>
-  Global.closeModal();
-  Global.setFlashMsg('<%= @pin.repinned? ? "Repinned" : "Added new pin" %> to <strong><%= escape_javascript(@pin.board.name) %></strong>.');
+  Global.openInModal("<%= success_pin_path(@pin) %>");
 <% end %>

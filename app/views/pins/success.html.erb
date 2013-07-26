@@ -1,0 +1,19 @@
+<div class="<%= modal_class %>">
+  <div class="repin-success-wrapper">
+    <h2>Success!</h2>
+    <p class="message">
+      <% if @pin.via_id %>
+        Repinned to
+      <% else %>
+        Your pin was pinned to 
+      <% end %>
+      <%= link_to @pin.board.name, profile_board_url(@pin.user, @pin.board) %>.
+    </p>
+
+    <div class="buttons">
+      <%= link_to "View Pin", pin_url(@pin), :class => 'btn sec_action' %>
+      <%= share_pin_via_fb_link(@pin) %>
+      <%= link_to_function 'Close', 'Global.closeModal()' %>
+    </div>
+  </div>
+</div>

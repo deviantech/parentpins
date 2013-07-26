@@ -31,14 +31,22 @@ $(document).on 'click', 'a.ajax', (e) ->
   e.preventDefault()
   e.stopPropagation()
   
-  $ajax.html('<div class="ajax-loader"><img src="<%= asset_path 'ui/loader.gif' %>" alt="Loading" class="loader_icon"/></div>').fadeIn()
-  if $(this).hasClass('update-history')
+  updateHistory = if $(this).hasClass('update-history')
     $ajax.addClass('update-history')
-    History.replaceState({from: window.location + ''}, null, $(this).attr('href'));
+    true
   else
     $ajax.removeClass('update-history')
-    
-  url = urlPlusParamString($(this).attr('href'), 'via=ajax')
-  $ajax.load url, () ->
-    $ajax.find('input[type=text]:visible').first().focus()
+    false  
   
+  Global.openInModal($(this).attr('href'), {updateHistory: updateHistory})
+
+  
+Global.openInModal = (url, opts = {}) ->    
+  $ajax.html('<div class="ajax-loader"><img src="<%= asset_path 'ui/loader.gif' %>" alt="Loading" class="loader_icon"/></div>').fadeIn()
+    
+  if opts.updateHistory
+    History.replaceState({from: window.location + ''}, null, url);
+    
+  finalUrl = urlPlusParamString(url, 'via=ajax')
+  $ajax.load finalUrl, () ->
+    $ajax.find('input[type=text]:visible').first().focus()
