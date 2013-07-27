@@ -727,7 +727,12 @@ ul li .handle {
     h2 {
       padding-top:0;
       margin-top:0; 
-      font-weight:normal; } }
+      font-weight:normal; } 
+  .feature {
+    .user {
+      width:220px; 
+      .social_links {
+        display:none; } } } }
 
 .content {
   h1 {
@@ -2747,6 +2752,11 @@ code {
 .edit-featured-pin img.pin_image {
   @include rounded(2px);
   @include boxshadow;
+}
+.feature li.pin .update-history {
+  border-radius:0;
+  -webkit-border-radius:0;
+  -moz-border-radius:0;
 }
 .select_featured li.pin {
   opacity: 0.6;

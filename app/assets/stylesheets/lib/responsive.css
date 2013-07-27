@@ -151,7 +151,6 @@ and (min-width : 1824px) {
   .board_comments .new_comment textarea {margin:0 10px 10px 20px !important;width:210px !important;}
   .board_comments .new_comment input {margin:0 10px 0 0 !important;}
   #pins.masonry {margin:0 0 0 0 !important;}
-  .profile .empty-results {max-width:1096px;}
 }
 
 /* iPhone 4 ----------- */
