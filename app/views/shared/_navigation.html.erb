@@ -4,7 +4,7 @@
 
       <ul class="nav_main">
         <li class="drop_down">
-          <%= nav_link 'Cats', pins_path, :skip_marker => true, :class => 'top' %>
+          <%= nav_link 'Cats', pins_path, :skip_marker => true, :class => 'top cat_top' %>
           <ul class="inner cats">
             <% Category.all.each do |cat| %>
               <li><%= link_to cat.name, pins_path(:category => cat.id) %></li>
