@@ -71,7 +71,7 @@ and (max-device-width : 1024px) {
   .header {min-width:766px !important;max-width:1008px !important;width:auto !important;}
   .nav_wrapper {background:#f9f9f9;border-top:1px solid #ddd;}
   .header .clearfix {border-top:1px solid #fff;}
-  .logo {position:relative;left:auto;font-size:24px;padding-left:48px;margin:0 auto;}
+  .logo {position:relative;left:auto;font-size:24px;padding-left:48px;margin:0 auto;clear:both;}
   .logo:before{font-size:36px;line-height:36px;top:6px;}
   .header li a {font-size:15px;line-height:24px;margin-top:0;-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;}
   .header li.drop_down .top:before {right:7px;top:20px;}
