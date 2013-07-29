@@ -250,6 +250,9 @@ body.importing.step_1 {
             border: none;
             margin: 2px;
             overflow: hidden;
+            box-shadow: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
             img {
               max-width: 50px;
             }
