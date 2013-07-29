@@ -47,11 +47,17 @@ updateBoardHeight = () ->
 handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
   if prevImported # If already have some, append to the imported list
     if data
-      _.each _.keys(data), (url) ->
-        prevImported[url] ?= []
-        prevImported[url] = _.union(prevImported[url], data[url])
+      # Just add the URLs given to the ones we already know
+      for url of data
+        if prevImported[url]
+          for imgURL in data[data]
+            prevImported[url].push(imgURL)
+        else
+          prevImported[url] = data[url]
   else
     prevImported = data
+    console.log data
+    
 
   not_yet_imported = $('.importing_pins.not_yet_imported ul')
   imported = $('.importing_pins.previously_imported ul')
@@ -65,8 +71,9 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
   moveToSectionIfPreviouslyImported = (li) ->
     li = $(li)
 
-    prev_imported = _.any prevImported[li.data('pin-url')], (importedImageURL) ->
-      importedImageURL == li.data('pin-image')
+    prev_imported = false
+    for importedImageURL in li.data('pin-url')
+        if importedImageURL == li.data('pin-image') then prev_imported = true
 
     if prev_imported
         li.addClass('already-imported').appendTo(imported)
