@@ -23,11 +23,11 @@
         %h3 
           Pins previously imported
           = link_to_function '(hide)', 'return false', :id => 'ppTogglePreviouslyImportedPins'
-        %ul.collection
+        %ul.collection.clearfix
     
       .importing_pins.not_yet_imported
         %h3 Pins not yet imported
-        %ul.collection
+        %ul.collection.clearfix
           - @external_boards.each do |board|
             - board.pins.each do |pin|
               %li.pin.board-all{:class => "board-#{board.id}", :data => {'pin-external-id' => pin.external_id, 'pin-url' => pin.url, 'pin-image' => pin.cached_remote_image_url}}

@@ -168,13 +168,12 @@ initDragDrop = () ->
   drag.pins =           $.extend({}, drag.general, {stack: $('#our_section li.board')}, {
   })
   
-  if $('.importing_boards li').length   then $('.importing_boards li').draggable    drag.externalBoards
-  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable  drag.pins
-  if $('#our_section li.board').length  then $('#our_section li.board').droppable   drop.overOurBoards
-  $('#pinterest_section').droppable drop.overPinterestBoards
+#  if $('.importing_boards li').length   then $('.importing_boards li').draggable    drag.externalBoards
+#  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable  drag.pins
+#  if $('#our_section li.board').length  then $('#our_section li.board').droppable   drop.overOurBoards
+#  $('#pinterest_section').droppable drop.overPinterestBoards
 
-#  selectTarget = $('#pinterest_section').find('ul.collection').disableSelection()
-#  selectTarget.selectable({})  
+  $('#pinterest_section').disableSelection().find('ul.collection').selectable({})  
   
 
   # Used when boards added via ajax

@@ -99,6 +99,7 @@ body.importing.step_1 {
     }
     ul.collection {
       margin-top: -10px;
+      display: block;
     }
     .importing_boards {
       width: 200px;
@@ -164,6 +165,12 @@ body.importing.step_1 {
           img {
             max-width: 100px;
           }
+        }
+        li.ui-selected {
+          border: 2px solid $themeCOLOR;
+        }
+        li.ui-selecting {
+          border: 2px solid $themeCOLORLight;
         }
         li:hover {
           cursor:hand;
