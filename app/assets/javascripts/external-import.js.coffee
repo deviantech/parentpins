@@ -1,4 +1,5 @@
 //= require contrib/underscore
+//= require jquery.ui.selectable
 //= require jquery.ui.draggable
 //= require jquery.ui.droppable
 
@@ -163,6 +164,18 @@ initDragDrop = () ->
         $(event.target).css({opacity: 1.0})
     }
   }
+  drag.externalBoards = $.extend({}, drag.general, {stack: $('.importing_boards li')})
+  drag.pins =           $.extend({}, drag.general, {stack: $('#our_section li.board')}, {
+  })
+  
+  if $('.importing_boards li').length   then $('.importing_boards li').draggable    drag.externalBoards
+  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable  drag.pins
+  if $('#our_section li.board').length  then $('#our_section li.board').droppable   drop.overOurBoards
+  $('#pinterest_section').droppable drop.overPinterestBoards
+
+#  selectTarget = $('#pinterest_section').find('ul.collection').disableSelection()
+#  selectTarget.selectable({})  
+  
 
   # Used when boards added via ajax
   window.stepOneAddDroppableBoard = (board) ->
@@ -171,13 +184,7 @@ initDragDrop = () ->
       tellParentOurHeight()
     target.find('.no-pp-boards').hide()
 
-  if $('.importing_pins li.pin').length
-    $('.importing_pins li.pin').draggable $.extend({}, drag.general, {stack: $('#our_section li.board')})
-  if $('.importing_boards li').length
-    $('.importing_boards li').draggable   $.extend({}, drag.general, {stack: $('.importing_boards li')})
-  if $('#our_section li.board').length
-    $('#our_section li.board').droppable  drop.overOurBoards
-  $('#pinterest_section').droppable       drop.overPinterestBoards
+
 
 updateBoardPendingPinsCounters = () ->
   boards = $('#pinterest_section .importing_boards li.board')

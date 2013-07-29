@@ -124,7 +124,6 @@ drop = {
   }
 }
 
-
 drag = {
   general: {
     revert: 'invalid',
@@ -202,8 +201,6 @@ $(document).ready () ->
   return unless wrapper.length
 
   checkIfAnyDraggableLeft()
-
-
   
   dropSection.find('li.drop-target').droppable drop.onDroppable
   dragSection.droppable drop.onDraggable
@@ -214,7 +211,6 @@ $(document).ready () ->
 
   selectTarget = dragSection.find('ul.pins').disableSelection()
   selectTarget.selectable({})
-
   
   dragSection.on 'mousedown', 'li.board', (e) ->
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
