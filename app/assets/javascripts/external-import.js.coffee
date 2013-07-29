@@ -136,7 +136,7 @@ initDragDrop = () ->
         else # Dropped a pinterest board. If currently showing previously imported, move ALL in board. Otherwise, only move not-yet-imported over.
           $('.importing_pins li.pin.' + li.data('class'))
 
-        toAdd.addClass('assigned').appendTo(target)            
+        toAdd.css('opacity', 1.0).addClass('assigned').draggable('destroy').draggable(drag.pinsFromOurBoards).appendTo(target)
         hideShowPinsForSelectedBoard()
     },
     overPinterestBoards: {
@@ -145,12 +145,12 @@ initDragDrop = () ->
       tolerance: 'pointer',
       drop: (event, ui) ->
         li = $(ui.draggable).removeClass('assigned')
-        base = if li.hasClass('already-imported')
+        target = if li.hasClass('already-imported')
           $(this).find('.importing_pins.previously_imported ul')
         else
           $(this).find('.importing_pins.not_yet_imported ul')
 
-        base.append( li.css({left: 0, top: 0}) )
+        li.draggable('destroy').draggable(drag.pinsFromPinterest).appendTo(target)
         hideShowPinsForSelectedBoard()
     }
   }
@@ -194,16 +194,14 @@ initDragDrop = () ->
       # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging    
       if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
         item.addClass('ui-selected')
-        elements = item.parent().children('.ui-selected').clone()
-        elements.css('opacity', 0.5)
+        item.parent().children('.ui-selected').css('opacity', 0.5)
         $('body').css('cursor', 'move')
+        
       # Other things are selected, we're not, and we were clicked on == skip dragging, allow selectable to do it's thing
       else
         return false
     stop: (e, ui) ->
-      item = $(e.currentTarget)
-      elements = item.parent().children('.ui-selected').clone()
-      elements.css('opacity', 1.0)
+      $(this).css('opacity', 1.0)
       $('body').css('cursor', 'auto')
   }
   
@@ -222,11 +220,13 @@ initDragDrop = () ->
         $(event.target).css({opacity: 1.0})
     }
   }
-  drag.externalBoards = $.extend({}, drag.general, {stack: $('.importing_boards li')})
-  drag.pins =           $.extend({}, drag.general, {stack: $('#our_section li.board')}, multiDragOpts)
+  drag.externalBoards = $.extend({}, drag.general, {stack: '.importing_boards li'})
+  drag.pinsFromOurBoards =           $.extend({}, drag.general, {stack: '#our_section li.board'})
+  drag.pinsFromPinterest =           $.extend({}, drag.general, {stack: '#our_section li.board'}, multiDragOpts)
+  
   
   if $('.importing_boards li').length   then $('.importing_boards li').draggable    drag.externalBoards
-  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable  drag.pins
+  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable  drag.pinsFromPinterest
   if $('#our_section li.board').length  then $('#our_section li.board').droppable   drop.overOurBoards
   $('#pinterest_section').droppable drop.overPinterestBoards
 
