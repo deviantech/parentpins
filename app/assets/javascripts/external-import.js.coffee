@@ -126,15 +126,18 @@ initDragDrop = () ->
       tolerance: 'pointer',
       drop: (event, ui) ->
         li = $(ui.draggable).addClass('assigned')
+        helper = $(ui.helper)
         target = $(this).find('.ourBoardPins')
 
-        if li.hasClass('pin')      
-          target.append( li.css({left: 0, top: 0}) )
-          hideShowPinsForSelectedBoard()
+        toAdd = if helper.hasClass('multi-drag-helper')
+          helper.data('origElements')
+        else if li.hasClass('pin')      
+          li
         else # Dropped a pinterest board. If currently showing previously imported, move ALL in board. Otherwise, only move not-yet-imported over.
-          $('.importing_pins li.pin.' + li.data('class') + ':visible').each () ->
-            $(this).addClass('assigned').appendTo(target)
-          hideShowPinsForSelectedBoard()
+          $('.importing_pins li.pin.' + li.data('class'))
+
+        toAdd.addClass('assigned').appendTo(target)            
+        hideShowPinsForSelectedBoard()
     },
     overPinterestBoards: {
       hoverClass: "ui-droppable-hovering",
@@ -151,6 +154,59 @@ initDragDrop = () ->
         hideShowPinsForSelectedBoard()
     }
   }
+  
+  multiDragOpts = {
+    revertDuration: 0,
+    cursorAt: null,
+    helper: (e) ->
+      item = $(e.currentTarget)
+      if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
+        # Build the actual helper
+        item.addClass('ui-selected')
+        helper = $('<div class="multi-drag-helper"/>')
+        wrapper = $('<div class="multi-drag-helper-inner-wrapper"/>')
+        
+        origElements = item.parent().children('.ui-selected')
+        clones = origElements.clone().removeClass('ui-selected')      
+        helper.data('origElements', origElements).append( wrapper.append(clones) )
+        total = origElements.length
+      
+        if total > 1
+          counter = $("<div class='multi-drag-helper-counter'>#{origElements.length}</div>")
+          helper.prepend(counter)
+      
+        helper.find('li').each (idx, clone) ->
+          offset = total - idx
+          $(clone).css({top: offset * 2, left: offset * 5, position: 'absolute', zIndex: idx})
+        return helper
+      
+      else
+        # Return default helper -- start function will kill the drag
+        item.clone().removeAttr("id")
+    start: (e, ui) ->
+      item = $(e.currentTarget)
+    
+      # If already selected, and ctrl-click, just unselect
+      if item.hasClass('ui-selected') && (e.metaKey || e.altKey || e.ctrlKey)
+        setTimeout (() -> item.removeClass('ui-selected')), 10
+        return false
+
+      # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging    
+      if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
+        item.addClass('ui-selected')
+        elements = item.parent().children('.ui-selected').clone()
+        elements.css('opacity', 0.5)
+        $('body').css('cursor', 'move')
+      # Other things are selected, we're not, and we were clicked on == skip dragging, allow selectable to do it's thing
+      else
+        return false
+    stop: (e, ui) ->
+      item = $(e.currentTarget)
+      elements = item.parent().children('.ui-selected').clone()
+      elements.css('opacity', 1.0)
+      $('body').css('cursor', 'auto')
+  }
+  
   drag = {
     general: {
       revert: 'invalid',
@@ -158,6 +214,8 @@ initDragDrop = () ->
       cursor: "move", 
       cursorAt: { top: -5, left: -5 },
       containment: '#pp_pinterest_import_wrapper',
+      delay: 0,
+      distance: 0,
       start: (event, ui) ->
         $(event.target).css({opacity: 0.5})
       stop: (event, ui) ->
@@ -165,13 +223,12 @@ initDragDrop = () ->
     }
   }
   drag.externalBoards = $.extend({}, drag.general, {stack: $('.importing_boards li')})
-  drag.pins =           $.extend({}, drag.general, {stack: $('#our_section li.board')}, {
-  })
+  drag.pins =           $.extend({}, drag.general, {stack: $('#our_section li.board')}, multiDragOpts)
   
-#  if $('.importing_boards li').length   then $('.importing_boards li').draggable    drag.externalBoards
-#  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable  drag.pins
-#  if $('#our_section li.board').length  then $('#our_section li.board').droppable   drop.overOurBoards
-#  $('#pinterest_section').droppable drop.overPinterestBoards
+  if $('.importing_boards li').length   then $('.importing_boards li').draggable    drag.externalBoards
+  if $('.importing_pins li.pin').length then $('.importing_pins li.pin').draggable  drag.pins
+  if $('#our_section li.board').length  then $('#our_section li.board').droppable   drop.overOurBoards
+  $('#pinterest_section').droppable drop.overPinterestBoards
 
   $('#pinterest_section').disableSelection().find('ul.collection').selectable({})  
   

@@ -265,28 +265,29 @@ body.importing.step_1 {
   }
 }
 
+.multi-drag-helper {
+  z-index: 999999;
+  position: relative;
+}
+.multi-drag-helper-counter {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 25px;
+  height: 25px;
+  background: blue;
+  color: #FFF;
+  border: 2px solid green;
+}
+.multi-drag-helper-inner-wrapper {
+  position: relative;
+}
+
 
 // Steps 2+
 .context.import {
   .ui-draggable {
     cursor: move;
-  }
-  .multi-drag-helper {
-    z-index: 999999;
-    position: relative;
-  }
-  .multi-drag-helper-counter {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    width: 25px;
-    height: 25px;
-    background: blue;
-    color: #FFF;
-    border: 2px solid green;
-  }
-  .multi-drag-helper-inner-wrapper {
-    position: relative;
   }
   .ui-draggable-dragging.pin, .ui-draggable-dragging.board, .ui-draggable-dragging.multi-drag-helper .pin  {
     margin: 0;
