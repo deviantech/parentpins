@@ -50,15 +50,13 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
       # Just add the URLs given to the ones we already know
       for url of data
         if prevImported[url]
-          for imgURL in data[data]
+          for imgURL in (data[url] || [])
             prevImported[url].push(imgURL)
         else
           prevImported[url] = data[url]
   else
     prevImported = data
-    console.log data
-    
-
+  
   not_yet_imported = $('.importing_pins.not_yet_imported ul')
   imported = $('.importing_pins.previously_imported ul')
 
@@ -70,10 +68,10 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
   # Starts with all pins in the not_yet_imported, then this moves the imported ones elsewhere
   moveToSectionIfPreviouslyImported = (li) ->
     li = $(li)
-
+    
     prev_imported = false
-    for importedImageURL in li.data('pin-url')
-        if importedImageURL == li.data('pin-image') then prev_imported = true
+    for knownImageURL in (prevImported[li.data('pin-url')] || [])
+        if knownImageURL == li.data('pin-image') then prev_imported = true
 
     if prev_imported
         li.addClass('already-imported').appendTo(imported)
