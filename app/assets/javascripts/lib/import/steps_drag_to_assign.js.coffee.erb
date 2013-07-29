@@ -109,7 +109,7 @@ drop = {
       else if helper.hasClass('board')
         dragSection.find('li.pin.board_'+helper.data('board-id'))
       
-      toAdd.css({left: 0, top: 0}).removeClass('ui-selected').addClass('from-drop-target').draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
+      toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
       checkIfAnyDraggableLeft()
   },
   onDraggable: {
@@ -143,58 +143,7 @@ drag = {
 }  
 drag.pinsFromDroppable = $.extend({}, drag.general)
 drag.boardsToDroppable = $.extend({}, drag.general, {cursorAt: null})
-drag.pinsToDroppable = $.extend({}, drag.general, {
-  revertDuration: 0,
-  cursorAt: null,
-
-  helper: (e) ->
-    item = $(e.currentTarget)
-    if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
-      # Build the actual helper
-      item.addClass('ui-selected')
-      helper = $('<div class="multi-drag-helper"/>')
-      wrapper = $('<div class="multi-drag-helper-inner-wrapper"/>')
-        
-      origElements = item.parent().children('.ui-selected')
-      clones = origElements.clone().removeClass('ui-selected')      
-      helper.data('origElements', origElements).append( wrapper.append(clones) )
-      total = origElements.length
-      
-      if total > 1
-        counter = $("<div class='multi-drag-helper-counter'>#{origElements.length}</div>")
-        helper.prepend(counter)
-      
-      helper.find('li').each (idx, clone) ->
-        offset = total - idx
-        $(clone).css({top: offset * 2, left: offset * 5, position: 'absolute', zIndex: idx})
-      return helper
-      
-    else
-      # Return default helper -- start function will kill the drag
-      item.clone().removeAttr("id")
-  start: (e, ui) ->
-    item = $(e.currentTarget)
-    
-    # If already selected, and ctrl-click, just unselect
-    if item.hasClass('ui-selected') && (e.metaKey || e.altKey || e.ctrlKey)
-      setTimeout (() -> item.removeClass('ui-selected')), 10
-      return false
-
-    # If we're already part of a selection, or if nothing is selected and we were just clicked on, allow dragging    
-    if item.hasClass('ui-selected') || item.parent().children('.ui-selected').length == 0
-      item.addClass('ui-selected')
-      elements = item.parent().children('.ui-selected').clone()
-      elements.css('opacity', 0.5)
-      $('body').css('cursor', 'move')
-    # Other things are selected, we're not, and we were clicked on == skip dragging, allow selectable to do it's thing
-    else
-      return false
-  stop: (e, ui) ->
-    item = $(e.currentTarget)
-    elements = item.parent().children('.ui-selected').clone()
-    elements.css('opacity', 1.0)
-    $('body').css('cursor', 'auto')
-})
+drag.pinsToDroppable = $.extend({}, drag.general, window.multiDragOpts)
 
 $(document).ready () ->
   wrapper = $('.context.step_drag_to_assign')

@@ -48,7 +48,7 @@ ParentPins::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
 
   # Javascripts
-  config.assets.precompile += %w(add-pin.js popup.js faq.js import.js external-import.js bookmarklet.js widgets.js bookmarklet-importer.js bookmarklet.css edit-cover-image.js)
+  config.assets.precompile += %w(add-pin.js popup.js faq.js import.js bookmarklet.js widgets.js bookmarklet-importer.js bookmarklet.css edit-cover-image.js)
   
   # Stylesheets
   config.assets.precompile += %w(popup.css bookmarklet.css slides.css mail.css import.css highlight.css)

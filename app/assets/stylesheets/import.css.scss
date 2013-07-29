@@ -160,16 +160,18 @@ body.importing.step_1 {
           border: 1px solid #ccc;
           background: #EEE;
           float: left;
-          margin: 9px;
+          margin: 10px;
           overflow: hidden;
           img {
             max-width: 100px;
           }
         }
         li.ui-selected {
+          margin: 9px;
           border: 2px solid $themeCOLOR;
         }
         li.ui-selecting {
+          margin: 9px;
           border: 2px solid $themeCOLORLight;
         }
         li:hover {
@@ -429,9 +431,11 @@ body.importing.step_1 {
       float: left;
       border: 1px solid #CCC;
       &.ui-selected {
+        margin: 4px;
         border: 2px solid $themeCOLOR;
       }
       &.ui-selecting {
+        margin: 4px;
         border: 2px solid $themeCOLORLight;
       }
       .hover_info {
