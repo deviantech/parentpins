@@ -314,24 +314,47 @@ body.importing.step_1 {
   }
   ol.import_progress {
     margin: 0;
-    margin-bottom: 25px;
-    background: $highlight;
-    padding: 10px;
+    margin-bottom: 24px;
+    padding: 12px;
     text-align:center;
     h3 {
-      margin-bottom: 5px;
-      padding-top: 0px;
+      margin-bottom: 6px;
+      padding: 6px;
+      background: $highlight;
     }
     li {
       display: inline-block;
-      margin-left: 20px;
+      margin-left: 12px;
+      position:relative;
+      padding:6px 12px;
+      background:#F3F3F3;
+      font-size:13px;
+      line-height:18px;
+      &:after {
+        position:absolute;
+        top:0;
+        right:-15px;
+        content:"";
+        height:0;
+        width:0;
+        border-left:15px solid #F3F3F3;
+        border-top:15px solid transparent;
+        border-bottom:15px solid transparent;
+      }
       &.current {
         font-weight: bold;
-        &:before {
-          content: '\00bb';
+        background:#000;
+        color:#fff;
+        &:after {
+          border-left:15px solid #000;
         }
       }
     }
+  }  
+  .instructions {
+    font-size: 15px;
+    color: #333;
+    text-align:center;
   }
   .submit_bar {
     border: 1px solid #DDD;
@@ -341,12 +364,6 @@ body.importing.step_1 {
     margin-top: 20px;
     text-align: center;
     background: #F0F0F0;
-    .instructions {
-      font-size: 1.2em;
-      color: #333;
-      text-shadow: 0px 2px 3px #FFF;
-      margin-top: 15px;
-    }
     .hide_until_complete {
       display: none;
     }
@@ -704,4 +721,10 @@ body.importing.step_1 {
       }
     }
   }
+}
+
+.grayed {
+background-image:none;
+background-color:#f8f8f8 !important;
+border:1px solid #ddd !important;
 }
