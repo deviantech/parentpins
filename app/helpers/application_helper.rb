@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def js_truncation(txt, maxlength = 200)
+    content_tag(:span, txt, :class => 'truncate-me', 'data-max-length' => maxlength)
+  end
+
   def fb_invite_url
     url = profile_boards_url(current_user)
     "https://www.facebook.com/dialog/send?app_id=#{AUTH[:facebook][:key]}&link=#{url}&redirect_uri=#{url}"

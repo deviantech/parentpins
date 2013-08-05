@@ -5,6 +5,11 @@ $(document).ready(function() {
   // TODO - replace character-based truncation with line-based
   applyTruncationTo('li.pin .description span.truncate-me', 120);
   applyTruncationTo('li.board .description span.truncate-me', 12);
+  $('.truncate-me').each(function() {
+    var elem = $(this);
+    applyTruncationTo(elem, elem.data('max-length'));
+  });
+
 
   $('[rel=tooltip]').tooltip({container: 'body', trigger: 'hover'});
   $('[rel=popover]').popover({container: 'body', trigger: 'hover'});
