@@ -18,7 +18,6 @@ class PinsController < ApplicationController
     conditionally_remove_nested_attributes(:pin, :board)
     @pin, @source = Pin.craft_new_pin(current_user, params[:pin], params[:source_id])
     @pin.save
-    @skip_new_board = true # When saving, don't create a new board unless needed. TODO: Not cleanest place to put this...
     success_url = (@pin.board && !@pin.board.new_record?) ? profile_board_path(current_user, @pin.board) : '/'
     respond_with @pin, :location => success_url
   end

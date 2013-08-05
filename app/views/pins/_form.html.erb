@@ -30,8 +30,7 @@
 </div>
 
 <div class="board-fields hidden">
-  <% @pin.build_board if !@skip_new_board && (@pin.board.blank? || @pin.new_record?) %>
-  <%= f.fields_for :board do |b| %>
+  <%= f.fields_for :board, Board.new((params[:pin] || {})[:board_attributes]) do |b| %>
     <%= render 'board/form', :f => b %>
   <% end %>
 </div>
