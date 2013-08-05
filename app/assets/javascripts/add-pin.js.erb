@@ -5,7 +5,7 @@
 
 if ($('form.pin_form').length) initPinForm();
   
-function initPinForm() {
+function initPinForm(skip_resetting_selected_board) {
   var $pinForm = $('form.pin_form');
   var $outletBase = $('#pin-preview');
   
@@ -46,6 +46,7 @@ function initPinForm() {
     if ($pinBoard.val() == '') {
       if ($boardFields.hasClass('hidden')) $boardFields.hide().removeClass('hidden');
       $boardFields.slideDown();
+      $boardFields.find('input:visible').first().focus().select();
     } else {
       $boardFields.slideUp();
     }
@@ -53,11 +54,13 @@ function initPinForm() {
   $pinForm.on('change', '#pin_board_id', setBoardFieldVisibility);
   
   // Board selection: initially set to first non-blank value, make user manually choose to add new board (unless user submitted form to make a new board, but was invalid)
-  if ($pinBoard.val() == '') {
-    var defaultVal = $pinBoard.find('option').filter(function() {
-      return $(this).val() != '';
-    }).first().val();
-    if (defaultVal) $pinBoard.val(defaultVal);
+  if (!skip_resetting_selected_board) {
+    if ($pinBoard.val() == '') {
+      var defaultVal = $pinBoard.find('option').filter(function() {
+        return $(this).val() != '';
+      }).first().val();
+      if (defaultVal) $pinBoard.val(defaultVal);
+    }
   }
   setBoardFieldVisibility();
   

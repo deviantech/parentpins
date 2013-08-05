@@ -3,7 +3,7 @@
 <% if @pin.new_record? %>
   Global.updateModalContents("<%= escape_javascript(render(:template => 'pins/new')) %>");
   $('.modal_overlay').scrollTo(0);
-  initPinForm();
+  initPinForm(true);
 <% else %>
   Global.openInModal("<%= success_pin_path(@pin) %>");
 <% end %>
