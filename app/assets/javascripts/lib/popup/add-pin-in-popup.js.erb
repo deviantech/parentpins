@@ -14,7 +14,8 @@ $(document).ready(function(){
 
 $(document).on('submit', '.pin_form', function() {
   $('.form').children().slideUp(function() {
-    $('.form').animate({width: '220px', padding: '10px 0px', 'margin-left': '293px'});
+    $('.form').animate({width: '220px', padding: '10px 0px', 'margin-left': '293px'}, function() {
+      $('.form').find('.preloading').fadeIn();
+    });
   });
-  $('<img src="<%= asset_path('ui/ball-loader.gif') %>" class="loading" title="Processing"><br><h3>Processing...</h3>').hide().appendTo('.form').slideDown();
 });

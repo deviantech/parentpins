@@ -3,6 +3,7 @@
 </div>
 
 <div class="form">
+  <%= image_tag 'ui/ball-loader.gif', :class => 'preloading' %>
   <%= error_messages_for @pin %>
   <%= form_for @pin, :url => pin_from_popup_url, :html => {:class => 'pin_form'} do |f| %>
     <%= f.hidden_field :url %>
@@ -17,7 +18,3 @@
   <% end %>
 </div>
 <div class="clearfix"></div>
-
-<div style="display:none;" class="preloading">
-  <%= image_tag('ui/ball-loader.gif') %>
-</div>
