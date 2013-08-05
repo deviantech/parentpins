@@ -2,12 +2,13 @@
 // = Handles live-updating contents when creating/editing pins =
 // =============================================================
 
-var $pinForm = $('form.pin_form');
-var $outletBase = $('#pin-preview');
 
-if ($pinForm.length) initPinForm();
+if ($('form.pin_form').length) initPinForm();
   
 function initPinForm() {
+  var $pinForm = $('form.pin_form');
+  var $outletBase = $('#pin-preview');
+  
   var $pinImage = $outletBase.find('.pin_image');
   $pinImage.data('original-src', $pinImage.attr('src'));
 
