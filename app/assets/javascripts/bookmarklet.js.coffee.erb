@@ -67,9 +67,12 @@ class Bookmarklet
     # Allow bundling imagesloaded plugin directly in script, but don't require until we're sure there's a decent version of jQuery to work with.
     # Note that we were using the sprockets-commonjs gem to include via .module.js, but 1) this is more direct in this case, and 2) it threw odd errors only on http://piccsy.com/2012/03/twins-2l9ffupx/
     `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'lib', 'bookmarklet', 'jquery-imagesloaded-min.js') ) %>`
-
-    # TODO: pull out jquery from iframe here so we don't pollute parent page's jquery namespace/version?
     
+    # From http://www.jacklmoore.com/notes/naturalwidth-and-naturalheight-in-ie/
+    `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'lib', 'bookmarklet', 'jquery-naturalwidth-min.js') ) %>`
+    
+    # TODO: pull out jquery from iframe here so we don't pollute parent page's jquery namespace/version?
+      
     # Now that everything's been defined and wrapped in jQuery, start running things (close if bookmarklet is already open)
     if ($('#'+popupName).length) then @closeBookmarklet() else @beginIfAllowed()
     
@@ -82,7 +85,7 @@ class Bookmarklet
     window.ppImporter.bookmarkletClosing() if (window.ppImporter && window.ppImporter.bookmarkletClosing)
     return false
   
-  closeBookmarkletIfEscapePressed: (e) ->
+  closeBookmarkletIfEscapePressed: (e) =>
     @closeBookmarklet() if e.keyCode == 27
         
   # Once it's been evaluated, add this image (actually, image data)
@@ -151,14 +154,9 @@ class Bookmarklet
   imgToData: (img) ->
     $img   = $(img)
     
-    # Briefly remove CSS restrictions on height, so if image resized by CSS we get the actual size
-    origHeight = $img.height()  || 0
-    origWidth  = $img.width()   || 0
-    $img.css({height: 'auto', width: 'auto'})
-    height = $img.height()  || 0
-    width  = $img.width()   || 0
-    $img.css({height: origHeight, width: origWidth})
-    
+    # Using naturalHeight and naturalWidth to get original image sizes, uneffected by CSS
+    height = $img.naturalHeight()  || 0
+    width  = $img.naturalWidth()   || 0    
     area   = height * width
     
     # What would height be if width was imgDisplayWidth?
