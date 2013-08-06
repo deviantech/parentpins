@@ -1,0 +1,33 @@
+//= require contrib/jquery.slides.js
+
+// Set initial value to first-shown slide (if one is already set, we'll start with that slide instead)
+if ($('#board_cover_source_id').val() == '') $('#board_cover_source_id').val( $('.slides_control div').first().data('source-id') );
+
+var initial = $('.slides_container .single_slide.current_source').length ? $('.slides_container .single_slide').index( $('.slides_container .single_slide.current_source') ) + 1 : 1;
+
+function initSlides() {
+  var target = $('#board-cover-image-slides');
+  if (target.find('.slides_control').length) return; // Already inited
+  
+  target.slides({
+  	preload: true,
+  	preloadImage: "<%= asset_path('ui/slides/loading.gif') %>",
+  	autoHeight: true,
+  	start: initial,
+  	customOptionAdditionalContainerWrapper: 'slides_container_wrapper',
+  	animationComplete: function(idx) {
+  	  var current = $( $('.slides_control .single_slide')[idx - 1]);
+  	  $('#board_cover_source_id').val( current.data('source-id') );
+    },
+    slidesLoaded: function() {
+      if (target.find('.slides_container').height() < target.find('.current_source img').height()) {
+        target.find('.slides_container').height(target.find('.current_source img').height());
+      }
+    }
+  });
+  
+  $('#board-cover-image-slides').show(); // Help give time for images to load before UI updated
+}
+
+// In case browser doesn't support image load events, at least try to give it time to load
+initSlides();
