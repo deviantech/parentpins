@@ -27,7 +27,7 @@ module ApplicationHelper
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
       desc  = @pin.description || ''
       url   = pin_url(@pin)
-      img   = absolute_url @pin.image.v222.url
+      img   = absolute_url @pin.image.url
       
       tags << meta_tag( 'og:type',         @pin.kind == 'idea' ? 'website' : @pin.kind)
       tags << meta_tag( 'twitter:card',    @pin.kind == 'product' ? 'product' : 'photo')
