@@ -208,6 +208,16 @@ class Pin < ActiveRecord::Base
     self['uuid'] ||= UUIDTools::UUID.timestamp_create().to_s
   end
   
+  def via_domain
+    return nil if via_url.blank?
+        
+    begin
+      URI.parse(via_url).try(:host)
+    rescue
+      nil
+    end
+  end
+  
   protected
   
   def apply_base64_image(string)

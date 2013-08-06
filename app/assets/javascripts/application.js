@@ -24,5 +24,6 @@
 //= require lib/scrollToTop
 //= require lib/main
 //= require lib/pagination
+//= require lib/ajaxLoad
 //= require lib/google-analytics
 //= require contrib/lte-ie7

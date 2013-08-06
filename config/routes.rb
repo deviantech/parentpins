@@ -89,6 +89,9 @@ ParentPins::Application.routes.draw do
   
   # External-published API
   match '/widgets/bookmarklet' => 'import#external_embedded'
+
+  # Internal ajax API endpoints
+  get '/ajax/board/:id' => 'ajax#board'
   
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'

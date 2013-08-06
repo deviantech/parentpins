@@ -1,4 +1,4 @@
-<li class="board" data-sort-id="<%= board.id %>">
+<li class="board <%= dom_id(board) %>" data-sort-id="<%= board.id %>">
   <h3>
     <% unless @profile %>
         <%= link_to pins_profile_path(board.user), tooltip("Click to view #{board.user.name}'s profile", :placement => 'top', :class => 'no-decoration') do %>

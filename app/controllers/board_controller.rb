@@ -1,6 +1,7 @@
 class BoardController < ApplicationController
   before_filter :authenticate_user!,  :except => [:index, :show, :comments]
-  before_filter :try_getting_user,    :only   => [:index, :show, :comments, :follow, :unfollow]
+  before_filter :try_getting_user,    :only   => [:index]
+  before_filter :get_user,            :only   => [:show, :comments, :follow, :unfollow]
   before_filter :find_my_board,       :only   => [:edit, :update, :edit_cover, :update_cover, :destroy]
   before_filter :find_profile_board,  :only   => [:show, :comments, :follow, :unfollow]
   before_filter :set_filters,         :only   => [:show, :index]
@@ -107,6 +108,12 @@ class BoardController < ApplicationController
     end
   rescue ActiveRecord::RecordNotFound => e
     true
+  end
+
+  def get_user
+    try_getting_user
+    flash[:error] = "Unable to find profile"
+    redirect_to '/'
   end
 
   def set_layout
