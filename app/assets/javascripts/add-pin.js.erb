@@ -5,9 +5,9 @@
 
 if ($('form.pin_form').length) initPinForm();
   
-function initPinForm(skip_resetting_selected_board) {
-  var $pinForm = $('form.pin_form');
-  var $outletBase = $('#pin-preview');
+function initPinForm(skip_resetting_selected_board, adding_new_board) {
+  var $pinForm = $('form.pin_form').last();
+  var $outletBase = $('.edit_preview_pin#pin-preview').last();
   
   var $pinImage = $outletBase.find('.pin_image');
   $pinImage.data('original-src', $pinImage.attr('src'));
@@ -62,6 +62,8 @@ function initPinForm(skip_resetting_selected_board) {
       if (defaultVal) $pinBoard.val(defaultVal);
     }
   }
+  if (adding_new_board) $pinBoard.val('');
+  
   setBoardFieldVisibility();
   
   // Board selection: if creating new board, autofill display name from board name field, not board_id selection
