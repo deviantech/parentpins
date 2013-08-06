@@ -112,6 +112,7 @@ class BoardController < ApplicationController
 
   def get_user
     try_getting_user
+    return true if @profile
     flash[:error] = "Unable to find profile"
     redirect_to '/'
   end
