@@ -119,6 +119,7 @@ and (max-device-width : 1024px) {
   .form.pin_form {left:60px;}
   .form.wide {width:600px;}
   .form.wide .section {width:270px;}
+  .pinly {margin:108px auto 24px auto !important;}
 }
 
 /* iPads (landscape) ----------- */
