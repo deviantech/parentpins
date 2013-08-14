@@ -39,6 +39,8 @@
   .clear
 
   #our_section
+    %h2
+      Your ParentPin Boards
     %ul.boards
       - if user_signed_in? && current_user.boards.empty?
         .no-pp-boards
