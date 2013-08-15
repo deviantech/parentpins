@@ -1,4 +1,5 @@
-<div class="set_filters">
+<% num_filters_shown = (defined?(@pins) ? 2 : 0) + (defined?(@board) ? 0 : 1) %>
+<div class="set_filters <%= "num_filters_#{num_filters_shown}" %>">
   <span>Filter:</span>
   <ol>
     <% if defined?(@pins) %>
