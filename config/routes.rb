@@ -1,7 +1,7 @@
 ParentPins::Application.routes.draw do
   # Devise edit path redirect to profile/account edit
   match "users/edit" => redirect('/profile/edit')
-  match "/login_first" => "front#login_first", :as => 'login_first'
+  match "/login_first" => "front#login_first", :as => :login_first
   devise_for :users, :controllers => { :omniauth_callbacks => "omniauth_callbacks" }
   
 
@@ -13,20 +13,20 @@ ParentPins::Application.routes.draw do
     end
   end
 
-  get "/pins/:source_id/repin" => "pins#new", :as => 'repin'
+  get "/pins/:source_id/repin" => "pins#new", :as => :repin
   
-  match  "/popup/pins/new"      => "popup#pin",     :as => 'bookmarklet_popup'
-  match  "/popup/pins/create"   => "popup#create",  :as => 'pin_from_popup'
-  match  "/popup/login"         => "popup#login",   :as => 'popup_login'
+  match  "/popup/pins/new"      => "popup#pin",     :as => :bookmarklet_popup
+  match  "/popup/pins/create"   => "popup#create",  :as => :pin_from_popup
+  match  "/popup/login"         => "popup#login",   :as => :popup_login
   
   # Pretty URLs for pin subtypes
   root :to => redirect { |p, req| req.flash.keep; "/pins" }
   
-  match '/articles' => 'pins#index',  :kind => 'article',   :as => 'articles'
-  match '/products' => 'pins#index',  :kind => 'product',   :as => 'products'
-  match '/ideas'    => 'pins#index',  :kind => 'idea',      :as => 'ideas'
+  match '/articles' => 'pins#index',  :kind => 'article',   :as => :articles
+  match '/products' => 'pins#index',  :kind => 'product',   :as => :products
+  match '/ideas'    => 'pins#index',  :kind => 'idea',      :as => :ideas
 
-  match '/pins/category/:category_id' => 'pins#index',  :as => 'pins_category'
+  match '/pins/category/:category_id' => 'pins#index',  :as => :pins_category
 
   get '/boards' => 'board#index', :as => :boards
   get '/featured' => 'featured#index', :as => :featured
@@ -61,7 +61,7 @@ ParentPins::Application.routes.draw do
       end
       resource :featured, :only => [:create, :destroy], :controller => 'featured' do
         member do
-          post "set_pin/:id" => "featured#set_pin", :as => 'set_pin'
+          post "set_pin/:id" => "featured#set_pin", :as => :set_pin
         end
       end
     end
@@ -80,12 +80,12 @@ ParentPins::Application.routes.draw do
   match '/search' => 'search#redirect_by_kind'
 
   # Use for importing pins from e.g. pinterest
-  match '/import/step_1' => "import#step_1",                :as => 'pin_import_step_1'
-  match '/import/step_2' => "import#step_2",                :as => 'pin_import_step_2'
-  match '/import/step_3' => "import#step_3",                :as => 'pin_import_step_3'
-  match '/import/step_4' => "import#step_4",                :as => 'pin_import_step_4'
-  match '/import/step_5' => "import#step_5",                :as => 'pin_import_step_5'
-  match '/import/login_check' => "import#login_check",      :as => 'pin_import_login_check'
+  match '/import/step_1' => "import#step_1",                :as => :pin_import_step_1
+  match '/import/step_2' => "import#step_2",                :as => :pin_import_step_2
+  match '/import/step_3' => "import#step_3",                :as => :pin_import_step_3
+  match '/import/step_4' => "import#step_4",                :as => :pin_import_step_4
+  match '/import/step_5' => "import#step_5",                :as => :pin_import_step_5
+  match '/import/login_check' => "import#login_check",      :as => :pin_import_login_check
   
   # External-published API
   match '/widgets/bookmarklet' => 'import#external_embedded'

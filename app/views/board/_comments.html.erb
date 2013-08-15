@@ -1,73 +1,82 @@
-<% if user_signed_in? || @board.comments_count > 0 %>
+<div class="board_comments clearfix">
+  <% if @board.comments_count.zero? %>  
+    <div class="center">
+      <% if user_signed_in? %>
+        <%= link_to 'Add a Comment', '#', :class => 'btn sec_action comment_button center', :id => 'comment_toggle' %>
+      <% else %>
+        <%= link_to 'Sign Up to Post', login_first_path, :class => 'btn sec_action comment_button center' %>
+      <% end %>
+    </div>
+  <% end %>
 
-  <div class="board_comments">
-    <% if user_signed_in? || @board.comments_count > 1 %>
-      <a href="#" id="comment_toggle" class="btn sec_action comment_button right">
-        <% if user_signed_in? %>
-          <% if @board.comments_count.zero? %>
-            Add first comment!
-          <% elsif @board.comments_count == 1 %>
-            Add Comment
-          <% else %>
-            See all comments
-          <% end %>
+  <% if user_signed_in? && @board.comments_count > 0 %>
+    <a href="#" id="comment_toggle" class="btn sec_action comment_button right">
+      <% if user_signed_in? %>
+        <% if @board.comments_count.zero? %>
+          Add first comment!
+        <% elsif @board.comments_count == 1 %>
+          Add Comment
         <% else %>
           See all comments
         <% end %>
-      </a>
-    <% end %>
+      <% else %>
+        See all comments
+      <% end %>
+    </a>
+  <% end %>
   
+  <% if @board.comments_count > 0 %>
     <h2>Board Talk</h2>
+  <% end %>
     
-    <% if user_signed_in? %>
-      <div id="comment_form_wrapper" class="clear">
-        <%= render 'comments/form', :commentable => @board %>
-      </div>
-    <% end %>
-
-    <ul class="comments">
-      <%= render(:partial => 'comment', :object => @board.comments.first, :locals => {:first => true}) if @board.comments_count > 0 %>
-    </ul>
-  
-    <% if @board.comments_count > 1 %>
-      <div id="more_comments">
-        <ul class="comments">
-          <%= link_to 'Load More', profile_board_comments_path(@board.user, @board), :class => "btn action tertiary_action load_more_comments_button", :remote => true %>
-        </ul>
-      </div>
-    <% end %>  
-  </div>
-
-  <% content_for :footer_js do %>
-    <script type="text/javascript" charset="utf-8">
-      $(document).ready(function(){
-  
-        $("#comment_toggle").click(function() {
-          var wrapper = $("#comment_form_wrapper");
-          var link = $(this);
-          
-          if (wrapper.is(':visible')) {
-            link.text( link.data('origText') || 'See All Comments');
-            wrapper.slideUp("slow");
-          } else {
-            link.data('origText', link.text());
-            link.text('Collapse Comments');
-            wrapper.slideDown("slow", function() {
-              wrapper.find('textarea:visible').first().focus().select();
-            });
-          }
-          $("#more_comments").is(':visible') ? $("#more_comments").slideUp("slow") : $("#more_comments").slideDown("slow");
-        
-          $('.load_more_comments_button').trigger('click');
-          return false;
-        });
-
-        $(document).on('click', '.load_more_comments_button', function(e) {
-          $("<%= escape_javascript(image_tag('ui/loader.gif', :alt => 'Loading', :class => 'loader_icon')) %>").insertBefore( $(e.target) );
-        });
-  
-      });
-    </script>
+  <% if user_signed_in? %>
+    <div id="comment_form_wrapper" class="clear">
+      <%= render 'comments/form', :commentable => @board %>
+    </div>
   <% end %>
 
+  <ul class="comments">
+    <%= render(:partial => 'comment', :object => @board.comments.first, :locals => {:first => true}) if @board.comments_count > 0 %>
+  </ul>
+
+  <% if @board.comments_count > 1 %>
+    <div id="more_comments">
+      <ul class="comments">
+        <%= link_to 'Load More', profile_board_comments_path(@board.user, @board), :class => "btn action tertiary_action load_more_comments_button", :remote => true %>
+      </ul>
+    </div>
+  <% end %>
+</div>
+
+
+<% content_for :footer_js do %>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+
+      $("#comment_toggle").click(function() {
+        var wrapper = $("#comment_form_wrapper");
+        var link = $(this);
+      
+        if (wrapper.is(':visible')) {
+          link.text( link.data('origText') || 'See All Comments');
+          wrapper.slideUp("slow");
+        } else {
+          link.data('origText', link.text());
+          link.text('Collapse Comments');
+          wrapper.slideDown("slow", function() {
+            wrapper.find('textarea:visible').first().focus().select();
+          });
+        }
+        $("#more_comments").is(':visible') ? $("#more_comments").slideUp("slow") : $("#more_comments").slideDown("slow");
+    
+        $('.load_more_comments_button').trigger('click');
+        return false;
+      });
+
+      $(document).on('click', '.load_more_comments_button', function(e) {
+        $("<%= escape_javascript(image_tag('ui/loader.gif', :alt => 'Loading', :class => 'loader_icon')) %>").insertBefore( $(e.target) );
+      });
+
+    });
+  </script>
 <% end %>
