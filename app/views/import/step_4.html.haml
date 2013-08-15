@@ -23,7 +23,7 @@
                 - if pin.errors.count > 0
                   .pin_errors= pin.errors.full_messages.uniq.map(&:downcase).to_sentence.capitalize
                 .pin_photo
-                  = image_tag pin.remote_image_url || pin.cached_remote_image_url
+                  = image_tag pin.remote_image_url || pin.cached_remote_image_url || pin.image.v222.url
                   .open_close_controls
                     = link_to_function 'Remove from Import', "toggleImportingThisPin(this)"
                   

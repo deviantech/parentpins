@@ -1,5 +1,5 @@
 %li.pin.board_all{:class => "board_#{pin.board_id}", :data => {:attributes => pin.import_json}}
-  = image_tag pin.remote_image_url || pin.cached_remote_image_url
+  = image_tag pin.remote_image_url || pin.cached_remote_image_url || pin.image.v222.url
   .hover_info
     .hover_content
       .board_name= pin.board.name
