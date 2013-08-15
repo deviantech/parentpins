@@ -13,6 +13,8 @@ $(document).ready(function() {
 
   $('[rel=tooltip]').tooltip({container: 'body', trigger: 'hover'});
   $('[rel=popover]').popover({container: 'body', trigger: 'hover'});
+
+  applyCharacterCounterTo('.character_counter');
   
   var windowHash = window.location.hash || window.originalLocationHash;
   if (windowHash) {

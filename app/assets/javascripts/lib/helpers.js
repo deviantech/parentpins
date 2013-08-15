@@ -246,6 +246,33 @@ function updateFollowingButtonsAfterClickOn(clicked) {
   }
 }
 
+
+function applyCharacterCounterTo(selector) {
+  $(selector).each(function() {
+    var holder = $(this);
+    var target = $('#'+holder.data('target'));
+    var max = holder.data('max');
+    characterCounter(holder, target, max)
+  });
+}
+function characterCounter(holder, target, max) {
+  function checkCharCount() {
+    var count = target.val().length;
+
+    if (count == 0) {
+      holder.hide();
+    } else if (count > max) {
+      holder.show().text('(reached max characters)');
+      target.val( target.val().substr(0,max) );
+    } else {
+      holder.show().text('('+(max - count)+' characters left)');
+    }
+  }
+  
+  target.on('keydown', checkCharCount);
+  checkCharCount();
+}
+
 (function($){
   $.fn.disableSelection = function() {
     this

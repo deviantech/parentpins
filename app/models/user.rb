@@ -24,10 +24,11 @@ class User < ActiveRecord::Base
   extend FriendlyId
   friendly_id :username
   
-  validates_uniqueness_of   :username,  :allow_blank => false
-  validates_format_of       :username,  :with => /\A[a-z0-9\.\-\_]+\z/i
-  validates_numericality_of :kids,      :allow_blank => true, :message => 'must be a number'
-  validates_format_of       :website,   :allow_blank => true, :with => URI::regexp(%w(http https))
+  validates_uniqueness_of   :username,      :allow_blank => false
+  validates_format_of       :username,      :with => /\A[a-z0-9\.\-\_]+\z/i
+  validates_numericality_of :kids,          :allow_blank => true, :message => 'must be a number'
+  validates_format_of       :website,       :allow_blank => true, :with => URI::regexp(%w(http https))
+  validates_length_of       :featured_bio,  :maximum => 400
   validate :valid_username, :valid_social_media_links
   before_destroy :clean_redis
 
