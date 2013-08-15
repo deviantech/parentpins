@@ -246,6 +246,14 @@ function updateFollowingButtonsAfterClickOn(clicked) {
   }
 }
 
+function adjustFeaturedHeight() {
+  var all = $('.feature .user');
+  var tallest = 0;
+  all.each(function() {
+    if ($(this).height() > tallest) tallest = $(this).height();
+  });
+  all.height(tallest + 10);
+}
 
 function applyCharacterCounterTo(selector) {
   $(selector).each(function() {
@@ -269,7 +277,7 @@ function characterCounter(holder, target, max) {
     }
   }
   
-  target.on('keydown', checkCharCount);
+  target.on('keyup', checkCharCount);
   checkCharCount();
 }
 
