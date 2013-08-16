@@ -11,8 +11,13 @@ class window.ppImporterClasses.Sources.Pinterest
   maxPinConnections    = 5
   
   # Data selectors
+  selectorForMultipleBoards = '.secretBoardHeader'
   boardSelector = '.boardLinkWrapper'
   pinSelector   = '.pinWrapper'
+
+  debug = (str) ->
+    if <%= Rails.env.development? ? 'true' : 'false' %>
+      console.log("Bookmarklet: #{str}")
 
   # Because sometimes pinterest uses meta name, and sometimes meta property. Why? Good question.
   getMeta = (title, scope) ->
@@ -76,12 +81,13 @@ class window.ppImporterClasses.Sources.Pinterest
       username = window.location.pathname.split('/')[1]
       startURLs = if $('a.myBoards').length && $('a.myBoards').attr('href').split('/')[1] == username # On your own profile somewhere - current location matches the nav link path
         baseURLs = ["/#{P.currentUser.attributes.username}/boards/", "/#{P.currentUser.attributes.username}/"]
-        if $('.boardEditButton').length
+        if $(selectorForMultipleBoards).length
+          @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
+        else
           @parent.Interactivity.setHeader "Importing pins from this Pinterest board (#{$('.BoardHeader h1').text()})"
           @singleBoardOnly = true
           baseURLs.push window.location.pathname
-        else
-          @parent.Interactivity.setHeader "Importing boards and pins from your Pinterest account (#{P.currentUser.attributes.username})"
+          
         baseURLs
       else if $('.userStats li:first a').length || $('.BoardInfoBar .counts li:first a').hasClass('active') # Other user's profile
         name = getMeta('og:title', document) || username
@@ -234,6 +240,7 @@ class window.ppImporterClasses.Sources.Pinterest
     processingThisBoard = new $.Deferred()
     
     board = if @singleBoardOnly
+      debug "On single board page"
       {
         name: $('.BoardHeader h1').text(),
         pinterestURL: window.location + '',
@@ -241,6 +248,7 @@ class window.ppImporterClasses.Sources.Pinterest
       }
     else
       li = $( @boardQueue.pop() )
+      debug "Multiple boards on page. Processing: #{li}"
       {
         name: $.trim( li.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
         pinterestURL: li.prop('href'),
