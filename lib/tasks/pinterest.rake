@@ -17,6 +17,7 @@ class PinterestChecker
     end
   end
   
+  # TODO: some parts change on every load -- figure out only the important bits
   def changed?(url, label)
     File.read(@@store_dir.join("#{label}.html")) != get(url)
   end
@@ -25,7 +26,6 @@ end
 namespace :pinterest do
   desc 'See if pinterest has made any changes to the pages we scrape'
   task :check_api_changes do
-    # TODO: use cookie from db/pinterest-schema/cookies.txt to load the following URLs, then check against the stored contents (in same folder) and report if changes
     checker = PinterestChecker.new
     
     urls = {:single_board => "http://pinterest.com/dvntpins/default/", :multiple_boards => "http://pinterest.com/dvntpins/boards/", :single_pin => "http://pinterest.com/pin/442126888388183279/"}
