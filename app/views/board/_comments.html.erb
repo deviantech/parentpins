@@ -9,7 +9,7 @@
     </div>
   <% end %>
 
-  <% if (user_signed_in? && @board.comments_count > 0) || !user_signed_in? %>
+  <% if @board.comments_count > 0 %>
     <a href="#" id="comment_toggle" class="btn sec_action comment_button right">
       <% if user_signed_in? %>
         <% if @board.comments_count.zero? %>
