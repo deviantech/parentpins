@@ -344,6 +344,10 @@
   .hidden-tablet {
     display: none !important;
   }
+  .header_wrapper {
+    position:relative !important;
+    min-width:none !important;
+  }
 }
 @media (max-width: 767px) {
   .hidden-desktop {
@@ -465,6 +469,10 @@
   }
   .modal.fade.in {
     top: 20px;
+  }
+  .header_wrapper {
+    position:relative !important;
+    min-width:none !important;
   }
 }
 @media (max-width: 480px) {
