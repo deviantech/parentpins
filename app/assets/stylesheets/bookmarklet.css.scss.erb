@@ -6,7 +6,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
 
 /* main styles */
 .ppBookmarkletOverlay {
-  background: rgba(255,255,255,0.9);
+  background: rgba(0, 0, 0, 0.39);
   color: #000000;
   display: block;
   height: 100%;
@@ -32,17 +32,17 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     width: 100%;
     margin: 0;
     background: #FCFCFC;
-    border-bottom: 2px solid $themeCOLOR;
+    border-bottom: 1px solid #000;
     text-align: center;
     font-size: 20px;
     line-height:30px;
     z-index: 999;
     #ppHeaderCenter {
-      font-size: 18px;
-      line-height: 30px;
+      font-size: 17px;
+      line-height: 24px;
       padding: 18px 0;
       min-height: 30px;
-      margin: 0px 200px;
+      margin: 0;
     }
     #ppLogo {
       position: absolute;
@@ -110,9 +110,9 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
         margin: 25px 50px;
         iframe.ppParentPinsImporter {
           width: 100%;
-          border: 1px solid #ddd;
-          background: #FFF;
-        }
+          border-radius:3px;
+          -webkit-border-radius:3px;
+          -moz-border-radius:3px;}
       }
       #noPotentialImages {
         margin: 24px auto;
@@ -120,6 +120,25 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
         line-height:24px;
         text-align: center;
         margin-top: 100px;
+        background: #FFF;
+        width: 400px;
+        padding: 24px 12px;
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.36);
+        .progress_bar {
+          display: block;
+          width: 424px;
+          height: 18px;
+          background: #E2E2E2;
+          margin: 0 -12px 24px;
+          border-top: 1px solid #CECECE;
+          border-bottom: 1px solid #CECECE;
+          .progress {
+            width: 200px;
+            height: 18px;
+            background: #61BEFC; } }
       }
       .red {
         color: #C33;

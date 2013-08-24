@@ -5,7 +5,8 @@
       .importing_boards
         %h2
           Your Pinterest Boards
-          %i{tooltip("Click a board to show only its pins. Drag a board to move all its pins.", :class => 'icon-question-sign')}
+          %span
+            Click a board to show only its pins. Drag and Drop a board to move all its pins.
         %ul
           %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pins
           - @external_boards.each do |board|
@@ -18,7 +19,8 @@
     .pin_lists{:class => @external_boards.length > 1 ? '' : 'no-boards'}
       %h2 
         Your Pinterest Pins
-        %i{tooltip("Assign the pins you want to import to a ParentPins board by dragging them.", :class => 'icon-question-sign')}
+        %span
+          Drag and Drop the pins you want to import to a ParentPins board below.
       .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
         %h3 
           Pins previously imported
