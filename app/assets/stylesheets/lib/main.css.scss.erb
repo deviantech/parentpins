@@ -32,6 +32,7 @@ body {
 /* Variables */
 $themeCOLOR: #76A613;
 $themeLinkCOLOR: #2886B4;
+$themeCOLORdark: #669701;
 $themeCOLORLight: lighten( $themeCOLOR, 36% );
 $themeHIGHLIGHT: #505061;
 
@@ -1862,7 +1863,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
         text-decoration:none;
         font-weight:normal; 
         display:block;
-        color:$themeLinkCOLOR;
+        color:$themeCOLORdark;
         padding:.5em; }
       .selected {
         position:relative;
@@ -1892,11 +1893,11 @@ input:focus[placeholder], textarea:focus[placeholder] {
           a {
             font-weight:normal;
             background:#fff;
-            color:$themeLinkCOLOR;
+            color:$themeCOLORdark;
             font-size:13px; 
             &:hover {
               color:#fff;
-              background:$themeCOLOR; } }
+              background:$themeCOLORdark; } }
           .current {
             background:#eee;
             &:hover {
