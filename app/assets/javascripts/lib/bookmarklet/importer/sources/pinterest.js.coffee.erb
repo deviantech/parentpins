@@ -157,7 +157,6 @@ class window.ppImporterClasses.Sources.Pinterest
       progressSpinner.fadeIn()
       
       if next.progress
-        console.log maxProgressBarWidth, next.progress.current, next.progress.total
         width = if next.progress.total > 0 then maxProgressBarWidth * (next.progress.current / next.progress.total) else maxProgressBarWidth
         bar = "<div class='progress_bar'><div class='progress' style='width:#{width}px'></div></div>"
         next.msg = bar + next.msg
