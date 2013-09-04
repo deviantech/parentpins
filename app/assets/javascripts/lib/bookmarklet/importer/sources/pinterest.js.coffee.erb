@@ -9,6 +9,7 @@ class window.ppImporterClasses.Sources.Pinterest
   progressSpinner   = if outputDiv.find('.progressSpinner').length then outputDiv.find('.progressSpinner') else $('<img src="' + window.ppBookmarklet.host + '<%= asset_path "ui/loader.gif" %>" alt="Loading" class="centered progressSpinner"/>').hide().insertAfter(progressDiv)
   appendTarget      = outputDiv
   maxPinConnections    = 5
+  maxProgressBarWidth  = 424
   
   # Data selectors
   selectorForMultipleBoards = '.secretBoardHeader'
@@ -60,6 +61,7 @@ class window.ppImporterClasses.Sources.Pinterest
     @boardDetailFrame = null
     @boardQueue = []
     @pinURLsToProcess = []
+    @totalPinURLsFound = 0
     @progressQueue = []
     @canUpdateProgress = true
     
@@ -133,7 +135,8 @@ class window.ppImporterClasses.Sources.Pinterest
       
       # Now start working on the pins
       @pinURLsToProcess = @pinsData.map (pin) -> pin.pinterestURL
-      @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining).", {delay: 10}
+      @totalPinURLsFound = @pinURLsToProcess.length
+      @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining).", {delay: 10, progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
       @startProcessingPins()
 
     # Now start actually getting data
@@ -144,7 +147,7 @@ class window.ppImporterClasses.Sources.Pinterest
 
     
   reportProgress: (message, opts = {}) ->
-    @progressQueue.push({msg: message, color: opts.color, delay: opts.delay || 60})
+    @progressQueue.push({msg: message, color: opts.color, delay: opts.delay || 60, progress: opts.progress})
     if @canUpdateProgress then @checkProgressQueue()
     
   checkProgressQueue: () ->
@@ -152,6 +155,12 @@ class window.ppImporterClasses.Sources.Pinterest
       return if progressDiv.hasClass('no-auto-updates')
       @canUpdateProgress = false
       progressSpinner.fadeIn()
+      
+      if next.progress
+        width = if next.progress.total > 0 then maxProgressBarWidth * (next.progress.current / next.progress.total) else maxProgressBarWidth
+        bar = "<div class='progress_bar'><div class='progress' style='width:#{width}px'></div></div>"
+        next.msg = bar + next.msg
+      
       progressDiv.html(next.msg)    
       if next.color == 'red' # TODO: add ability to set color
         progressDiv.addClass('red') 
@@ -196,7 +205,7 @@ class window.ppImporterClasses.Sources.Pinterest
       if thisURL && srcPin
         # Note: if can get pin URL, could skip ajax entirely. Can get big image name from small one by changing URL (/236x/ -> /736x/): 
         # http://media-cache-ak2.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg -> http://media-cache-ak2.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg      
-        @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length + 1} remaining)."
+        @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length + 1} remaining).", {progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
 
         
         pinRequest = $.get thisURL
@@ -260,7 +269,7 @@ class window.ppImporterClasses.Sources.Pinterest
     board.id = @hashFromString(board.pinterestURL)
       
     boardMsg = if @boardQueue?.length then "Processing Board: #{board.name} (#{@boardQueue.length + 1} remaining)" else "Processing Board: #{board.name}"
-    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{board.expectedPins} pins.", {delay: 5}
+    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{board.expectedPins} pins.", {delay: 5, progress: {current: 0, total: board.expectedPins}}
 
     processingThisBoard.done () =>
       @boardsData.push board
@@ -304,11 +313,11 @@ class window.ppImporterClasses.Sources.Pinterest
             seen = frameDoc.find('.Pin.Module').length
 
             if seenLastIteration != seen
-              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.") for i in [seenLastIteration..seen]
+              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.", {progress: {current: i, total: board.expectedPins}}) for i in [seenLastIteration..seen]
               seenLastIteration = seen
             
             if board.expectedPins == seen
-              @reportProgress("#{boardMsg}. Discovered #{seen} of #{board.expectedPins} pins.", {delay: 800})
+              @reportProgress("#{boardMsg}. Discovered #{seen} of #{board.expectedPins} pins.", {delay: 800, progress: {current: seen, total: board.expectedPins}})
               foundAllPins = true
               clearInterval(pinCountChecker)
               processBoardDetails()

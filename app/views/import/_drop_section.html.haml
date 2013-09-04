@@ -4,4 +4,4 @@
       %li.drop-target{:data => {attribute_to_set => value, 'target-id' => value}}
         %h3= key
         %ul.collection
-          = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set) == value }
+          = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set) == value }, :locals => {:extra_class => 'from-drop-target'}
