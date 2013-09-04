@@ -67,7 +67,6 @@ module Test
     end
     
     def run_checks
-      raise "failing on purpose"
       check_all_boards
       check_specific_board
       check_specific_pin

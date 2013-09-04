@@ -25,6 +25,8 @@ end
 gem 'capybara', :require => false
 gem 'capybara-webkit', :require => false        # Note: requires qt to install. OSX: brew install qt. Ubuntu: sudo apt-get install libqt4-dev
 gem 'capybara-user_agent', :require => false
+
+
 gem 'whenever', :require => false
 
 group :development do
