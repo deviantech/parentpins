@@ -20,14 +20,14 @@
 
     <div class="detail">
       <h2 class="title">
-        <%= link_to @pin.url, @pin.url, :title => 'link out to site', :target => '_blank', :rel => 'nofollow' %>
+        <%= link_to @pin.url, @pin.url, :title => 'link out to site', :class => 'out_link', :target => '_blank' %>
         <% unless @pin.via_url.blank? %>
-          via <%= link_to @pin.via_domain, @pin.via_url, :class => 'via_url', :target => '_blank', :rel => 'nofollow' %>
+          via <%= link_to @pin.via_domain, @pin.via_url, :class => 'via_url', :target => '_blank' %>
         <% end %>
       </h2>
       <%= render 'pins/stats', :pin => @pin %>
       <%= render 'pins/actions', :pin => @pin %>
-      <%= link_to @pin.url, :target => '_blank', :rel => 'nofollow', :class => 'image_link' do %>
+      <%= link_to @pin.url, :target => '_blank', :class => 'image_link' do %>
       <% if @pin.price %>
       <div class="price"><%= number_to_currency @pin.price %></div>
       <% end %>
