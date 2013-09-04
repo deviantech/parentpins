@@ -5,7 +5,7 @@ require "bundler/setup"
 require "capybara"
 require "capybara/dsl"
 require "capybara-webkit"
-
+require "capybara/user_agent"
 require 'debugger'
 
 
@@ -16,11 +16,12 @@ Capybara.app_host = "http://www.pinterest.com/"
 
 
 
-
 module Test
   class Pinterest
     include Capybara::DSL
-    @@store_dir = File.expand_path( File.join( File.dirname(__FILE__), '../../db/pinterest-schema') )
+    include Capybara::UserAgent::DSL
+    
+    @@store_dir = File.expand_path( File.dirname(__FILE__) )
     
     URL_USERNAME = 'kalidonovanppte'
     SELECTOR_FOR_MULTIPLE_BOARDS = '.secretBoardHeader'
@@ -59,7 +60,8 @@ module Test
     
     
     def initialize
-      @cookie = File.read( File.join(@@store_dir, 'cookies.txt') )
+      set_user_agent :chrome
+      @cookie = File.read( File.join(@@store_dir, 'pinterest-cookie.txt') )
       page.driver.browser.set_cookie @cookie
       check_cookie
     end
@@ -92,16 +94,18 @@ module Test
 
       check_pin_match :description,     pin.find('.pinDescription').text
       check_pin_match :domain,          pin.find('.pinDomain').text
-      check_pin_match :price,           pin.find('.priceValue').text
       check_pin_match :small_image_URL, pin.find('.pinImg.loaded')[:src]
       check_pin_match :pinterest_url,   pin.find('a.pinImageWrapper')[:href]
+      
+      # This pin doesn't have a price... maybe should be testing with one that does for completeness
+      # check_pin_match :price,           pin.find('.priceValue').text
     end
     
     def check_specific_pin
       visit EXPECTED[:pin][:data_url]
       
-      warn "Error getting information (source_url) for specfic pin" unless get_meta('og:see_also') == EXPECTED[:pin][:source_url]
-      warn "Error getting information (image) for specfic pin" unless get_meta('og:image') == EXPECTED[:pin][:image_url]
+      raise "Error getting information (source_url) for specfic pin" unless get_meta('og:see_also') == EXPECTED[:pin][:source_url]
+      raise "Error getting information (image) for specfic pin" unless get_meta('og:image') == EXPECTED[:pin][:image_url]
     end
     
     protected
@@ -114,7 +118,7 @@ module Test
 
     def check_board_mismatch(idx, key, actual)
       expected = EXPECTED[:boards][idx][key]
-      warn %Q{Expected board #{idx} to have #{key} "#{expected}", was "#{actual}"} unless expected == actual
+      raise %Q{Expected board #{idx} to have #{key} "#{expected}", was "#{actual}"} unless expected == actual
     end
 
     def check_pin_match(key, actual)
@@ -122,10 +126,9 @@ module Test
       raise %Q{Expected pin to have #{key} "#{expected}", was #{actual}} unless expected == actual
     end
   
-    # TODO: this isn't functioning as expected
     def get_meta(wanted)
-      @meta_tags ||= all('meta')
-      tag = @meta_tags.detect { |t| t[:name] == wanted || t[:property] == wanted }
+      # Note: indirect access suggested by https://github.com/jnicklas/capybara/issues/1115 (meta tags hidden?)
+      tag = page.all('meta').instance_variable_get("@elements").detect { |t| t[:name] == wanted || t[:property] == wanted }
       tag && tag[:content]
     end
     
@@ -136,10 +139,8 @@ end
 spider = Test::Pinterest.new
 spider.run_checks
 
-# TODO: make this run pass all checks
-  # TODO: check how many HTTP requests required total. Reasonable to run frequently? 
-  # TODO: Change user agent
-  # TODO -- make warn a raise in check_specific_board, or otherwise fail. Skipping for now b/c pinterest's board count is off.
+
+
 
 __END__
 

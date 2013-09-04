@@ -21,6 +21,11 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+# For pinterest schema testing
+gem 'capybara', :require => false
+gem 'capybara-webkit', :require => false
+gem 'capybara-user_agent', :require => false
+
 group :development do
   gem 'awesome_print', :require => 'ap'
   gem 'thin'
@@ -38,8 +43,6 @@ gem 'mail_view'
 group :test do
   gem 'factory_girl_rails', :platform => :ruby_19
   gem 'ffaker'
-  gem 'capybara'
-  gem 'capybara-webkit'
 end
 
 gem 'jquery-rails', '2.1.4' # 2.2.1 breaks pagination - maybe the jquery 1.9 part?
