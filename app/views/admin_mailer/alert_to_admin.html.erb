@@ -1,0 +1,6 @@
+<h1>New Admin Alert</h1>
+<p><%= @msg %></p>
+
+<% unless @vars.blank? %>
+  <p><pre><%= @vars.to_yaml %></pre></p>
+<% end %>

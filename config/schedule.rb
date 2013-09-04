@@ -20,3 +20,8 @@ set :output, File.join(File.expand_path( File.dirname(__FILE__) ).gsub(/releases
 every 2.hours do
   current :bx_rake, "trends:update"
 end
+
+every :day do
+  curent :command, "test/external/pinterest.rb"
+end
+

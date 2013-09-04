@@ -44,3 +44,13 @@ def trend_points_for_creation_date(obj)
   else  0
   end
 end
+
+
+namespace :admin do
+  desc "Send an admin alert email"
+  task :alert, [:message] => :environment do |t, args|
+    msg = AdminMailer.alert_to_admin( args[:message] )
+    puts msg.body
+    msg.deliver
+  end
+end

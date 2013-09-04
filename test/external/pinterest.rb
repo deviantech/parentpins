@@ -67,10 +67,10 @@ module Test
     end
     
     def run_checks
+      raise "failing on purpose"
       check_all_boards
       check_specific_board
       check_specific_pin
-      puts "All appears OK"
     end
     
     def check_all_boards
@@ -137,7 +137,12 @@ module Test
 end
 
 spider = Test::Pinterest.new
-spider.run_checks
+begin
+  spider.run_checks
+rescue StandardError => e
+  `bundle exec rake 'admin:alert[Pinterest API may have changed - #{e.to_s}]'`
+  raise e
+end
 
 
 
@@ -145,4 +150,3 @@ spider.run_checks
 __END__
 
 ruby test/external/pinterest.rb
-

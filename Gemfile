@@ -23,8 +23,9 @@ end
 
 # For pinterest schema testing
 gem 'capybara', :require => false
-gem 'capybara-webkit', :require => false
+gem 'capybara-webkit', :require => false        # Note: requires qt to install. OSX: brew install qt. Ubuntu: sudo apt-get install libqt4-dev
 gem 'capybara-user_agent', :require => false
+gem 'whenever', :require => false
 
 group :development do
   gem 'awesome_print', :require => 'ap'
@@ -76,7 +77,6 @@ gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install 
 gem 'friendly_id'
 
 
-gem 'whenever', :require => false
 
 # No longer needed on modern Ruby
 gem 'system_timer', :platform => :ruby_18
