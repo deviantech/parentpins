@@ -138,6 +138,7 @@ end
 spider = Test::Pinterest.new
 begin
   spider.run_checks
+  puts "All OK"
 rescue StandardError => e
   `bundle exec rake 'admin:alert[Pinterest API may have changed - #{e.to_s}]'`
   raise e
