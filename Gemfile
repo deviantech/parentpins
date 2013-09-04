@@ -38,6 +38,8 @@ gem 'mail_view'
 group :test do
   gem 'factory_girl_rails', :platform => :ruby_19
   gem 'ffaker'
+  gem 'capybara'
+  gem 'capybara-webkit'
 end
 
 gem 'jquery-rails', '2.1.4' # 2.2.1 breaks pagination - maybe the jquery 1.9 part?
