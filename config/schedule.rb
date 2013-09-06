@@ -22,6 +22,6 @@ every 2.hours do
 end
 
 every :day do
-  curent :command, "test/external/pinterest.rb"
+  current :command, "test/external/pinterest.rb"
 end
 
