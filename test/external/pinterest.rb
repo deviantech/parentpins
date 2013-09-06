@@ -61,6 +61,7 @@ module Test
     
     def initialize
       set_user_agent :chrome
+      
       @cookie = File.read( File.join(@@store_dir, 'pinterest-cookie.txt') )
       page.driver.browser.set_cookie @cookie
       check_cookie
