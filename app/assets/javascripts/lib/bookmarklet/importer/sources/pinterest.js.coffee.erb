@@ -157,6 +157,7 @@ class window.ppImporterClasses.Sources.Pinterest
       progressSpinner.fadeIn()
       
       if next.progress
+        next.progress.current = Math.min(next.progress.current, next.progress.total) # Don't let progress > total
         width = if next.progress.total > 0 then maxProgressBarWidth * (next.progress.current / next.progress.total) else maxProgressBarWidth
         bar = "<div class='progress_bar'><div class='progress' style='width:#{width}px'></div></div>"
         next.msg = bar + next.msg
@@ -253,11 +254,11 @@ class window.ppImporterClasses.Sources.Pinterest
       {
         name: $('.BoardHeader h1').text(),
         pinterestURL: window.location + '',
-        expectedPins: $('.BoardInfoBar .counts li:first a')
+        expectedPins: $('.BoardInfoBar .counts').find('li:first a, li:first span')
       }
     else
       li = $( @boardQueue.pop() )
-      debug "Multiple boards on page. Processing: #{li}"
+      debug "Multiple boards on page. Processing: #{$.trim( li.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )}"
       {
         name: $.trim( li.find('.boardName').text().replace(/^\s*Secret Board\s*/i, '') )
         pinterestURL: li.prop('href'),
@@ -269,7 +270,7 @@ class window.ppImporterClasses.Sources.Pinterest
     board.id = @hashFromString(board.pinterestURL)
       
     boardMsg = if @boardQueue?.length then "Processing Board: #{board.name} (#{@boardQueue.length + 1} remaining)" else "Processing Board: #{board.name}"
-    @reportProgress "#{boardMsg}. Discovered <span class='counter'>0</span> of #{board.expectedPins} pins.", {delay: 5, progress: {current: 0, total: board.expectedPins}}
+    @reportProgress "#{boardMsg}. Discovered 0 of #{board.expectedPins} pins.", {delay: 5, progress: {current: 0, total: board.expectedPins}}
 
     processingThisBoard.done () =>
       @boardsData.push board
@@ -302,18 +303,47 @@ class window.ppImporterClasses.Sources.Pinterest
         frameDoc = @boardDetailFrame.contents()
         
         if isNaN(board.expectedPins)
-          console.log "Unable to parse number of expected pins for board (#{board.name}), so waiting two seconds and hoping for the best"
+          debug "Unable to parse number of expected pins for board (#{board.name}), so waiting a few seconds and hoping for the best"
           setTimeout processBoardDetails, 3000
         else
           timeout = 15 * 1000
           foundAllPins = null
           seenLastIteration = 0
+          seen = 0
           
+          seenURLs = []
+          prevSeenURLs = []
+          
+          # Separate function so pass in from/to once, at time of called, so no chance for race condition to have either changed externally while looping
+          reportPinChunkProgress = (from, up_to) =>
+            debug "*** Calling reportPinChunkProgress with #{from} and #{up_to}"
+            for i in [from..up_to]
+              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.", {progress: {current: i, total: board.expectedPins}})
+              
           periodicCheck = () =>
-            seen = frameDoc.find('.Pin.Module').length
+            
+            
+            # Don't know WHY, but on some iterations seen jumps LOWER than it was before (e.g. 50 to 21)
+            # TODO: WHY this happening, and 2 why sometimes timing out?
+                        
+            seenURLs = []
+            seenURLs.push $(pin).find('a.pinImageWrapper').prop('href') for pin in frameDoc.find('.Pin.Module')
+            
+                      
+            if frameDoc.find('.Pin.Module').length < seen
+              # NEXT STEP -- list titles, see what disappears
+              debug "****** IT HAPPENED AGAIN -- seen got small"              
+            
+            debug "CHECK: last/now -- #{seenLastIteration}/#{seen}"
+            seen = Math.max(seen, frameDoc.find('.Pin.Module').length)
+
 
             if seenLastIteration != seen
-              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.", {progress: {current: i, total: board.expectedPins}}) for i in [seenLastIteration..seen]
+              console.info prevSeenURLs - seenURLs
+                
+              prevSeenURLs = seenURLs
+              
+              reportPinChunkProgress(seenLastIteration, seen)
               seenLastIteration = seen
             
             if board.expectedPins == seen
@@ -321,6 +351,7 @@ class window.ppImporterClasses.Sources.Pinterest
               foundAllPins = true
               clearInterval(pinCountChecker)
               processBoardDetails()
+              
             else if seen > 0 # Page requires scrolling to spur loading additional pins
               frameDoc.scrollTop( frameDoc.height() )
       
@@ -329,7 +360,7 @@ class window.ppImporterClasses.Sources.Pinterest
           timeOutIfRequired = () ->
             unless foundAllPins
               clearInterval(pinCountChecker)
-              console.log "Board (#{board.name}) timed out trying to load all pins"
+              debug "Board (#{board.name}) timed out trying to load all pins"
               processBoardDetails() # Will fail to find all pins, but can at least work with what we have
               # TODO: somehow indicate to user that some pins weren't collected
       

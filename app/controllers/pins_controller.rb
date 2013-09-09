@@ -6,7 +6,6 @@ class PinsController < ApplicationController
   respond_to :html, :js
   
   def index
-    debugger
     paginate_pins Pin.includes(:user).trending
   end
   
