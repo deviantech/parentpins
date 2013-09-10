@@ -10,6 +10,7 @@ class window.ppImporterClasses.Sources.Pinterest
   appendTarget      = outputDiv
   maxPinConnections    = 5
   maxProgressBarWidth  = 424
+  debugMode            = <%= Rails.env.development? ? 'true' : 'false' %>
   
   # Data selectors - if change, also update in test/external/pinterest.rb
   selectorForMultipleBoards = '.secretBoardHeader'
@@ -17,7 +18,7 @@ class window.ppImporterClasses.Sources.Pinterest
   pinSelector   = '.pinWrapper'
 
   debug = (str) ->
-    if <%= Rails.env.development? ? 'true' : 'false' %>
+    if debugMode
       console.log("Bookmarklet: #{str}")
 
   # Because sometimes pinterest uses meta name, and sometimes meta property. Why? Good question.
@@ -57,7 +58,7 @@ class window.ppImporterClasses.Sources.Pinterest
   
   constructor: (@parent) ->
     @boardsData = []
-    @pinsData = []    
+    @pinsData = []
     @boardDetailFrame = null
     @boardQueue = []
     @pinURLsToProcess = []
@@ -241,12 +242,15 @@ class window.ppImporterClasses.Sources.Pinterest
     unless @singleBoardOnly
       @boardQueue = $.makeArray $(boardSelector)
     @boardDetailFrame ?= $('<iframe class="ppBoardDetailFrame">').appendTo( appendTarget ).css({position: 'absolute', top: '-100px', left: '-1000px', height: '50px', width: '50px', visibility: 'hidden'})
-    # @boardDetailFrame.css({visibility: 'visible', left: '100px', top: '100px', height: '500px', width: '500px'})
+    if debugMode && false
+      @boardDetailFrame.css({visibility: 'visible', left: '100px', top: '100px', height: '500px', width: '500px'})
     @processAnotherBoard()
     
   # To avoid overwhelming either the browser or the server, we load the boards sequentially
   processAnotherBoard: () ->
     frameDoc = null
+    pinsSeenThisBoard = {}
+    numPinsSeenThisBoard = 0 # Because hashes don't have convenient .length method
     processingThisBoard = new $.Deferred()
     
     board = if @singleBoardOnly
@@ -275,93 +279,68 @@ class window.ppImporterClasses.Sources.Pinterest
     processingThisBoard.done () =>
       @boardsData.push board
       if (@singleBoardOnly || @boardQueue.length == 0) then @processingAllBoards.resolve() else @processAnotherBoard()
-
-    processBoardDetails = () =>
-      $(pinSelector, frameDoc).each (pidx, pin) =>
-        pin = $(pin)
-        pinData = {
-          board_id:       board.id,
-          description:    pin.find('.pinDescription').text(),
-          domain:         pin.find('.pinDomain').text(),
-          price:          pin.find('.priceValue').text(),
-          smallImageURL:  pin.find('.pinImg.loaded').prop('src'), # May not be lazy loaded yet
-          pinterestURL:   pin.find('a.pinImageWrapper').prop('href')
-        }
-        pinData.id = @hashFromString "#{board.id}:#{pinData.pinterestURL}"
-        if pinData.pinterestURL.length > 4
-          @pinsData.push pinData
-      
-      processingThisBoard.resolve()
+    
 
     if board.expectedPins == 0
       processingThisBoard.resolve()
     else      
       @boardDetailFrame.off 'load' # Remove any previous listeners
 
-      # After load scroll down to be sure all pins have been loaded via ajax, then parse
+      # Only a few pins load at a time, and as the page scrolls pins higher up are removed from the DOM. For @#%$'s sake, Pinterest!
+      # Scroll down, accumulating pins as we go.
       @boardDetailFrame.on 'load', () =>
         frameDoc = @boardDetailFrame.contents()
         
         if isNaN(board.expectedPins)
           debug "Unable to parse number of expected pins for board (#{board.name}), so waiting a few seconds and hoping for the best"
-          setTimeout processBoardDetails, 3000
+          setTimeout processBoardDetailDelta, 3000
         else
-          timeout = 15 * 1000
+          timeout = 20 * 1000
           foundAllPins = null
-          seenLastIteration = 0
-          seen = 0
-          
-          seenURLs = []
-          prevSeenURLs = []
-          
-          # Separate function so pass in from/to once, at time of called, so no chance for race condition to have either changed externally while looping
-          reportPinChunkProgress = (from, up_to) =>
-            debug "*** Calling reportPinChunkProgress with #{from} and #{up_to}"
-            for i in [from..up_to]
-              @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.", {progress: {current: i, total: board.expectedPins}})
-              
-          periodicCheck = () =>
-            
-            
-            # Don't know WHY, but on some iterations seen jumps LOWER than it was before (e.g. 50 to 21)
-            # TODO: WHY this happening, and 2 why sometimes timing out?
-                        
-            seenURLs = []
-            seenURLs.push $(pin).find('a.pinImageWrapper').prop('href') for pin in frameDoc.find('.Pin.Module')
-            
-                      
-            if frameDoc.find('.Pin.Module').length < seen
-              # NEXT STEP -- list titles, see what disappears
-              debug "****** IT HAPPENED AGAIN -- seen got small"              
-            
-            debug "CHECK: last/now -- #{seenLastIteration}/#{seen}"
-            seen = Math.max(seen, frameDoc.find('.Pin.Module').length)
 
-
-            if seenLastIteration != seen
-              console.info prevSeenURLs - seenURLs
-                
-              prevSeenURLs = seenURLs
-              
-              reportPinChunkProgress(seenLastIteration, seen)
-              seenLastIteration = seen
-            
-            if board.expectedPins == seen
-              @reportProgress("#{boardMsg}. Discovered #{seen} of #{board.expectedPins} pins.", {delay: 800, progress: {current: seen, total: board.expectedPins}})
+          # Unfortunately we have to scan every possible pin, every time through, because pinterest appears to remove previously-seen pins from the DOM when scrolled past
+          processBoardDetailDelta = () =>
+            numPinsSeenBeforeThisIteration = numPinsSeenThisBoard
+      
+            $(pinSelector, frameDoc).each (pidx, pin) =>
+              pin = $(pin)
+              pinURL = pin.find('a.pinImageWrapper').prop('href')
+        
+              unless pinsSeenThisBoard[pinURL]
+                pinsSeenThisBoard[pinURL] = true
+                numPinsSeenThisBoard++
+          
+                if pinURL.length > 4
+                  pinData = {
+                    board_id:       board.id,
+                    description:    pin.find('.pinDescription').text(),
+                    domain:         pin.find('.pinDomain').text(),
+                    price:          pin.find('.priceValue').text(),
+                    smallImageURL:  pin.find('.pinImg.loaded').prop('src'), # May not be lazy loaded yet
+                    pinterestURL:   pinURL
+                  }
+                  pinData.id = @hashFromString "#{board.id}:#{pinData.pinterestURL}"
+                  @pinsData.push pinData
+      
+            if numPinsSeenThisBoard == board.expectedPins
+              @reportProgress("#{boardMsg}. Discovered #{numPinsSeenThisBoard} of #{board.expectedPins} pins.", {delay: 800, progress: {current: numPinsSeenThisBoard, total: board.expectedPins}})
+              processingThisBoard.resolve()
               foundAllPins = true
               clearInterval(pinCountChecker)
-              processBoardDetails()
-              
-            else if seen > 0 # Page requires scrolling to spur loading additional pins
-              frameDoc.scrollTop( frameDoc.height() )
+            else
+              for i in [numPinsSeenBeforeThisIteration..numPinsSeenThisBoard]
+                @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.", {progress: {current: i, total: board.expectedPins}})
+              frameDoc.scrollTop( frameDoc.height() ) # Jump to bottom of page to trigger loading of more pins
+              frameDoc.scrollLeft( frameDoc.width() )
       
-          pinCountChecker = setInterval periodicCheck, 500
+          pinCountChecker = setInterval processBoardDetailDelta, 500
       
           timeOutIfRequired = () ->
             unless foundAllPins
               clearInterval(pinCountChecker)
               debug "Board (#{board.name}) timed out trying to load all pins"
-              processBoardDetails() # Will fail to find all pins, but can at least work with what we have
+              processBoardDetailDelta() # Will fail to find all pins, but can at least work with what we have
+              processingThisBoard.resolve()
               # TODO: somehow indicate to user that some pins weren't collected
       
           setTimeout timeOutIfRequired, timeout
