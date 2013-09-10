@@ -1,4 +1,4 @@
-#pp_pinterest_import_wrapper{:data => {:all_pins => Pin.step_one_json(@external_boards.map(&:pins).flatten)}}
+#pp_pinterest_import_wrapper{:data => {'all-pins' => Pin.step_one_json(@external_boards.map(&:pins).flatten)}}
 
   #pinterest_section
     - if @external_boards.length > 1

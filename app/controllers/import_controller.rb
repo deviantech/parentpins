@@ -95,7 +95,7 @@ class ImportController < ApplicationController
   
   def craft_intermediate_pins
     # Allow mass assignment, since we'll sanity check before saving the final version
-    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new_intermediate_pin(attribs) }
+    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
     @boards = @pins_to_import.map(&:board).uniq
   end
   

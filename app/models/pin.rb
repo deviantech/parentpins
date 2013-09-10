@@ -88,28 +88,20 @@ class Pin < ActiveRecord::Base
   alias_attribute :smallImageURL, :cached_remote_small_image_url
   alias_attribute :pinterestURL,  :via_url
 
-  def self.new_intermediate_pin(attribs)
-    a = Pin.new(attribs, :without_protection => true)
-    
-    # Don't know WHY param is sometimes blank, but this workaround seem to resolve the issue
-    if a.cached_remote_image_url.blank? && !a.cached_remote_small_image_url
-      a.cached_remote_image_url = a.cached_remote_small_image_url.sub(/\/236x\//, '/736x/')
-    end
-    
-    a
-  end
-
   # Accepts data directly from pinterest or from our form submission
   def self.from_pinterest(user, board, data)
     data[:external_id] ||= data.delete('id')
 
-    pin = Pin.new
-    data.each do |attrib, value| 
-      pin.send("#{attrib}=", value) if pin.respond_to?("#{attrib}=")
+    Pin.new.tap do |pin|
+      data.each do |attrib, value| 
+        pin.send("#{attrib}=", value) if pin.respond_to?("#{attrib}=")
+      end
+
+      # Don't know WHY param is sometimes blank, but this workaround seem to resolve the issue
+      pin.cached_remote_image_url = pin.cached_remote_small_image_url.sub(/\/236x\//, '/736x/') if pin.cached_remote_image_url.blank? && !pin.cached_remote_small_image_url
+      pin.board_id = board.try(:id)
+      pin.user_id = user.try(:id)
     end
-    pin.board_id = board.try(:id)
-    pin.user_id = user.try(:id)
-    return pin
   end
   
   def self.new_from_bookmarklet(user, params)
