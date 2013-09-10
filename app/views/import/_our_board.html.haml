@@ -1,7 +1,4 @@
 %li.board{:data => {'board-id' => board.id}}
   .ourBoardTitle= board.name
-  .ourBoardInfo
-    = pluralize board.pins_count, 'pin', 'pins'
-    \/
-    = pluralize board.followers_even_indirectly_count, 'follower', 'followers'
+  .ourBoardInfo 0 pins added
   %ul.ourBoardPins

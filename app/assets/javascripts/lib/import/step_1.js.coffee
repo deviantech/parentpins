@@ -116,6 +116,14 @@ checkIfAnyDraggableLeft = () ->
       section.find('.no-more').remove()
   tellParentOurHeight()
 
+updateDroppedPinCounts = () ->
+  wrappedUpdateFn = () ->
+    for board in $('#our_section li.board')
+      $board = $(board)
+      count = $board.find('li.pin').length
+      msg = if count == 1 then "1 pin added" else "#{count} pins added"
+      $board.find('.ourBoardInfo').text(msg)
+  setTimeout wrappedUpdateFn, 5
 
 # Add draggable/droppable effects
 initDragDrop = () ->
@@ -139,6 +147,7 @@ initDragDrop = () ->
 
         toAdd.css('opacity', 1.0).addClass('assigned').draggable('destroy').draggable(drag.pinsFromOurBoards).appendTo(target)
         hideShowPinsForSelectedBoard()
+        updateDroppedPinCounts()
     },
     overPinterestBoards: {
       hoverClass: "ui-droppable-hovering",
@@ -153,6 +162,7 @@ initDragDrop = () ->
 
         li.draggable('destroy').draggable(drag.pinsFromPinterest).appendTo(target)
         hideShowPinsForSelectedBoard()
+        updateDroppedPinCounts()
     }
   }
   
@@ -169,6 +179,7 @@ initDragDrop = () ->
         $(event.target).css({opacity: 0.5})
       stop: (event, ui) ->
         $(event.target).css({opacity: 1.0})
+        updateDroppedPinCounts() # Can't rely on this, because overridden by multiDragOpts
     }
   }
   drag.externalBoards = $.extend({}, drag.general, {stack: '.importing_boards li'})
@@ -182,7 +193,7 @@ initDragDrop = () ->
   $('#pinterest_section').droppable drop.overPinterestBoards
 
   $('#pinterest_section').disableSelection().find('ul.collection').selectable({})  
-  
+  updateDroppedPinCounts()
 
   # Used when boards added via ajax
   window.stepOneAddDroppableBoard = (board) ->
