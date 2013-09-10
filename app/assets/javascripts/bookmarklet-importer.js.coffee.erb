@@ -8,7 +8,7 @@ if (window.ppBookmarklet.host)
   # TODO: rewrite ppBookmarklet as a class, call a message function there (to e.g. handle setting to red on errors)
   message = (str) ->
     if window.ppBookmarklet
-      ppBookmarklet.contentBase.find('#noPotentialImages').html(str);
+      ppBookmarklet.contentBase.find('#progressDisplay').html(str);
     else
       alert(str)
 

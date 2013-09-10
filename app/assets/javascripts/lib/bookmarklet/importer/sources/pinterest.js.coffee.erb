@@ -5,7 +5,8 @@ class window.ppImporterClasses.Sources.Pinterest
 
   # Global class config
   outputDiv         = window.ppBookmarklet.contentBase
-  progressDiv       = outputDiv.find('#noPotentialImages')
+  progressDivWrap   = outputDiv.find('#progressDisplayWrapper')
+  progressDiv       = outputDiv.find('#progressDisplay')
   progressSpinner   = if outputDiv.find('.progressSpinner').length then outputDiv.find('.progressSpinner') else $('<img src="' + window.ppBookmarklet.host + '<%= asset_path "ui/loader.gif" %>" alt="Loading" class="centered progressSpinner"/>').hide().insertAfter(progressDiv)
   appendTarget      = outputDiv
   maxPinConnections    = 5
@@ -137,7 +138,7 @@ class window.ppImporterClasses.Sources.Pinterest
       # Now start working on the pins
       @pinURLsToProcess = @pinsData.map (pin) -> pin.pinterestURL
       @totalPinURLsFound = @pinURLsToProcess.length
-      @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length} remaining).", {delay: 10, progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
+      @reportProgress "Done collecting boards.  Now looking up pin details (#{@pinURLsToProcess.length} remaining).", {delay: 10, progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
       @startProcessingPins()
 
     # Now start actually getting data
@@ -207,7 +208,7 @@ class window.ppImporterClasses.Sources.Pinterest
       if thisURL && srcPin
         # Note: if can get pin URL, could skip ajax entirely. Can get big image name from small one by changing URL (/236x/ -> /736x/): 
         # http://media-cache-ak2.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg -> http://media-cache-ak2.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg      
-        @reportProgress "Done collecting boards.  Now processing pins (#{@pinURLsToProcess.length + 1} remaining).", {progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
+        @reportProgress "Done collecting boards. Now looking up pin details (#{@pinURLsToProcess.length + 1} remaining).", {progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
 
         
         pinRequest = $.get thisURL
@@ -277,7 +278,7 @@ class window.ppImporterClasses.Sources.Pinterest
     board.id = @hashFromString(board.pinterestURL)
       
     boardMsg = if @boardQueue?.length then "Processing Board: #{board.name} (#{@boardQueue.length + 1} remaining)" else "Processing Board: #{board.name}"
-    @reportProgress "#{boardMsg}. Discovered 0 of #{board.expectedPins} pins.", {delay: 5, progress: {current: 0, total: board.expectedPins}}
+    @reportProgress "#{boardMsg}<br> Discovered 0 of #{board.expectedPins} pins.", {delay: 5, progress: {current: 0, total: board.expectedPins}}
 
     processingThisBoard.done () =>
       @boardsData.push board
@@ -326,13 +327,13 @@ class window.ppImporterClasses.Sources.Pinterest
                   @pinsData.push pinData
       
             if numPinsSeenThisBoard == board.expectedPins
-              @reportProgress("#{boardMsg}. Discovered #{numPinsSeenThisBoard} of #{board.expectedPins} pins.", {delay: 800, progress: {current: numPinsSeenThisBoard, total: board.expectedPins}})
+              @reportProgress("#{boardMsg}<br> Discovered #{numPinsSeenThisBoard} of #{board.expectedPins} pins.", {delay: 800, progress: {current: numPinsSeenThisBoard, total: board.expectedPins}})
               processingThisBoard.resolve()
               foundAllPins = true
               clearInterval(pinCountChecker)
             else
               for i in [numPinsSeenBeforeThisIteration..numPinsSeenThisBoard]
-                @reportProgress("#{boardMsg}. Discovered #{i} of #{board.expectedPins} pins.", {progress: {current: i, total: board.expectedPins}})
+                @reportProgress("#{boardMsg}<br> Discovered #{i} of #{board.expectedPins} pins.", {progress: {current: i, total: board.expectedPins}})
               frameDoc.scrollTop( frameDoc.height() ) # Jump to bottom of page to trigger loading of more pins
               frameDoc.scrollLeft( frameDoc.width() )
       

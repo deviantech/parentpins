@@ -95,7 +95,7 @@ class Bookmarklet
     else      
       if `!(data.src in this.potentials)` # No duplicates
         @potentials[data.src] = data
-        @contentBase.find('#noPotentialImages').hide();
+        @contentBase.find('#progressDisplayWrapper').hide();
         # Max-height will prevent getting too big, but without this firefox will leave box with no height
         $( JST['templates/bookmarklet/potential']({image: data}) ).appendTo( @contentBase ).height( data.scaledHeight )
   
@@ -216,7 +216,7 @@ class Bookmarklet
       @imageTestbed = $('<div class="imageTestbed"></div>').appendTo(@bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
       
       if window.location.host == 'pinterest.com'
-        @contentBase.find('#noPotentialImages').text("Evaluating Pinterest pins...");
+        @contentBase.find('#progressDisplay').text("Evaluating Pinterest pins...");
         $.getScript(importerScriptURL)
       else
         @evaluatePotentialImages()

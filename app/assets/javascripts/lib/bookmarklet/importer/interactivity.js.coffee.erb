@@ -42,11 +42,11 @@ class window.ppImporterClasses.Interactivity
     @externalPinData = data.pins
     @externalBoardData = data.boards
     if @externalPinData.length == 0
-      outputDiv.find('#noPotentialImages').html('No importable pins found.').addClass('red')
+      outputDiv.find('#progressDisplay').html('No importable pins found.').addClass('red')
     else if window['postMessage']
       @transitionToStepOne()
     else
-      outputDiv.find('#noPotentialImages').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
+      outputDiv.find('#progressDisplay').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
       @bookmarkletClosing()
     toggleWindowRepaint()
 
@@ -142,7 +142,8 @@ class window.ppImporterClasses.Interactivity
 
 
     @handleFrameOneLoaded = () ->
-      progressDiv = outputDiv.find('#noPotentialImages')
+      progressDivWrapper = outputDiv.find('#progressDisplayWrapper')
+      progressDiv = progressDivWrapper.find('#progressDisplay')
       if progressDiv.is(':visible')
         progressDiv.addClass('no-auto-updates').text("Processed all pins. Beginning Import!")
         setTimeout (=> 

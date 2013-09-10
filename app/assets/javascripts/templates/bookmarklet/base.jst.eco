@@ -6,7 +6,9 @@
   </div>
   <div id="ppBookmarkletContentWrapper">
     <div id="ppBookmarkletContent">
-      <div id="noPotentialImages">No pinnable images found on this page.</div>
+      <div id="progressDisplayWrapper">
+        <div id="progressDisplay">No pinnable images found on this page.</div>
+      </div>
     </div>
   </div>
 </div>
