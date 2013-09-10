@@ -88,6 +88,17 @@ class Pin < ActiveRecord::Base
   alias_attribute :smallImageURL, :cached_remote_small_image_url
   alias_attribute :pinterestURL,  :via_url
 
+  def self.new_intermediate_pin(attribs)
+    a = Pin.new(attribs, :without_protection => true)
+    
+    # Don't know WHY param is sometimes blank, but this workaround seem to resolve the issue
+    if a.cached_remote_image_url.blank? && !a.cached_remote_small_image_url
+      a.cached_remote_image_url = a.cached_remote_small_image_url.sub(/\/236x\//, '/736x/')
+    end
+    
+    a
+  end
+
   # Accepts data directly from pinterest or from our form submission
   def self.from_pinterest(user, board, data)
     data[:external_id] ||= data.delete('id')

@@ -29,7 +29,7 @@ class ImportController < ApplicationController
 
   def step_2
     @context = :step_drag_to_assign
-    craft_intermediate_pins    
+    craft_intermediate_pins
     session[:import_id] = current_user.imports.create(:source => params[:source] || 'pinterest', :attempted => @pins_to_import.length, :user_agent => request.user_agent).try(:id)
   end
   
@@ -95,7 +95,7 @@ class ImportController < ApplicationController
   
   def craft_intermediate_pins
     # Allow mass assignment, since we'll sanity check before saving the final version
-    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
+    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new_intermediate_pin(attribs) }
     @boards = @pins_to_import.map(&:board).uniq
   end
   
