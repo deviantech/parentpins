@@ -34,8 +34,9 @@ dataToSubmit = () ->
 tellParentOurHeight = () ->
   if $('body').is(':visible')
     updateBoardHeight()
-    height = $('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15
-    sendMessage("step1:setHeight:#{height}")    
+    if $('#pp_pinterest_import_wrapper').length
+      height = $('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15
+      sendMessage("step1:setHeight:#{height}")    
 
 # TODO: Remove this once CSS fixed for modifying board height
 updateBoardHeight = () ->
@@ -100,12 +101,6 @@ checkIfAnyDraggableLeft = () ->
   $('.importing_pins').each (i, section) =>
     section = $(section)
     if section.find('li.pin:visible').length == 0
-      
-      
-      # TODO: use this console to figure it out, but mistakenly saying list of pins is empty when first loaded.
-      console.log section, section.find('li.pin')
-      
-      
       kind = if section.hasClass('not_yet_imported') 
        'not-yet-imported'
       else
@@ -217,64 +212,63 @@ updateBoardPendingPinsCounters = () ->
 
 $(document).ready () ->
   wrapper = $('body.importing.step_1')
-  return unless wrapper.length
+  if wrapper.length
+    sendMessage("step1:loaded")
+    updateBoardPendingPinsCounters()
 
-  sendMessage("step1:loaded")
-  updateBoardPendingPinsCounters()
+    initial = $('.importing_pins.previously_imported').data('initial')
+    if typeof(initial) == 'string' then initial = $.parseJSON(raw)
+    handlePreviouslyImportedData(initial)
+    initDragDrop()
 
-  initial = $('.importing_pins.previously_imported').data('initial')
-  if typeof(initial) == 'string' then initial = $.parseJSON(raw)
-  handlePreviouslyImportedData(initial)
-  initDragDrop()
+    # Tell parent how tall we are
+    tellParentOurHeight()
 
-  # Tell parent how tall we are
-  tellParentOurHeight()
+    # Handle Submit Button
+    $('#ppSubmitBoardsSortedForm').on 'submit', (e) =>
+      data = dataToSubmit()
+      if data
+        $('#ppSubmitBoardsSortedForm').find('#data_string').val( data )
+      else
+        alert("You haven't yet selected any pins to import. Please drag at least one Pinterest pin down onto the ParentPins board you want to save it to.")
+        e.preventDefault()    
 
-  # Handle Submit Button
-  $('#ppSubmitBoardsSortedForm').on 'submit', (e) =>
-    data = dataToSubmit()
-    if data
-      $('#ppSubmitBoardsSortedForm').find('#data_string').val( data )
-    else
-      alert("You haven't yet selected any pins to import. Please drag at least one Pinterest pin down onto the ParentPins board you want to save it to.")
-      e.preventDefault()    
+    # Handle Reset Button
+    $('#ppResetDragDropLink').on 'click', () =>
+      handlePreviouslyImportedData(null, true)
 
-  # Handle Reset Button
-  $('#ppResetDragDropLink').on 'click', () =>
-    handlePreviouslyImportedData(null, true)
-
-  # Handle show/hide previous
-  $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
-    imported = $('.importing_pins.previously_imported')
-    ul = imported.find('ul.collection')
-    link = $(e.currentTarget)
-    if ul.is(':visible')
-      link.text('(show)')
-      ul.slideUp () ->
-        checkIfAnyDraggableLeft()
-    else
-      imported.find('.no-more').remove()
-      link.text('(hide)')
-      ul.slideDown () ->
-        checkIfAnyDraggableLeft()
-
+    # Handle show/hide previous
+    $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
+      imported = $('.importing_pins.previously_imported')
+      ul = imported.find('ul.collection')
+      link = $(e.currentTarget)
+      if ul.is(':visible')
+        link.text('(show)')
+        ul.slideUp () ->
+          checkIfAnyDraggableLeft()
+      else
+        imported.find('.no-more').remove()
+        link.text('(hide)')
+        ul.slideDown () ->
+          checkIfAnyDraggableLeft()
 
 
-  # Only show pins from selected board
-  $('body').on 'mousedown', '.importing_boards li', (e) =>
-    $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
-    hideShowPinsForSelectedBoard()
 
- # Allow step 2 to tell parent to tell step 1 when new pins have been imported
- $(window).on 'message', (evt) =>
-   [command, extra...] = evt.originalEvent.data.split(':')
-   if command == 'step4' # Pass events from opened window on to parent
-     sendMessage(evt.originalEvent.data)
-   else
-     extra = extra.join(':')
-     if command == 'imported'
-        pins = $.parseJSON(extra)
-        handlePreviouslyImportedData(pins)
-        setTimeout(checkIfAnyDraggableLeft, 1) # Doesn't seem like it should be necessary... but is, or else sections leave the 'empty' div in place while showing pins
+    # Only show pins from selected board
+    $('body').on 'mousedown', '.importing_boards li', (e) =>
+      $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
+      hideShowPinsForSelectedBoard()
 
-  $(window).on 'resize', tellParentOurHeight
+   # Allow step 2 to tell parent to tell step 1 when new pins have been imported
+   $(window).on 'message', (evt) =>
+     [command, extra...] = evt.originalEvent.data.split(':')
+     if command == 'step4' # Pass events from opened window on to parent
+       sendMessage(evt.originalEvent.data)
+     else
+       extra = extra.join(':')
+       if command == 'imported'
+          pins = $.parseJSON(extra)
+          handlePreviouslyImportedData(pins)
+          setTimeout(checkIfAnyDraggableLeft, 1) # Doesn't seem like it should be necessary... but is, or else sections leave the 'empty' div in place while showing pins
+
+    $(window).on 'resize', tellParentOurHeight

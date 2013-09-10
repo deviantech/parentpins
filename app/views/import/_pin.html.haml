@@ -1,6 +1,10 @@
 - extra_class ||= ''
 %li.pin.board_all{:class => "board_#{pin.board_id} #{extra_class}", :data => {:attributes => pin.import_json}}
-  = image_tag pin.remote_image_url || pin.cached_remote_image_url || pin.image.v222.url
+  - the_url = pin.remote_image_url || pin.cached_remote_image_url || pin.image.v222.url
+  - if the_url.blank?
+    %strong Unable to find a suitable URL
+  - else
+    = image_tag the_url
   .hover_info
     .hover_content
       .board_name= pin.board.name
