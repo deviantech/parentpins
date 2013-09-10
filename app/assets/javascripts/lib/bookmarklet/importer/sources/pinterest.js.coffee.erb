@@ -219,6 +219,8 @@ class window.ppImporterClasses.Sources.Pinterest
             head  = '<div>'+pinDATA.split('</head>')[0].split('</title>')[1]+'</div>' # Just grab the <head> section after the title, then wrap it in a DIV so jquery will parse
             srcPin.url        = getMeta 'og:see_also', head
             srcPin.imageURL   = getMeta 'og:image', head
+            
+          # TODO: remove this debug line
           console.log "Got #{srcPin.url} and #{srcPin.imageURL} for #{thisURL}"
 
         pinRequest.fail =>
