@@ -133,10 +133,14 @@ class window.ppImporterClasses.Sources.Pinterest
     @processingAllPins.done () =>
       @reportProgress('Done processing. Passing data over to our servers...')
       progressSpinner.hide().remove()
-      for pin in @pinsData
-        console.log("#{pin.id}: *** unable to find details (#{pin.imageURL})") unless pin.imageURL && pin.imageURL.length > 2 && pin.url && pin.url.length > 2
       
-      callback({boards: @boardsData, pins: @pinsData})
+      # Filter out any pins without complete info
+      pinsReturning = []
+      for pin in @pinsData
+        if @pinURLsToProcess[pin.pinterestURL]
+          pinsReturning.push pin
+      
+      callback({boards: @boardsData, pins: pinsReturning})
 
     @processingAllBoards.done () =>
       # Clean up the iframe
@@ -229,17 +233,15 @@ class window.ppImporterClasses.Sources.Pinterest
           
         @pinURLsToProcess[thisURL] = srcPin.url && srcPin.url.length > 2 && srcPin.imageURL && srcPin.imageURL.length > 2
 
-      pinRequest.fail (a,b,c,d) =>
-        # TODO -- still a 200 status code...
-        debug "*** FAILED: #{thisURL}"
-        debug [a, b, c, d]
+      pinRequest.fail (response) =>
+        # Noticed once a 200 return code failing. If so, debug here.
+        debug "*** jQuery says ajax FAILED: #{thisURL} -- #{response}"
         @pinURLsToProcess[thisURL] = false
 
       pinRequest.always () =>
         completedPins++
         @reportProgress "Done collecting boards. Now looking up pin details (#{@totalPinURLsFound - completedPins} remaining).", {progress: {current: completedPins, total: @totalPinURLsFound}}
         cb(null) # Notify queue that we're done and can start another request
-
     
     # Set a queue to process maxPinConnections at once (considered processed when )
     pinsQueue = queue(maxPinConnections)
