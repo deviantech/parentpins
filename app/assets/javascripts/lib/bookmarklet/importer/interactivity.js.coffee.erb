@@ -144,9 +144,9 @@ class window.ppImporterClasses.Interactivity
     @handleFrameOneLoaded = () ->
       progressDivWrapper = outputDiv.find('#progressDisplayWrapper')
       progressDiv = progressDivWrapper.find('#progressDisplay')
-      if progressDiv.is(':visible')
+      if progressDivWrapper.is(':visible')
         progressDiv.addClass('no-auto-updates').text("Processed all pins. Beginning Import!")
         setTimeout (=> 
-          progressDiv.slideUp()
+          progressDivWrapper.slideUp()
           @stepOneFrame.fadeIn()
         ), 700

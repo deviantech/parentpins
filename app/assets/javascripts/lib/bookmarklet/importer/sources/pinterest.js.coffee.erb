@@ -26,6 +26,12 @@ class window.ppImporterClasses.Sources.Pinterest
   getMeta = (title, scope) ->
     $(scope).find("""meta[name="#{title}"], meta[property="#{title}"]""").first().attr('content')
 
+  # Options: 
+  #   checkFn: return true if wait condition true, else false
+  #   onSuccess: run if checkFn returns true
+  #   onFail: run if timed out
+  #   check_every: interval to check
+  #   timeout_after: timeout (milliseconds)
   waitFor = (opts = {}) ->
     succeeded = false
     
@@ -62,7 +68,7 @@ class window.ppImporterClasses.Sources.Pinterest
     @pinsData = []
     @boardDetailFrame = null
     @boardQueue = []
-    @pinURLsToProcess = []
+    @pinURLsToProcess = {}
     @totalPinURLsFound = 0
     @progressQueue = []
     @canUpdateProgress = true
@@ -127,6 +133,9 @@ class window.ppImporterClasses.Sources.Pinterest
     @processingAllPins.done () =>
       @reportProgress('Done processing. Passing data over to our servers...')
       progressSpinner.hide().remove()
+      for pin in @pinsData
+        console.log("#{pin.id}: *** unable to find details (#{pin.imageURL})") unless pin.imageURL && pin.imageURL.length > 2 && pin.url && pin.url.length > 2
+      
       callback({boards: @boardsData, pins: @pinsData})
 
     @processingAllBoards.done () =>
@@ -136,9 +145,10 @@ class window.ppImporterClasses.Sources.Pinterest
         @boardDetailFrame = null
       
       # Now start working on the pins
-      @pinURLsToProcess = @pinsData.map (pin) -> pin.pinterestURL
-      @totalPinURLsFound = @pinURLsToProcess.length
-      @reportProgress "Done collecting boards.  Now looking up pin details (#{@pinURLsToProcess.length} remaining).", {delay: 10, progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
+      @pinsData.map (pin) => 
+        @pinURLsToProcess[pin.pinterestURL] = null
+      @totalPinURLsFound = _.keys(@pinURLsToProcess).length
+      @reportProgress "Done collecting boards.  Now looking up pin details (#{@totalPinURLsFound} remaining).", {delay: 10, progress: {current: 0, total: @totalPinURLsFound}}
       @startProcessingPins()
 
     # Now start actually getting data
@@ -199,45 +209,62 @@ class window.ppImporterClasses.Sources.Pinterest
   # = Processing Pins =
   # ===================
   startProcessingPins: () ->
-    @pinsNeedingToComplete = maxPinConnections
-    
-    processOnePin = () =>
-      thisURL = @pinURLsToProcess.pop()
+    completedPins = 0
+    allAjaxToComplete = {
+      check_every: 250,
+      timeout_after: 10 * 1000,
+      onFail: () =>
+        debug "Timed out waiting for all pin-detail ajax requests to complete"
+        @processingAllPins.resolve()
+      onSuccess: () =>
+        debug "Successfully waited for all pin-detail ajax requests to complete"
+        @processingAllPins.resolve()
+      checkFn: () =>
+        _.all _.values(@pinURLsToProcess), (completionStatus) ->
+          completionStatus? # Check against null, should be either true or false
+    }
+          
+    # Note: if can get pin URL, could skip ajax entirely. Can get big image name from small one by changing URL (/236x/ -> /736x/): 
+    # http://media-cache-ak2.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg -> http://media-cache-ak2.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg      
+    processOnePin = (thisURL, cb) =>
       srcPin = @pinForURL(thisURL)
+      
+      pinRequest = $.get thisURL
+      pinRequest.done (pinDATA) =>
+        if pinDATA['page_info'] # Pinterest is conveniently handing us JSON directly
+          srcPin.url      = pinDATA.page_info.meta['og:see_also']
+          srcPin.imageURL = pinDATA.page_info.meta['og:image']
+        else if pinDATA['split'] # OK, parse what we need out of the raw HTML
+          head  = '<div>'+pinDATA.split('</head>')[0].split('</title>')[1]+'</div>' # Just grab the <head> section after the title, then wrap it in a DIV so jquery will parse
+          srcPin.url        = getMeta 'og:see_also', head
+          srcPin.imageURL   = getMeta 'og:image', head
+          
+        # TODO: remove this debug line
+        @pinURLsToProcess[thisURL] = srcPin.url && srcPin.url.length > 2 && srcPin.imageURL && srcPin.imageURL.length > 2
 
-      if thisURL && srcPin
-        # Note: if can get pin URL, could skip ajax entirely. Can get big image name from small one by changing URL (/236x/ -> /736x/): 
-        # http://media-cache-ak2.pinimg.com/236x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg -> http://media-cache-ak2.pinimg.com/736x/49/4b/af/494bafca94dd0e2168fb4c8c7f914c78.jpg      
-        @reportProgress "Done collecting boards. Now looking up pin details (#{@pinURLsToProcess.length + 1} remaining).", {progress: {current: @totalPinURLsFound - @pinURLsToProcess.length, total: @totalPinURLsFound}}
+      pinRequest.fail (a,b,c,d) =>
+        # TODO -- still a 200 status code...
+        debug "*** FAILED: #{thisURL}"
+        console.log a, b, c, d
+        @pinURLsToProcess[thisURL] = false
 
-        
-        pinRequest = $.get thisURL
-        pinRequest.done (pinDATA) =>
-          if pinDATA['page_info'] # Pinterest is conveniently handing us JSON directly
-            srcPin.url      = pinDATA.page_info.meta['og:see_also']
-            srcPin.imageURL = pinDATA.page_info.meta['og:image']
-          else if pinDATA['split'] # OK, parse what we need out of the raw HTML
-            head  = '<div>'+pinDATA.split('</head>')[0].split('</title>')[1]+'</div>' # Just grab the <head> section after the title, then wrap it in a DIV so jquery will parse
-            srcPin.url        = getMeta 'og:see_also', head
-            srcPin.imageURL   = getMeta 'og:image', head
-            
-          # TODO: remove this debug line
-          console.log "Got #{srcPin.url} and #{srcPin.imageURL} for #{thisURL}"
+      pinRequest.always () =>
+        completedPins++
+        @reportProgress "Done collecting boards. Now looking up pin details (#{@totalPinURLsFound - completedPins} remaining).", {progress: {current: completedPins, total: @totalPinURLsFound}}
+        cb(null) # Notify queue that we're done and can start another request
 
-        pinRequest.fail =>
-          # TODO: do something here to indicate the failure and remove from array, so we don't rely on incomplete data down the road?
-
-        pinRequest.always () =>
-          processOnePin()
-          if @pinURLsToProcess.length == 0 # We've just finished one of the last ones
-            @pinsNeedingToComplete -= 1
-            if @pinsNeedingToComplete == 0 # OK, we've just finished the actual last one
-              @processingAllPins.resolve()
     
-
-    for i in [1..maxPinConnections]
-      processOnePin()
-
+    # Set a queue to process maxPinConnections at once (considered processed when )
+    pinsQueue = queue(maxPinConnections)
+    pinsQueue.defer(processOnePin, url) for url in _.keys(@pinURLsToProcess)
+    pinsQueue.awaitAll () =>
+      # By this point all ajax requests have at least been started, but not completed.
+      # This is a little ugly, but we're just going to wait for them to all complete
+      console.log "STARTING TO WAIT"
+      if _.all(_.values(@pinURLsToProcess), (completionStatus) -> completionStatus?)
+        console.log "BUT WAIT WAS NOT REQUIRED"
+      waitFor( allAjaxToComplete )
+    
 
   # =====================
   # = Processing Boards =
