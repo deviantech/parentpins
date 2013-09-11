@@ -88,12 +88,6 @@ class Pin < ActiveRecord::Base
   alias_attribute :smallImageURL, :cached_remote_small_image_url
   alias_attribute :pinterestURL,  :via_url
 
-  # TODO: check if this is functional. Shouldn't be needed since import JS was fixed, but a good backup nonetheless?
-  def cached_remote_image_url
-    return self['cached_remote_image_url'] unless self['cached_remote_image_url'].blank?
-    self['.cached_remote_image_url'] = cached_remote_small_image_url.to_s.sub(/\/236x\//, '/736x/')
-  end
-
   # Accepts data directly from pinterest or from our form submission
   def self.from_pinterest(user, board, data)
     data[:external_id] ||= data.delete('id')
