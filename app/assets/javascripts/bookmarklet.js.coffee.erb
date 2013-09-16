@@ -215,7 +215,7 @@ class Bookmarklet
       # Note that in order to get correct height we have to embed images in the document somewhere... and that location has to be displayed, but not visible
       @imageTestbed = $('<div class="imageTestbed"></div>').appendTo(@bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
       
-      if window.location.host == 'pinterest.com'
+      if window.location.host == 'pinterest.com' || window.location.host.match(/\.pinterest\.com$/)
         @contentBase.find('#progressDisplay').text("Evaluating Pinterest pins...");
         $.getScript(importerScriptURL)
       else
