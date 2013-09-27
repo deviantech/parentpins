@@ -2,17 +2,22 @@
 
   <div class="content">
     <div class="container">
-      <h1>Add pins to your ParentPins Boards from any website</h1>
+      <h1 class="centered">Add pins to your ParentPins Boards <span>from any website or import your Pinterest pins</span></h1>
     
       <div class="row">
         
-        <div class="span12">
-          <h4>Instructions</h4>
+        <div class="span7">
+          <h2>Add the ParentPin It Button</h2>
           <ul class="instructions">
             <li>Make sure your bookmarks bar is open in your browser.</li>
             <li>Then, simply drag and drop this "<%= bookmarklet_link %>" link to your bookmarks bar.</li>
             <li>Now when you are on a website, click the button in your bookmarks bar to create a pin from the url you are on.</li>
+            <li>If you want to import you existing Pinterest pins, log into pinterest, go to one of your boards, and click the ParentPin It Button in your bookmarks bar to start the import process.</li>
           </ul>
+        </div>
+        
+        <div class="span5">
+          <img src="<%= asset_path 'ui/bookmarklet_instructions.png' %>">
         </div>
           
       </div>

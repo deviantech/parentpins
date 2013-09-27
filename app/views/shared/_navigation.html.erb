@@ -53,7 +53,7 @@
             <li><%= link_to '+ Pin', new_pin_path, :class => 'ajax' %></li>
             <li><%= link_to '+ Board', new_profile_board_path(current_user), :class => 'ajax' %></li>
             <li><%= link_to '+ Friends', fb_invite_url, :rel => 'nofollow', :target => '_blank', :title => 'Ask FB friends to join you on ParentPins!', :rel => 'tooltip', 'data-placement' => 'right' %></li>
-            <li><a href="/bookmarklet">ParentPin Button</a></li>
+            <li class="divider"><a href="/bookmarklet">ParentPin Button</a></li>
           </ul>
         </li>
         <li class="drop_down">
@@ -64,7 +64,7 @@
             <li><%= link_to 'Likes', likes_profile_path(current_user) %></li>
             <li><%= link_to 'Boards', profile_boards_path(current_user) %></li>
             <li><%= link_to 'Edit Profile / Account', edit_profile_path(current_user) %></li>
-            <li>
+            <li class="divider">
               <%= link_to('Logout', destroy_user_session_path, :method => :delete, :class => 'logout') %>
             </li>
           </ul>
