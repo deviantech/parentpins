@@ -2032,12 +2032,13 @@ input:focus[placeholder], textarea:focus[placeholder] {
     width:200px;
     padding:0 0 10px 0; }
   li.user {  
-    padding:10px 15px;
+    padding:0;
+    width:222px;
     .follow_section {
       background:#f9f9f9;
       display:block;
       padding:6px 12px;
-      margin:10px -15px -10px;
+      margin:0;
       text-align:center;
       font-weight:normal;
       border-top:1px solid #eee;
@@ -2052,27 +2053,37 @@ input:focus[placeholder], textarea:focus[placeholder] {
       font-weight:normal;
       display:block;
       &:hover {
-        color:#000;
-        text-decoration:none; }
+        text-decoration:none;
+        img {
+          border:4px solid $themeCOLOR; } }
+      .followers {
+        border-right: 1px solid #EEE;}
       span {
         display:block;
-        margin:0 0 0 65px;
+        margin:0;
+        padding:12px 0 6px;
         font-size:13px;
         line-height:18px;
-        color:#000;
+        color:#888;
         font-weight:normal;
+        float:left;
+        width:110px;
+        text-align:center;
         &:hover {
           color:#000; } } }
+    .user_name {
+      text-align:center;
+      border-bottom: 1px solid #EEE;
+      padding: 6px 0 12px;}
     img {
       display:block;
-      float:left;
-      margin:0 10px 0 0;
+      margin:6px auto 0 auto;
       -moz-border-radius: 30px;
       -webkit-border-radius: 30px;
       border-radius: 30px;
       border:4px solid #fff;
-      &:hover {
-        border:4px solid $themeCOLOR; } } } }
+      height: 50px;
+      width: 50px; } } }
 
 #pins {
   z-index:2; }
@@ -2162,9 +2173,9 @@ body.profile {
       span {
         margin-top: 3px; }
       .count {
-        font-size:13px;
-        line-height:18px;
-        display:inline; }
+        font-size:18px;
+        display:inline;
+        color:#777; }
       .user {
         text-align: left;
         text-decoration: none;
@@ -2461,14 +2472,13 @@ h1, h2 {
   display:block;
   width:240px;
   .marker {
-    font-weight: bold;
-    color: #000; }
+    color: #777; }
   a {
     font-size:17px;
     line-height:24px;
     padding:6px 12px;
     text-decoration:none;
-    color: $themeLinkCOLOR;
+    color: $themeCOLORdark;
     &:hover {
       color:#000;
       text-decoration:none; } } }

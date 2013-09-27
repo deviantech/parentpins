@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(:version => 20130725014141) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "categories", ["name"], :name => "index_categories_on_name", :unique => true
+
   create_table "comments", :force => true do |t|
     t.text     "body"
     t.integer  "user_id"
