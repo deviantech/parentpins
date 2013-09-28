@@ -943,9 +943,9 @@ ul li .handle {
     margin: 10px 0 14px 6px;
     list-style: none;
     padding: 15px 15px 0;
-    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); } }
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); } }
 
 .pin-context {
   .comment-controls {
@@ -1155,16 +1155,17 @@ li.pin-context {
       margin-right: 10px; } } }
 
 .attribution {
-  border-bottom: 1px solid #D9D4D4;
+  border-bottom: 1px solid #EBEBEB;
+  border-top:1px solid #F1F1F1;
   overflow: hidden;
-  background: #F2F0F0;
   margin: 0 -15px; }
 
 .comment {
   overflow: hidden;
-  background: #F2F0F0;
+  background: #f8f8f8;
   margin: 0 -15px;
-  clear: both; }
+  clear: both;
+  border-top:1px solid #F1F1F1; }
 
 .attribution .image_link, .comment .avatar_link {
   float: left;
@@ -1185,8 +1186,7 @@ ul.masonry .pin .comment {
   a.avatar_link {
     height: 20px;
     width: 20px;
-    margin-bottom: -2px;
-    margin-top: 2px;
+    margin:9px 15px 0;
     img {
       height: 20px; } }
     }
@@ -1209,10 +1209,9 @@ li.pin .comment .details {
   vertical-align: middle;
   overflow: hidden;
   word-wrap: break-word;
-  color: #AD9C9C;
   line-height: 18px;
   margin: 10px;
-  color: #8C7E7E; }
+  color: #555555; }
 
 .pin .attribution .details a {
   font-weight: 700;
@@ -2793,7 +2792,7 @@ code {
   
 .feature li.pin, .feature-preview li.pin, ul.select_featured {
   .image_link {
-    max-height:275px;
+    max-height:200px;
     overflow:hidden; 
     img {
       border-radius:0; } }

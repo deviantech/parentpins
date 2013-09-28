@@ -1,13 +1,22 @@
-%ol.import_progress
+.progress_wrapper
   %h3
     - if defined?(title)
       = title
     - else
       Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
       #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
-  - unless step == 5 
-    %li{:class => progress_class(step, 1)} Select External Pins
-    %li{:class => progress_class(step, 2)} Assign Pin Types
-    %li{:class => progress_class(step, 3)} Assign Age Groups
-    %li{:class => progress_class(step, 4)} Finalize and Import
+  %ol.import_progress
+    - unless step == 5 
+      %li{:class => progress_class(step, 1)} 
+        %span 1.
+        Select External Pins
+      %li{:class => progress_class(step, 2)}
+        %span 2.
+        Assign Pin Types
+      %li{:class => progress_class(step, 3)}
+        %span 3.
+        Assign Age Groups
+      %li{:class => progress_class(step, 4)}
+        %span 4.
+        Finalize and Import
 

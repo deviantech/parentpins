@@ -1,8 +1,8 @@
 = render 'progress', :step => 3
 .instructions
   Please drag each pin to a box to assign age groups.
+= render 'drag_section', :attribute_to_set => :age_group_id  
 = render 'drop_section', :attribute_to_set => :age_group_id, :droppables => AgeGroup.all.collect{|a| [a.name, a.id]}
-= render 'drag_section', :attribute_to_set => :age_group_id
     
 .submit_bar
   

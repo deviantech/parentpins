@@ -1,9 +1,9 @@
 = render 'progress', :step => 2
 .instructions
-  What type of Pins are these? Please drag each pin to a box below to assign pin types.
-= render 'drop_section', :attribute_to_set => :kind, :droppables => Pin::VALID_TYPES.collect{|t| [t.humanize, t]}
+  What type of Pins are these? Drag pins individually to the appropriate type below or drag the board name to add them all.
 = render 'drag_section', :attribute_to_set => :kind
-    
+= render 'drop_section', :attribute_to_set => :kind, :droppables => Pin::VALID_TYPES.collect{|t| [t.humanize, t]}
+
 .submit_bar
   = form_tag pin_import_step_3_path, :id => 'import_form', :class => 'hide_until_complete' do
     = hidden_field_tag 'data_string', ''

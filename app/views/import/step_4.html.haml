@@ -8,13 +8,12 @@
         .board_info
           %h3 
             %span
-              Board:
+              Board
             #{board.name}
           = image_tag board.cover.url
-          %br
           %label
             = check_box_tag 'mass-select-board'
-            Mass edit all pins in this board
+            Mass Edit all pins
           
         %ul.importing_pins
           - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
@@ -29,15 +28,13 @@
                   - else
                     = image_tag the_url
                   
-                  .open_close_controls
-                    = link_to_function 'Remove from Import', "toggleImportingThisPin(this)"
+                  
                   
                 .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
                   .status_boxes
-                    .line &nbsp;
-                    .status_box.ageGroupStatus Age
-                    .status_box.pinTypeStatus Type
-                    .status_box.otherStatus Other
+                    .status_box.otherStatus √
+                    .status_box.ageGroupStatus √
+                    .status_box.pinTypeStatus √
                   
                   = p.hidden_field :remote_image_url, :value => pin.remote_image_url || pin.cached_remote_image_url
                   = p.hidden_field :cached_remote_image_url
@@ -45,10 +42,10 @@
                   = p.hidden_field :external_id
                   = p.hidden_field :via_url
                   = p.hidden_field :board_id
-                  .line.select
-                    %label
-                      = check_box_tag 'mass-select'
-                      Select for Mass Editing
+                  
+                  .line.no-tag
+                    %strong Description
+                    = p.text_area :description, :class => 'other_input'
                   .line
                     %strong Age Group
                     = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all), {}, :class => 'age_group_id'
@@ -58,9 +55,9 @@
                       %label.radio_opt
                         = p.radio_button :kind, kind, :class => 'pin_type'
                         = kind.titleize
-                  .line
+                  .line.no-tag
                     %strong
-                      Pin Link
+                      URL
                       %span (optional)
                     = p.text_field :url, :class => 'other_input', :placeholder => 'Links to Pinterest Pin if not defined' 
                   .line.field-price.no-tag
@@ -68,34 +65,39 @@
                       Price
                       %span (optional)
                     = p.text_field :price
-                  .line.no-tag
-                    %strong Description
-                    = p.text_area :description, :class => 'other_input'
+                .misc
+                  .open_close_controls
+                    = link_to_function 'Remove from Import', "toggleImportingThisPin(this)"
+                  .mass_edit
+                    = check_box_tag 'mass-select'
+                    Mass Edit
                 .clearfix
+
     .clearfix
   .clearfix
 
   .submit_bar
     = f.submit '&larr; Previous'.html_safe, :class => 'btn grayed previous'
     = f.submit 'Complete Import &rarr;'.html_safe, :class => 'btn primary'
-    #mass-edit-controls
-      %h3 
-        Mass Editing:
-        .count
-          Changes will modify
-          %span.number 0
-      .fields
-        .field
-          %strong Pin Type:
-          - Pin::VALID_TYPES.each do |kind|
-            %label.radio_opt
-              = radio_button_tag :kind, kind
-              = kind.titleize
-        .field
-          %strong Pin Age Group:
-          = select_tag :age_group_id, options_for_select([['Select an Age Group', '']] + select_options(AgeGroup.all))
-      .clearfix
-      
+    
+#mass-edit-controls
+  .wrap
+    %h3 
+      Mass Editing:
+      .count
+        Changes will modify
+        %span.number 0
+    .fields
+      .field
+        %strong Pin Type:
+        - Pin::VALID_TYPES.each do |kind|
+          %label.radio_opt
+            = radio_button_tag :kind, kind
+            = kind.titleize
+      .field
+        %strong Pin Age Group:
+        = select_tag :age_group_id, options_for_select([['Select an Age Group', '']] + select_options(AgeGroup.all))
+  .clearfix    
     
 .clearfix
 
