@@ -3,7 +3,7 @@
   #pinterest_section
     - if @external_boards.length > 1
       .importing_boards
-        %h2 Drag Your Pinterest Pins to Your ParentPins Boards Below
+        %p Click to filter board pins or drag link to ParentPin board below to add all pins from that board.
         %ul
           %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pins
           - @external_boards.each do |board|
