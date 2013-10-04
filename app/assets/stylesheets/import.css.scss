@@ -109,6 +109,10 @@ body.importing.step_1 {
       font-weight: normal;
       background: #F5F5F5;
       border-bottom: 1px solid #EEE;
+      span {
+        display:block;
+        float:right;
+      }
     }
     ul.collection {
       margin-top: -10px;
@@ -400,7 +404,7 @@ body.importing.step_1 {
         font-weight: bold;
         color:#76A613;
         &:after {
-          background:#B3F131;
+          background:#76A613;
         }
       }
     }
@@ -537,12 +541,12 @@ body.importing.step_1 {
               }
             }
             .Article:hover:before {
-              content:"Drag Pins here that come from blogs, writers, news sources, etc."; }
+              content:"Drag pins here that come from blogs, writers, news sources, etc."; }
             .Product:hover:before {
-              content:"Drag Pins here that come from an online store or are just cool products for sale.";
+              content:"Drag pins here that come from an online store or are just cool products for sale.";
               top:-12px; }
             .Idea:hover:before {
-              content:"Drag Pins here that are just generally good ideas for parents or kids."; }
+              content:"Drag pins here that are just generally good ideas for parents or kids."; }
             .Family:hover:before {
               content:"Not age specific. Fun for the whole family."; }
           }
@@ -555,6 +559,8 @@ body.importing.step_1 {
         }
         ul.collection {
           padding: 0px;
+          max-height: 110px;
+          overflow-y: scroll;
         }
         li.pin {
           margin: 3px;
@@ -649,8 +655,9 @@ body.importing.step_1 {
             }
           }
           &.selected {
-            background: $highlight;
-            border:1px solid $highlight;
+            background: #76A602;
+            border: 1px solid #76A602;
+            color: #FFF;
           }
         }
       }
@@ -764,6 +771,7 @@ body.importing.step_1 {
         width: 100%;
         margin-bottom: 24px;
         overflow: hidden;
+        border-bottom: 1px solid #E2E2E2;
         .board_info {
           position:absolute;
           width: 222px;
@@ -799,6 +807,7 @@ body.importing.step_1 {
             -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
             -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
             background:#fdfdfd;
+            border-top: 1px solid #EEE;
             .pin_errors {
               border: 1px solid red;
               padding: 5px;
@@ -909,7 +918,7 @@ body.importing.step_1 {
         color:#555;
       }
       &.complete {
-        background: #B3F131;
+        background: #76A613;
         color:#fff;
       }
     }
@@ -931,4 +940,5 @@ body.importing.step_1 {
 .grayed {
   background-image:none;
   background-color:#f8f8f8 !important;
-  border:1px solid #ddd !important;}  
+  border:1px solid #ddd !important;
+  text-shadow:none !important;}  

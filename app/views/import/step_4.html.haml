@@ -1,6 +1,7 @@
 = render 'progress', :step => 4
 
-%p.review_pins Please review your pins before import
+%p.review_pins
+  Please review your pins and make any changes necessary before importing. You can mass edit the pin type or age group for all pins in a board, or edit pins individually.
 = form_for :pins, :url => pin_import_step_5_path, :html => {:class => 'import_form', :data => {:previous => pin_import_step_3_path}} do |f|
   %ul.importing_boards
     - @boards.each do |board|
@@ -13,7 +14,7 @@
           = image_tag board.cover.url
           %label
             = check_box_tag 'mass-select-board'
-            Mass Edit all pins
+            Mass Edit all pins in board
           
         %ul.importing_pins
           - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
@@ -67,7 +68,7 @@
                     = p.text_field :price
                 .misc
                   .open_close_controls
-                    = link_to_function 'Remove from Import', "toggleImportingThisPin(this)"
+                    = link_to_function 'Remove pin from Import', "toggleImportingThisPin(this)"
                   .mass_edit
                     = check_box_tag 'mass-select'
                     Mass Edit

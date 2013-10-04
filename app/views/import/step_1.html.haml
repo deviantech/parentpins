@@ -3,9 +3,11 @@
   #pinterest_section
     - if @external_boards.length > 1
       .importing_boards
-        %p Click to filter board pins or drag link to ParentPin board below to add all pins from that board.
+        %p 
+          Your Pinterest Boards
+          %span{ :title => 'Drag pins from these Pinterest boards onto the boards below. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :rel => 'tooltip', 'data-placement' => 'right', :class => 'float:right;'} ?
         %ul
-          %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pins
+          %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pinterest Pins
           - @external_boards.each do |board|
             %li.board{:data => {:class => "board-#{board.id}"}}
               %span.board_name= board.name
@@ -17,12 +19,14 @@
       %h2 Drag Your Pinterest Pins to Your ParentPins Boards Below
       .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
         %h3 
-          Pins previously imported
+          Pinterest Pins previously imported
           = link_to_function '(hide)', 'return false', :id => 'ppTogglePreviouslyImportedPins'
+          %span{ :title => 'If in the future you decide to import more pins, the ones you have already imported will be saved here so you can easily go through the importer process again.', :rel => 'tooltip', 'data-placement' => 'right'} ?
         %ul.collection.clearfix
     
       .importing_pins.not_yet_imported
-        %h3 Pins not yet imported
+        %h3
+          Pinterest Pins not yet imported
         %ul.collection.clearfix
           - @external_boards.each do |board|
             - board.pins.each do |pin|
@@ -36,7 +40,8 @@
 
   #our_section
     %h2
-      Drag Pins To Your ParentPin Boards
+      Your ParentPpins Boards
+      %span{ :title => 'Drag your Pinterest pins from above onto these boards. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :rel => 'tooltip', 'data-placement' => 'right', :style => 'float:none;clear:none;display:inlne;'} ?
     %ul.boards
       - if user_signed_in? && current_user.boards.empty?
         .no-pp-boards
