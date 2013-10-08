@@ -15,7 +15,8 @@ $(document).ready(function() {
   $('[rel=popover]').popover({container: 'body', trigger: 'hover'});
 
   applyCharacterCounterTo('.character_counter');
-  adjustFeaturedHeight();
+  
+  if ($('.feat_carousel').length) matchAllFeaturedHeights();
   
   var windowHash = window.location.hash || window.originalLocationHash;
   if (windowHash) {

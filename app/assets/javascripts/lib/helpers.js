@@ -246,7 +246,7 @@ function updateFollowingButtonsAfterClickOn(clicked) {
   }
 }
 
-function adjustFeaturedHeight() {
+function matchAllFeaturedHeights() {
   var all = $('.feature .user');
   var tallest = 0;
   all.each(function() {
