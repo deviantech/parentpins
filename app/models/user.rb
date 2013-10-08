@@ -109,7 +109,11 @@ class User < ActiveRecord::Base
   
 
   def twitter_account=(str)
-    return if str.blank?
+    if str.blank?
+      self['twitter_account'] = nil
+      return
+    end
+    
     val = str.gsub(/@/, '').split('/').last.split('?').first
     if val.blank? 
       @twitter_error = str
