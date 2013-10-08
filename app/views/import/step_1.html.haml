@@ -40,7 +40,7 @@
 
   #our_section
     %h2
-      Your ParentPpins Boards
+      Your ParentPins Boards
       %span{ :title => 'Drag your Pinterest pins from above onto these boards. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :rel => 'tooltip', 'data-placement' => 'right', :style => 'float:none;clear:none;display:inlne;'} ?
     %ul.boards
       - if user_signed_in? && current_user.boards.empty?

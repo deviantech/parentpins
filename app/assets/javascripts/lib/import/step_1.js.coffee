@@ -33,17 +33,9 @@ dataToSubmit = () ->
 
 tellParentOurHeight = () ->
   if $('body').is(':visible')
-    updateBoardHeight()
     if $('#pp_pinterest_import_wrapper').length
       height = $('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15
       sendMessage("step1:setHeight:#{height}")    
-
-# TODO: Remove this once CSS fixed for modifying board height
-updateBoardHeight = () ->
-  if $('.importing_boards ul').length
-    max = $('#pinterest_section').height() - $('.importing_boards ul').offset().top - 20
-    $('.importing_boards ul').css({'max-height': max})
-
 
 handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
   if prevImported # If already have some, append to the imported list
@@ -170,8 +162,7 @@ initDragDrop = () ->
     general: {
       revert: 'invalid',
       helper: 'clone',
-      cursor: "move", 
-      cursorAt: { top: -5, left: -5 },
+      cursor: "move",
       containment: '#pp_pinterest_import_wrapper',
       delay: 0,
       distance: 0,
