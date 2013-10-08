@@ -148,9 +148,9 @@ module ApplicationHelper
   end
   
   def absolute_url(url)
-    return url if url.starts_with?(/http/i)
+    return url if url =~ /\Ahttp/i
     url = [host, url].join('/').gsub(/\/{2,}/, '/')
-    url = "http://#{url}" unless url.starts_with?(/http/i)
+    url = "http://#{url}" unless url =~ /\Ahttp/i
     url
   end
 

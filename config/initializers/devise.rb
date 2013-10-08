@@ -8,6 +8,8 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
   config.mailer_sender = "info@parentpins.com"
 
+  config.secret_key = '607adb32afa117e16bd8d23b0d064f395bd3ae858a69f6fe0eac3698dc39d4ad178259afd7bbadee7d794e4518ae022d9da662f73f0d876081b3bd3489d43049'
+
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
 

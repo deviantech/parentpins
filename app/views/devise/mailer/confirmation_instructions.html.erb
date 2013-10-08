@@ -13,7 +13,7 @@
       <tr>
         <td valign="middle" class="templateButtonContent">
           <div mc:edit="std_content01">
-            <%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @resource.confirmation_token), :style => "color:#fff;text-decoration:none;" %>
+            <%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @token), :style => "color:#fff;text-decoration:none;" %>
           </div>
         </td>
       </tr>

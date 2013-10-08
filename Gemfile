@@ -44,7 +44,7 @@ end
 gem 'mail_view'
 
 group :test do
-  gem 'factory_girl_rails', :platform => :ruby_19
+  gem 'factory_girl_rails', :platform => [:ruby_19, :ruby_20]
   gem 'ffaker'
 end
 
@@ -58,12 +58,12 @@ gem 'roadie'
 
 gem 'capistrano'
 gem 'ruby-debug', :platform => :ruby_18
-gem 'debugger', :platform => :ruby_19
+gem 'debugger', :platform => [:ruby_19, :ruby_20]
 
 gem 'haml'
 gem 'rails_autolink'
 
-gem 'devise', '~> 2.2.3'
+gem 'devise', '~> 3.1.1'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'

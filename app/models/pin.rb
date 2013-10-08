@@ -239,7 +239,7 @@ class Pin < ActiveRecord::Base
     raw = self['url'].to_s
     
     begin
-      if raw.starts_with?(/https?/i)
+      if raw =~ /\Ahttps?/i
         uri = URI.parse(raw)
       else
         uri = URI.join(self.via_url.to_s, raw)
