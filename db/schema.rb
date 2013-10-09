@@ -11,12 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130725014141) do
+ActiveRecord::Schema.define(:version => 20131008233302) do
 
   create_table "age_groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "description"
   end
 
   create_table "boards", :force => true do |t|
@@ -83,11 +84,11 @@ ActiveRecord::Schema.define(:version => 20130725014141) do
   create_table "imports", :force => true do |t|
     t.integer  "user_id"
     t.string   "source"
-    t.integer  "attempted",  :default => 0
-    t.integer  "completed",  :default => 0
+    t.integer  "attempted"
+    t.integer  "completed"
     t.string   "user_agent"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "pins", :force => true do |t|

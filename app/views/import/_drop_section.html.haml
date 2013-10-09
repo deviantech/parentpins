@@ -1,9 +1,9 @@
 .drop_section_wrapper.clearfix{:data => {:extra_key => attribute_to_set}}
   %ul
-    - droppables.each do |key, value|
+    - droppables.each do |key, value, description|
       %li.drop-target{:data => {attribute_to_set => value, 'target-id' => value}}
         %h3
-          %span.help{ :class => key }
+          %span.help{tooltip("Drag here pins #{description}", :placement => 'top')}
             ?
           = key
         %ul.collection

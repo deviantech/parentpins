@@ -239,9 +239,7 @@ body.importing.step_1 {
       margin:12px 0 0 12px;
       font-weight:normal;
       span {
-        display:block;
-        font-size:15px;
-        line-height:18px;
+        margin-left: 50px;
       }
     }
     .no-pp-boards {
@@ -514,41 +512,7 @@ body.importing.step_1 {
               line-height: 18px;
               &:hover {
                 cursor:pointer;}
-              &:hover:before {
-                display: block;
-                content: "";
-                padding: 3px 12px;
-                position: absolute;
-                top: 0px;
-                right: 40px;
-                width: 228px;
-                background: rgba(0, 0, 0, 0.78);
-                color: #FFF;
-                text-align: left;
-                font-size: 13px;
-                line-height: 18px; }
-              &:hover:after {
-                display: block;
-                position: absolute;
-                content: "";
-                height: 0;
-                width: 0;
-                border-left: 6px solid rgba(0, 0, 0, 0.7);
-                border-top: 6px solid rgba(0, 0, 0, 0);
-                border-bottom: 6px solid rgba(0, 0, 0, 0);
-                left: 0;
-                top: 15px;
-              }
             }
-            .Article:hover:before {
-              content:"Drag pins here that come from blogs, writers, news sources, etc."; }
-            .Product:hover:before {
-              content:"Drag pins here that come from an online store or are just cool products for sale.";
-              top:-12px; }
-            .Idea:hover:before {
-              content:"Drag pins here that are just generally good ideas for parents or kids."; }
-            .Family:hover:before {
-              content:"Not age specific. Fun for the whole family."; }
           }
           &.ui-droppable-active {
             background: #DDFFE2;

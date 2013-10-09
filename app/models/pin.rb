@@ -4,7 +4,12 @@ class Pin < ActiveRecord::Base
   attr_accessor :cached_remote_image_url, :cached_remote_small_image_url, :external_id
   attr_accessible :kind, :description, :price, :url, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id, :cached_remote_image_url, :cached_remote_small_image_url, :external_id
 
-  VALID_TYPES = %w(idea product article)
+  VALID_TYPE_DESCRIPTIONS = {
+    'idea' => 'that are just generally good ideas for parents or kids.',
+    'product' => 'that come from an online store or are cool products for sale.',
+    'article' => 'that come from blogs, writers, news sources, etc.'
+  }
+  VALID_TYPES = VALID_TYPE_DESCRIPTIONS.keys
   REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image source_url)
 
   mount_uploader :image, PinImageUploader
