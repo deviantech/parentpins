@@ -1,6 +1,6 @@
 = render 'progress', :step => 2
 .instructions
-  What type of pins are these? Drag pins individually to the appropriate type below or drag the board name to add them all.
+  What type of pins are these? Drag pins individually to the appropriate type below#{', or drag the board name to add all contained pins' if @boards.length > 1}.
 = render 'drag_section', :attribute_to_set => :kind
 = render 'drop_section', :attribute_to_set => :kind, :droppables => Pin::VALID_TYPE_DESCRIPTIONS.collect {|t, desc| [t.humanize, t, desc]}
 
