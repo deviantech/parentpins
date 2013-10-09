@@ -41,13 +41,18 @@ checkIfAnyDraggableLeft = () ->
     updateBoardPendingPinsCounters()
     section = dragSection.find('ul.pins')
     section.find('.no-more').remove()
+    hideBoards = false
+    
     unless section.find('li.pin:visible').length
       msg = if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
+        hideBoards = true
         "Congrats, you've assigned all pins!"
       else
         "You've already assigned all pins in this board."
       section.append("<div class='no-more'>#{msg}</div>")
-  
+
+    if hideBoards then $('.drag_section_wrapper ul.boards').slideUp() else $('.drag_section_wrapper ul.boards').slideDown()
+        
     if section.find('li.pin').length
       footer.find('.instructions').show()
       footer.find('.hide_until_complete').hide()
@@ -56,6 +61,8 @@ checkIfAnyDraggableLeft = () ->
       footer.find('.instructions').hide()
       footer.find('.hide_until_complete').show()
       $(window).on 'keypress', submitOnEnter
+      
+
   setTimeout soon, 10 # Let drag complete first
   
 # DATA -- assign kind or age group to handle both steps

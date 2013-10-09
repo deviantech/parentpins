@@ -73,6 +73,13 @@ $themeHIGHLIGHT: #505061;
   text-align:center;
 }
 
+@mixin transition($what: all, $length: 0.4s, $how: ease-in-out) {
+  -webkit-transition: $what $length $how;
+  -moz-transition: $what $length $how;
+  -o-transition: $what $length $how;
+  transition: $what $length $how; 
+}
+
 /* site wide general */
 
 .right {float:right;}
@@ -133,10 +140,7 @@ a {
     left: 4px;
     padding:5px 10px;
     overflow: hidden;
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out; }
+    @include transition; }
   &.unfollow {
     background-color: #ddd;
     border: 1px solid #bbb;
@@ -320,17 +324,11 @@ ul li .handle {
     padding: 5px 9px 3px 9px;
     margin-top: 5px;
     resize: none;
-    -webkit-transition: all 0.4s ease-in-out;
-    -moz-transition: all 0.4s ease-in-out;
-    -o-transition: all 0.4s ease-in-out;
-    transition: all 0.4s ease-in-out;
+    @include transition;
     &:focus {
       background:#fff;
       width:126px;
-      -webkit-transition: all 0.4s ease-in-out;
-      -moz-transition: all 0.4s ease-in-out;
-      -o-transition: all 0.4s ease-in-out;
-      transition: all 0.4s ease-in-out; } }
+      @include transition; } }
   .search_button {
     float:left; 
     -moz-border-radius: 0 4px 4px 0;
@@ -1185,11 +1183,7 @@ li.pin-context {
     top: -158px;
     left: 0;
     z-index: 2;
-    -webkit-transition: all 0.5s ease 0s;
-    -moz-transition: all 0.5s ease 0s;
-    -ms-transition: all 0.5s ease 0s;
-    -o-transition: all 0.5s ease 0s;
-    transition: all 0.5s ease 0s; }
+    @include transition(all, 0.5s, ease 0s); }
   &:hover .actions {
     top: 0; }
   .image_link {
@@ -1980,10 +1974,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
       &:hover {
           ol {
           display:block;
-          -webkit-transition: all 0.4s ease-in-out;
-          -moz-transition: all 0.4s ease-in-out;
-          -o-transition: all 0.4s ease-in-out;
-          transition: all 0.4s ease-in-out; } }
+          @include transition; } }
 } } } 
 
 .set_filters .categories ol {
@@ -2088,10 +2079,7 @@ input:focus[placeholder], textarea:focus[placeholder] {
       line-height:18px;
       font-weight:normal;
       opacity: 1;
-      -webkit-transition: all 0.4s ease-in-out;
-      -moz-transition: all 0.4s ease-in-out;
-      -o-transition: all 0.4s ease-in-out;
-      transition: all 0.4s ease-in-out; } } }
+      @include transition; } } }
     
 .timeline.user_results {        
   width:auto;
