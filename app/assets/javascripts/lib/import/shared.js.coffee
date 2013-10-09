@@ -48,3 +48,12 @@ window.multiDragOpts = {
       $('body').css('cursor', 'auto')
   }
   
+$(document).ready () ->
+  form = $('#import_form')
+  $('.import_progress a.previous').on 'click', (e) ->
+    e.preventDefault()
+    console.log 'clicked', form
+    form.data('go-back', true)
+    form.attr('action', $(this).attr('href'))
+    form.submit()
+  

@@ -177,14 +177,6 @@ $(document).ready () ->
   dragSection.on 'mousedown', 'li.board', (e) ->
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
     hideShowPinsForSelectedBoard()
-  
-  
-  form = $('#import_form')
-  $('.import_progress a.previous').on 'click', (e) ->
-    e.preventDefault()
-    form.data('go-back', true)
-    form.attr('action', $(this).attr('href'))
-    form.submit()
     
-  form.on 'submit', (e) ->
+  $('#import_form').on 'submit', (e) ->
     handleSubmission()

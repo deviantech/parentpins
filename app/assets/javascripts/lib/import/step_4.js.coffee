@@ -104,12 +104,8 @@ $(document).ready () ->
   return unless $('.context.step_4').length
   
   
-  form = $('form.import_form')
-  
-  form.on 'click', '.btn.previous', () ->
-    form.data('go-back', true)
-    form.attr('action', form.data('previous'))
-  
+  form = $('#import_form')
+    
   form.on 'submit', () ->
     if form.find('li.importing_pin.complete').length == 0 && !form.data('go-back')
       alert('You need to fill in all required fields for each pin before we can complete the import.')

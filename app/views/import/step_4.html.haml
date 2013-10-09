@@ -2,7 +2,7 @@
 
 %p.review_pins
   Please review your pins and make any changes necessary before importing. You can mass edit the pin type or age group for all pins in a board, or edit pins individually.
-= form_for :pins, :url => pin_import_step_5_path, :html => {:class => 'import_form', :data => {:previous => pin_import_step_3_path}} do |f|
+= form_for :pins, :url => pin_import_step_5_path, :html => {:id => 'import_form'} do |f|
   %ul.importing_boards
     - @boards.each do |board|
       %li.importing_board
@@ -78,7 +78,6 @@
   .clearfix
 
   .submit_bar
-    = f.submit '&larr; Previous'.html_safe, :class => 'btn grayed previous'
     = f.submit 'Complete Import &rarr;'.html_safe, :class => 'btn primary'
     
 #mass-edit-controls
