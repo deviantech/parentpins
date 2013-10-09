@@ -6,7 +6,7 @@
   if (form1.length) {
     newComment.insertAfter(form1);
     form1.hide().find('textarea').val('');
-    form1.parents('.masonry').masonry('reload');
+    form1.parents('.masonry').masonry('layout');
     newComment = newComment.clone();
   }
 

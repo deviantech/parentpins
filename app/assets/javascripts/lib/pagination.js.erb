@@ -80,7 +80,7 @@ function initAjaxPagination(paginationButton) {
           $newItems.show();
         }
         if ($resultsHolder.hasClass('masonry')) {
-          $resultsHolder.masonry('appended', $newItems, true);
+          $resultsHolder.masonry('appended', $newItems);
         }
       });
       

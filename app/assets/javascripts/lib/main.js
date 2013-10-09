@@ -64,12 +64,13 @@ $(document).ready(function() {
     $this = $(this);
     if ($this.parents('.pin-context').length == 0) return;
     var focusable;
+    var pin = $this.parents('li.pin');
           
-    if ($this.parents('li.pin').length) { // If on page listing multiple pins
-      focusable = $this.parents('li.pin').find('.comment_form textarea').first();
+    if (pin.length) { // If on page listing multiple pins
+      focusable = pin.find('.comment_form textarea').first();
       focusable.parents('.comment_form').toggle();
-      focusable.parents('.masonry').masonry('reload');
-      scrollTo( $this.parents('li.pin') );
+      scrollTo( pin );
+      focusable.parents('.masonry').masonry('layout');
     } else { // If in modal or on standalone pin#show page
       focusable = $this.parents('.pin-context').find('.comment_form textarea').first();
       if ($this.parents('.modal_overlay').length) {
@@ -102,7 +103,7 @@ $(document).ready(function() {
       var longer = wrapper.data('original-text') + ' ' + '<a href="#" class="view-less">(less)</a>';
       wrapper.html(longer);
       window.kt = wrapper;
-      wrapper.parents('.masonry').masonry('reload');
+      wrapper.parents('.masonry').masonry('layout');
     }
   });
   
@@ -112,8 +113,8 @@ $(document).ready(function() {
     var wrapper = $(e.target).parent();
     if (wrapper.data('short-text')) {
       wrapper.html( wrapper.data('short-text') );
-      scrollTo(wrapper.parents('.masonry-brick'));
-      wrapper.parents('.masonry').masonry('reload');
+      if (wrapper.parents('ul.masonry li').length) scrollTo(wrapper.parents('ul.masonry li'));
+      wrapper.parents('.masonry').masonry('layout');
     }
   });
           

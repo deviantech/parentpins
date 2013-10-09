@@ -187,13 +187,10 @@ function applyMasonry(selector) {
   selector = selector || '.masonry';
 
   $(selector).masonry({
-    columnWidth: 10,
-    gutterWidth: 6,
     itemSelector: 'li',
-    isAnimated: !Modernizr.csstransitions,
     isFitWidth: true
   }).imagesLoaded(function() {
-    $(this).masonry('reload');
+    $(selector).masonry('layout');
   });  
 }
 
@@ -201,7 +198,7 @@ function viewAllComments(link) {
   var div = $(link).hasClass('load-more') ? $(link) : $(link).parents('.load-more');
   div.hide();
   div.siblings('.comment').removeClass('hidden');
-  div.parents('.masonry').masonry('reload');
+  div.parents('.masonry').masonry('layout');
 }
 
 
