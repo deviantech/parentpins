@@ -10,12 +10,14 @@
       %li{:class => progress_class(step, 1)} 
         %span 1.
         Select External Pins
-      %li{:class => progress_class(step, 2)}
-        %span 2.
-        Assign Pin Types
-      %li{:class => progress_class(step, 3)}
-        %span 3.
-        Assign Age Groups
+      = previous_link step, 2 do
+        %li{:class => progress_class(step, 2)}
+          %span 2.
+          Assign Pin Types
+      = previous_link step, 3 do
+        %li{:class => progress_class(step, 3)}
+          %span 3.
+          Assign Age Groups
       %li{:class => progress_class(step, 4)}
         %span 4.
         Finalize and Import

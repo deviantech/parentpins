@@ -7,6 +7,7 @@
         %li.board{:data => {'board-id' => board.id}}
           %span.label= board.name
           %span.counter{tooltip("Unassigned pins remaining in this board.")}
-  
+
   %ul.pins.clearfix{:class => @boards.length > 1 ? '' : 'no-boards'}
     = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set).blank? }
+    = yield :import_step_submit_form

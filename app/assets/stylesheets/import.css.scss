@@ -365,6 +365,9 @@ body.importing.step_1 {
     padding: 12px;
     width:760px;
     border-top: 4px solid #E6E6E6;
+    a {
+      text-decoration: none;
+    }
     li {
       display: inline-block;
       margin-left: 12px;
@@ -408,23 +411,31 @@ body.importing.step_1 {
     }
   }  
   .instructions {
+    margin: 0 30px 12px;
     font-size: 15px;
     color: #333;
     text-align:center;
-    margin-bottom:12px;
   }
-  .submit_bar {
-    height: 50px;
-    width: 95%;
-    padding: 12px;
-    margin-top: 12px;
-    text-align: center;
+  .drag_section_wrapper {
+    ul.pins.short-bottom {
+      padding-bottom: 4px !important;
+    }
+    .done {
+      margin: -10px;
+      text-align: center;
+      font-size: 1.2em;
+      color: #000;
+      padding: 18px;
+      background: #DAFFDD;
+    }
     .hide_until_complete {
       display: none;
     }
     input[type=submit] {
       float: right;
-      margin: 5px;
+      margin-right: 5px;
+      position: relative;
+      top: -7px;
     }
     .btn.previous {
       float: left;
@@ -583,7 +594,6 @@ body.importing.step_1 {
         background: rgba(0, 0, 0, 0.1);
       }
     }
-    
     .drag_section_wrapper {
       text-align: center;
       padding: 0;
@@ -634,14 +644,6 @@ body.importing.step_1 {
         max-height: 150px;
         overflow-y: scroll;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04) inset;
-        .no-more {
-          text-align: center;
-          font-size: 1.2em;
-          color: #000;
-          padding: 18px;
-          background: #DAFFDD;
-          margin: -10px;
-        }
       }
       ul.pins.no-boards {
         float: none;

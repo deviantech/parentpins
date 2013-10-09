@@ -1,12 +1,15 @@
+- content_for :import_step_submit_form do
+  = form_tag pin_import_step_4_path, :id => 'import_form', :class => 'hide_until_complete' do
+    = hidden_field_tag 'data_string', ''
+    .done
+      Congrats, you've assigned all pins!
+      = submit_tag "Continue to Step 4 &rarr;".html_safe, :class => 'btn primary'
+
+
+
 = render 'progress', :step => 3
 .instructions
   Please drag each pin to a box to assign age groups#{', or drag the board name to add all contained pins' if @boards.length > 1}.
+  
 = render 'drag_section', :attribute_to_set => :age_group_id  
 = render 'drop_section', :attribute_to_set => :age_group_id, :droppables => AgeGroup.all.collect{|a| [a.name, a.id, a.description]}
-    
-.submit_bar
-  
-  = form_tag pin_import_step_4_path, :id => 'import_form', :data => {:previous => pin_import_step_2_path} do
-    = submit_tag "&larr; Previous".html_safe, :class => 'btn grayed previous'
-    = hidden_field_tag 'data_string', ''
-    = submit_tag "Assign Age Groups &rarr;".html_safe, :class => 'btn primary hide_until_complete'

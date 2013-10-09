@@ -1,10 +1,16 @@
+- content_for :import_step_submit_form do
+  = form_tag pin_import_step_3_path, :id => 'import_form', :class => 'hide_until_complete' do
+    = hidden_field_tag 'data_string', ''
+    .done
+      Congrats, you've assigned all pins!
+      = submit_tag "Continue to Step 3 &rarr;".html_safe, :class => 'btn primary'
+
+
+
+
 = render 'progress', :step => 2
 .instructions
   What type of pins are these? Drag pins individually to the appropriate type below#{', or drag the board name to add all contained pins' if @boards.length > 1}.
+
 = render 'drag_section', :attribute_to_set => :kind
 = render 'drop_section', :attribute_to_set => :kind, :droppables => Pin::VALID_TYPE_DESCRIPTIONS.collect {|t, desc| [t.humanize, t, desc]}
-
-.submit_bar
-  = form_tag pin_import_step_3_path, :id => 'import_form', :class => 'hide_until_complete' do
-    = hidden_field_tag 'data_string', ''
-    = submit_tag "Assign Pin Types &rarr;".html_safe, :class => 'btn primary'

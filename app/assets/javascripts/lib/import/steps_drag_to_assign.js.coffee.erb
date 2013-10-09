@@ -1,6 +1,5 @@
 dragSection = $('.drag_section_wrapper')
 dropSection = $('.drop_section_wrapper')
-footer = $('.submit_bar')
 selectTarget = null
 form = null
 boardsAreShown = dragSection.find('ul.boards').length > 0
@@ -40,26 +39,26 @@ checkIfAnyDraggableLeft = () ->
   soon = () ->
     updateBoardPendingPinsCounters()
     section = dragSection.find('ul.pins')
-    section.find('.no-more').remove()
     hideBoards = false
     
+    section.find('.no-more').remove()
     unless section.find('li.pin:visible').length
-      msg = if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
+      if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
         hideBoards = true
-        "Congrats, you've assigned all pins!"
       else
-        "You've already assigned all pins in this board."
-      section.append("<div class='no-more'>#{msg}</div>")
+        section.append("<div class='no-more'>You've already assigned all pins in this board.</div>")
 
-    if hideBoards then $('.drag_section_wrapper ul.boards').slideUp() else $('.drag_section_wrapper ul.boards').slideDown()
+    theBoards = $('.drag_section_wrapper ul.boards')
+    if hideBoards then theBoards.hide() else theBoards.show() 
         
     if section.find('li.pin').length
-      footer.find('.instructions').show()
-      footer.find('.hide_until_complete').hide()
+      dragSection.find('.hide_until_complete').hide()
+      dragSection.find('ul.pins').removeClass('short-bottom')
       $(window).off 'keypress', submitOnEnter
     else
-      footer.find('.instructions').hide()
-      footer.find('.hide_until_complete').show()
+      section.find('.no-more').remove() 
+      dragSection.find('.hide_until_complete').show()
+      dragSection.find('ul.pins').addClass('short-bottom')
       $(window).on 'keypress', submitOnEnter
       
 
@@ -181,10 +180,11 @@ $(document).ready () ->
   
   
   form = $('#import_form')
-  form.find('.btn.previous').on 'click', () ->
-    if form.data('previous')
-      form.data('go-back', true)
-      form.attr('action', form.data('previous'))
+  $('.import_progress a.previous').on 'click', (e) ->
+    e.preventDefault()
+    form.data('go-back', true)
+    form.attr('action', $(this).attr('href'))
+    form.submit()
     
   form.on 'submit', (e) ->
     handleSubmission()
