@@ -9,10 +9,12 @@ class FrontController < ApplicationController
   end
   
   def login_first
+    from = request.env["HTTP_REFERER"] ? :back : '/'
+
     if user_signed_in?
-      redirect_to request.env["HTTP_REFERER"] ? :back : '/'
+      redirect_to from
     else
-      session[:user_return_to] = request.referer
+      session[:user_return_to] = from
       flash[:error] = "Please log in to continue."
       redirect_to new_user_session_path
     end

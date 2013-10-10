@@ -4,7 +4,8 @@ class ImportController < ApplicationController
   before_filter :parse_params,        :except => [:login_check, :external_embedded, :show]
   before_filter :get_profile_info,    :except => [:login_check, :external_embedded, :step_1]
   before_filter :set_filters,         :only =>   [:show]
-
+  
+  
   def external_embedded
     flash[:error] = "Unable to initiate ParentPin process -- it appears javascript wasn't enabled on the referring page."
     redirect_to '/'
