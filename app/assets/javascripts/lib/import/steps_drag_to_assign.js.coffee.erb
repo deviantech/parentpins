@@ -79,7 +79,7 @@ collectPinDataFrom = (selector, extraKey) ->
       
   return data
 
-handleSubmission = () ->
+handleSubmission = (form) ->
   if $('.drag_section_wrapper li.pin').length && !form.data('go-back')
     alert("Please drag ALL pins to one of the boxes on top first.")
     return false
@@ -88,7 +88,7 @@ handleSubmission = () ->
       collectPinDataFrom( $('.context.step_drag_to_assign') )
     else
       collectPinDataFrom( dropSection.find('.drop-target'), dropSection.data('extra-key') )
-    
+        
     # Because .param requires an object, not an array of objects
     dataAsObject = {}
     $.each data, (idx, item) ->
@@ -179,4 +179,4 @@ $(document).ready () ->
     hideShowPinsForSelectedBoard()
     
   $('#import_form').on 'submit', (e) ->
-    handleSubmission()
+    handleSubmission( $(this) )
