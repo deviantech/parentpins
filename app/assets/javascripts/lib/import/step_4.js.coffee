@@ -55,7 +55,7 @@ window.toggleImportingThisPin = (link) ->
     $('#'+li.attr('id')+'_pin_info').insertAfter( li.find('.pin_photo') ).show()
     li.find('.pin_errors').show()
     li.find('.status_boxes').show()
-    li.find('.open_close_controls a').text('Remove from Import')
+    li.find('.open_close_controls a').text('Remove pin from import')
   else
     li.addClass('skip-this-pin')
     
@@ -63,7 +63,7 @@ window.toggleImportingThisPin = (link) ->
     li.find('.pin_info').hide()
     li.find('.pin_errors').hide()
     li.find('.status_boxes').hide()
-    li.find('.open_close_controls a').text('Import this Pin')
+    li.find('.open_close_controls a').text('Import this pin')
 
     # Now actually move .pin_info outside the form, so it doesn't submit
     li.find('.pin_info').insertAfter( li.parents('form') )
