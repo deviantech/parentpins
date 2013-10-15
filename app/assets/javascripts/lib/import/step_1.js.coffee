@@ -81,7 +81,7 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
 hideShowPinsForSelectedBoard = () ->
   class_to_show = if $('.importing_boards li.selected').length then $('.importing_boards li.selected').data('class') else 'board-all'
   soon = () =>
-    $('.importing_pins li.pin').hide()
+    $('.importing_pins li.pin').hide().removeClass('ui-selected')
     $('.importing_pins li.pin.' + class_to_show).show()
     checkIfAnyDraggableLeft()
 

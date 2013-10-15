@@ -24,7 +24,7 @@ hideShowPinsForSelectedBoard = () ->
   id = dragSection.find('ul.boards li.selected').data('board-id')
   soon = () =>
     if boardsAreShown && id
-      dragSection.find('li.pin').hide()
+      dragSection.find('li.pin').hide().removeClass('ui-selected')
       dragSection.find("li.pin.board_#{id}").show()
     checkIfAnyDraggableLeft()
 
