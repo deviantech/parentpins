@@ -119,6 +119,8 @@ drop = {
       toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
       checkIfAnyDraggableLeft()
       applyDroppableMasonry()
+    deactivate: (event, ui) ->
+      $('li.pin').css({opacity: 1.0})
   },
   onDraggable: {
     activeClass: "ui-droppable-active",

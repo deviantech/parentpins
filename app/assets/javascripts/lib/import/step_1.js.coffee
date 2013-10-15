@@ -140,6 +140,8 @@ initDragDrop = () ->
         toAdd.css('opacity', 1.0).addClass('assigned').draggable('destroy').draggable(drag.pinsFromOurBoards).appendTo(target)
         hideShowPinsForSelectedBoard()
         updateDroppedPinCounts()
+      deactivate: (event, ui) ->
+        $('li.pin').css({opacity: 1.0})
     },
     overPinterestBoards: {
       hoverClass: "ui-droppable-hovering",
