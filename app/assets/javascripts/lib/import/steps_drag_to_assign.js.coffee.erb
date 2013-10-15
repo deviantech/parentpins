@@ -150,7 +150,7 @@ drag = {
   }
 }  
 drag.pinsFromDroppable = $.extend({}, drag.general)
-drag.boardsToDroppable = $.extend({}, drag.general, {cursorAt: null})
+drag.boardsToDroppable = $.extend({}, drag.general, {cursorAt: null, delay: 5})
 drag.pinsToDroppable = $.extend({}, drag.general, window.multiDragOpts)
 
 applyDroppableMasonry = () ->
