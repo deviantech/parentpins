@@ -22,7 +22,7 @@
     <![endif]-->
     <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
     <div class="clearfix"></div>
-    <%= javascript_include_tag "application.js" %>
+    <%#= javascript_include_tag "application.js" %>
     <%= javascript_include_tag "import.js" %>
     <%= yield :footer_js %>
 </body>

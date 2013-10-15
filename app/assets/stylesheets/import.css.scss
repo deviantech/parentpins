@@ -228,7 +228,7 @@ body.importing.step_1 {
     border-top: 2px dashed #ddd;
     border-bottom: 2px dashed #ddd;
     margin:12px -13px;
-    padding: 12px 24px;
+    padding: 12px;
     .loading {
       padding: 5px;
     }
@@ -247,6 +247,9 @@ body.importing.step_1 {
       text-align: center;
       padding: 25px;
     }
+    ul.boards {
+      margin-left: 12px;
+    }
     ul {
       font-size: 10px;
       clear: both;
@@ -254,7 +257,7 @@ body.importing.step_1 {
         text-align: center;
         list-style: none;
         float: left;
-        margin: 10px;
+        margin: 5px;
         height: 150px;
         width: 220px;
         background: #fff;
