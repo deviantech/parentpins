@@ -17,10 +17,20 @@ if (window.ppBookmarklet.host)
     if json.logged_in
       window.ppImporter = new window.ppImporterClasses.ImporterBase({dataSource: 'Pinterest'});
     else
-      message("""You'll need to <a href="#{window.ppBookmarklet.host}" target="_blank">log into your ParentPins account</a> before continuing.""")
-    
+      message("""You'll need to <a href="#{window.ppBookmarklet.host}" target="_blank" id="ppDoLoginLink">log into your ParentPins account</a> before continuing.""")
+      if window.ppBookmarklet
+        ppBookmarklet.contentBase.on 'click', '#ppDoLoginLink', () ->
+          ppBookmarklet.contentBase.find('#progressDisplay').append("""<br><br><a href="#" id="ppCheckLoginLink">Click to try again</a>.""")
+
+        ppBookmarklet.contentBase.on 'click', '#ppCheckLoginLink', () ->
+          checkLoggedIn()
+          
   onFailure = () ->
     message("Unable to connect with server -- please try again later.")
     
+  
+  checkLoggedIn = () ->
+    ppBookmarklet.contentBase.off 'click'
+    $.getJSON("#{loggedInURL}?callback=?").done(onSuccess).fail(onFailure)
     
-  $.getJSON("#{loggedInURL}?callback=?").done(onSuccess).fail(onFailure)
+  checkLoggedIn()
