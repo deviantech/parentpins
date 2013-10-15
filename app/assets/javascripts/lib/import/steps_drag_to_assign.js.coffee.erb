@@ -40,6 +40,7 @@ checkIfAnyDraggableLeft = () ->
     updateBoardPendingPinsCounters()
     section = dragSection.find('ul.pins')
     hideBoards = false
+    if boardsAreShown && section.find('li.pin').length == 0 then hideBoards = true
     
     section.find('.no-more').remove()
     unless section.find('li.pin:visible').length
