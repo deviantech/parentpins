@@ -303,6 +303,11 @@ body.importing.step_1 {
 .multi-drag-helper {
   z-index: 999999;
   position: relative;
+  li.pin:hover {
+    .hover_info {
+      display: none !important;
+    }
+  }
 }
 .multi-drag-helper-counter {
   position: absolute;
