@@ -2,9 +2,10 @@
   %ul.drop_sections
     - droppables.each do |key, value, description|
       %li.drop-target{:data => {attribute_to_set => value, 'target-id' => value}}
-        %h3
-          %span.help{tooltip("Drag here pins #{description}", :placement => 'top')}
-            ?
-          = key
-        %ul.collection
-          = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set) == value }, :locals => {:extra_class => 'from-drop-target'}
+        .drop-target-inner-wrapper
+          %h3
+            %span.help{tooltip("Drag here pins #{description}", :placement => 'top')}
+              ?
+            = key
+          %ul.collection
+            = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set) == value }, :locals => {:extra_class => 'from-drop-target'}
