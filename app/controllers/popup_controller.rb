@@ -8,7 +8,7 @@ class PopupController < ApplicationController
       redirect_to(popup_login_path) and return 
     end
     
-    @pin = params[:pin] ? Pin.craft_new_pin(current_user, params[:pin], :skip_board => true) : Pin.new_from_bookmarklet(current_user, params)
+    @pin = params[:pin] ? Pin.craft_new_pin(current_user, params[:pin]) : Pin.new_from_bookmarklet(current_user, params)
   end
   
   def success
