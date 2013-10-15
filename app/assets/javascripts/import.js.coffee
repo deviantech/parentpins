@@ -1,4 +1,3 @@
-//= require jquery
 //= require jquery.ui.selectable
 //= require jquery.ui.draggable
 //= require jquery.ui.droppable

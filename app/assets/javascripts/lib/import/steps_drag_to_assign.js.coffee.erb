@@ -158,7 +158,7 @@ drag.pinsToDroppable = $.extend({}, drag.general, window.multiDragOpts)
 
 applyDroppableMasonry = () ->
   dropUL = $('ul.drop_sections')
-  if dropUL .data('masonry')
+  if dropUL.data('masonry')
     dropUL.masonry('layout')
   else
     dropUL.masonry({itemSelector: 'li.drop-target'})

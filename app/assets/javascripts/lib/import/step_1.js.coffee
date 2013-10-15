@@ -81,8 +81,8 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
 hideShowPinsForSelectedBoard = () ->
   class_to_show = if $('.importing_boards li.selected').length then $('.importing_boards li.selected').data('class') else 'board-all'
   soon = () =>
-    $('.importing_pins li.pin').hide().removeClass('ui-selected')
-    $('.importing_pins li.pin.' + class_to_show).show()
+    $('.importing_pins li.pin').hide().removeClass('ui-selected').addClass('hidden')
+    $('.importing_pins li.pin.' + class_to_show).show().removeClass('hidden')
     checkIfAnyDraggableLeft()
 
   # Give JS time to reset to having dropped pin (not sure why, but required)
@@ -92,7 +92,8 @@ checkIfAnyDraggableLeft = () ->
   updateBoardPendingPinsCounters()
   $('.importing_pins').each (i, section) =>
     section = $(section)
-    if section.find('li.pin:visible').length == 0
+    # Using .hidden, not :visible, to count current board's pins because when initializing when loading in iframe :visible returns false (because iframe itself isn't completely visible yet?)
+    if section.find('li.pin:not(.hidden)').length == 0
       kind = if section.hasClass('not_yet_imported') 
        'not-yet-imported'
       else
@@ -240,7 +241,7 @@ $(document).ready () ->
     # Handle Reset Button
     $('#ppResetDragDropLink').on 'click', () =>
       handlePreviouslyImportedData(null, true)
-
+    
     # Handle show/hide previous
     $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
       imported = $('.importing_pins.previously_imported')
@@ -255,7 +256,6 @@ $(document).ready () ->
         link.text('(hide)')
         ul.slideDown () ->
           checkIfAnyDraggableLeft()
-
 
 
     # Only show pins from selected board
