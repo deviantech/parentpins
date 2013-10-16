@@ -118,8 +118,28 @@ updateDroppedPinCounts = () ->
       $board.find('.ourBoardInfo').text(msg)
   setTimeout wrappedUpdateFn, 5
 
+
 # Add draggable/droppable effects
 initDragDrop = () ->
+  section = $('#our_section')
+  
+  # TODO - consider replacing with smooth scrolling. Unfortunately need calculations on the fly because offsets change as boards shown/hidden and pins assigned
+  considerScrollingDroppableContainer = (y) ->
+    dropTop = section.offset().top
+    dropBottom = dropTop + section.height()
+    scrollHeight = section[0].scrollHeight
+    sensitivityRange = scrollHeight * 0.15
+    jump = 10
+  
+    scrollUp    = {min: dropTop - 25, max: dropTop + sensitivityRange}
+    scrollDown  = {min: dropBottom - sensitivityRange, max: dropBottom}    
+    if y > scrollUp.min && y < scrollUp.max
+      section.scrollTop( section.scrollTop() - jump )
+    
+    if y > scrollDown.min
+      section.scrollTop( section.scrollTop() + jump )
+  
+  
   drop = {
     overOurBoards: {
       hoverClass: "ui-droppable-hovering",
@@ -174,6 +194,8 @@ initDragDrop = () ->
       stop: (event, ui) ->
         $(event.target).css({opacity: 1.0})
         updateDroppedPinCounts() # Can't rely on this, because overridden by multiDragOpts
+      drag: (event, ui) -> 
+        considerScrollingDroppableContainer(event.pageY)
     }
   }
   drag.externalBoards = $.extend({}, drag.general, {stack: '.importing_boards li'})

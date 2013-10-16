@@ -229,6 +229,8 @@ body.importing.step_1 {
     border-bottom: 2px dashed #ddd;
     margin:12px -13px;
     padding: 12px;
+    max-height: 200px;
+    overflow: auto;
     .loading {
       padding: 5px;
     }
