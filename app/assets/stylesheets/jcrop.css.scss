@@ -1,10 +1,9 @@
 /*
  * Requiring jcrop from gem. Indirection required to be sure it gets properly precompiled.
  *
+ *=  require jquery.Jcrop.min
+ *
 */
-
-//TODO: re-enable jcrop styling
-// require jquery.Jcrop.min
 
 .croppable_wrapper {
   .jcrop-holder {

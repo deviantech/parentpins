@@ -2,7 +2,7 @@
 
 require 'carrierwave/processing/mime_types'
 
-class BaseUploader < CarrierWave::Uploader::Base
+class BaseUploader < CarrierWave::Uploader::Base  
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::Vips
@@ -30,8 +30,7 @@ class BaseUploader < CarrierWave::Uploader::Base
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   def default_url
-    # For Rails 3.1+ asset pipeline compatibility:
-    asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
+    ActionController::Base.helpers.asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
   end
   
   
