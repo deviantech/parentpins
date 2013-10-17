@@ -33,8 +33,8 @@ class User < ActiveRecord::Base
   before_destroy :clean_redis
 
   # Used by searchable
-  scope :newest_first, order('id DESC')
-  scope :featured, where({:featured => true})
+  scope :newest_first,  -> { order('id DESC') }
+  scope :featured,      -> { where(:featured => true) }
 
   def name
     username.to_s
