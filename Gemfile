@@ -74,7 +74,7 @@ gem 'jcrop-rails-v2', "~> 0.9.12.2"
 
 
 
-gem 'friendly_id'
+gem 'friendly_id', '~> 5.0.0'
 
 
 

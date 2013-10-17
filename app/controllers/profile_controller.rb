@@ -91,6 +91,7 @@ class ProfileController < ApplicationController
   protected
   
   def get_profile
+    debugger
     if params[:id] == 'edit' && params[:action] == 'show' # redirect from devise's user editing
       authenticate_user!
       redirect_to edit_profile_path(current_user) and return

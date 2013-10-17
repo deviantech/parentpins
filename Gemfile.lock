@@ -269,7 +269,7 @@ DEPENDENCIES
   eco
   factory_girl_rails
   ffaker
-  friendly_id
+  friendly_id (~> 5.0.0)
   git
   haml
   jcrop-rails-v2 (~> 0.9.12.2)
