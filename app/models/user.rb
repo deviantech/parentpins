@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h
   
   has_many :boards,       :order => 'position ASC',     :dependent => :destroy
   has_many :pins,         :dependent => :destroy

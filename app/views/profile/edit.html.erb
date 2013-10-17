@@ -17,7 +17,7 @@
         <label>
           <%= @profile.avatar? ? 'Update' : 'Upload an' %> Avatar
           <% if @profile.avatar? %>
-            <small>(<%= link_to 'remove', remove_profile_avatar_path(@profile), :method => :post, :confirm => "Are you sure you want to remove your avatar?" %>)</small>
+            <small>(<%= link_to 'remove', remove_avatar_path, :method => :post, :confirm => "Are you sure you want to remove your avatar?" %>)</small>
           <% end %>
         </label>
         <%= image_tag(@profile.avatar.v50.url) if @profile.avatar? %>
@@ -30,13 +30,16 @@
         <label>
           <%= @profile.cover_image? ? 'Update' : 'Upload a' %> Cover Image 
           <% if @profile.cover_image? %>
-            <small>(<%= link_to 'remove', remove_profile_cover_image_path(@profile), :method => :post, :confirm => "Are you sure you want to remove your cover image?" %>)</small>
+            <small>
+              (<%= link_to 'remove', remove_cover_image_path, :method => :post, :confirm => "Are you sure you want to remove your cover image?" %>
+              or <%= link_to 'customize crop', crop_cover_image_path %>)
+            </small>
           <% end %>
-          <span>(1020x160)</span>  
+          <span>(Will be cropped to 1020x160)</span>  
         </label>
         <% if @profile.cover_image? %>
         <div class="cover_image_preview">
-          <%= image_tag(@profile.cover_image.url) %>
+          <%= image_tag(@profile.cover_image.url(:cropped)) %>
         </div>
         <% end %>
         <%= f.file_field :cover_image %>

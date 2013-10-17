@@ -72,6 +72,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
+gem 'jcrop-rails-v2', "~> 0.9.12.2"
 
 
 

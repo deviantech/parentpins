@@ -116,6 +116,7 @@ GEM
     hike (1.2.3)
     httpauth (0.2.0)
     i18n (0.6.5)
+    jcrop-rails-v2 (0.9.12.2)
     journey (1.0.4)
     jquery-rails (2.1.4)
       railties (>= 3.0, < 5.0)
@@ -278,6 +279,7 @@ DEPENDENCIES
   friendly_id
   git
   haml
+  jcrop-rails-v2 (~> 0.9.12.2)
   jquery-rails (= 2.1.4)
   jquery-ui-rails
   mail_view

@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_cover_image, :remove_avatar]
-  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_cover_image, :remove_avatar]
+  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_cover_image, :remove_avatar, :crop_cover_image]
+  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_cover_image, :remove_avatar, :crop_cover_image]
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :set_filters,         :only => [:pins, :likes, :activity]
   
@@ -33,13 +33,34 @@ class ProfileController < ApplicationController
   def edit
   end
   
+  # TODO: get_profile_owner is a clumbsy way of just using current_user and calling get_profile_counters
   def update
     if params[:from] == 'step_2' ? @profile.update_attributes(params[:user]) : @profile.update_maybe_with_password(params[:user])
       sign_in(@profile, :bypass => true)
       flash[:success] = "Your profile changes have been saved."
-      redirect_to activity_profile_path(@profile)
+      if @profile.cover_image_changed?
+        redirect_to crop_cover_image_path
+      else
+        redirect_to activity_profile_path(@profile)
+      end
     else
       render 'edit'
+    end
+  end
+  
+  def crop_cover_image
+    @profile = current_user
+    get_profile_counters
+    
+    unless current_user.cover_image?
+      flash[:error] = "You must upload a cover image before trying to crop it."
+      redirect_to edit_profile_path(current_user) and return
+    end
+    
+    if request.post?
+      current_user.update_attributes(params[:user])
+      current_user.cover_image.recreate_versions!
+      # redirect_to activity_profile_path(current_user) and return
     end
   end
   

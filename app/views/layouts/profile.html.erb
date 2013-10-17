@@ -7,7 +7,7 @@
         <% if current_user == @profile %>
           <a href="<%= edit_profile_path(@profile) %>" class="btn primary hover_link">Change Cover Image</a>
         <% end %>
-        <%= image_tag @profile.cover_image.url, :class => 'cover_photo' %>
+        <%= image_tag @profile.cover_image.url(:cropped), :class => 'cover_photo' %>
       </div>
     </div>
   </div>
