@@ -16,10 +16,6 @@ class BaseUploader < CarrierWave::Uploader::Base
   # TODO: run piet gem's optimizations via resque eventually - https://github.com/albertbellonch/piet
   # process :optimize
 
-  # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
-  include Sprockets::Helpers::RailsHelper
-  include Sprockets::Helpers::IsolatedHelper  
-
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
   # def extension_white_list
