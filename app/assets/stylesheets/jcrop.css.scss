@@ -11,11 +11,10 @@
   }
 }
 .croppable_preview {
-  position: relative;
+  overflow: hidden;
   .crop_preview_wrapper {
     overflow: hidden;
-    position: relative;
-    left: -14px;
+    margin: 0 auto;
     border: 1px solid #333;
   }
 }

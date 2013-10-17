@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   has_many :feedbacks
   
   extend FriendlyId
-  friendly_id :username  
+  friendly_id :username
   
   validates_uniqueness_of   :username,      :allow_blank => false
   validates_format_of       :username,      :with => /\A[a-z0-9\.\-\_]+\z/i

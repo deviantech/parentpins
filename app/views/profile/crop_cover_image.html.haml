@@ -9,7 +9,7 @@
 .profile
   .content.board
     .section.stacked
-      .croppable{:data => {:height => 160, :width => 1020, :croppable => 'cover_image'}}
+      .croppable{:data => {:height => 160, :width => 1020, :croppable => 'cover_image', :boxheight => 500, :boxwidth => 1020}}
         = form_for current_user, :url => crop_cover_image_path, :html => {:class => "form very-wide crop-form", :method => :post} do |f|
           - for attribute in [:cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h] do
             = f.hidden_field attribute, :id => attribute
@@ -25,6 +25,6 @@
           .field.croppable_preview
             .crop_preview_wrapper
               = image_tag current_user.cover_image.url, :class => 'crop_preview'
-  
-          .submit
-            = f.submit 'Crop Image'
+          .field
+            .submit
+              = f.submit 'Crop Image', :class => 'btn tertiary_action'

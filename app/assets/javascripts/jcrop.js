@@ -9,9 +9,28 @@ $(document).ready(function() {
     var wrapper = $(this);
     var fullImg = wrapper.find('.croppable'), 
         previewImg = wrapper.find('.crop_preview'), 
+        previewWrap = wrapper.find('.crop_preview_wrapper'),
         desiredHeight = wrapper.data('height'), 
         desiredWidth = wrapper.data('width'),
-        croppableName = wrapper.data('croppable');
+        croppableName = wrapper.data('croppable'),
+        boxHeight = wrapper.data('boxheight'), 
+        boxWidth = wrapper.data('boxwidth');
+    
+    // TODO: if viewed in a narrow viewport, this makes the preview clean up (it fitx, and box is resized by correct ratio), BUT
+    // it shows incorrect information (doesn't scale the interior image, just the viewport size, so it reports a different thumbnail than reality)
+    function fixThumbSize() {
+      previewWrap.css({width: 'auto', height: 'auto', maxHeight: desiredHeight+'px', maxWidth: desiredWidth+'px'});
+      
+      // If window too narrow to fit full image, set width specifically so height will be updated by proper ratio
+      if (previewWrap.width() < desiredWidth) {
+        var newHeight = Math.round(previewWrap.width() / desiredWidth * desiredHeight);
+        console.log(previewWrap.width(), desiredWidth, newHeight);
+        previewWrap.css({width: desiredWidth+'px', height: newHeight+'px'});
+      }
+    }
+    
+    fixThumbSize();    
+    $(window).on('resize', fixThumbSize);
     
     function showPreview(coords) {
     	var rx = desiredWidth / coords.w;
@@ -36,8 +55,8 @@ $(document).ready(function() {
       onChange: showPreview,
     	onSelect: showPreview,
     	aspectRatio: desiredWidth / desiredHeight,
-      boxWidth: 950,
-      boxHeight: 500
+      boxWidth: boxWidth,
+      boxHeight: boxHeight
     };
   
     // Initialize preview to match existing thumbnail
