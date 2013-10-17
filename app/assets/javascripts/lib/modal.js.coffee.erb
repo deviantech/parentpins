@@ -11,6 +11,7 @@ Global.closeModal = ->
 
 Global.updateModalContents = (html) ->
   $('#ajax-modal-target:visible .modal_overlay').html(html)
+  window['skimlinks'] && skimlinks()
 
 # Only close overlay if click was ON overlay (or various other wrapper elements), not just bubbled up to it.
 $(document).on 'click', '.modal_overlay', (e) ->
@@ -50,3 +51,4 @@ Global.openInModal = (url, opts = {}) ->
   finalUrl = urlPlusParamString(url, 'via=ajax')
   $ajax.load finalUrl, () ->
     $ajax.find('input[type=text]:visible').first().focus()
+    window['skimlinks'] && skimlinks()
