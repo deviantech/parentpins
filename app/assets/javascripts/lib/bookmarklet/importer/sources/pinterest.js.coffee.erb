@@ -288,7 +288,7 @@ class window.ppImporterClasses.Sources.Pinterest
 
     board.id = @hashFromString(board.pinterestURL)
       
-    boardMsg = if @boardQueue?.length then "Processing Board: #{board.name} (#{@boardQueue.length + 1} remaining)" else "Processing Board: #{board.name}"
+    boardMsg = if @boardQueue?.length then "Processing Board (#{@boardQueue.length + 1} remaining): #{board.name}" else "Processing Board: #{board.name}"
     @reportProgress "#{boardMsg}<br> Discovered 0 of #{board.expectedPins} pins.", {delay: 5, progress: {current: 0, total: board.expectedPins}}
 
     processingThisBoard.done () =>

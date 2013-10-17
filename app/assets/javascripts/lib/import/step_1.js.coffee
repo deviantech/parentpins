@@ -81,8 +81,8 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
 hideShowPinsForSelectedBoard = () ->
   class_to_show = if $('.importing_boards li.selected').length then $('.importing_boards li.selected').data('class') else 'board-all'
   soon = () =>
-    $('.importing_pins li.pin').hide()
-    $('.importing_pins li.pin.' + class_to_show).show()
+    $('.importing_pins li.pin').hide().removeClass('ui-selected').addClass('hidden')
+    $('.importing_pins li.pin.' + class_to_show).show().removeClass('hidden')
     checkIfAnyDraggableLeft()
 
   # Give JS time to reset to having dropped pin (not sure why, but required)
@@ -92,7 +92,8 @@ checkIfAnyDraggableLeft = () ->
   updateBoardPendingPinsCounters()
   $('.importing_pins').each (i, section) =>
     section = $(section)
-    if section.find('li.pin:visible').length == 0
+    # Using .hidden, not :visible, to count current board's pins because when initializing when loading in iframe :visible returns false (because iframe itself isn't completely visible yet?)
+    if section.find('li.pin:not(.hidden)').length == 0
       kind = if section.hasClass('not_yet_imported') 
        'not-yet-imported'
       else
@@ -117,8 +118,28 @@ updateDroppedPinCounts = () ->
       $board.find('.ourBoardInfo').text(msg)
   setTimeout wrappedUpdateFn, 5
 
+
 # Add draggable/droppable effects
 initDragDrop = () ->
+  section = $('#our_section')
+  
+  # TODO - consider replacing with smooth scrolling. Unfortunately need calculations on the fly because offsets change as boards shown/hidden and pins assigned
+  considerScrollingDroppableContainer = (y) ->
+    dropTop = section.offset().top
+    dropBottom = dropTop + section.height()
+    scrollHeight = section[0].scrollHeight
+    sensitivityRange = scrollHeight * 0.15
+    jump = 10
+  
+    scrollUp    = {min: dropTop - 25, max: dropTop + sensitivityRange}
+    scrollDown  = {min: dropBottom - sensitivityRange, max: dropBottom}    
+    if y > scrollUp.min && y < scrollUp.max
+      section.scrollTop( section.scrollTop() - jump )
+    
+    if y > scrollDown.min
+      section.scrollTop( section.scrollTop() + jump )
+  
+  
   drop = {
     overOurBoards: {
       hoverClass: "ui-droppable-hovering",
@@ -140,6 +161,8 @@ initDragDrop = () ->
         toAdd.css('opacity', 1.0).addClass('assigned').draggable('destroy').draggable(drag.pinsFromOurBoards).appendTo(target)
         hideShowPinsForSelectedBoard()
         updateDroppedPinCounts()
+      deactivate: (event, ui) ->
+        $('li.pin').css({opacity: 1.0})
     },
     overPinterestBoards: {
       hoverClass: "ui-droppable-hovering",
@@ -171,6 +194,8 @@ initDragDrop = () ->
       stop: (event, ui) ->
         $(event.target).css({opacity: 1.0})
         updateDroppedPinCounts() # Can't rely on this, because overridden by multiDragOpts
+      drag: (event, ui) -> 
+        considerScrollingDroppableContainer(event.pageY)
     }
   }
   drag.externalBoards = $.extend({}, drag.general, {stack: '.importing_boards li'})
@@ -238,7 +263,7 @@ $(document).ready () ->
     # Handle Reset Button
     $('#ppResetDragDropLink').on 'click', () =>
       handlePreviouslyImportedData(null, true)
-
+    
     # Handle show/hide previous
     $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
       imported = $('.importing_pins.previously_imported')
@@ -253,7 +278,6 @@ $(document).ready () ->
         link.text('(hide)')
         ul.slideDown () ->
           checkIfAnyDraggableLeft()
-
 
 
     # Only show pins from selected board

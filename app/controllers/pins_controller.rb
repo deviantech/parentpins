@@ -11,7 +11,7 @@ class PinsController < ApplicationController
   
   # New or, if source_id passed, repin
   def new
-    @pin, @source = Pin.craft_new_pin(current_user, params[:pin], params[:source_id], :skip_board => true)
+    @pin, @source = Pin.craft_new_pin(current_user, params[:pin], params[:source_id])
   end
   
   def create

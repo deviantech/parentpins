@@ -113,7 +113,7 @@ $(document).ready(function() {
     var wrapper = $(e.target).parent();
     if (wrapper.data('short-text')) {
       wrapper.html( wrapper.data('short-text') );
-      if (wrapper.parents('ul.masonry li').length) scrollTo(wrapper.parents('ul.masonry li'));
+      if (wrapper.parents('ul.masonry li').length && $(document).scrollTop() > wrapper.parents('ul.masonry li').first().offset().top) scrollTo(wrapper.parents('ul.masonry li'));
       wrapper.parents('.masonry').masonry('layout');
     }
   });

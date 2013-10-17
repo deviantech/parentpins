@@ -228,7 +228,9 @@ body.importing.step_1 {
     border-top: 2px dashed #ddd;
     border-bottom: 2px dashed #ddd;
     margin:12px -13px;
-    padding: 12px 24px;
+    padding: 12px;
+    max-height: 200px;
+    overflow: auto;
     .loading {
       padding: 5px;
     }
@@ -246,6 +248,9 @@ body.importing.step_1 {
       font-size: 1.4em;
       text-align: center;
       padding: 25px;
+    }
+    ul.boards {
+      margin-left: 12px;
     }
     ul {
       font-size: 10px;
@@ -303,6 +308,11 @@ body.importing.step_1 {
 .multi-drag-helper {
   z-index: 999999;
   position: relative;
+  li.pin:hover {
+    .hover_info {
+      display: none !important;
+    }
+  }
 }
 .multi-drag-helper-counter {
   position: absolute;
@@ -498,17 +508,24 @@ body.importing.step_1 {
     .drop_section_wrapper {
       ul {
         list-style-type: none;
+        padding: 0px;
+      }
+      ul.drop_sections {
+        margin-left: 40px;
         li.drop-target {
           float: left;
-          width: 30%;
+          width: 32%;
           box-shadow:0 2px 2px rgba(0, 0, 0, 0.25);
           -webkit-box-shadow:0 2px 2px rgba(0, 0, 0, 0.25);
           -moz-box-shadow:0 2px 2px rgba(0, 0, 0, 0.25);
           background: #fff;
-          margin-right: 10px;
-          margin-bottom: 10px;
-          padding: 6px;
+          margin-right: 1%;
+          margin-bottom: 1%;
+          padding: 0px;
           min-height: 150px;
+          .drop-target-inner-wrapper {
+            padding: 6px;
+          }
           h3 {
             text-align: center;
             background: #f1f1f1;
@@ -637,7 +654,7 @@ body.importing.step_1 {
           }
           &.selected {
             background: #76A602;
-            border: 1px solid #76A602;
+            border: 1px solid #607a2b;
             color: #FFF;
           }
         }

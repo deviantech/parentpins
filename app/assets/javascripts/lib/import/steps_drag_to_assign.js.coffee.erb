@@ -24,7 +24,7 @@ hideShowPinsForSelectedBoard = () ->
   id = dragSection.find('ul.boards li.selected').data('board-id')
   soon = () =>
     if boardsAreShown && id
-      dragSection.find('li.pin').hide()
+      dragSection.find('li.pin').hide().removeClass('ui-selected')
       dragSection.find("li.pin.board_#{id}").show()
     checkIfAnyDraggableLeft()
 
@@ -40,6 +40,7 @@ checkIfAnyDraggableLeft = () ->
     updateBoardPendingPinsCounters()
     section = dragSection.find('ul.pins')
     hideBoards = false
+    if boardsAreShown && section.find('li.pin').length == 0 then hideBoards = true
     
     section.find('.no-more').remove()
     unless section.find('li.pin:visible').length
@@ -79,7 +80,7 @@ collectPinDataFrom = (selector, extraKey) ->
       
   return data
 
-handleSubmission = () ->
+handleSubmission = (form) ->
   if $('.drag_section_wrapper li.pin').length && !form.data('go-back')
     alert("Please drag ALL pins to one of the boxes on top first.")
     return false
@@ -88,7 +89,7 @@ handleSubmission = () ->
       collectPinDataFrom( $('.context.step_drag_to_assign') )
     else
       collectPinDataFrom( dropSection.find('.drop-target'), dropSection.data('extra-key') )
-    
+        
     # Because .param requires an object, not an array of objects
     dataAsObject = {}
     $.each data, (idx, item) ->
@@ -118,6 +119,8 @@ drop = {
       toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
       checkIfAnyDraggableLeft()
       applyDroppableMasonry()
+    deactivate: (event, ui) ->
+      $('li.pin').css({opacity: 1.0})
   },
   onDraggable: {
     activeClass: "ui-droppable-active",
@@ -150,11 +153,15 @@ drag = {
   }
 }  
 drag.pinsFromDroppable = $.extend({}, drag.general)
-drag.boardsToDroppable = $.extend({}, drag.general, {cursorAt: null})
+drag.boardsToDroppable = $.extend({}, drag.general, {cursorAt: null, delay: 5})
 drag.pinsToDroppable = $.extend({}, drag.general, window.multiDragOpts)
 
 applyDroppableMasonry = () ->
-  msnry = $('ul.drop_sections').masonry({itemSelector: 'li.drop-target'})
+  dropUL = $('ul.drop_sections')
+  if dropUL.data('masonry')
+    dropUL.masonry('layout')
+  else
+    dropUL.masonry({itemSelector: 'li.drop-target'})
   
 
 $(document).ready () ->
@@ -179,4 +186,4 @@ $(document).ready () ->
     hideShowPinsForSelectedBoard()
     
   $('#import_form').on 'submit', (e) ->
-    handleSubmission()
+    handleSubmission( $(this) )

@@ -162,9 +162,7 @@ class Pin < ActiveRecord::Base
     if pin.board # If just created board from scratch
       pin.board.user_id = user.id if pin.board.new_record?
     else
-      unless opts[:skip_board]
-        pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
-      end
+      pin.board_id ||= user.last_board_pinned_to_id || user.boards.first.try(:id)
     end
     
     source ? [pin, source] : pin
