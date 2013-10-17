@@ -34,7 +34,7 @@ class Board < ActiveRecord::Base
   end
   
   def set_cover_source(sid)
-    if source = pins.find_by_id(sid)
+    if source = pins.where(:id => sid).first
       update_attributes(:cover => source.image, :cover_source_id => source.id)
     else
       auto_set_cover_from_pin(pins.first)

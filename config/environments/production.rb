@@ -14,7 +14,6 @@ ParentPins::Application.configure do
   config.eager_load = true
 
   # Compress JavaScripts and CSS
-  config.assets.compress = true
   config.assets.js_compressor = :uglifier
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
@@ -34,7 +33,7 @@ ParentPins::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -76,4 +75,7 @@ ParentPins::Application.configure do
   
   # TODO: ENABLE MAIL!
   config.action_mailer.delivery_method = :test
+  
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
 end

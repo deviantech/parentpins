@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
   end
   
   def destroy
-    @comment = current_user.comments.find_by_id(params[:id])
+    @comment = current_user.comments.where(:id => params[:id]).first
     @comment.try(:destroy)
   end
   

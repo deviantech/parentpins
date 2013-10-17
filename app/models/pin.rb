@@ -273,11 +273,11 @@ class Pin < ActiveRecord::Base
   def update_board_images_on_change
     return true unless board_id_changed?
     
-    if old = Board.find_by_id(board_id_was)
+    if old = Board.where(:id => board_id_was).first
       old.update_cover_before_pin_removed(self)
     end
     
-    if future = Board.find_by_id(board_id)
+    if future = Board.where(:id => board_id).first
       future.auto_set_cover_from_pin(self)
     end
   end
