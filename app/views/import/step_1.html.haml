@@ -16,10 +16,10 @@
       
 
     .pin_lists{:class => @external_boards.length > 1 ? '' : 'no-boards'}
-      %h2 Drag Your Pinterest Pins to Your ParentPins Boards Below
+      %h2 Drag Your Pinterest pins to Your ParentPins Boards Below
       .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
         %h3 
-          Pinterest Pins previously imported
+          Pinterest pins previously imported
           = link_to_function '(hide)', 'return false', :id => 'ppTogglePreviouslyImportedPins'
           %span{tooltip('If in the future you decide to import more pins, the ones you have already imported will be saved here so you can easily go through the importer process again.', :placement => 'bottom')} ?
         %ul.collection.clearfix
