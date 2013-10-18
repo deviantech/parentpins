@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_cover_image, :remove_avatar, :crop_cover_image, :crop_avatar]
-  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_cover_image, :remove_avatar, :crop_cover_image, :crop_avatar]
+  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_generic, :generic_crop]
+  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_generic, :generic_crop]
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :set_filters,         :only => [:pins, :likes, :activity]
   
@@ -44,45 +44,30 @@ class ProfileController < ApplicationController
     end
   end
   
-  def crop_avatar
+  def generic_crop
     @profile = current_user
     get_profile_counters
-    
-    unless current_user.avatar?
-      flash[:error] = "You must upload an avatar before trying to crop it."
-      redirect_to edit_profile_path(current_user) and return
-    end
-    
-    if request.post?
-      current_user.update_attributes(params[:user])
-      current_user.avatar.recreate_versions!
-      redirect_to activity_profile_path(current_user) and return
-    end
-  end
-  
-  def crop_cover_image
-    @profile = current_user
-    get_profile_counters
-    
-    unless current_user.cover_image?
-      flash[:error] = "You must upload a cover image before trying to crop it."
-      redirect_to edit_profile_path(current_user) and return
-    end
-    
-    if request.post?
-      current_user.update_attributes(params[:user])
-      current_user.cover_image.recreate_versions!
-      redirect_to activity_profile_path(current_user) and return
-    end
-  end
-  
-  def remove_cover_image
-    current_user.remove_cropped(:cover_image)
-    redirect_to edit_profile_path(current_user)
-  end
 
-  def remove_avatar
-    current_user.remove_cropped(:avatar)
+    unless current_user.send("#{params[:which]}?")
+      flash[:error] = "You must upload an image before trying to crop it."
+      redirect_to edit_profile_path(current_user) and return
+    end
+
+    @dimensions = case params[:which]
+    when :avatar      then [120, 120]
+    when :cover_image then [160, 1020]
+    else []
+    end
+        
+    if request.post?
+      current_user.update_attributes(params[:user])
+      current_user.send(params[:which]).recreate_versions!
+      redirect_to activity_profile_path(current_user) and return
+    end
+  end
+    
+  def remove_generic
+    current_user.remove_cropped(params[:which])
     redirect_to edit_profile_path(current_user)
   end
   
