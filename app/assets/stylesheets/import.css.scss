@@ -15,6 +15,17 @@ body.importing.step_1 {
   font-family: "helvetica neue", helvetica, arial, sans-serif;
   padding-top:0;
   background:#fff;
+  .tip {
+    color: #000;
+    background: #EEE;
+    padding: 3px 6px;
+    font-size: 13px;
+    line-height: 18px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    float: right;
+  }
   .ui-draggable-dragging.pin {
    margin: 0 !important;
    padding: 0 !important;
@@ -127,7 +138,8 @@ body.importing.step_1 {
       }
       ul {
         overflow: auto;
-        height:278px;
+        max-height: 372px;
+        min-height: 140px;
         li {
           margin: 0 0 6px 0;
           padding: 6px;
@@ -300,6 +312,7 @@ body.importing.step_1 {
       }
       li.ui-droppable-hovering {
         background: #ABF0B1;
+        background: #E8FFE8;
       }
     }
   }
@@ -321,8 +334,8 @@ body.importing.step_1 {
   display:block;
   font-size:13px;
   line-height:18px;
-  padding:6px;
-  background: blue;
+  padding:6px 9px;
+  background: #76A613;
   color: #FFF;
   text-align:center;
   border-radius:3px;
@@ -435,7 +448,8 @@ body.importing.step_1 {
   }
   .drag_section_wrapper {
     ul.pins.short-bottom {
-      padding-bottom: 4px !important;
+      padding-bottom: 0 !important;
+      border: none !important;
     }
     .done {
       margin: -10px;
@@ -443,7 +457,7 @@ body.importing.step_1 {
       font-size: 1.2em;
       color: #000;
       padding: 18px;
-      background: #DAFFDD;
+      background: #E8FFE8;
     }
     .hide_until_complete {
       display: none;
@@ -554,6 +568,7 @@ body.importing.step_1 {
           }
           &.ui-droppable-hovering {
             background: #ABF0B1;
+            background: #E8FFE8;
           }
         }
         ul.collection {
@@ -654,7 +669,7 @@ body.importing.step_1 {
           }
           &.selected {
             background: #76A602;
-            border: 1px solid #607a2b;
+            border: 1px solid #76A602;
             color: #FFF;
           }
         }
@@ -784,9 +799,6 @@ body.importing.step_1 {
           display: block;
           margin: 0 0 0 248px;
           padding: 0;
-          li.importing_pin:last-child {
-            border:none;
-          }
           li.importing_pin {
             float:left;
             list-style: none;

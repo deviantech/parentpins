@@ -14,7 +14,7 @@
           = image_tag board.cover.url
           %label
             = check_box_tag 'mass-select-board'
-            Mass Edit all pins in board
+            Mass edit all pins in board
           
         %ul.importing_pins
           - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
