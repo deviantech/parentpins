@@ -24,9 +24,9 @@ class Board < ActiveRecord::Base
   scope :in_category, lambda {|cat|
     cat.blank? ? where('1=1') : where({:category_id => cat.id})
   }
-  scope :newest_first, order('id DESC')
-  scope :with_pins, where('pins_count > ?', 0)
-  scope :trending, order('trend_position DESC').where('pins_count > ?', 0)
+  scope :newest_first, -> { order('id DESC') }
+  scope :with_pins, -> { where('pins_count > ?', 0) }
+  scope :trending, -> { order('trend_position DESC').where('pins_count > ?', 0) }
     
   # TODO: cache these in redis or something, to prevent n+1 calls on board index pages?
   def thumbnail_urls(n = 4)
@@ -34,7 +34,7 @@ class Board < ActiveRecord::Base
   end
   
   def set_cover_source(sid)
-    if source = pins.find_by_id(sid)
+    if source = pins.where(:id => sid).first
       update_attributes(:cover => source.image, :cover_source_id => source.id)
     else
       auto_set_cover_from_pin(pins.first)

@@ -2,7 +2,7 @@
 
 require 'carrierwave/processing/mime_types'
 
-class BaseUploader < CarrierWave::Uploader::Base
+class BaseUploader < CarrierWave::Uploader::Base  
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::Vips
@@ -15,10 +15,6 @@ class BaseUploader < CarrierWave::Uploader::Base
   
   # TODO: run piet gem's optimizations via resque eventually - https://github.com/albertbellonch/piet
   # process :optimize
-
-  # Include the Sprockets helpers for Rails 3.1+ asset pipeline compatibility:
-  include Sprockets::Helpers::RailsHelper
-  include Sprockets::Helpers::IsolatedHelper  
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
@@ -34,8 +30,7 @@ class BaseUploader < CarrierWave::Uploader::Base
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   def default_url
-    # For Rails 3.1+ asset pipeline compatibility:
-    asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
+    ActionController::Base.helpers.asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
   end
   
   

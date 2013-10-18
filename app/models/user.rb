@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h
   
   has_many :boards,       :order => 'position ASC',     :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -33,8 +33,8 @@ class User < ActiveRecord::Base
   before_destroy :clean_redis
 
   # Used by searchable
-  scope :newest_first, order('id DESC')
-  scope :featured, where({:featured => true})
+  scope :newest_first,  -> { order('id DESC') }
+  scope :featured,      -> { where(:featured => true) }
 
   def name
     username.to_s
@@ -65,7 +65,7 @@ class User < ActiveRecord::Base
   def self.find_for_oauth(auth, signed_in_resource = nil)
     user = signed_in_resource
     user ||= User.where(:provider => auth.provider, :uid => auth.uid).first
-    user ||= (auth.info.email.blank? ? nil : User.find_by_email(auth.info.email))
+    user ||= (auth.info.email.blank? ? nil : User.where(:email => auth.info.email).first)
     user ||= User.create({
       :username   => auth.extra.raw_info.username,
       :email      => auth.info.email,
@@ -225,7 +225,7 @@ class User < ActiveRecord::Base
   end
   
   def followed_by?(user)
-    user = User.find_by_id(user) unless user.is_a?(User)
+    user = User.where(:id => user).first unless user.is_a?(User)
     return nil if user.blank? || user.id == self.id
     
     Rails.redis.sismember(redis_name__followed_by, user.id)

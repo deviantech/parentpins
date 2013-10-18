@@ -1,31 +1,28 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.14'
+gem 'rails', '4.0.0'
 
 gem 'mysql2'
 gem 'redis'
 gem 'redis-namespace'
 gem 'uuidtools'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'turbo-sprockets-rails3'
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'eco'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
-
-  gem 'uglifier', '>= 1.0.3'
-end
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'eco'
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# gem 'therubyracer', :platforms => :ruby
+gem 'uglifier', '>= 1.3.0'
 
 # For pinterest schema testing
 gem 'capybara', :require => false
 gem 'capybara-webkit', :require => false        # Note: requires qt to install. OSX: brew install qt. Ubuntu: sudo apt-get install libqt4-dev
 gem 'capybara-user_agent', :require => false
 
+
+# Avoid having to use strong params
+gem 'protected_attributes'
 
 gem 'whenever', :require => false
 
@@ -72,11 +69,12 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
+gem 'jcrop-rails-v2', "~> 0.9.12.2"
 
 
 
 
-gem 'friendly_id'
+gem 'friendly_id', '~> 5.0.0'
 
 
 

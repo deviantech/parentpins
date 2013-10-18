@@ -5,5 +5,5 @@ class Category < ActiveRecord::Base
   
   validates_uniqueness_of :name, :allow_blank => false  
   
-  default_scope order('name ASC')
+  default_scope { order('name ASC') }
 end

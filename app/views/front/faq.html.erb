@@ -121,7 +121,7 @@
       <dd>
         <p>Yup! If you're a website owner, you can add a ParentPin It! button to your website by following two steps.</p>
         <p>First, add a link where you want the button to be:
-        <pre><code><%= %Q{<a href="//#{host}/widgets/bookmarklet" data-pin-action="buttonBookmarklet" ><img src="//#{host}/assets/widgets/pin_button.png" /></a>} %></code></pre>
+        <pre><code><%= %Q{<a href="//#{host}/#{bookmarklet_embed_path}" data-pin-action="buttonBookmarklet" ><img src="//#{host}/assets/widgets/pin_button.png" /></a>} %></code></pre>
         </p>
         <p>Second, add this script tag just above the closing &lt;/body&gt; tag:
         <pre><code><%= %Q{<script type="text/javascript" src="//#{host}/assets/widgets.js"></script>} %></code></pre>

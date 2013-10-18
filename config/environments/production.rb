@@ -11,8 +11,10 @@ ParentPins::Application.configure do
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false
 
+  config.eager_load = true
+
   # Compress JavaScripts and CSS
-  config.assets.compress = true
+  config.assets.js_compressor = :uglifier
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
@@ -31,7 +33,7 @@ ParentPins::Application.configure do
   # config.force_ssl = true
 
   # See everything in the log (default is :info)
-  # config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -48,10 +50,10 @@ ParentPins::Application.configure do
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
 
   # Javascripts
-  config.assets.precompile += %w(jquery.js add-pin.js popup.js faq.js import.js bookmarklet.js widgets.js bookmarklet-importer.js bookmarklet.css edit-cover-image.js)
+  config.assets.precompile += %w(jquery.js add-pin.js popup.js faq.js import.js bookmarklet.js widgets.js bookmarklet-importer.js bookmarklet.css edit-cover-image.js jcrop.js)
   
   # Stylesheets
-  config.assets.precompile += %w(popup.css bookmarklet.css slides.css mail.css import.css highlight.css)
+  config.assets.precompile += %w(popup.css bookmarklet.css slides.css mail.css import.css highlight.css jcrop.js)
   
   # Other
   config.assets.precompile += %w(.svg .eot .woff .ttf)
@@ -70,11 +72,10 @@ ParentPins::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-
-  # Log the query plan for queries taking more than this (works
-  # with SQLite, MySQL, and PostgreSQL)
-  # config.active_record.auto_explain_threshold_in_seconds = 0.5
   
   # TODO: ENABLE MAIL!
   config.action_mailer.delivery_method = :test
+  
+  # Use default logging formatter so that PID and timestamp are not suppressed.
+  config.log_formatter = ::Logger::Formatter.new
 end

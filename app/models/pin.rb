@@ -54,12 +54,10 @@ class Pin < ActiveRecord::Base
   scope :in_age_group, lambda {|groups|
     groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
   }
-  scope :repinned, where('repinned_from_id IS NOT NULL')
-  scope :uniq_source_url, group(:source_url)
-  
-  scope :with_image, where('image <> ""')
-  
-  scope :newest_first, order('id DESC')
+  scope :repinned,        -> { where('repinned_from_id IS NOT NULL') }
+  scope :uniq_source_url, -> { group(:source_url) }  
+  scope :with_image,      -> { where('image <> ""') }
+  scope :newest_first,    -> { order('id DESC') }
   scope :not_ids, lambda {|ids| where(['id NOT IN (?)', Array(ids)]) }
   
   default_scope newest_first
@@ -275,11 +273,11 @@ class Pin < ActiveRecord::Base
   def update_board_images_on_change
     return true unless board_id_changed?
     
-    if old = Board.find_by_id(board_id_was)
+    if old = Board.where(:id => board_id_was).first
       old.update_cover_before_pin_removed(self)
     end
     
-    if future = Board.find_by_id(board_id)
+    if future = Board.where(:id => board_id).first
       future.auto_set_cover_from_pin(self)
     end
   end
