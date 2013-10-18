@@ -103,6 +103,8 @@ handleHideShowPriceField = (input) ->
 $(document).ready () ->
   return unless $('.context.step_4').length
   
+  # For wide monitors, allow viewing side by side without weird float clearing for long images
+  applyMasonry('ul.importing_pins')
   
   form = $('#import_form')
     
