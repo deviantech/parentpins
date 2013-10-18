@@ -5,9 +5,10 @@
 
 
 $(document).ready(function() {
-  $('.croppable').each(function() {
+  $('.croppable_container').each(function() {
     var wrapper = $(this);
-    var fullImg = wrapper.find('.croppable'), 
+    
+    var fullImg = wrapper.find('.jcrop_full_image'), 
         previewImg = wrapper.find('.crop_preview'), 
         previewWrap = wrapper.find('.crop_preview_wrapper'),
         desiredHeight = wrapper.data('height'), 
@@ -15,6 +16,10 @@ $(document).ready(function() {
         croppableName = wrapper.data('croppable'),
         boxHeight = wrapper.data('boxheight'), 
         boxWidth = wrapper.data('boxwidth');
+        
+        console.log(fullImg, fullImg[0])
+    var actualHeight = fullImg[0].naturalHeight,
+        actualWidth  = fullImg[0].naturalWidth;
     
 
     previewWrap.css({height: desiredHeight+'px', width: desiredWidth+'px'});
@@ -22,12 +27,10 @@ $(document).ready(function() {
     function showPreview(coords) {
     	var rx = desiredWidth / coords.w;
     	var ry = desiredHeight / coords.h;
-      var actualW = fullImg[0].naturalWidth;
-      var actualH = fullImg[0].naturalHeight;
     
     	previewImg.css({
-    		width: Math.round(rx * actualW) + 'px',
-    		height: Math.round(ry * actualH) + 'px',
+    		width: Math.round(rx * actualWidth) + 'px',
+    		height: Math.round(ry * actualHeight) + 'px',
     		marginLeft: '-' + Math.round(rx * coords.x) + 'px',
     		marginTop: '-' + Math.round(ry * coords.y) + 'px'
     	});
@@ -51,7 +54,9 @@ $(document).ready(function() {
     $.each('x y w h'.split(' '), function() {
       initCoords[this] = parseInt( $('#'+croppableName+'_'+this).val(), 10 );
     });
-    if (initCoords.w && initCoords.h) {
+    if (initCoords.w == actualWidth && initCoords.h == actualHeight) {
+      showPreview(initCoords);
+    } else {
       cropOpts['setSelect'] = [initCoords.x, initCoords.y, initCoords.x + initCoords.w, initCoords.y + initCoords.h];
     }
 

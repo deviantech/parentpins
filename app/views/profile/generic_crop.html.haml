@@ -9,7 +9,7 @@
 .profile
   .content.board
     .section.stacked
-      .croppable{:data => {:height => @dimensions[0], :width => @dimensions[1], :croppable => params[:which], :boxheight => 500, :boxwidth => 1020}}
+      .croppable_container{:data => {:height => @dimensions[0], :width => @dimensions[1], :croppable => params[:which], :boxheight => 500, :boxwidth => 1020}}
         = form_for current_user, :url => self.send("crop_#{params[:which]}_path"), :html => {:class => "form very-wide crop-form", :method => :post} do |f|
           - for attribute in %w(x y w h) do
             = f.hidden_field "#{params[:which]}_#{attribute}", :id => "#{params[:which]}_#{attribute}"
@@ -19,7 +19,7 @@
         
           %h3 Full size image
           .field.croppable_wrapper
-            = image_tag current_user.send(params[:which]).url, :class => 'croppable'
+            = image_tag current_user.send(params[:which]).url, :class => 'jcrop_full_image'
         
           %h3 Preview
           .field.croppable_preview
