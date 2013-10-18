@@ -5,7 +5,7 @@
         <div class="cap-left">&nbsp;</div>
         <div class="cap-right">&nbsp;</div>
         <% if current_user == @profile %>
-          <a href="<%= edit_profile_path(@profile) %>" class="btn primary hover_link">Change Cover Image</a>
+          <a href="<%= edit_profile_path(@profile) %>#form_header" class="btn primary hover_link"><%= current_user.cover_image? ? 'Change' : 'Add' %> Cover Image</a>
         <% end %>
         <%= image_tag @profile.cover_image.url(:cropped), :class => 'cover_photo' %>
       </div>
@@ -16,7 +16,7 @@
 
     <div class="info">
 
-      <%= link_to image_tag(@profile.avatar.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
+      <%= link_to image_tag(@profile.avatar.main.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
       <h2><%= @profile.name %></h2>
       <%= render 'profile/follow_buttons', :to_follow => @profile %>      
       <%= render 'profile/feature_buttons', :user => @profile %>

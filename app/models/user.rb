@@ -10,7 +10,9 @@ class User < ActiveRecord::Base
   
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :remove_cover_image, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h, :remove_avatar, :avatar_x, :avatar_y, :avatar_w, :avatar_h
+  
+  attr_accessor :cover_image_was_changed, :avatar_was_changed
   
   has_many :boards,       :order => 'position ASC',     :dependent => :destroy
   has_many :pins,         :dependent => :destroy
@@ -30,6 +32,7 @@ class User < ActiveRecord::Base
   validates_format_of       :website,       :allow_blank => true, :with => URI::regexp(%w(http https))
   validates_length_of       :featured_bio,  :maximum => 400
   validate :valid_username, :valid_social_media_links
+  before_save :track_media_changes
   before_destroy :clean_redis
 
   # Used by searchable
@@ -79,6 +82,12 @@ class User < ActiveRecord::Base
   # Include pins by follower_user_ids or on boards_following_ids, unique
   def activity
     Pin.where(['user_id IN (?) OR board_id IN (?)', users_following_ids, boards_following_ids])
+  end
+
+  def remove_cropped(which)
+    return nil unless [:avatar, :cover_image].include?(which.to_sym)
+    attribs = {"remove_#{which}" => 1, "#{which}_x" => nil, "#{which}_y" => nil, "#{which}_w" => nil, "#{which}_h" => nil}
+    update_attributes(attribs)
   end
 
   def self.get_featured(n = 2)
@@ -357,6 +366,12 @@ class User < ActiveRecord::Base
   def valid_username
     return if username.blank?
     errors.add(:username, 'cannot start with a number') if username.match(/\A\d/)
+  end
+  
+  def track_media_changes
+    @cover_image_was_changed = cover_image_changed?
+    @avatar_was_changed = avatar_changed?
+    return true
   end
   
   def cleaned_ids(cats)

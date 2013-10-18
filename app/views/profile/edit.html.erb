@@ -3,9 +3,7 @@
   <div class="content board">
     <%= form_for @profile, :url => profile_path(@profile), :html => {:class => "form wide", :multipart => true} do |f| %>
     <%= hidden_field_tag :from, 'edit' %>
-    <h1>
-      Edit Profile &amp; Account Settings
-    </h1>
+    <h1 id="form_header">Edit Profile &amp; Account Settings</h1>
 
     <%= error_messages_for @profile %>
 
@@ -17,7 +15,10 @@
         <label>
           <%= @profile.avatar? ? 'Update' : 'Upload an' %> Avatar
           <% if @profile.avatar? %>
-            <small>(<%= link_to 'remove', remove_avatar_path, :method => :post, :confirm => "Are you sure you want to remove your avatar?" %>)</small>
+            <small>
+              (<%= link_to 'remove', remove_avatar_path, :method => :post, :confirm => "Are you sure you want to remove your avatar?" %>
+              or <%= link_to 'recrop', crop_avatar_path %>)
+            </small>
           <% end %>
         </label>
         <%= image_tag(@profile.avatar.v50.url) if @profile.avatar? %>
@@ -32,7 +33,7 @@
           <% if @profile.cover_image? %>
             <small>
               (<%= link_to 'remove', remove_cover_image_path, :method => :post, :confirm => "Are you sure you want to remove your cover image?" %>
-              or <%= link_to 'customize crop', crop_cover_image_path %>)
+              or <%= link_to 'recrop', crop_cover_image_path %>)
             </small>
           <% end %>
           <span>(Will be cropped to 1020x160)</span>  

@@ -6,6 +6,7 @@
 */
 
 .croppable_wrapper {
+  overflow: hidden;
   .jcrop-holder {
     margin: 0 auto;
   }

@@ -41,6 +41,7 @@ ParentPins::Application.routes.draw do
     post "/profile/cover_image/remove" => 'profile#remove_cover_image', :as => :remove_cover_image
     match "/profile/cover_image/crop" => 'profile#crop_cover_image', :as => :crop_cover_image, :via => [:get, :post]
     post "/profile/avatar/remove" => 'profile#remove_avatar', :as => :remove_avatar
+    match "/profile/avatar/crop" => 'profile#crop_avatar', :as => :crop_avatar, :via => [:get, :post]
     resources :profile do
       member do
         get 'activity'

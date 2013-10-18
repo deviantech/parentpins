@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_cover_image, :remove_avatar, :crop_cover_image]
-  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_cover_image, :remove_avatar, :crop_cover_image]
+  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_cover_image, :remove_avatar, :crop_cover_image, :crop_avatar]
+  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_cover_image, :remove_avatar, :crop_cover_image, :crop_avatar]
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :set_filters,         :only => [:pins, :likes, :activity]
   
@@ -33,18 +33,30 @@ class ProfileController < ApplicationController
   def edit
   end
   
-  # TODO: get_profile_owner is a clumbsy way of just using current_user and calling get_profile_counters
+  # TODO: get_profile_owner is a clumbsy way of just using current_user and calling get_profile_counters.
   def update
     if params[:from] == 'step_2' ? @profile.update_attributes(params[:user]) : @profile.update_maybe_with_password(params[:user])
       sign_in(@profile, :bypass => true)
       flash[:success] = "Your profile changes have been saved."
-      if @profile.cover_image_changed?
-        redirect_to crop_cover_image_path
-      else
-        redirect_to activity_profile_path(@profile)
-      end
+      redirect_to @profile.cover_image_was_changed ? crop_cover_image_path : (@profile.avatar_was_changed ? crop_avatar_path : activity_profile_path(@profile))
     else
       render 'edit'
+    end
+  end
+  
+  def crop_avatar
+    @profile = current_user
+    get_profile_counters
+    
+    unless current_user.avatar?
+      flash[:error] = "You must upload an avatar before trying to crop it."
+      redirect_to edit_profile_path(current_user) and return
+    end
+    
+    if request.post?
+      current_user.update_attributes(params[:user])
+      current_user.avatar.recreate_versions!
+      redirect_to activity_profile_path(current_user) and return
     end
   end
   
@@ -60,17 +72,17 @@ class ProfileController < ApplicationController
     if request.post?
       current_user.update_attributes(params[:user])
       current_user.cover_image.recreate_versions!
-      # redirect_to activity_profile_path(current_user) and return
+      redirect_to activity_profile_path(current_user) and return
     end
   end
   
   def remove_cover_image
-    current_user.update_attribute :remove_cover_image, 1
+    current_user.remove_cropped(:cover_image)
     redirect_to edit_profile_path(current_user)
   end
 
   def remove_avatar
-    current_user.update_attribute :remove_avatar, 1
+    current_user.remove_cropped(:avatar)
     redirect_to edit_profile_path(current_user)
   end
   

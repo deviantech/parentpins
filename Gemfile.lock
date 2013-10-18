@@ -256,6 +256,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   capistrano
+  capistrano-conditional!
   capistrano-ext
   capistrano_colors
   capybara
