@@ -17,9 +17,8 @@ $(document).ready(function() {
         boxHeight = wrapper.data('boxheight'), 
         boxWidth = wrapper.data('boxwidth');
         
-        console.log(fullImg, fullImg[0])
-    var actualHeight = fullImg[0].naturalHeight,
-        actualWidth  = fullImg[0].naturalWidth;
+    var actualHeight = fullImg.naturalHeight(),
+        actualWidth  = fullImg.naturalWidth();
     
 
     previewWrap.css({height: desiredHeight+'px', width: desiredWidth+'px'});

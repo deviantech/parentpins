@@ -19,6 +19,7 @@
 //= require contrib/modernizr
 //= require contrib/jquery-sortable
 //= require contrib/bootstrap-components
+//= require contrib/jquery-naturalwidth-min
 //= require lib/helpers
 //= require lib/flash
 //= require lib/modal

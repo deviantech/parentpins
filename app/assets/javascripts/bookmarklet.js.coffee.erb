@@ -70,7 +70,7 @@ class Bookmarklet
     # No longer needed, because imagesLoaded no longer depends on jQuery.
     
     # From http://www.jacklmoore.com/notes/naturalwidth-and-naturalheight-in-ie/
-    `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'lib', 'bookmarklet', 'jquery-naturalwidth-min.js') ) %>`
+    `<%= File.read( File.join( Rails.root, 'app', 'assets', 'javascripts', 'contrib', 'jquery-naturalwidth-min.js') ) %>`
     
     # TODO: pull out jquery from iframe here so we don't pollute parent page's jquery namespace/version?
       
