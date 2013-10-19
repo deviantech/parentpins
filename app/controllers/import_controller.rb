@@ -1,4 +1,5 @@
 class ImportController < ApplicationController
+  after_action :allow_external_iframing, :only => [:step_1]
   skip_before_filter :verify_authenticity_token, :only => [:step_1, :login_check] # Coming from JS, no way for bookmarklet to know proper CSRF token
   before_filter :authenticate_user!,  :except => [:login_check, :external_embedded]
   before_filter :parse_params,        :except => [:login_check, :external_embedded, :show]
