@@ -1,8 +1,5 @@
 # encoding: utf-8
 class AvatarUploader < BaseUploader
-  # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
 
   version :main do
     process :crop_to => [120, 120]

@@ -71,6 +71,8 @@ gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
 gem 'jcrop-rails-v2', "~> 0.9.12.2"
 
+# TODO: back to normal non-git usage after gem is updated. Currently (Oct 21, 2013) avoiding https://github.com/fog/fog/issues/2284
+gem 'fog', :git => 'https://github.com/fog/fog.git'
 
 
 

@@ -13,8 +13,4 @@ class PinImageUploader < BaseUploader
     process :resize_to_fill => [55, 55]
   end
   
-  # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
-  
 end
