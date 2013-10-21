@@ -1,5 +1,3 @@
-AUTH = YAML.load_file( File.join(Rails.root, 'config', 'auth.yml') ).with_indifferent_access[Rails.env]
-
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
