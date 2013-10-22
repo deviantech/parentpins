@@ -310,7 +310,7 @@ class window.ppImporterClasses.Sources.Pinterest
           debug "Unable to parse number of expected pins for board (#{board.name}), so waiting a few seconds and hoping for the best"
           setTimeout processBoardDetailDelta, 3000
         else
-          timeout = 20 * 1000
+          timeout = 15 * 1000
           foundAllPins = null
 
           # Unfortunately we have to scan every possible pin, every time through, because pinterest appears to remove previously-seen pins from the DOM when scrolled past

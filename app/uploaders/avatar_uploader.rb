@@ -1,12 +1,11 @@
 # encoding: utf-8
 class AvatarUploader < BaseUploader
-  # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
 
-  process :resize_to_fill => [120, 120]
+  version :main do
+    process :crop_to => [120, 120]
+  end
   
-  version :v50 do
+  version :v50, :from_version => :main do
     process :resize_to_fill => [50, 50]
   end  
 

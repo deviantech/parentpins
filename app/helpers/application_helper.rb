@@ -63,7 +63,7 @@ module ApplicationHelper
     elsif @profile
       title = "#{@profile.name}'s ParentPins Profile"
       url   = profile_boards_url(@profile)
-      img   = absolute_url @profile.avatar.url
+      img   = absolute_url @profile.avatar.main.url
 
       desc = @profile.name
       desc += @profile.teacher? ? " is a teacher with " : ' has '

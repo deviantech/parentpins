@@ -30,7 +30,7 @@
       
         <% unless @pin.new_record? %>
           <div class="buttons">
-            <%= link_to 'Delete this Pin', @pin, :confirm => 'Are you sure you want to remove this pin?', :method => :delete %>
+            <%= link_to 'Delete this Pin', @pin, :'data-confirm' => 'Are you sure you want to remove this pin?', :method => :delete %>
           </div>
         <% end %>
       <% end %>

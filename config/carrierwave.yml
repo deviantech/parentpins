@@ -1,0 +1,6 @@
+production:
+  bucket: parentpins
+development:
+  bucket: parentpins-development
+test:
+  bucket: parentpins-test

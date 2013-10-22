@@ -84,5 +84,9 @@ class ApplicationController < ActionController::Base
     return true if params[parent_model]["#{nested_model}_id"].blank?
     params[parent_model].delete("#{nested_model}_attributes")
   end
+
+  def allow_external_iframing
+    response.headers.except! 'X-Frame-Options'
+  end
   
 end

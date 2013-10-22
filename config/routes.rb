@@ -38,9 +38,12 @@ ParentPins::Application.routes.draw do
     get "/profile/:profile_id/boards" => 'board#index', :as => :profile_boards
     get "/profile/:profile_id/board/:id/comments" => 'board#comments', :as => :profile_board_comments
     get "/profile/:profile_id/import/:id" => 'import#show', :as => :profile_import
-    post "/profile/cover_image/remove" => 'profile#remove_cover_image', :as => :remove_cover_image
-    match "/profile/cover_image/crop" => 'profile#crop_cover_image', :as => :crop_cover_image, :via => [:get, :post]
-    post "/profile/avatar/remove" => 'profile#remove_avatar', :as => :remove_avatar
+
+    post "/profile/cover_image/remove" => 'profile#remove_generic',   :which => :cover_image,   :as => :remove_cover_image
+    post "/profile/avatar/remove" => 'profile#remove_generic',        :which => :avatar,        :as => :remove_avatar    
+    match "/profile/cover_image/crop" => 'profile#generic_crop',      :which => :cover_image,   :as => :crop_cover_image,     :via => [:get, :post]
+    match "/profile/avatar/crop" => 'profile#generic_crop',           :which => :avatar,        :as => :crop_avatar,          :via => [:get, :post]
+    
     resources :profile do
       member do
         get 'activity'

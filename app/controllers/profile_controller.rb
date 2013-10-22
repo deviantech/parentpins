@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_cover_image, :remove_avatar, :crop_cover_image]
-  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_cover_image, :remove_avatar, :crop_cover_image]
+  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_generic, :generic_crop]
+  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_generic, :generic_crop]
   before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
   before_filter :set_filters,         :only => [:pins, :likes, :activity]
   
@@ -33,44 +33,41 @@ class ProfileController < ApplicationController
   def edit
   end
   
-  # TODO: get_profile_owner is a clumbsy way of just using current_user and calling get_profile_counters
+  # TODO: get_profile_owner is a clumbsy way of just using current_user and calling get_profile_counters.
   def update
     if params[:from] == 'step_2' ? @profile.update_attributes(params[:user]) : @profile.update_maybe_with_password(params[:user])
       sign_in(@profile, :bypass => true)
       flash[:success] = "Your profile changes have been saved."
-      if @profile.cover_image_changed?
-        redirect_to crop_cover_image_path
-      else
-        redirect_to activity_profile_path(@profile)
-      end
+      redirect_to @profile.cover_image_was_changed ? crop_cover_image_path : (@profile.avatar_was_changed ? crop_avatar_path : activity_profile_path(@profile))
     else
       render 'edit'
     end
   end
   
-  def crop_cover_image
+  def generic_crop
     @profile = current_user
     get_profile_counters
-    
-    unless current_user.cover_image?
-      flash[:error] = "You must upload a cover image before trying to crop it."
+
+    unless current_user.send("#{params[:which]}?")
+      flash[:error] = "You must upload an image before trying to crop it."
       redirect_to edit_profile_path(current_user) and return
     end
-    
+
+    @dimensions = case params[:which]
+    when :avatar      then [120, 120]
+    when :cover_image then [160, 1020]
+    else []
+    end
+        
     if request.post?
       current_user.update_attributes(params[:user])
-      current_user.cover_image.recreate_versions!
-      # redirect_to activity_profile_path(current_user) and return
+      current_user.send(params[:which]).recreate_versions!
+      redirect_to activity_profile_path(current_user) and return
     end
   end
-  
-  def remove_cover_image
-    current_user.update_attribute :remove_cover_image, 1
-    redirect_to edit_profile_path(current_user)
-  end
-
-  def remove_avatar
-    current_user.update_attribute :remove_avatar, 1
+    
+  def remove_generic
+    current_user.remove_cropped(params[:which])
     redirect_to edit_profile_path(current_user)
   end
   

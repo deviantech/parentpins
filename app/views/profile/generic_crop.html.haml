@@ -1,0 +1,30 @@
+= content_for :header do
+  = stylesheet_link_tag "jcrop"
+
+= content_for :footer_js do
+  = javascript_include_tag "jcrop"
+
+
+
+.profile
+  .content.board
+    .section.stacked
+      .croppable_container{:class => params[:which], :data => {:height => @dimensions[0], :width => @dimensions[1], :croppable => params[:which], :boxheight => 500, :boxwidth => 1020}}
+        = form_for current_user, :url => self.send("crop_#{params[:which]}_path"), :html => {:class => "form very-wide crop-form", :method => :post} do |f|
+          - for attribute in %w(x y w h) do
+            = f.hidden_field "#{params[:which]}_#{attribute}", :id => "#{params[:which]}_#{attribute}"
+        
+          %h1 Customize #{params[:which].to_s.titleize} Cropping
+          %p Your image will be resized and/or cropped to #{@dimensions[1]}x#{@dimensions[0]}. This page allows you to customize how this is done.
+        
+          %h3 Full size image
+          .field.croppable_wrapper
+            = image_tag current_user.send(params[:which]).url, :class => 'jcrop_full_image'
+        
+          %h3 Preview
+          .field.croppable_preview
+            .crop_preview_wrapper
+              = image_tag current_user.send(params[:which]).url, :class => 'crop_preview'
+          .field
+            .submit
+              = f.submit 'Crop Image', :class => 'btn tertiary_action'

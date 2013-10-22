@@ -1,7 +1,7 @@
 <% max_description = max_description || 400 %>
 <div class="feature">
   <div class="user">
-    <%= link_to image_tag(user.avatar.url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar' %>
+    <%= link_to image_tag(user.avatar.main.url, :alt => "#{user.name}'s avatar"), profile_path(user), :class => 'avatar' %>
     <%= link_to user.name, profile_path(user), :class => 'user_link' %>
     <p class="board_count"><strong><%= user.boards.count %></strong> Board<%= 's' unless user.boards.count == 1 %></p>
     <div class="follow_section"><%= render 'profile/follow_buttons', :to_follow => user %></div>
