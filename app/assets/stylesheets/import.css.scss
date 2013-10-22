@@ -777,6 +777,7 @@ body.importing.step_1 {
         margin-bottom: 24px;
         overflow: hidden;
         border-bottom: 1px solid #E2E2E2;
+        min-height:300px;
         .board_info {
           position:absolute;
           width: 222px;
@@ -885,6 +886,7 @@ body.importing.step_1 {
             &.complete {
               background: #EFE;
               color:#fff;
+              border: 1px solid #76A613;
               strong, label {
                 color:#222;
               }

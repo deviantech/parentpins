@@ -1123,6 +1123,10 @@ li.pin-context {
   content:"\e00d";
   font-size:13px; }
   
+.view_pin:before {
+  content:"\e00c";
+  font-size:13px; }
+  
 .email_button:before {
   content:"\e015";
   font-size:13px;
@@ -1132,6 +1136,22 @@ li.pin-context {
   &:before {
     content:"\e003";}
   margin-top: 10px; }
+
+.buttons.repin {
+  min-width: 250px !important;
+  width:auto !important;
+  a {
+    font-weight:bold;
+    margin: 8px 12px;
+    padding:9px 24px 9px 48px;
+    font-size:15px;
+    &:before {
+      line-height: 24px;
+      font-size: 18px;
+      left: 23px;
+    }
+  }
+}
 
 .board-controls {
   display:inline;
@@ -2866,11 +2886,11 @@ hr.header-divider {
   margin-bottom: 4px;
 }
 .repin-success-wrapper {
-  width: 600px;
+  min-width: 300px;
+  max-width: 320px;
   margin: 0 auto;
   margin-top: 100px;
   background: #FFF;
-  border: 1px solid #DDD;
   padding: 12px 24px;
   position: relative;
   h2 {
@@ -2882,8 +2902,8 @@ hr.header-divider {
   }
   a.close-btn {
     position: absolute;
-    top: 10px;
-    right: 8px;
+    top: 12px;
+    right: 12px;
     font-size: 1.3em;
     color: #DDD;
     text-decoration: none;
@@ -2910,7 +2930,7 @@ hr.header-divider {
     text-decoration:none;
   }
   .view_pin {
-    padding-left:10px;
+    padding-left:28px;
     margin-bottom:24px;
   }
 }

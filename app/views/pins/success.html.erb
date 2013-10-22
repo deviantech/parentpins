@@ -4,14 +4,14 @@
     <%= link_to_function 'X', 'Global.closeModal()', :class => 'close-btn' %>
     <p class="message">
       <% if @pin.via_id %>
-        Repinned to
+        Repinned to your
       <% else %>
-        Your pin was pinned to 
+        Your pin was pinned to your
       <% end %>
-      <%= link_to @pin.board.name, profile_board_url(@pin.user, @pin.board) %>.
+      <%= link_to @pin.board.name, profile_board_url(@pin.user, @pin.board) %> board.
     </p>
 
-    <div class="buttons">
+    <div class="buttons repin">
       <%= link_to "View Pin", pin_url(@pin), :class => 'btn sec_action view_pin' %>
       <%= share_pin_via_fb_link(@pin) %>
     </div>
