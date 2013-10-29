@@ -1,31 +1,32 @@
 <div class="board_description">
-  <% if user_signed_in? %>
-    <div class="board-controls">
-      <% if current_user == @profile %>
-        <%= link_to 'Edit Board', edit_profile_board_path(current_user, @board), :class => "ajax" %>
-        |
-        <%= link_to 'Edit Cover Image', edit_cover_profile_board_path(current_user, @board), :class => "ajax" %>
-      <% else %>
-        <%= render 'board/follow_buttons', :board => @board %>
-      <% end %>
-    </div>
-  <% end %>
   <h1>
     <a href="<%= profile_boards_path(@board.user) %>" class="user">
       <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
       <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
     </a>
     Board: <%= @board.name %>
+    <% if user_signed_in? %>
+      <% if current_user != @profile %>
+        <%= render 'board/follow_buttons', :board => @board %>
+      <% end %>
+    <% end %>
   </h1>
-  <p class="description"><%= @board.description %></p>
+  <% if user_signed_in? %>
+    <div class="board-controls">
+      <% if current_user == @profile %>
+        <%= link_to 'Edit Board', edit_profile_board_path(current_user, @board), :class => "ajax" %>
+        |
+        <%= link_to 'Edit Cover Image', edit_cover_profile_board_path(current_user, @board), :class => "ajax" %>
+      <% end %>
+    </div>
+  <% end %>
   <div class="board_stats">
     <span class="stat pins_count"><%= pluralize @board.pins_count, 'pin', 'pins' %></span>
     <span class="stat followers_count"><%= pluralize @board.followers_even_indirectly_count, 'follower', 'followers' %></span>
     <span class="stat comments_count"><span class="comment-count-for-board-<%= @board.id %>"><%= @board.comments.count %></span> <%= @board.comments.count == 1 ? 'comment' : 'comments' %></span>
-    <span>Category: <%= @board.category.name %></span>
+    <span class="stat">Category: <%= @board.category.name %></span>
   </div>
-  
-  <div class="clearfix"></div>
+  <p class="description"><%= @board.description %></p>
 </div>
 
 

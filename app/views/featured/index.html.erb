@@ -4,8 +4,6 @@
       Featured ParentPinners
       <span class="small"><%= link_to 'want to be featured?', faq_path(:anchor => 'featured') %></span>
     </h1>
-    <hr class="header-divider">
-
     <div class="feat_carousel">
       <%= render :partial => 'featured/user', :collection => User.get_featured(4) %>   
       <div class="clear"></div>

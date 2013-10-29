@@ -1,6 +1,6 @@
-<div class="board_comments clearfix">
+<div class="board_comments">
   <% if @board.comments_count.zero? %>  
-    <div class="center">
+    <div>
       <% if user_signed_in? %>
         <%= link_to 'Add a Comment', '#', :class => 'btn sec_action comment_button center', :id => 'comment_toggle' %>
       <% else %>
@@ -30,7 +30,7 @@
   <% end %>
     
   <% if user_signed_in? %>
-    <div id="comment_form_wrapper" class="clear">
+    <div id="comment_form_wrapper">
       <%= render 'comments/form', :commentable => @board %>
     </div>
   <% end %>

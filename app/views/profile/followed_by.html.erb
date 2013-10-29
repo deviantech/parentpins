@@ -5,7 +5,6 @@
     People Following <%= @profile.name %>
   <% end %>
 </h1>
-<hr class="header-divider">
 <% if @profile.followed_by_even_indirectly_count.zero? %>
   <div class="empty-results">
     <% if @profile == current_user %>
