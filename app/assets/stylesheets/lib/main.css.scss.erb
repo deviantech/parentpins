@@ -13,7 +13,6 @@ html{
   
 
 body {
-  padding-top: 50px;
   height:100%;
   background:transparent url(<%= asset_path 'patterns/debut_light_2.png' %>) 0 0 fixed repeat;
   font-size:14px;
@@ -231,6 +230,7 @@ a {
   color:#fff !important;
   &:hover {
     text-decoration:none !important;
+    cursor:move;
   }
 }
 
@@ -282,24 +282,17 @@ ul li .handle {
 .logo {
   display: block;
   position: relative;
-  text-align: center;
+  text-align: right;
   text-decoration: none;
   color: $themeCOLOR;
-  font-family:times;
-  font-size: 1.85em;
-  line-height: 45px;
-  font-weight:600;
-  padding:2px 6px 0 42px;
-  margin:0 auto;
-  margin-top: 1px;
-  width:114px;
+  font-weight:bold;
   &:before {
     content:"\e014";
     position:absolute;
-    top:5px;
-    left:-6px;
-    height:50px;
-    width:50px;
+    top:1px;
+    left:-3px;
+    height:48px;
+    width:48px;
     text-shadow:0 1px 0 rgba(255, 255, 255, 0.8);
     color: $themeCOLOR;
   	font-size:38px;
@@ -310,49 +303,6 @@ ul li .handle {
       color:#000; } }
   span {
     font-weight:200; } }
-
-.ir.logo {
-  text-indent: 0; }
-
-.search {
-  float:right;
-  overflow:hidden;
-  padding: 5px 5px 0 5px;
-  input {
-    display: block;
-    width: 64px;
-    float:left;
-    background: #fff;
-    border: 1px solid #D2D2D2;
-    -moz-border-radius: 4px 0 0 4px;
-    -webkit-border-radius: 4px 0 0 4px;
-    border-radius: 4px 0 0 4px;
-    -webkit-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.10) inset;
-    -moz-box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.10) inset;
-    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.10) inset;
-    font-size: 16px;
-    line-height:17px;
-    font-weight: lighter;
-    padding: 5px 9px 3px 9px;
-    margin-top: 5px;
-    resize: none;
-    @include transition;
-    &:focus {
-      background:#fff;
-      width:126px;
-      @include transition; } }
-  .search_button {
-    float:left; 
-    -moz-border-radius: 0 4px 4px 0;
-    -webkit-border-radius: 0 4px 4px 0;
-    border-radius: 0 4px 4px 0; 
-    padding-bottom:5px;
-    margin-top: 5px;
-    @include pinli-font;
-    line-height:18px;
-    font-size:14px;
-    padding:4px 6px 5px;
-    border:none; } }
 
 .header li {
   list-style: none;
@@ -393,6 +343,8 @@ ul li .handle {
   margin-right: 0px;
   @include rounded(0px);
 }
+
+/* navigation original */
 
 .nav_main {
   float: left;
@@ -519,6 +471,8 @@ ul li .handle {
   
 .cat_top:hover:before {
   border-top:4px solid #000 !important; }
+  
+
 
 /* resize and crop tool */
 
@@ -553,7 +507,7 @@ ul li .handle {
   }
   .btn.tertiary_action {
     background-color: $themeCOLOR;
-    border: 1px solid #76A613;
+    border: 1px solid $themeCOLOR;
     position: relative;
     box-shadow:none;
     -moz-box-shadow:none;
@@ -3021,5 +2975,83 @@ hr.header-divider {
   .view_pin {
     padding-left:28px;
     margin-bottom:24px;
+  }
+}
+
+
+/* Bootstrap Overrides */
+
+.navbar-inner {
+  background-image:none;
+  background-color:#fff;
+  border-top:none;
+  .logo {
+    text-shadow:none;
+    color:$themeCOLOR;
+    font-weight:bold;
+    line-height:17px;
+    padding:10px 10px 10px 48px;
+    &:hover {
+      color:#000;
+    }
+  }
+}
+
+.navbar .btn-navbar {
+  color:#000;
+  text-shadow:none;
+}
+
+.navbar-search {
+  margin-right:12px;
+  .search-query {
+    border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    width:100px;
+  }
+}
+
+.navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
+  background:$themeCOLORdark;
+  color:#fff;
+  text-shadow:0 -1px 0 rgba(0,0,0,0.3);
+}
+.navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret {
+  border-top-color: #FFF;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
+  background-image:none;
+  background:$themeCOLORdark;
+}
+.dropdown-menu {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  border:none;
+  border-radius:0;
+  -webkit-border-radius:0;
+  -moz-border-radius:0;
+}
+
+
+@media only screen 
+and (max-width : 979px) {
+  .navbar .brand {
+    margin-bottom:10px;
+  }
+  .navbar-search .search-query {
+    width:240px;
+  }
+  .nav-collapse .nav > li > a:hover, .nav-collapse .nav > li > a:focus, .nav-collapse .dropdown-menu a:hover, .nav-collapse .dropdown-menu a:focus {
+    background-color: $themeCOLORdark;
+  }
+}
+
+@media only screen 
+and (max-width : 767px) {
+  body {
+  padding-left: 0;
+  padding-right: 0;
   }
 }

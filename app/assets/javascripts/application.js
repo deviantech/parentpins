@@ -18,7 +18,6 @@
 //= require contrib/jquery.history
 //= require contrib/modernizr
 //= require contrib/jquery-sortable
-//= require contrib/bootstrap-components
 //= require contrib/jquery-naturalwidth-min
 //= require lib/helpers
 //= require lib/flash
@@ -26,6 +25,7 @@
 //= require lib/scrollToTop
 //= require lib/main
 //= require lib/pagination
+//= require contrib/bootstrap
 //= require lib/ajaxLoad
 //= require lib/google-analytics
 //= require contrib/lte-ie7
