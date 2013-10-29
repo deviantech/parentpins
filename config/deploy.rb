@@ -15,7 +15,7 @@ set :stages, %w(staging production)
 set :default_stage, "production"
 
 # Application
-set :application, "pins"
+set :application, "parentpins"
 set :rvm_type, :system
 
 # SCM info
@@ -30,16 +30,17 @@ set :git_enable_submodules, 1
 # SSH info
 set :user, 'ubuntu'
 default_run_options[:pty] = true
-ssh_options[:compression] = "none"
+set :ssh_options, { :forward_agent => true, :compression => "none" }
 
 # Configure roles
-set :site_ip, '50.16.197.60'
+# set :site_ip, '50.16.197.60'
+set :site_ip, '54.204.12.77'
 role :app, site_ip
 role :web, site_ip
 role :db,  site_ip, :primary => true
 
 # Clean up deploys automatically
-set :keep_releases, 5
+set :keep_releases, 3
 after "deploy", "deploy:cleanup"
 
 
@@ -166,5 +167,6 @@ after 'deploy:update_code', 'conditional:ensure_latest_git'
 after 'deploy:create_symlink', 'create_app_symlinks'
 
 task :create_app_symlinks do
-  run "ln -nfs #{shared_path}/uploads #{current_path}/public/uploads"
+  # Sphinx configs here?
+  
 end
