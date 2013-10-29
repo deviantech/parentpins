@@ -15,6 +15,9 @@ gem 'eco'
 # gem 'therubyracer', :platforms => :ruby
 gem 'uglifier', '>= 1.3.0'
 
+# Handle non-digest asset requests - https://github.com/sikachu/sprockets-redirect
+gem 'sprockets-redirect'
+
 # For pinterest schema testing
 gem 'capybara', :require => false
 gem 'capybara-webkit', :require => false        # Note: requires qt to install. OSX: brew install qt. Ubuntu: sudo apt-get install libqt4-dev
