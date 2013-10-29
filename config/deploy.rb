@@ -21,7 +21,7 @@ set :rvm_type, :system
 # SCM info
 set :scm, :git
 set :repository, "git@github.com:deviantech/parentpins.git"
-set :branch, "master"
+set :branch, "stable"
 set :deploy_via, :remote_cache
 set :scm_verbose, true
 set :git_enable_submodules, 1
