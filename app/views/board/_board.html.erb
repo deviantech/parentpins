@@ -20,9 +20,9 @@
     <%= link_to '', profile_board_path(board.user, board), :class => "link" %>
     
     <% if board.user == current_user %>
-      <%= link_to 'Edit cover image', edit_cover_profile_board_path(board.user, board), :class => "link-on-hover btn ajax" %>
+      <%= link_to 'Edit cover image', edit_cover_profile_board_path(board.user, board), :class => "link-on-hover btn primary ajax" %>
     <% else %>
-      <%= link_to 'View this board', profile_board_path(board.user, board), :class => "link-on-hover btn" %>
+      <%= link_to 'View this board', profile_board_path(board.user, board), :class => "link-on-hover primary btn" %>
     <% end %>
     
     <div class="cover">

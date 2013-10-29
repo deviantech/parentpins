@@ -855,7 +855,7 @@ ul li .handle {
   .featured_blogger {
     position: relative;
     width:980px;
-    padding:20px 20px 0 20px;
+    padding:20px 0 0;
     margin:0 auto;
     color:#fff;}
     h2 {
@@ -3168,5 +3168,31 @@ and (max-width : 767px) {
   body {
   padding-left: 0;
   padding-right: 0;
+  }
+}
+
+@media only screen 
+and (max-width : 479px) {
+  #top_featured_box {
+    .featured_blogger {
+      width:auto !important;
+      padding:0 !important;
+    }
+    .feature {
+      width:95% !important;
+      height:auto !important;
+      min-height:0 !important;
+      margin:0 12px 24px !important;
+      .user {
+        margin: 0 auto !important;
+        text-align: center;
+        width: auto !important;
+        height:auto !important;
+        min-height:0 !important;
+      }
+      #pins {
+        display:none;
+      }
+    }
   }
 }
