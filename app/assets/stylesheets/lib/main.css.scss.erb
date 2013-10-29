@@ -232,11 +232,38 @@ a {
       font-size: 28px;
       height: 28px;
       width: 28px; } } }
-.btn.btn_bookmarklet a {
-  color:#fff !important;
-  &:hover {
-    text-decoration:none !important;
-    cursor:move;
+.instructions {
+  margin:0 0 10px !important;
+}
+.btn.btn_bookmarklet {
+  display:block;
+  margin:12px auto;
+  width:50%;
+  a {
+    color: #FFF !important;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    display: block;
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: normal;
+    &:hover {
+      text-decoration:none !important;
+      cursor:move;
+    }
+  }
+}
+.pinterest_note {
+  border-top:1px solid #ddd;
+  margin-top:60px;
+  padding:30px 20px 30px 0;
+  background:#FFFDEC;
+  img {
+    float:left;
+    margin:0 30px 20px 0;
+  }
+  h2 {
+    margin:10px 0 !important;
   }
 }
 
@@ -950,9 +977,9 @@ ul li .handle {
     span {
       display: block;
       font-size: 18px;
-      line-height:2em;
+      line-height:24px;
       margin: 0;
-      padding: 0; } } 
+      padding: 9px 0 0; } } 
   .centered {
     text-align: center;
     margin-bottom: 24px;}
@@ -3050,7 +3077,7 @@ hr.header-divider {
 .navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
   background:$themeCOLORdark;
   color:#fff;
-  text-shadow:0 -1px 0 rgba(0,0,0,0.3);
+  text-shadow: none;
 }
 .navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret {
   border-top-color: #FFF;
@@ -3068,7 +3095,6 @@ hr.header-divider {
   -webkit-border-radius:0;
   -moz-border-radius:0;
   top:38px;
-  z-index:1;
   li > a {
     font-size: 13px;
   }
