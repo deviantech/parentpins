@@ -1,4 +1,4 @@
-require "capistrano-conditional"
+# require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 # require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
@@ -21,7 +21,6 @@ set :rvm_type, :system
 # SCM info
 set :scm, :git
 set :repository, "git@github.com:deviantech/parentpins.git"
-set :branch, "stable"
 set :deploy_via, :remote_cache
 set :scm_verbose, true
 set :git_enable_submodules, 1
@@ -49,7 +48,7 @@ after "deploy", "deploy:cleanup"
 # =========
 
 
-ConditionalDeploy.monitor_migrations(self)
+# ConditionalDeploy.monitor_migrations(self)
 
 # ConditionalDeploy.register :whenever, :watchlist => 'config/schedule.rb' do
 #   after "deploy:create_symlink", "deploy:update_crontab"
@@ -69,7 +68,7 @@ ConditionalDeploy.monitor_migrations(self)
 # = Currently deployed on passenger =
 # ===================================
 namespace :deploy do
-  desc "Restarting REE with restart.txt"
+  desc "Restarting passenger with restart.txt"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
   end
