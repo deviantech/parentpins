@@ -15,7 +15,7 @@
             = f.hidden_field "#{params[:which]}_#{attribute}", :id => "#{params[:which]}_#{attribute}"
         
           %h1 Customize #{params[:which].to_s.titleize} Cropping
-          %p Your image will be resized and/or cropped to #{@dimensions[1]}x#{@dimensions[0]}. This page allows you to customize how this is done.
+          %p Your image will be resized and/or cropped to #{@dimensions[1]}x#{@dimensions[0]} pixels. This page allows you to customize how this is done.
         
           %h3 Full size image
           .field.croppable_wrapper
@@ -24,6 +24,7 @@
           %h3 Preview
           .field.croppable_preview
             .crop_preview_wrapper
+              .cap-left
               = image_tag current_user.send(params[:which]).url, :class => 'crop_preview'
           .field
             .submit

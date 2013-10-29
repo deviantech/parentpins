@@ -63,6 +63,12 @@ $themeHIGHLIGHT: #505061;
   box-shadow: #{$a} #{$b} #{$c} #{$color};
 }
 
+@mixin btn-radius {
+  -webkit-border-radius: 6px 6px 6px 6px;
+  -moz-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px;
+}
+
 @mixin page-header {
   color: #444;
   font-size: 20px;
@@ -78,6 +84,14 @@ $themeHIGHLIGHT: #505061;
   -moz-transition: $what $length $how;
   -o-transition: $what $length $how;
   transition: $what $length $how; 
+}
+
+@mixin previewGradient {
+  background-image: -webkit-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
+  background-image: -moz-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
+  background-image: -o-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
+  background-image: -ms-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
+  background-image: radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
 }
 
 /* site wide general */
@@ -112,9 +126,7 @@ a {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
   font-size: 15px;
   line-height:24px;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  border-radius: 6px;
+  @include btn-radius;
   background-color:$themeCOLOR;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0, 0, 0, 0.15)');
   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0,0,0,0.15)')";
@@ -508,6 +520,84 @@ ul li .handle {
 .cat_top:hover:before {
   border-top:4px solid #000 !important; }
 
+/* resize and crop tool */
+
+.croppable_container {
+  min-width: 1046px;
+  &.avatar {
+    min-width:auto;
+    .cap-left {
+      display:none;
+    }
+  }
+  .form {
+    background: #F7F7F7;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    margin:24px 0 12px !important;
+  }
+  h3 {
+    background: none !important;
+    font-family: "helvetica neue", helvetica, arial, sans-serif !important;
+    font-size: 15px !important;
+    line-height: 18px !important;
+  }
+  p {
+    text-align:center;
+  }
+  .btn.tertiary_action {
+    background-color: $themeCOLOR;
+    border: 1px solid #76A613;
+    position: relative;
+    box-shadow:none;
+    -moz-box-shadow:none;
+    -webkit-box-shadow:none;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0, 0, 0, 0.15)');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr = 'transparent', endColorstr = 'rgba(0,0,0,0.15)')";
+    background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: -ms-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: -webkit-gradient(linear, center top, center bottom, from(transparent), to(rgba(0, 0, 0, 0.15)));
+    background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    background-image: linear-gradient(top, transparent, rgba(0, 0, 0, 0.15));
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    &:hover {
+      background-image: none;
+    }
+    &:active {
+      -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
+      -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset; 
+    }
+  }
+}
+
+.croppable_preview {
+  .crop_preview_wrapper {
+    border:none !important;
+    position:relative;
+  }
+  .cap-left {
+    position:absolute;
+    left: 0;
+    height: 160px;
+    width: 1020px;
+    @include previewGradient;
+  }
+  .cap-right {
+    display:none;
+  }
+}
+
+
 /* sub header cover photo */
 
 
@@ -532,11 +622,7 @@ ul li .handle {
       left: 0;
       height: 160px;
       width: 1020px;
-      background-image: -webkit-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
-      background-image: -moz-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
-      background-image: -o-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
-      background-image: -ms-radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
-	    background-image: radial-gradient(top center,circle cover,rgba(255, 255, 255, 0) 320px,rgba(247, 247, 247, 0.91)460px,#F7F7F7 500px);
+      @include previewGradient;
     }
     .cap-right {
       display:none;
@@ -946,11 +1032,11 @@ ul li .handle {
   padding: 0;
   background-color: #fff;
   -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
   -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-          box-shadow: 0 1px 4px rgba(0,0,0,.065);
+  -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+  box-shadow: 0 1px 4px rgba(0,0,0,.065);
 }
 .bs-docs-sidenav > li > a {
   display: block;
@@ -1978,9 +2064,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
         width:126px;
         position:absolute;
         top:30px;
-        -webkit-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
-        -moz-box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
-        box-shadow: 0 4px 3px rgba(0, 0, 0, 0.5);
+        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
         li {
           float:none;
           display:block; 
@@ -2511,6 +2597,7 @@ textarea {
     display:block;
     margin:0px auto;
     margin-bottom: 15px;
+    font-weight:normal;
     &:before {
       content:"\e014";
       display: block;
