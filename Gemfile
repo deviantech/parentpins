@@ -15,8 +15,9 @@ gem 'eco'
 # gem 'therubyracer', :platforms => :ruby
 gem 'uglifier', '>= 1.3.0'
 
-# Handle non-digest asset requests - https://github.com/sikachu/sprockets-redirect
-gem 'sprockets-redirect'
+# Handle non-digest asset requests - https://github.com/sikachu/sprockets-redirect.
+# No rails 4 support merged in as of Oct 29, 2013
+gem 'sprockets-redirect', :git => 'git@github.com:kjg/sprockets-redirect.git', :branch => :rails4
 
 # For pinterest schema testing
 gem 'capybara', :require => false
