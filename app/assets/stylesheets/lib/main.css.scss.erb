@@ -610,9 +610,26 @@ ul li .handle {
       position: absolute;
       top: 66px;
       left: 247px;
-      z-index: 1; }
+      z-index: 1; 
+    }
     &:hover a.hover_link {
-      display:block; }
+      display:block;
+    }
+    a.update_img {
+      padding-left:40px;
+      &:before {
+        position:absolute;
+        @include pinli-font;
+        content:"\e600";
+        color:#fff;
+      	font-size:15px;
+        position: absolute;
+        top:10px;
+        left: 10px;
+        height: 30px;
+        width: 30px;
+      }
+    }
   }
   .sub_header {
     height:160px;
@@ -3378,8 +3395,23 @@ and (max-width : 479px) {
   .sub_header_wrapper {
     .sub_header_inner_wrapper {
       a.hover_link {
-        top:12px;
-        left:12px;
+        top: 24px;
+        right: 12px;
+        left:auto;
+        width: 0;
+        border: none;
+        background-image: none;
+        background-color: rgba(0, 0, 0, 0.5);
+        text-indent:-9999px;
+        display:block;
+        &:before {
+          text-indent:0;
+          font-size:24px;
+          line-height:24px;
+          text-shadow: none;
+          top: 5px;
+          left: 11px;
+        }
       }
       .sub_header {
         overflow:hidden;

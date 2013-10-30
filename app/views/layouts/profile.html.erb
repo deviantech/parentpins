@@ -2,7 +2,7 @@
   <div class="sub_header_wrapper">
     <div class="sub_header_inner_wrapper">
       <% if current_user == @profile %>
-        <a href="<%= edit_profile_path(@profile) %>#form_header" class="btn primary hover_link"><%= current_user.cover_image? ? 'Change' : 'Add' %> Cover Image</a>
+        <a href="<%= edit_profile_path(@profile) %>#form_header" class="btn primary hover_link update_img"><%= current_user.cover_image? ? 'Change' : 'Add' %> Cover Image</a>
       <% end %>
       <div class="sub_header">
         <div class="cap-left">&nbsp;</div>
