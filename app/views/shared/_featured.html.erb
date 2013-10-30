@@ -1,9 +1,10 @@
 <div id="top_featured_box">
+  <h1 class="hidden-desktop">Featured Bloggers</h1>
   <div class="featured_blogger clearfix">
     <%= render :partial => 'featured/user', :collection => User.get_featured(2), :locals => {:max_description => 200} %>
     <div class="clear"></div>
-    <div class="more-info">
-      <%= link_to 'View All Featured', featured_path %>
-    </div>
+  </div>
+  <div class="more-info">
+    <%= link_to 'View All Featured', featured_path %>
   </div>
 </div>

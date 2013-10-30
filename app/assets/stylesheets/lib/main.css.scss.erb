@@ -839,6 +839,18 @@ ul li .handle {
   background: $themeHIGHLIGHT;
   margin:0 0 20px;
   padding:12px 0;
+  overflow:hidden;
+  overflow-x:scroll;
+  h1 {
+    color: #fff;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: normal;
+    margin: 0 auto !important;
+    padding: 12px 24px;
+    text-align: left;
+    margin: 12px auto 0;
+  }
   .more-info {
     padding:20px 0 0 20px;
     a {
@@ -2011,6 +2023,9 @@ input:focus[placeholder], textarea:focus[placeholder] {
   }
 }
 .center { text-align: center;}
+.board_wide .set_filters {
+  margin:12px auto;
+}
 .set_filters {
   padding:0;
   margin:12px 0 12px 20px;
@@ -3161,6 +3176,9 @@ and (max-width : 979px) {
     background-color: $themeCOLORdark;
     text-shadow:none;
   }
+  .featured_blogger {
+    width:950px;
+  }
 }
 
 @media only screen 
@@ -3194,5 +3212,83 @@ and (max-width : 479px) {
         display:none;
       }
     }
+    .more_info {
+      padding: 0;
+      text-align: center;
+    }
+  }
+  .set_filters {
+    max-width: 300px !important;
+    margin: 0 auto 24px !important;
+    li {
+      margin-right:0 !important;
+      width:auto !important;
+      .selected:after {
+        display:none;
+      }
+      ol {
+        width:300px !important;
+      }
+    }
+    .categories ol {
+      left:-200px;
+    }
+    .groups ol {
+      left:-96px;
+    }
+  }
+  #scroll_to_top a {
+    font-size:12px;
+    padding: 5px 4px 4px 4px;
+    line-height:15px;
+  }
+  .comment_button.center {
+    margin: 0 auto 10px !important;
+    text-align: center;
+    float: none !important;
+    display: block;
+    width: 132px;
+  }
+  .board_stats {
+    width:100%;
+  }
+  body.profile .content h1 {
+    font-size:20px !important;
+  }
+}
+
+
+@media (min-width: 980px) {
+  .search-query {
+    &:focus {
+      position: absolute;
+      top: 50px;
+      z-index: 100;
+      width: 380px;
+      right: 0;
+      font-size: 20px;
+      padding: 10px;
+      border-width: 10px;
+      line-height: 28px;
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.3) !important;
+      -webkit-box-shadow: 0 0 16px rgba(0, 0, 0, 0.3) !important;
+      -moz-box-shadow: 0 0 16px rgba(0, 0, 0, 0.3) !important;
+    }
+  }
+  .board_description .board-controls {
+    float:right;
+  }
+}
+
+// custon query to present into block to iphone 4 users
+
+.visible-smallphone {
+  display:none;
+}
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+  .visible-smallphone {
+    display:block;
   }
 }
