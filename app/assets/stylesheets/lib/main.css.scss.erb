@@ -811,12 +811,13 @@ ul li .handle {
 .feat_carousel {
   width:1000px;
   margin:0 auto 24px auto;
-  padding:24px 0 0 0px;
+  padding:24px 0 0 0;
   .feature {
     height:auto;
     padding:0 0 12px 0;
     margin-bottom:34px;
-    min-height:320px; }
+    min-height:320px;
+  }
   .social_links {
     padding:0px; }
   .timeline {
@@ -1351,7 +1352,15 @@ li.pin-context {
       text-decoration: none;
       color: #222;
       &:hover {
-        color: #000; } } }
+        color: #000; } 
+      }
+    .view-more {
+      color:$themeCOLOR;
+    }
+    .view-less {
+      color:$themeCOLOR;
+    }
+  }
   .stats {
     margin: 6px 0 5px;
     color: #8C7E7E;
@@ -3135,7 +3144,9 @@ hr.header-divider {
     width:52px;
   }
 }
-
+.navbar .nav > li > a {
+  color:#555;
+}
 .navbar .nav > li > a:focus, .navbar .nav > li > a:hover {
   background:$themeCOLORdark;
   color:#fff;
@@ -3178,6 +3189,23 @@ and (max-width : 979px) {
   }
   .featured_blogger {
     width:950px;
+  }
+  .feat_carousel {
+    width:auto;
+    .feature {
+      width:auto;
+      float:none;
+      margin-bottom:48px;
+      .user {
+        margin-right:220px;
+        width:auto;
+        padding: 12px 0 0 0;
+      }
+      .timeline {
+        right: -8px !important;
+        left: auto !important;
+      }
+    }
   }
 }
 
@@ -3255,6 +3283,38 @@ and (max-width : 479px) {
   body.profile .content h1 {
     font-size:20px !important;
   }
+  .feat_carousel {
+    width:auto;
+    margin:0 auto;
+    .feature {
+      width:300px;
+      margin: 0 auto 36px;
+      .user {
+        width:auto;
+        margin:0;
+        height: auto !important;
+        padding-bottom: 10px;
+      }
+      .timeline {
+        position: relative;
+        width: 300px;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        display: block;
+        .pin {
+          width: 192px;
+          position: relative;
+          left: auto !important;
+          right: auto !important;
+          top: auto !important;
+          bottom: auto !important;
+          margin: 0 0 0 40px !important;
+        }
+      }
+    }
+  }
 }
 
 
@@ -3278,6 +3338,15 @@ and (max-width : 479px) {
   .board_description .board-controls {
     float:right;
   }
+}
+
+@media only screen 
+and (max-width : 1009px) {
+ .feat_carousel {
+   .feature {
+     
+   }
+ } 
 }
 
 // custon query to present into block to iphone 4 users
