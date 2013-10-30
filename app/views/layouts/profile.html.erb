@@ -20,38 +20,49 @@
       <%= render 'profile/follow_buttons', :to_follow => @profile %>      
       <%= render 'profile/feature_buttons', :user => @profile %>
       
-      <div class="hide-nav">
+      <div class="clear"></div>
+      
+      <div class="nav_profile_wrap">
         <ul class="nav_profile" data-profile-id="<%= @profile.id %>">
           <% if current_user == @profile %>
             <li><%= profile_nav_link :activity %></li>
           <% end %>
+          <li class="visible-smallphone">
+            <a href="#" class="about" data-toggle="collapse" data-target=".about-collapse">
+              <span class="counter"></span>
+              <span class="label">About</span>
+            </a>
+          </li>
           <li><%= profile_nav_link :pins %></li>
           <li><%= profile_nav_link :boards %></li>
           <li><%= profile_nav_link :likes %></li>
           <li><%= profile_nav_link :following %></li>
           <li><%= profile_nav_link :followed_by %></li>
         </ul>
+      </div>
 
+      <div class="about-collapse">
         <p class="info_section kid_count">Has <%= @profile.kids.to_i.zero? ? 'no kids' : pluralize(@profile.kids, 'kid', 'kids') %></p>
-            
-        <% if @profile.teacher? %>
-          <p class="info_section teacher_info teacher_icon">
-            <%= display_teacher_info @profile %>
-          </p>
-        <% end %>
 
         <% if @profile.featured? %>
           <p class="info_section featured_info featured_icon">
             Featured Pinner!
           </p>
         <% end %>
-      
+    
+        <% if @profile.teacher? %>
+          <p class="info_section teacher_info teacher_icon">
+            <%= display_teacher_info @profile %>
+          </p>
+        <% end %>
+    
         <%= render 'profile/social_media', :profile => @profile %>
 
         <% unless @profile.bio.blank? %>
           <p class="bio"><%= auto_link @profile.bio, :html => { :target => '_blank' } %></p>
         <% end %>
       </div>
+      
     </div>
 
     <div class="profile_content_wrapper">
