@@ -3315,6 +3315,104 @@ and (max-width : 479px) {
       }
     }
   }
+  .wrapper {
+    padding:0;
+  }
+  .info {
+    float: none;
+    margin: -76px 0 0 !important;
+    width: auto;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    .avatar {
+      float:left;
+      margin: -12px 12px 8px;
+      height: 60px;
+      width: 60px;
+      border:2px solid #fff;
+      box-shadow:0 1px 2px rgba(0,0,0,0.3);
+      -webkit-box-shadow:0 1px 2px rgba(0,0,0,0.3);
+      -moz-box-shadow:0 1px 2px rgba(0,0,0,0.3);
+      &:hover {
+        border-width:2px;
+      }
+    }
+    h2 {
+      text-align:left;
+      color:#fff;
+      text-shadow:0 1px 1px rgba(0,0,0,0.6);
+      line-height: 36px;
+      font-size: 30px;
+    }
+    .follow, .unfollow {
+      text-align:left;
+      float: left;
+      padding-right: 9px;
+      &:hover {
+        color:$themeCOLOR !important;
+      }
+    }
+    .nav_profile {
+      overflow:hidden;
+      width:100%;
+      li {
+      }
+    }
+    &:hover {
+      h2 {
+        color:#fff;
+      }
+    }
+    .info_section {
+      display:block;
+      margin:0;
+    }
+    .bio {
+      display:block;
+      clear:both;
+    }
+  }
+  .sub_header_wrapper {
+    .sub_header_inner_wrapper {
+      a.hover_link {
+        top:12px;
+        left:12px;
+      }
+      .sub_header {
+        overflow:hidden;
+        width:auto;
+        img {
+          height: 160px;
+          width: 1020px;
+          max-width: 1020px;
+          position: absolute;
+          display: block;
+          text-align: center;
+          top: 0;
+          left: -55%;
+        }
+      }
+      .cap-left {
+        display:none;
+      }
+    }
+  }
+  body.profile {
+    margin:0;
+    .profile_content_wrapper {
+      width: auto;
+      margin: 0;
+      .content h1 {
+        text-align:center;
+      }
+      .board_description {
+        margin-top:24px;
+      }
+    }
+  }
 }
 
 
@@ -3340,14 +3438,6 @@ and (max-width : 479px) {
   }
 }
 
-@media only screen 
-and (max-width : 1009px) {
- .feat_carousel {
-   .feature {
-     
-   }
- } 
-}
 
 // custon query to present into block to iphone 4 users
 
