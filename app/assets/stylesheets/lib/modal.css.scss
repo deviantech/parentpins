@@ -232,7 +232,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       padding: 10px 10px 20px 30px;
       position: absolute;
       top: 30px;
-      left: 510px;
+      left: 490px;
       width: 118px;
       background: transparent; }
     .actions a {
@@ -315,4 +315,119 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
         color: #000000; } } 
     .comment_button {
       padding:8px 10px 6px;
-      top:12px; } } }
+      top:12px;
+    }
+  }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 768px) {
+  .pinly {
+    width:460px;
+    padding:5px;
+    border:none;
+    .pin_type {
+      top:-5px;
+    }
+    .image_link {
+      width:470px;
+      margin:0 -5px 12px;
+      border-radius:0;
+      -webkit-border-radius:0;
+      -moz-border-radius:0;
+      img {
+        border-radius:0;
+        -webkit-border-radius:0;
+        -moz-border-radius:0;
+      }
+      &:hover:before {
+        width:470px;
+        font-size: 15px;
+        font-weight: normal;
+        color: #FFF;
+      }
+    }
+    .comments {
+      margin: 0 -5px;
+      textarea {
+        width: 280px;
+      }
+    }
+    .title a {
+      font-size:12px;
+    }
+    .detail {
+      .actions {
+        padding: 0;
+        position: relative;
+        top: auto;
+        left: auto;
+        width: auto;
+        background: transparent;
+        margin: 0 -5px;
+        overflow:hidden;
+        .sec_action {
+          text-indent: -9999px;
+          background-image: none;
+          background-color: rgba(0, 0, 0, 0);
+          border: none;
+          border-radius: 0;
+          -webkit-border-radius: 0;
+          -moz-border-radius: 0;
+          width: 94px;
+          height:52px;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+          margin: 0 !important;
+          padding: 0;
+          display: block;
+          float: left;
+          &:before {
+            text-indent: 0;
+            font-size: 18px;
+            top: 16px;
+            left: 22px;
+            text-shadow: none;
+          }
+          &.unlike:before {
+            color:red;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen 
+and (max-width : 480px) {
+  .pinly {
+    width:300px;
+    .image_link {
+      width:310px;
+      margin:0 -5px 12px;
+      &:hover:before {
+        width:310px;
+      }
+    }
+    .comments {
+      textarea {
+        width: 230px;
+      }
+    }
+    .detail {
+      .actions {
+        .sec_action {
+          width: 62px;
+          height:52px;
+          &:before {
+            top: 16px;
+            left: 22px;
+          }
+        }
+      }
+    }
+  }
+}

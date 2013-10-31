@@ -11,7 +11,7 @@
   
   
     <% does_like = current_user.likes?(pin) %>
-    <a class="btn sec_action like_button <%= 'hidden' unless does_like %>" href="#" data-url="<%= unlike_pin_path(pin) %>">Unlike</a>
+    <a class="btn sec_action like_button unlike <%= 'hidden' unless does_like %>" href="#" data-url="<%= unlike_pin_path(pin) %>">Unlike</a>
     <a class="btn sec_action like_button <%= 'hidden' if does_like %>" href="#" data-url="<%= like_pin_path(pin) %>">Like</a>
 
     <% unless defined?(skip_comments) && skip_comments %>
