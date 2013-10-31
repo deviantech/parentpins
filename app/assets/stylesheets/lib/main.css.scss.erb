@@ -3236,6 +3236,15 @@ and (max-width : 979px) {
     .form.narrow {
       margin:10px auto;
     }
+    .modal_overlay .content.board.board_wide {
+      width: auto !important;
+    }
+    #pin-preview {
+      display:none;
+    }
+    .form.pin_form:after {
+      display:none;
+    }
   }
 }
 
@@ -3244,6 +3253,9 @@ and (max-width : 767px) {
   body {
   padding-left: 0;
   padding-right: 0;
+  }
+  .modal_overlay .content.board.board_wide {
+    width:auto !important;
   }
 }
 
@@ -3260,14 +3272,15 @@ and (min-width : 480px) {
 and (max-width : 480px) {
   #top_featured_box {
     .featured_blogger {
-      width:auto !important;
+      width:460px !important;
       padding:0 !important;
     }
     .feature {
-      width:95% !important;
+      width:210px !important;
       height:auto !important;
       min-height:0 !important;
-      margin:0 9px 24px !important;
+      margin:0 9px !important;
+      float:left;
       .user {
         margin: 0 auto !important;
         text-align: center;

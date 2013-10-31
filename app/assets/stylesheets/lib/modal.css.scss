@@ -35,11 +35,17 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
     padding-top:20px; }
   .profile.wrapper {
     padding-top: 60px;
-    width:820px; }
+    width:auto; }
   .form h1 {
     margin:10px 0 0 0;
     min-height:auto;
-    width:auto; } }
+    width:auto;
+  }
+  .content.board.board_wide {
+    width:790px !important;
+    margin:0 auto;
+  }
+}
 
 .pinly {
   position: static;
@@ -320,7 +326,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   }
 }
 
-/* Smartphones (portrait) ----------- */
+/* Pin Modal tablet and down */
 @media only screen 
 and (max-width : 768px) {
   .pinly {
@@ -400,7 +406,7 @@ and (max-width : 768px) {
   }
 }
 
-/* Smartphones (portrait) ----------- */
+/* pin modal iphone4 and down */
 @media only screen 
 and (max-width : 480px) {
   .pinly {
