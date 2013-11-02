@@ -3731,7 +3731,8 @@ and (max-width : 480px) {
 
 /* targets anything above most tablets in landscape and above */
 
-@media (min-width: 980px) {
+@media only screen 
+and (min-width: 980px) {
   .search-query {
     &:focus {
       position: absolute;
@@ -3750,6 +3751,23 @@ and (max-width : 480px) {
   }
   .board_description .board-controls {
     float:right;
+  }
+}
+
+@media only screen 
+and (max-width: 979px) {
+  .form.wide {
+    width:280px;
+    h1 {
+      border-bottom: none !important;
+    }
+    .section.stacked {
+      width:280px;
+      margin:0;
+    }
+    .field.checkbox input {
+      margin-left:20px !important;
+    }
   }
 }
 
