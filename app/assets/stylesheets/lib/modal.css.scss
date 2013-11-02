@@ -326,7 +326,9 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   }
 }
 
-/* Pin Modal tablet and down */
+
+/* targets iPad portrait and down */
+
 @media only screen 
 and (max-width : 768px) {
   .pinly {
