@@ -7,6 +7,15 @@ GIT
       git
 
 GIT
+  remote: git@github.com:kjg/sprockets-redirect.git
+  revision: 84016ec355bde78a970372a01691248276eaced8
+  branch: rails4
+  specs:
+    sprockets-redirect (0.1.0)
+      activesupport (>= 3.1.0)
+      rack
+
+GIT
   remote: https://github.com/fog/fog.git
   revision: 7ca8017d64c198161cc872e52894dd910e5307f2
   specs:
@@ -325,6 +334,7 @@ DEPENDENCIES
   ruby-debug
   rvm-capistrano
   sass-rails (~> 4.0.0)
+  sprockets-redirect!
   system_timer
   thin
   uglifier (>= 1.3.0)

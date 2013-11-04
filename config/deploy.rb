@@ -1,4 +1,4 @@
-require "capistrano-conditional"
+# require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 # require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
@@ -21,7 +21,6 @@ set :rvm_type, :system
 # SCM info
 set :scm, :git
 set :repository, "git@github.com:deviantech/parentpins.git"
-set :branch, "master"
 set :deploy_via, :remote_cache
 set :scm_verbose, true
 set :git_enable_submodules, 1
@@ -48,7 +47,8 @@ after "deploy", "deploy:cleanup"
 # = Tasks =
 # =========
 
-ConditionalDeploy.monitor_migrations(self)
+
+# ConditionalDeploy.monitor_migrations(self)
 
 # ConditionalDeploy.register :whenever, :watchlist => 'config/schedule.rb' do
 #   after "deploy:create_symlink", "deploy:update_crontab"
@@ -68,7 +68,7 @@ ConditionalDeploy.monitor_migrations(self)
 # = Currently deployed on passenger =
 # ===================================
 namespace :deploy do
-  desc "Restarting REE with restart.txt"
+  desc "Restarting passenger with restart.txt"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
   end
@@ -143,22 +143,6 @@ namespace :dev do
     end
   end
 end
-
-namespace :conditional do
-  desc "Tests to be sure that the newest local and remote git commits match"
-  task :ensure_latest_git do
-    remote = capture("cd #{shared_path}/cached-copy && git log --format=oneline -n 1", :pty => false)
-    local = run_locally("git log --format=oneline -n 1")
-    
-    unless local == remote
-      abort("\nLocal and remote git repositories have different HEADs:\n    Local: #{local}    Remote: #{remote}\n    Make sure you've committed your latest changes, or else pull down the remote updates and try again\n\n")
-    end
-  end
-end
-
-
-# Abort deployment if mismatch between local and remote git repositories
-after 'deploy:update_code', 'conditional:ensure_latest_git'
 
 
 # ===========
