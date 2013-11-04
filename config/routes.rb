@@ -15,7 +15,7 @@ ParentPins::Application.routes.draw do
 
   get "/pins/:source_id/repin" => "pins#new", :as => :repin
   
-  post  "/popup/pins/new"      => "popup#pin",     :as => :bookmarklet_popup
+  match  "/popup/pins/new"      => "popup#pin",     :as => :bookmarklet_popup, :via => [:get, :post]
   post  "/popup/pins/create"   => "popup#create",  :as => :pin_from_popup
   match  "/popup/login"        => "popup#login",   :as => :popup_login, :via => [:get, :post]
   
