@@ -25,9 +25,9 @@ gem 'capybara-user_agent', :require => false
 gem 'protected_attributes'
 
 gem 'whenever', :require => false
-
+gem 'awesome_print', :require => 'ap'
+  
 group :development do
-  gem 'awesome_print', :require => 'ap'
   gem 'thin'
   gem 'git'
   gem 'capistrano', :require => false
