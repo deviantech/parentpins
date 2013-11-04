@@ -53,7 +53,6 @@ gem 'roadie'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
-gem 'capistrano'
 gem 'ruby-debug', :platform => :ruby_18
 gem 'debugger', :platform => [:ruby_19, :ruby_20]
 

@@ -2,7 +2,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :consider_ajax_layout
   helper_method :host, :bookmarklet_link_target_js
-  
+
+  # TODO: remove this line once done testing media responsiveness
+  before_filter :allow_external_iframing
   
   private
   
