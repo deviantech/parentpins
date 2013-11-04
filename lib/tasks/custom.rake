@@ -56,27 +56,24 @@ namespace :admin do
 end
 
 
+# Used once to store height for already-uploaded pins when we started tracking that information
 namespace :pins do
   desc "Update missing image height for existing pins"
   task :update_heights => :environment do
-
-    Pin.send(:define_method, :hackish_height) do
-      @height = 0
-      self.image.v222.manipulate! do |img|
-        @height = img[:height]
-        img
-      end
-      @height
-    end
-
     total = Pin.where('image_v222_height IS NULL').where.not('image IS NULL').count
     current = 0
     puts "Found #{total} pins to update"
+    
     Pin.where('image_v222_height IS NULL').where.not('image IS NULL').find_each(:batch_size => 100) do |pin|
       current += 1
       puts "#{current} of #{total}" if current % 10 == 0
-      pin.update_attribute :image_v222_height, pin.hackish_height
+      begin
+        pin.update_attribute :image_v222_height, pin.image.v222.send(:get_dimensions)[1]
+      rescue StandardError => e
+        msg = "[#{pin.id}] (#{pin.image.v222.url}) failed to detect dimensions (valid image?)"
+        puts msg
+        File.open('log/pinerrors.log', 'a') {|f| f.puts msg}
+      end
     end
-    
   end
 end
