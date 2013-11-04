@@ -14,7 +14,7 @@ Global.updateModalContents = (html) ->
   window['skimlinks'] && skimlinks()
 
 # Only close overlay if click was ON overlay (or various other wrapper elements), not just bubbled up to it.
-$(document).on 'click', '.modal_overlay', (e) ->
+$(document).on 'click tap', '.modal_overlay', (e) ->
   Global.closeModal() if $(e.target).hasClass('modal_overlay') || $(e.target).hasClass('wrapper') || $(e.target).hasClass('content')
 
 # Close if escape key pressed
