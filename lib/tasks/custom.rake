@@ -57,6 +57,7 @@ end
 
 
 # Used once to store height for already-uploaded pins when we started tracking that information
+# Run as 'nohup bundle exec rake pins:update_heights RAILS_ENV=production &' && 'disown %1' && 'sudo renice -10 PID'
 namespace :pins do
   desc "Update missing image height for existing pins"
   task :update_heights => :environment do
