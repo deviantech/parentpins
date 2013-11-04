@@ -11,7 +11,7 @@
         
         <ul class="nav">
           <li class="dropdown">
-            <%= nav_link 'Categories', pins_path, :skip_marker => true, :class => 'dropdown-toggle', 'data-toggle' => 'dropdown' %>
+            <%= nav_link 'Categories <b class="caret"></b>'.html_safe, pins_path, :skip_marker => true, :class => 'dropdown-toggle', 'data-toggle' => 'dropdown' %>
             <ul class="dropdown-menu">
               <% Category.all.each do |cat| %>
                 <li><%= link_to cat.name, pins_path(:category => cat.id) %></li>
