@@ -2,7 +2,7 @@ class Pin < ActiveRecord::Base
   extend Searchable
   
   attr_accessor :cached_remote_image_url, :cached_remote_small_image_url, :external_id
-  attr_accessible :kind, :description, :price, :url, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id, :cached_remote_image_url, :cached_remote_small_image_url, :external_id
+  attr_accessible :kind, :description, :price, :url, :board_id, :image, :image_cache, :remote_image_url, :via_url, :board_attributes, :age_group_id, :cached_remote_image_url, :cached_remote_small_image_url, :external_id, :image_v222_height
 
   VALID_TYPE_DESCRIPTIONS = {
     'idea' => 'that are just generally good ideas for parents or kids.',

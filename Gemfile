@@ -65,6 +65,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 
 gem 'carrierwave'
+gem 'carrierwave-meta'
 gem 'mini_magick'
 gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
