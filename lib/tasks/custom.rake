@@ -54,3 +54,29 @@ namespace :admin do
     msg.deliver
   end
 end
+
+
+namespace :pins do
+  desc "Update missing image height for existing pins"
+  task :update_heights => :environment do
+
+    Pin.send(:define_method, :hackish_height) do
+      @height = 0
+      self.image.v222.manipulate! do |img|
+        @height = img[:height]
+        img
+      end
+      @height
+    end
+
+    total = Pin.where('image_v222_height IS NULL').where.not('image IS NULL').count
+    current = 0
+    puts "Found #{total} pins to update"
+    Pin.where('image_v222_height IS NULL').where.not('image IS NULL').find_each(:batch_size => 100) do |pin|
+      current += 1
+      puts "#{current} of #{total}" if current % 10 == 0
+      pin.update_attribute :image_v222_height, pin.hackish_height
+    end
+    
+  end
+end
