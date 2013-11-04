@@ -1163,7 +1163,7 @@ ul li .handle {
 .about_content {
   margin: 20px 40px; }
 
-/* feed timeline */
+/* Pin grid - timeline */
 
 .timeline {
   margin: 10px 0;
@@ -1180,7 +1180,9 @@ ul li .handle {
     padding: 15px 15px 0;
     -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2); } }
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  }
+}
 
 ul.masonry {
   margin: auto;
@@ -3095,7 +3097,6 @@ hr.header-divider {
 
 /* Bootstrap Overrides */
 
-
 .navbar {
   margin-bottom:0;
   .btn-navbar {
@@ -3192,6 +3193,7 @@ hr.header-divider {
 }
 
 
+/* Targets anything wider than most portrait tablets */
 
 @media only screen 
 and (max-width : 979px) {
@@ -3248,6 +3250,9 @@ and (max-width : 979px) {
   }
 }
 
+
+/* targets ipad portrait and below */
+
 @media only screen 
 and (max-width : 767px) {
   body {
@@ -3260,13 +3265,85 @@ and (max-width : 767px) {
 }
 
 
+/* targets iphone landscape (and other phones in this range) and below */
+
 @media only screen 
-and (min-width : 480px) {
-  // hides anything with .visible-smallphone from 480px and up
-  .visible-smallphone {
-    display:none !important;
+and (max-width : 568px) {
+  .pin 
+  .actions {
+    padding: 0;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: auto;
+    background: transparent;
+    margin: -15px -15px 14px;
+    overflow:hidden;
+    border-bottom: 1px solid #F8F8F8;
+    .sec_action {
+      text-indent: -9999px;
+      background-image: none;
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      border-radius: 0;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      width: 44px;
+      height:50px;
+      box-shadow: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      margin: 0 !important;
+      padding: 0;
+      display: block;
+      float: left;
+      &:before {
+        text-indent: 0;
+        font-size: 18px;
+        top: 16px;
+        left: 17px;
+        text-shadow: none;
+        color:#444;
+      }
+      &.unlike:before {
+        color:red;
+      }
+    }
+  }
+  .price {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    top:60px;
+    left:0;
+    text-align:left;
+    width:auto;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 }
+
+
+
+@media only screen 
+and (max-width : 660px) {
+  .set_filters {
+    max-width:200px !important;
+    min-height:90px;
+    ol li ol {
+      top:0;
+      left:120px;
+    }
+    .categories ol {
+      width: 100px;
+      left: 120px;
+    }
+  }
+}
+
+
+/* targets just iphone4 landscape and below */
 
 @media only screen 
 and (max-width : 480px) {
@@ -3299,6 +3376,7 @@ and (max-width : 480px) {
   }
   .set_filters {
     max-width: 300px !important;
+    min-height:0 !important;
     margin: 0 auto 24px !important;
     li {
       margin-right:0 !important;
@@ -3651,7 +3729,10 @@ and (max-width : 480px) {
 }
 
 
-@media (min-width: 980px) {
+/* targets anything above most tablets in landscape and above */
+
+@media only screen 
+and (min-width: 980px) {
   .search-query {
     &:focus {
       position: absolute;
@@ -3672,3 +3753,68 @@ and (max-width : 480px) {
     float:right;
   }
 }
+
+@media only screen 
+and (max-width: 979px) {
+  .form.wide {
+    width:280px;
+    h1 {
+      border-bottom: none !important;
+    }
+    .section.stacked {
+      width:280px;
+      margin:0;
+    }
+    .field.checkbox input {
+      margin-left:20px !important;
+    }
+  }
+}
+
+
+/* targets iPad portrait and down */
+
+@media only screen 
+and (max-width : 320px) {
+  .timeline {
+    li.pin {
+      width: 220px;
+      box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
+      -webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
+      -moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+  }
+  .pin {
+    .image_link {
+      width:260px;
+      .pin_image {
+        width:100%;
+      }
+    }
+    .description {
+      font-size:13px;
+    }
+    .attribution {
+      .image_link {
+        width:30px;
+      }
+    }
+    .comment_form form textarea {
+      width:188px;
+    }
+    .comment {
+      padding:0 5px 5px;
+    }
+  }
+}
+
+@media only screen 
+and (min-width : 481px) {
+// hides anything with .visible-smallphone from 480px and up
+  .visible-smallphone {
+    display:none !important;
+  }
+}
+
+
+
