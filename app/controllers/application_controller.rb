@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :consider_ajax_layout
   helper_method :host, :bookmarklet_link_target_js
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   # TODO: remove this line once done testing media responsiveness
   before_filter :allow_external_iframing
@@ -91,4 +92,8 @@ class ApplicationController < ActionController::Base
     response.headers.except! 'X-Frame-Options'
   end
   
+  # https://github.com/plataformatec/devise#strong-parameters
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << :email
+  end
 end

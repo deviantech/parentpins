@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   validate :valid_username, :valid_social_media_links
   before_save :track_media_changes
   before_destroy :clean_redis
+  after_create :prepopulate_following_users
 
   # Used by searchable
   scope :newest_first,  -> { order('id DESC') }
@@ -357,6 +358,13 @@ class User < ActiveRecord::Base
   end
 
   protected
+  
+  # New users should start by following two random featured users, so their activity area isn't blank to start with
+  def prepopulate_following_users
+    User.get_featured(2).each do |f|
+      follow_user(f)
+    end
+  end
   
   def valid_social_media_links
     errors.add(:twitter_account, "doesn't appear valid") if @twitter_error

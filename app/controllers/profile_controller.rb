@@ -37,7 +37,7 @@ class ProfileController < ApplicationController
   def update
     if params[:from] == 'step_2' ? @profile.update_attributes(params[:user]) : @profile.update_maybe_with_password(params[:user])
       sign_in(@profile, :bypass => true)
-      flash[:success] = "Your profile changes have been saved."
+      flash[:success] = params[:from] == 'step_2' ? "We've started you out automatically following two of our featured users. Their pins will appear here on your Activity tab." : "Your profile changes have been saved."
       redirect_to @profile.cover_image_was_changed ? crop_cover_image_path : (@profile.avatar_was_changed ? crop_avatar_path : activity_profile_path(@profile))
     else
       render 'edit'
