@@ -109,6 +109,12 @@ input:focus {
 
 /* typography */
 
+//Fix bootstrap issue
+select {
+  height: 40px;
+  line-height: 40px;
+}
+
 p {
    font-size: 1em; /* 14px */ 
    line-height: 1.2857em; /* 18px */ 
@@ -716,6 +722,10 @@ ul li .handle {
       border:4px solid $themeCOLOR; }
     img {
       @include circular; } } 
+  .following-action-for-profile {
+    display:block;
+    text-align:center;
+  }
   .follow,.unfollow {
     text-decoration:none;
     text-align:center;
