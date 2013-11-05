@@ -110,7 +110,6 @@ body {
     margin: 60px auto; 
     h1 {      
       color: #444;
-      font-family: georgia,times,serif;
       font-size: 22px;
       font-weight: normal;
       color:#000;
@@ -120,7 +119,7 @@ body {
       min-height:auto;
       text-shadow:0 1px 0 #fff;
       text-align:center;
-      border-bottom: 1px dashed #C2C2C2; } } }
+      border-bottom: 1px solid #DDD; } } }
 
 .form .field.checkbox {
   overflow:hidden;
@@ -130,6 +129,14 @@ body {
     float:left; }
   label {
     float:left; } }
+    
+form .field.checkbox.remember_me {
+  text-align: left;
+  input, label {
+    display: inline;
+    float: none !important;
+  }
+}
     
 .buttons {
   clear: both;
@@ -166,18 +173,17 @@ body {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  &.fb_button.sec_action {
+  &.btn_facebook {
     background-color: #3c5a97;
     border: 1px solid #3c5a97;
     position: relative;
     font-weight: normal;
-    margin: 12px auto 0;
+    margin: 9px auto 24px;
     text-shadow:none;
     color: #fff;
     font-size: 18px;
     line-height:24px;
     display: block;
-    width: 170px;
     position: relative;
     &:hover {
       background-color:#658AD9;
@@ -275,8 +281,7 @@ form .field {
       font-size: 16px;
       font-weight: normal;
       padding: 8px 10px;
-      resize: none;
-      font-family:helvetica; } 
+      resize: none; } 
     select[multiple="multiple"] {
       width: 260px;
       option {
@@ -321,7 +326,6 @@ input.btn {
   display:block;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
   font-size: 18px;
-  font-family:helvetica, sans-serif;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
@@ -371,7 +375,6 @@ input.btn {
   width: 300px;
   position:relative;
   h2 {
-    font-family: "Helvetica Neue", helvetica, arial, sans-serif;
     font-size: 24px;
     line-height:30px;
     color:#fff;

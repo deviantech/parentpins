@@ -26,7 +26,6 @@
         <% end %>
       </h2>
       <%= render 'pins/stats', :pin => @pin %>
-      <%= render 'pins/actions', :pin => @pin %>
       <%= link_to @pin.url, :target => '_blank', :class => 'image_link' do %>
       <% if @pin.price %>
       <div class="price"><%= number_to_currency @pin.price %></div>
@@ -35,6 +34,8 @@
       <% end %>
       <p class="description"><%= @pin.description %></p>
 
+      <%= render 'pins/actions', :pin => @pin %>
+      
       <% if @pin.original_poster && @pin.original_poster != @pin.via %>
       <p>
         Originally posted by <%= link_to @pin.original_poster.name, profile_path(@pin.original_poster) %>

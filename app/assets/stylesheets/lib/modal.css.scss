@@ -132,7 +132,12 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       margin: 0;
       color: #000;
       font-size: 18px;
-      font-weight: bold; }
+      font-weight: bold;
+      span {
+        font-size: 14px;
+        font-weight: normal;
+      }
+    }
     .time {
       font-style: italic;
       a {

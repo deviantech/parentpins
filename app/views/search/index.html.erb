@@ -13,7 +13,7 @@
     </div>
     
     <% if @results.blank? %>
-      <div class="empty-results"><h2>No <%= @kind.pluralize %> to show.</h2></div>
+      <div class="empty-results"><h2>There are no <%= @kind.pluralize %> to show.</h2></div>
     <% else %>
       <ul class="ajax-pagination masonry <%= search_classes_by_kind %>">
         <% @results.each do |r| %>

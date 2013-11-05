@@ -84,11 +84,11 @@ ActiveRecord::Schema.define(version: 20131104212128) do
   create_table "imports", force: true do |t|
     t.integer  "user_id"
     t.string   "source"
-    t.integer  "attempted"
-    t.integer  "completed"
+    t.integer  "attempted",  default: 0
+    t.integer  "completed",  default: 0
     t.string   "user_agent"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "pins", force: true do |t|
