@@ -34,13 +34,15 @@
       <% end %>
     </div>
   </div>
-  <% if user_signed_in? && current_user != board.user %>
-    <div class="follow_holder">
-      <%= render "/board/follow_buttons", :board => board %>
-    </div>
-  <% else %>
-    <div class="follow_holder">
-      <p class="mine">Your board</p>
-    </div>
+  <% if user_signed_in? %>
+    <% if current_user != board.user %>
+      <div class="follow_holder">
+        <%= render "/board/follow_buttons", :board => board %>
+      </div>
+    <% else %>
+      <div class="follow_holder">
+        <p class="mine">Your board</p>
+      </div>
+    <% end %>
   <% end %>
 </li>
