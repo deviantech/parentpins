@@ -20,7 +20,7 @@
       .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
         %h3 
           Pinterest pins previously imported
-          = link_to_function '(hide)', 'return false', :id => 'ppTogglePreviouslyImportedPins'
+          = link_to '(hide)', '#', :id => 'ppTogglePreviouslyImportedPins'
           %span.tip{tooltip('If in the future you decide to import more pins, the ones you have already imported will be saved here so you can easily go through the importer process again.', :placement => 'bottom')} ?
         %ul.collection.clearfix
     
@@ -56,7 +56,7 @@
     .left
       = link_to 'Add new board', new_profile_board_path(current_user), :class => 'ajax'
 
-      = link_to_function "Reset Drag/Drop", 'return false', :id => 'ppResetDragDropLink'
+      = link_to "Reset Drag/Drop", '#', :id => 'ppResetDragDropLink'
       
     
     .right

@@ -261,11 +261,13 @@ $(document).ready () ->
         e.preventDefault()    
 
     # Handle Reset Button
-    $('#ppResetDragDropLink').on 'click', () =>
+    $('#ppResetDragDropLink').on 'click', (e) =>
+      e.preventDefault();
       handlePreviouslyImportedData(null, true)
     
     # Handle show/hide previous
     $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
+      e.preventDefault();
       imported = $('.importing_pins.previously_imported')
       ul = imported.find('ul.collection')
       link = $(e.currentTarget)
