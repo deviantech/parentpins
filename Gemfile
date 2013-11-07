@@ -34,7 +34,7 @@ gem 'awesome_print', :require => 'ap'
 group :development do
   gem 'thin'
   gem 'git'
-  gem 'capistrano', :require => false
+  gem 'capistrano', '~> 2.15.5', :require => false
   gem 'rvm-capistrano', :require => false
   gem 'capistrano-ext', :require => false
   gem 'capistrano_colors', :require => false

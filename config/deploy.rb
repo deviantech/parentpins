@@ -2,8 +2,22 @@
 require 'capistrano/ext/multistage'
 # require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
-require "rvm/capistrano"
 
+
+IN_VAGRANT = true
+
+if IN_VAGRANT
+  set :application, "pins"
+  set :site_ip, '33.33.33.10'
+  set :default_environment, {
+    'PATH' => "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
+  }
+else
+  require "rvm/capistrano"
+  set :application, "parentpins"
+  set :rvm_type, :system
+  set :site_ip, '54.204.12.77'
+end
 
 set :whenever_command, "bundle exec whenever"
 set :whenever_environment, defer { stage }
@@ -13,10 +27,6 @@ require "whenever/capistrano"
 # Stages
 set :stages, %w(staging production)
 set :default_stage, "production"
-
-# Application
-set :application, "parentpins"
-set :rvm_type, :system
 
 # SCM info
 set :scm, :git
@@ -32,8 +42,6 @@ default_run_options[:pty] = true
 set :ssh_options, { :forward_agent => true, :compression => "none" }
 
 # Configure roles
-# set :site_ip, '50.16.197.60'
-set :site_ip, '54.204.12.77'
 role :app, site_ip
 role :web, site_ip
 role :db,  site_ip, :primary => true
