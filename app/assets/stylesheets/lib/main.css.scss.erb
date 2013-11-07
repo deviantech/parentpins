@@ -2291,14 +2291,27 @@ body.profile {
       a {text-decoration:none;
         &:hover {
           text-decoration:underline;
-          color:#000; } }
+          color:#000;
+        }
+      }
       .user, img {
-        @include circular; } }
+        @include circular;
+      } 
+    }
     #pin-preview.edit_preview_pin {
-      min-height:820px; }
+      min-height:820px;
+    }
     .form.wide h1 {
       font-size:30px;
       line-height:36px;
+    }
+    .profile_header {
+      background:#333;
+      margin: -16px -20px 12px;
+      h1 {
+        color:#fff;
+        padding:24px 24px 24px 48px;
+      }
     }
   }
   .wrapper {
@@ -2485,7 +2498,7 @@ body.profile {
   font-size:14px;
   line-height:18px;
   font-weight:normal;
-  padding:24px 20px 10px 20px;
+  padding:24px 20px 10px 24px;
   margin:-16px -20px 0 -20px;
   background:#333;
   color:#E2E2E2 !important;
@@ -2520,11 +2533,22 @@ body.profile {
       display:inline;
       font-size:13px !important;
       line-height:18px !important;
+      .following-action {
+        @include btn-radius;
+        padding: 5px 6px;
+        font-size: 15px;
+        line-height: 15px;
+        float: right;
+        margin: 0 6px 0 0;
+      }
       .unfollow {
         color:#999 !important;
+        border:1px solid #999;
       }
       .follow {
         color:$themeCOLORdark !important;
+        border: 1px solid #669701;
+        
       }
     }
   }
@@ -3435,6 +3459,13 @@ and (max-width : 480px) {
   }
   body.profile .content h1 {
     font-size:20px !important;
+  }
+  body.profile .content .profile_header {
+    margin: -6px 0 24px;
+    padding:12px;
+    h1 {
+      padding:0 !important;
+    }
   }
   .feat_carousel {
     width:auto;

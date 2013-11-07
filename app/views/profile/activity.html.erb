@@ -1,11 +1,13 @@
-<h1>
-  Activity: Pins From Users 
-  <% if current_user == @profile %>
-    You Follow
-  <% else %>
-    <%= @profile.name %> Follows
-  <% end %>
-</h1>
+<div class="profile_header">
+  <h1>
+    Activity: Pins From Users 
+    <% if current_user == @profile %>
+      You Follow
+    <% else %>
+      <%= @profile.name %> Follows
+    <% end %>
+  </h1>
+</div>
 <% if @profile_counters[:following].zero? || @pins.blank? %>
   <%= render 'shared/filters' %>
   <div class="empty-results">

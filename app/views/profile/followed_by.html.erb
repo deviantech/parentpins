@@ -1,10 +1,12 @@
-<h1>
-  <% if current_user == @profile %>
-    People Following You
-  <% else %>
-    People Following <%= @profile.name %>
-  <% end %>
-</h1>
+<div class="profile_header">
+  <h1>
+    <% if current_user == @profile %>
+      People Following You
+    <% else %>
+      People Following <%= @profile.name %>
+    <% end %>
+  </h1>
+</div>
 <% if @profile.followed_by_even_indirectly_count.zero? %>
   <div class="empty-results">
     <% if @profile == current_user %>

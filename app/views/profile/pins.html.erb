@@ -1,8 +1,10 @@
-<h1>
-  <% if current_user == @profile %>
-    Your Recent Pins
-  <% else %>
-    <%= @profile.name %>'s Recent Pins
-  <% end %>
-</h1>
+<div class="profile_header">
+  <h1>
+    <% if current_user == @profile %>
+      Your Recent Pins
+    <% else %>
+      <%= @profile.name %>'s Recent Pins
+    <% end %>
+  </h1>
+</div>
 <%= render 'pins/pins' %>

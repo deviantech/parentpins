@@ -1,10 +1,12 @@
-<h1>
-  <% if current_user == @profile %>
-    You Are Following Boards From These Users
-  <% else %>
-    <%= @profile.name %> Is Following Boards From These Users
-  <% end %>
-</h1>
+<div class="profile_header">
+  <h1>
+    <% if current_user == @profile %>
+      You Are Following Boards From These Users
+    <% else %>
+      <%= @profile.name %> Is Following Boards From These Users
+    <% end %>
+  </h1>
+</div>
 <% if @profile.following_even_indirectly_count.zero? %>  
   <div class="empty-results">
     <% if @profile == current_user %>
