@@ -1,10 +1,6 @@
 <div class="board_description">
   <h1>
-    <a href="<%= profile_boards_path(@board.user) %>" class="user">
-      <%= image_tag @board.user.avatar.v30.url, :alt => "#{@board.user.name}'s avatar" %>
-      <%= current_user == @board.user ? 'Your' : "#{@board.user.name}'s" %>
-    </a>
-    Board: <%= @board.name %>
+    <%= @board.name %>
     <% if user_signed_in? %>
       <% if current_user != @profile %>
         <%= render 'board/follow_buttons', :board => @board %>
