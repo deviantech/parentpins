@@ -312,10 +312,14 @@ body.importing.step_1 {
       }
       li.ui-droppable-hovering {
         background: #ABF0B1;
-        background: #E8FFE8;
+        background: #FEFFE7;
       }
     }
   }
+}
+
+.btn:hover, .btn:focus {
+  background-position:0 0;
 }
 
 .multi-drag-helper {
@@ -457,7 +461,7 @@ body.importing.step_1 {
       font-size: 1.2em;
       color: #000;
       padding: 18px;
-      background: #E8FFE8;
+      background: #FEFFE7;
     }
     .hide_until_complete {
       display: none;
@@ -480,7 +484,7 @@ body.importing.step_1 {
     position: fixed;
     left: 0;
     bottom: 0;
-    background: #FFF;
+    background: #FEFFE7;
     border: 1px solid #DDD;
     padding: 12px;
     z-index: 1000;
@@ -543,7 +547,7 @@ body.importing.step_1 {
           h3 {
             text-align: center;
             background: #f1f1f1;
-            margin: -6px;
+            margin: -6px -6px 6px -6px;
             padding: 6px;
             font-size:20px;
             position:relative;
@@ -567,8 +571,7 @@ body.importing.step_1 {
             background: #DDFFE2;
           }
           &.ui-droppable-hovering {
-            background: #ABF0B1;
-            background: #E8FFE8;
+            background: #FEFFE7;
           }
         }
         ul.collection {
@@ -660,6 +663,12 @@ body.importing.step_1 {
           background-clip: padding-box;
           .label {
             font-weight: bold;
+            background-color:transparent;
+            color:#222;
+            font-size:14px;
+            line-height:18px;
+            text-shadow:none;
+            padding:3px 6px;
           }
           &.empty {
             color: #999;
@@ -671,6 +680,9 @@ body.importing.step_1 {
             background: #76A602;
             border: 1px solid #76A602;
             color: #FFF;
+            .label {
+              color:#fff;
+            }
           }
         }
       }
@@ -770,8 +782,8 @@ body.importing.step_1 {
     }
     ul.importing_boards {
       padding-left:24px;
+      padding-top:24px;
       li.importing_board {
-        clear: both;
         list-style: none;
         width: 100%;
         margin-bottom: 24px;

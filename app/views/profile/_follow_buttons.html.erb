@@ -1,7 +1,7 @@
 <% if user_signed_in? %>
   <% if current_user == to_follow %>
     <span class="following-action-for-profile" data-profile-id="<%= to_follow.id %>">
-      <span>This is you</span>
+      <span></span>
     </span>
   <% else %>
     <span class="following-action-for-profile following-action-for-profile-<%= to_follow.id %>" data-profile-id="<%= to_follow.id %>">
