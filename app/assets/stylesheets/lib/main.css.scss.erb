@@ -2980,6 +2980,13 @@ form .field.checkbox.remember_me {
   input, label {
     display: inline;
     float: none !important;
+    margin-top: -4px;
+    font-size:15px;
+    line-height:15px;
+    border:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
   }
 }
 .social_buttons {
@@ -3715,6 +3722,10 @@ and (max-width: 979px) {
     }
     .field.checkbox input {
       margin-left:20px !important;
+      border:none;
+      box-shadow:none;
+      -webkit-box-shadow:none;
+      -moz-box-shadow:none;
     }
   }
 }
@@ -3727,7 +3738,8 @@ and (max-width : 320px) {
   .timeline {
     .price {
       top:5px;
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.9);
+      text-shadow:none;
     }
     li.pin {
       width: 130px;
@@ -3739,6 +3751,7 @@ and (max-width : 320px) {
       -moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.2);
       .actions {
         margin: 0 -6px !important;
+        display:none;
         a {
           width:46px;
           height:36px;
@@ -3793,4 +3806,56 @@ and (min-width : 481px) {
 }
 
 
+// aligns the cover image on wide screens
+.push_cover_image {
+  display:none;
+}
 
+@media only screen 
+and (min-width: 1235px) {
+  .sub_header_wrapper {
+    display:table;
+    .sub_header_inner_wrapper {
+      position: relative;
+      display: table-cell;
+      margin: 0;
+    }
+  }
+  .push_cover_image {
+    background:transparent;
+    height: 160px;
+    width: 215px;
+    display: table-cell;
+    min-width: 215px;
+  }
+}
+
+@media only screen 
+and (max-width: 1020px) {
+  .sub_header_wrapper {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    position: relative;
+    .cap_left {
+      display:none;
+    }
+    .push_cover_image {
+      display:none !important;
+    }
+    .sub_header_inner_wrapper .sub_header {
+      overflow: hidden;
+      width:auto;
+      img {
+        height: 160px;
+        width: auto;
+        max-width: 1020px;
+        position: absolute;
+        display: block;
+        text-align: center;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+}
