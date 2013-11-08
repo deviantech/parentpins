@@ -56,9 +56,10 @@ namespace :admin do
 end
 
 
-# Used once to store height for already-uploaded pins when we started tracking that information
-# Run as 'nohup bundle exec rake pins:update_heights RAILS_ENV=production &' && 'disown %1' && 'sudo renice -10 PID'
 namespace :pins do
+  
+  # Used once to store height for already-uploaded pins when we started tracking that information
+  # Run as 'nohup bundle exec rake pins:update_heights RAILS_ENV=production &' && 'disown %1' && 'sudo renice -10 PID'
   desc "Update missing image height for existing pins"
   task :update_heights => :environment do
     total = Pin.where('image_v222_height IS NULL').where.not('image IS NULL').count
@@ -74,6 +75,27 @@ namespace :pins do
         msg = "[#{pin.id}] (#{pin.image.v222.url}) failed to detect dimensions (valid image?)"
         puts msg
         File.open('log/pinerrors.log', 'a') {|f| f.puts msg}
+      end
+    end
+  end
+  
+  # Pre-launch only. Update timestamps on every pin to be randomly between board creation and now. Bias toward more recently.
+  desc 'Randomize creation dates for pins to be more recent'
+  task :update_creation_dates => :environment do
+    def rand_in_range(from, to)
+      rand * (to - from) + from
+    end
+
+    Board.includes(:pins).find_each do |b|
+      puts "Updating #{b.pins.count} pins for board #{b.id}"
+      oldest = Time.now - b.created_at
+      b.pins.to_a.shuffle.each_with_index do |p, i|
+        offset = rand_in_range(0, oldest / (i+1))
+        date = Time.now - offset
+        # Not mass-assigning
+        p.created_at = date
+        p.updated_at = date
+        p.save!
       end
     end
   end

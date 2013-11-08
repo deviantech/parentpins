@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   
   attr_accessor :cover_image_was_changed, :avatar_was_changed
   
-  has_many :boards,       :order => 'position ASC',     :dependent => :destroy
+  has_many :boards, -> { order('position ASC') },     :dependent => :destroy
   has_many :pins,         :dependent => :destroy
   has_many :imports,      :dependent => :destroy
   has_many :pins_via_me,                            :class_name => 'Pin',   :foreign_key => 'via_id'

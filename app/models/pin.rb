@@ -60,7 +60,7 @@ class Pin < ActiveRecord::Base
   scope :newest_first,    -> { order('id DESC') }
   scope :not_ids, lambda {|ids| where(['id NOT IN (?)', Array(ids)]) }
   
-  default_scope newest_first
+  default_scope {newest_first}
 
   def self.json_for_pins(pins)
     Array(pins).each_with_object({}) {|p, result|
