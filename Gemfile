@@ -30,11 +30,13 @@ gem 'protected_attributes'
 
 gem 'whenever', :require => false
 gem 'awesome_print', :require => 'ap'
+gem 'foreman'
   
 group :development do
   gem 'thin'
   gem 'git'
   gem 'capistrano', '~> 2.15.5', :require => false
+  gem 'capistrano-unicorn', :require => false
   gem 'rvm-capistrano', :require => false
   gem 'capistrano-ext', :require => false
   gem 'capistrano_colors', :require => false

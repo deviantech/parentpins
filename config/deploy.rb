@@ -2,9 +2,10 @@
 require 'capistrano/ext/multistage'
 # require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
+require 'capistrano-unicorn'
 
 
-IN_VAGRANT = true
+IN_VAGRANT = false
 
 if IN_VAGRANT
   set :application, "pins"
@@ -75,18 +76,23 @@ after "deploy", "deploy:cleanup"
 # ===================================
 # = Currently deployed on passenger =
 # ===================================
-namespace :deploy do
-  desc "Restarting passenger with restart.txt"
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
+if IN_VAGRANT
+  # after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
+  # after 'deploy:restart', 'unicorn:restart'   # app preloaded
+  after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
+else
+  namespace :deploy do
+    desc "Restarting passenger with restart.txt"
+    task :restart, :roles => :app, :except => { :no_release => true } do
+      run "touch #{current_path}/tmp/restart.txt"
+    end
 
-  [:start, :stop].each do |t|
-    desc "#{t} task is a no-op with mod_rails"
-    task t, :roles => :app do ; end
+    [:start, :stop].each do |t|
+      desc "#{t} task is a no-op with mod_rails"
+      task t, :roles => :app do ; end
+    end
   end
 end
-
 
 
 # =====================================
