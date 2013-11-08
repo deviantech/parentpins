@@ -5,7 +5,7 @@
       .importing_boards
         %p 
           Your Pinterest Boards
-          %span.tip{tooltip('Drag pins from these Pinterest boards onto the boards below. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :placement => 'right', :style => 'float:right;')} ?
+          %span.tip{tooltip('Drag pins from these Pinterest boards onto the boards below. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :placement => 'left', :style => 'float:right;')} ?
         %ul
           %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pinterest Pins
           - @external_boards.each do |board|
@@ -41,7 +41,7 @@
   #our_section
     %h2
       Your ParentPins Boards
-      %span.tip{tooltip('Drag your Pinterest pins from above onto these boards. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :placement => 'right')} ?
+      %span.tip{tooltip('Drag your Pinterest pins from above onto these boards. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :placement => 'left')} ?
     %ul.boards
       - if user_signed_in? && current_user.boards.empty?
         .no-pp-boards
