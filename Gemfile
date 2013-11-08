@@ -30,7 +30,7 @@ gem 'protected_attributes'
 
 gem 'whenever', :require => false
 gem 'awesome_print', :require => 'ap'
-gem 'foreman'
+gem 'unicorn', :require => false
   
 group :development do
   gem 'thin'

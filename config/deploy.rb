@@ -1,13 +1,15 @@
+# TODO: http://www.capistranorb.com/documentation/upgrading/
+
 # require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 # require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
-require 'capistrano-unicorn'
 
 
 IN_VAGRANT = false
 
 if IN_VAGRANT
+  require 'capistrano-unicorn'
   set :application, "pins"
   set :site_ip, '33.33.33.10'
   set :default_environment, {

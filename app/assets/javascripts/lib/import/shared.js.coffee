@@ -55,4 +55,6 @@ $(document).ready () ->
     form.data('go-back', true)
     form.attr('action', $(this).attr('href'))
     form.submit()
-  
+
+  # $('[rel=tooltip]').tooltip({container: 'body', trigger: 'hover'})  
+  # $('[rel=popover]').popover({container: 'body', trigger: 'hover'})

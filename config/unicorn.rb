@@ -1,32 +1,42 @@
 # unicorn_rails -c /data/github/current/config/unicorn.rb -E production -D
+# TODO: restyle from http://crosbymichael.com/setup-ruby-on-rails-with-nginx-and-unicorn.html
+# TODO: http://ariejan.net/2011/09/14/lighting-fast-zero-downtime-deployments-with-git-capistrano-nginx-and-unicorn/
+# TODO: consider puma - http://blog.wiemann.name/rails-server
 
 # Set your full path to application.
 rails_env = ENV['RAILS_ENV'] || 'production'
 
-# app_path = "/var/www/pins/#{ENV['RAILS_ENV'] || 'production'}/current"
+app_path = "/var/www/pins/#{rails_env}/current"
+shared_path = "/var/www/pins/#{rails_env}/shared"
  
 worker_processes (rails_env == 'production' ? 2 : 1)
 preload_app true
 timeout 60
  
 # Listen on a Unix data socket
-listen "/var/www/pins/#{rails_env}/shared/tmp/sockets/unicorn.sock", :backlog => 2048
-
+listen "#{shared_path}/sockets/unicorn.sock", :backlog => 2048
+pid "#{shared_path}/pids/unicorn.pid"
 
 # Log everything to one file
 stderr_path "log/unicorn.log"
 stdout_path "log/unicorn.log"
+
+
+
 
 working_directory app_path
 
  
  
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
- 
- 
+
+# http://kavassalis.com/2013/04/unicorn-hot-restarts-my-definitive-guide/ 
+before_exec do |server|
+   ENV['BUNDLE_GEMFILE'] = "#{app_path}/Gemfile"
+end
+
 before_fork do |server, worker|
-  
-  ActiveRecord::Base.connection.disconnect!
+  defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
   
   
   ##
@@ -53,7 +63,7 @@ end
  
 after_fork do |server, worker|
   
-  ActiveRecord::Base.establish_connection 
+  defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection 
  
   ##
   # Unicorn master is started as root, which is fine, but let's
