@@ -1,8 +1,17 @@
 <li class="pin pin-context <%= dom_id(pin) %>" id="<%= dom_id(pin) %>">
   <div class="bind-price price<%= ' hidden' unless pin.price %>"><%= number_to_currency pin.price %></div>
+
+  <% if params[:context] == 'select-featured' %>
+    <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
+  <% elsif !(pin.new_record? || params[:action] == 'edit') %>
+    <%= render 'pins/actions', :pin => pin, :skip_comments => (defined?(skip_comments) && skip_comments) %>
+  <% end %>
+  
   <%= link_to pin, :class => 'ajax image_link update-history' do %>
     <%= pin_image_preloader(pin) %>
   <% end %>
+  
+
   <p class="description">
     <a href="<%= url_for(pin) %>" class="ajax update-history">
       <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
@@ -10,11 +19,7 @@
     </a>
   </p>
   <%= render 'pins/stats', :pin => pin %>
-  <% if params[:context] == 'select-featured' %>
-    <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
-  <% elsif !(pin.new_record? || params[:action] == 'edit') %>
-    <%= render 'pins/actions', :pin => pin, :skip_comments => (defined?(skip_comments) && skip_comments) %>
-  <% end %>
+  
   <div class="attribution">
     <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name, :class=> 'image_link' %>
     <p class="details">
