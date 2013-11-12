@@ -11,6 +11,10 @@ setSizes = () ->
   else
     applyTruncationTo('li.pin .description span.truncate-me', 120);
     applyTruncationTo('li.pin .comment .details', 200);
+    
+  nav = $('.profile ul.nav_profile')
+  if nav.length
+    nav.width(nav.find(li).first().width() * 7)
 
 
   
