@@ -107,11 +107,15 @@ function updateProfileCounters(data) {
 function applyTruncationTo(selector, length) {
   $(selector).each(function() {
     $this = $(this);
-    if ($this.text().length > length) {
+    if (!$this.data('original-text')) $this.data('original-text', $this.text());
+    
+    var raw = $this.data('original-text') || $this.text();
+    if (raw.length > length) {  
       more = '<a href="#" class="view-more">(more)</a>';
-      if (!$this.data('original-text')) $this.data('original-text', $this.text());
-      $this.text( $this.text().substr(0, length) );
+      $this.text( raw.substr(0, length) );
       $this.html( $this.html() + '&hellip; ' + more);
+    } else if ($this.data('original-text')) { // Allow resetting if applying to shorter
+      $this.text( $this.data('original-text') );
     }
   });
 }

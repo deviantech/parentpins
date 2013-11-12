@@ -96,7 +96,7 @@ namespace :pins do
         p.created_at = date
         p.updated_at = date
         p.save!
-        puts "#{p.id} has #{p.comments.count}" if p.comments.where('created_at < ?', date).count > 0
+        puts "#{p.id} has #{p.comments.count}, some of which are older than the new date. Fixing." if p.comments.where('created_at < ?', date).count > 0
         p.comments.where('created_at < ?', date).each_with_index do |c, i|
           newdate = date + (i * 10).minutes
           c.created_at = newdate

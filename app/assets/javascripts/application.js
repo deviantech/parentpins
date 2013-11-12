@@ -24,6 +24,7 @@
 //= require lib/modal
 //= require lib/scrollToTop
 //= require lib/main
+//= require lib/responsive
 //= require lib/pagination
 //= require contrib/bootstrap
 //= require lib/ajaxLoad

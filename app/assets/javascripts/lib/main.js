@@ -1,15 +1,12 @@
-$(document).ready(function() {      
-  // Masonry layout a la pinterest
-  applyMasonry();
-  
-  // TODO - replace character-based truncation with line-based
-  applyTruncationTo('li.pin .description span.truncate-me', 120);
+$(document).ready(function() {  
   applyTruncationTo('li.board .description span.truncate-me', 12);
   $('.truncate-me').each(function() {
     var elem = $(this);
     applyTruncationTo(elem, elem.data('max-length'));
   });
 
+  // Masonry layout a la pinterest
+  applyMasonry();
 
   $('[rel=tooltip]').tooltip({container: 'body', trigger: 'hover'});
   $('[rel=popover]').popover({container: 'body', trigger: 'hover'});
@@ -94,7 +91,7 @@ $(document).ready(function() {
   });
     
   // Add custom trucation
-  $(document).on('click', 'a.view-more', function(e) {
+  $(document).on('click touchend', 'a.view-more', function(e) {
     e.preventDefault();
     e.stopPropagation();
     var wrapper = $(e.target).parent();
@@ -107,7 +104,7 @@ $(document).ready(function() {
     }
   });
   
-  $(document).on('click', 'a.view-less', function(e) {
+  $(document).on('click touchend', 'a.view-less', function(e) {
     e.preventDefault();
     e.stopPropagation();
     var wrapper = $(e.target).parent();
