@@ -14,8 +14,9 @@ setSizes = () ->
     
   nav = $('.profile ul.nav_profile')
   if nav.length
-    nav.width(nav.find('li').first().width() * 7)
-
+    newWidth = if w <= 480 then (nav.find('li').first().width() * 7) else 'auto'
+    nav.width(newWidth)
+    
 
   
   
