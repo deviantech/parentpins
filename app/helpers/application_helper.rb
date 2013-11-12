@@ -1,5 +1,30 @@
 module ApplicationHelper
 
+  def pin_image_preloader(pin)
+    inlineBase = "width: 222px;"
+    preload = if pin.image_average_color && pin.image_v222_height && pin.image_v222_width
+      
+      # For images less then 222px wide, scale up
+      h = (222 / pin.image_v222_width.to_f) * pin.image_v222_height
+      inline = "#{inlineBase} height: #{h}px; background: ##{pin.image_average_color}; color: ##{contrast_color_for(pin.image_average_color)}"
+      
+      content_tag(:div, :class => 'img-preload-holder', :style => inline) do
+        content_tag(:span, pin.domain)
+      end
+    end
+    
+    # Prefill default image placeholder sizes too
+    imgStyle = pin.image? ? inlineBase : "#{inlineBase} height: 294px"
+    image_tag(pin.image.v222.url, :class => 'pin_image', :alt => '', :style => imgStyle) + preload
+  end
+
+  # Choose white or black for contrasting txt.
+  # Based on http://charliepark.tumblr.com/post/827693445/calculating-color-contrast-for-legible-text-in-ruby
+  def contrast_color_for(hex)
+    color = hex.to_s.scan(/.{2}/).sum {|c| c.to_i(16)}
+    color < 382.5 ? 'FFFFFF' : '000000'
+  end
+
   def fb_invite_url
     url = profile_boards_url(current_user)
     "https://www.facebook.com/dialog/send?app_id=#{AUTH[:facebook][:key]}&link=#{url}&redirect_uri=#{url}"

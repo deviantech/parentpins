@@ -61,16 +61,18 @@ namespace :pins do
   # Used once to store height for already-uploaded pins when we started tracking that information
   # Run as 'nohup bundle exec rake pins:update_heights RAILS_ENV=production &' && 'disown %1' && 'sudo renice -10 PID'
   desc "Update missing image height for existing pins"
-  task :update_heights => :environment do
-    total = Pin.where('image_v222_height IS NULL').where.not('image IS NULL').count
+  task :update_meta => :environment do
+    total = Pin.where('image_average_color IS NULL').where.not('image IS NULL').count
     current = 0
     puts "Found #{total} pins to update"
     
-    Pin.where('image_v222_height IS NULL').where.not('image IS NULL').find_each(:batch_size => 100) do |pin|
+    Pin.where('image_average_color IS NULL').where.not('image IS NULL').find_each(:batch_size => 100) do |pin|
       current += 1
       puts "#{current} of #{total}" if current % 10 == 0
       begin
+        pin.update_attribute :image_v222_width, pin.image.v222.send(:get_dimensions)[0]
         pin.update_attribute :image_v222_height, pin.image.v222.send(:get_dimensions)[1]
+        pin.update_attribute :image_average_color, pin.image.send(:store_average_color)
       rescue StandardError => e
         msg = "[#{pin.id}] (#{pin.image.v222.url}) failed to detect dimensions (valid image?)"
         puts msg

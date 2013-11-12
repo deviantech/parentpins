@@ -1,7 +1,7 @@
 <li class="pin pin-context <%= dom_id(pin) %>" id="<%= dom_id(pin) %>">
   <div class="bind-price price<%= ' hidden' unless pin.price %>"><%= number_to_currency pin.price %></div>
   <%= link_to pin, :class => 'ajax image_link update-history' do %>
-    <%= image_tag pin.image.v222.url, :class => 'pin_image', :alt => 'Pin image', :style => "height: #{pin.image.v222.height}px; background: #555;" %>
+    <%= pin_image_preloader(pin) %>
   <% end %>
   <p class="description">
     <a href="<%= url_for(pin) %>" class="ajax update-history">

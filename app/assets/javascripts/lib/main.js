@@ -152,4 +152,9 @@ $(document).ready(function() {
     }
   });
   
+  // Show something meaningful while pins are loaded
+  $('ul#pins .image_link').imagesLoaded().progress(function(instance, image) {
+    $(image.img).show().parent().find('.img-preload-holder').fadeOut(600);
+  });
+  
 });
