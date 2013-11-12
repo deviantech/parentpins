@@ -1,8 +1,10 @@
 <% if user_signed_in? %>
   <% if current_user == to_follow %>
-    <span class="following-action-for-profile" data-profile-id="<%= to_follow.id %>">
-      <span></span>
-    </span>
+    <% unless @profile && @profile == current_user # Don't show "this is you" if you're on your own profile page -- obvious %>
+      <span class="following-action-for-profile" data-profile-id="<%= to_follow.id %>">
+        <span>This is you</span>
+      </span>
+      <% end %>
   <% else %>
     <span class="following-action-for-profile following-action-for-profile-<%= to_follow.id %>" data-profile-id="<%= to_follow.id %>">
       <a href="#" data-url="<%= follow_profile_path(to_follow) %>" class="<%= 'follow-in-list' if defined?(in_list) %> following-action follow <%= 'hidden' if current_user.following?(to_follow) %>">Follow all boards</a>
