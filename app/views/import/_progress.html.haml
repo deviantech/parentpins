@@ -2,9 +2,6 @@
   %h3
     - if defined?(title)
       = title
-    - else
-      Importing #{pluralize @pins_to_import.length, 'pin', 'pins'} to
-      #{@boards.length == 1 ? 'one board' : "#{@boards.length} boards"}
   %ol.import_progress
     - unless step == 5 
       %li{:class => progress_class(step, 1)} 
