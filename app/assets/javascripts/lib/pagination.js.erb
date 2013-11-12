@@ -72,17 +72,9 @@ function initAjaxPagination(paginationButton) {
       }
 
       // Now actually show the results
-      $newItems.imagesLoaded(function(){
-        try {
-          $newItems.fadeIn();
-        } catch(e) {
-          // FireFox throws an exception when trying to animate a hidden node, marked wontfix: http://bugs.jquery.com/ticket/12462
-          $newItems.show();
-        }
-        if ($resultsHolder.hasClass('masonry')) {
-          $resultsHolder.masonry('appended', $newItems);
-        }
-      });
+      $newItems.show();
+      if ($resultsHolder.hasClass('masonry')) $resultsHolder.masonry('appended', $newItems);
+      fancyPinPreloading($resultsHolder);
       
       // Allow another load to happen
       if (jqxhr == lastPaginationAjax) currentlyConsidering = false;

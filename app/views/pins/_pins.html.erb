@@ -35,7 +35,7 @@
     <% end %>
   </div>
 <% else %>
-  <ul class="masonry timeline ajax-pagination <%= 'select_featured' if params[:context] == 'select_featured' %>" id="pins">
+  <ul class="pins masonry timeline ajax-pagination <%= 'select_featured' if params[:context] == 'select_featured' %>">
     <%= render @pins %>
   </ul>
   <div class="clearfix"></div>

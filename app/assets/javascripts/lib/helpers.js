@@ -300,3 +300,9 @@ function characterCounter(holder, target, max) {
     return this;
   };
 })(jQuery);
+
+function fancyPinPreloading(selector) {
+  $(selector).imagesLoaded().progress(function(instance, image) {
+    $(image.img).show().parent().find('.img-preload-holder').fadeOut(600);
+  });
+}

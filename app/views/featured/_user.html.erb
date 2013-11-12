@@ -10,7 +10,7 @@
   </div>
 
   <% unless user.pins.empty? %>
-    <ul id="pins" class="timeline">
+    <ul class="pins timeline">
       <%= render user.featured_pin, :skip_comments => true %>
     </ul>
   <% end %>
