@@ -68,6 +68,11 @@
 
     <div class="profile_content_wrapper">
       <div class="content">
+        <% if @profile_header %>
+          <div class="profile_header">
+            <h1><%= @profile_header %></h1>
+          </div>
+        <% end %>
         <%= render 'shared/flash', :flash => flash %>
         <%= content_for?(:profile_content) ? yield(:profile_content) : yield %>
       </div>

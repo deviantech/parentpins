@@ -14,7 +14,7 @@ class ProfileController < ApplicationController
   end
   
   def pins
-    if params[:context] == 'select_featured'
+    if params[:context] == 'select-featured'
       flash.now[:info] = "Select a new Featured Pin."
     end
     paginate_pins @profile.pins

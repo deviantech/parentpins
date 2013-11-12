@@ -10,7 +10,7 @@
     </a>
   </p>
   <%= render 'pins/stats', :pin => pin %>
-  <% if params[:context] == 'select_featured' %>
+  <% if params[:context] == 'select-featured' %>
     <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
   <% elsif !(pin.new_record? || params[:action] == 'edit') %>
     <%= render 'pins/actions', :pin => pin, :skip_comments => (defined?(skip_comments) && skip_comments) %>

@@ -1,13 +1,5 @@
 <% if @profile %>
-  <div class="profile_header">
-    <h1>
-      <% if current_user == @profile %>
-        Boards You Have Created
-      <% else %>
-        <%= @profile.name %>'s Boards
-            <% end %>
-    </h1>
-  </div>
+  <% @profile_header = current_user == @profile ? 'Boards You Have Created' : "#{@profile.name}'s Boards" %>
 
   <div class="page-controls my-board-controls">
     <% if @profile == current_user %>

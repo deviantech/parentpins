@@ -107,7 +107,7 @@
         </div>
             
         <div class="field edit-featured-pin">
-          <p>Your featured pin <small>(<%= link_to 'change', pins_profile_path(f.object, :context => 'select_featured') %>)</small></p>
+          <p>Your featured pin <small>(<%= link_to 'change', pins_profile_path(f.object, :context => 'select-featured') %>)</small></p>
           <%= link_to image_tag(f.object.featured_pin.image.v55.url, :class => 'pin_image'), pin_url(f.object.featured_pin), :class => 'ajax' %>
         </div>
 
