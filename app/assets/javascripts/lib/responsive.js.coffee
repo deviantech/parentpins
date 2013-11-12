@@ -14,7 +14,7 @@ setSizes = () ->
     
   nav = $('.profile ul.nav_profile')
   if nav.length
-    nav.width(nav.find(li).first().width() * 7)
+    nav.width(nav.find('li').first().width() * 7)
 
 
   
