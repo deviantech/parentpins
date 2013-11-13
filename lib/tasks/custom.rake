@@ -70,8 +70,9 @@ namespace :pins do
       current += 1
       puts "#{current} of #{total}" if current % 10 == 0
       begin
-        pin.update_attribute :image_v222_width, pin.image.v222.send(:get_dimensions)[0]
-        pin.update_attribute :image_v222_height, pin.image.v222.send(:get_dimensions)[1]
+        dims = pin.image.v222.send(:get_dimensions)
+        pin.update_attribute :image_v222_width, dims[0]
+        pin.update_attribute :image_v222_height, dims[1]
         pin.update_attribute :image_average_color, pin.image.send(:store_average_color)
       rescue StandardError => e
         msg = "[#{pin.id}] (#{pin.image.v222.url}) failed to detect dimensions (valid image?)"

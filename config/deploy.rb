@@ -1,6 +1,6 @@
 # TODO: http://www.capistranorb.com/documentation/upgrading/
 
-# require "capistrano-conditional"
+require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 # require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
@@ -59,11 +59,11 @@ after "deploy", "deploy:cleanup"
 # =========
 
 
-# ConditionalDeploy.monitor_migrations(self)
+ConditionalDeploy.monitor_migrations(self)
 
-# ConditionalDeploy.register :whenever, :watchlist => 'config/schedule.rb' do
-#   after "deploy:create_symlink", "deploy:update_crontab"
-# end
+ConditionalDeploy.register :whenever, :watchlist => 'config/schedule.rb' do
+  after "deploy:create_symlink", "deploy:update_crontab"
+end
 
 # ConditionalDeploy.register :sphinx, :watchlist => ['db/schema.rb', 'db/migrate', 'sphinx.yml'] do
 #   # Both automatically run configure

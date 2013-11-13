@@ -21,6 +21,8 @@ class PinImageUploader < BaseUploader
 
   # e.g. convert test.jpg -colorspace rgb -scale 1x1 -format "%[pixel:p{0,0}]" info  
   def store_average_color
+    cache! unless File.exists?(current_path) # Allows use with remote, previously-uploaded files (e.g. collecting meta on existing files)
+    
     img = ::MiniMagick::Image.open(current_path)
     img.combine_options do |c|
       c.colorspace "rgb"
@@ -30,4 +32,5 @@ class PinImageUploader < BaseUploader
     hex = color.match(/\((.+?)\)/)[1].split(',').inject('') {|str, component| str += component.to_i.to_s(16)}
     model.image_average_color = hex
   end
+  
 end
