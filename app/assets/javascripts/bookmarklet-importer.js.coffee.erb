@@ -3,7 +3,7 @@
 //= require lib/bookmarklet/importer/interactivity
 //= require lib/bookmarklet/importer/importer_base
 
-if (window.ppBookmarklet.host)
+goGoGadgetImporter = () ->
   loggedInURL = window.ppBookmarklet.host + '<%= Rails.application.routes.url_helpers.pin_import_login_check_path %>'
 
   # TODO: rewrite ppBookmarklet as a class, call a message function there (to e.g. handle setting to red on errors)
@@ -17,13 +17,14 @@ if (window.ppBookmarklet.host)
     if json.logged_in
       window.ppImporter = new window.ppImporterClasses.ImporterBase({dataSource: 'Pinterest'});
     else
-      message("""You'll need to <a href="#{window.ppBookmarklet.host}" target="_blank" id="ppDoLoginLink">log into your ParentPins account</a> before continuing.""")
+      message("""You'll need to <a href="#{window.ppBookmarklet.host}/users/sign_in" target="_blank" id="ppDoLoginLink">log into your ParentPins account</a> before continuing.""")
       if window.ppBookmarklet
         ppBookmarklet.contentBase.on 'click', '#ppDoLoginLink', () ->
           ppBookmarklet.contentBase.find('#progressDisplay').append("""<br><br><a href="#" id="ppCheckLoginLink">Click to try again</a>.""")
 
         ppBookmarklet.contentBase.on 'click', '#ppCheckLoginLink', () ->
-          checkLoggedIn()
+          goGoGadgetImporter();
+          return false;
           
   onFailure = () ->
     message("Unable to connect with server -- please try again later.")
@@ -34,3 +35,6 @@ if (window.ppBookmarklet.host)
     $.getJSON("#{loggedInURL}?callback=?").done(onSuccess).fail(onFailure)
     
   checkLoggedIn()
+  
+if (window.ppBookmarklet.host)
+  goGoGadgetImporter()
