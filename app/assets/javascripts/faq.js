@@ -12,6 +12,6 @@ function rebindWidth() {
 
 if ($(window).width() >= 770){	
   rebindWidth();
-	spybar.affix();
+	spybar.affix({offset: {top: wrapper.offset().top - 10, bottom: 200}});
   $(window).resize(rebindWidth);
 }

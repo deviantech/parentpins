@@ -59,7 +59,7 @@ end
 namespace :pins do
   
   # Used once to store height for already-uploaded pins when we started tracking that information
-  # Run as 'nohup bundle exec rake pins:update_heights RAILS_ENV=production &' && 'disown %1' && 'sudo renice -10 PID'
+  # Run as 'nohup bundle exec rake pins:update_meta RAILS_ENV=production &' && 'disown %1' && 'sudo renice -10 PID'
   desc "Update missing image height for existing pins"
   task :update_meta => :environment do
     total = Pin.where('image_average_color IS NULL').where.not('image IS NULL').count
