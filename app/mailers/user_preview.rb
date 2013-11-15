@@ -7,15 +7,15 @@ if ALLOW_MAIL_PREVIEW
 
     # Confirmation is not currently required
     # def confirmation_instructions
-    #   Devise::Mailer.confirmation_instructions( User.first )
+    #   Devise::Mailer.confirmation_instructions( User.first, {} )
     # end
   
     def unlock_instructions
-      Devise::Mailer.unlock_instructions( User.first )
+      Devise::Mailer.unlock_instructions( User.first, {} )
     end
 
     def reset_password_instructions
-      Devise::Mailer.reset_password_instructions( User.first )
+      Devise::Mailer.reset_password_instructions( User.first, {} )
     end
   
     # UserMailer
