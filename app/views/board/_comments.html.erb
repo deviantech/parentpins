@@ -53,25 +53,7 @@
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function(){
 
-      $("#comment_toggle").click(function() {
-        var wrapper = $("#comment_form_wrapper");
-        var link = $(this);
-      
-        if (wrapper.is(':visible')) {
-          link.text( link.data('origText') || 'See All Comments');
-          wrapper.slideUp("slow");
-        } else {
-          link.data('origText', link.text());
-          link.text('Collapse Comments');
-          wrapper.slideDown("slow", function() {
-            wrapper.find('textarea:visible').first().focus().select();
-          });
-        }
-        $("#more_comments").is(':visible') ? $("#more_comments").slideUp("slow") : $("#more_comments").slideDown("slow");
-    
-        $('.load_more_comments_button').trigger('click');
-        return false;
-      });
+      $("#comment_toggle").click(toggleBoardComments);
 
       $(document).on('click', '.load_more_comments_button', function(e) {
         $("<%= escape_javascript(image_tag('ui/loader.gif', :alt => 'Loading', :class => 'loader_icon')) %>").insertBefore( $(e.target) );

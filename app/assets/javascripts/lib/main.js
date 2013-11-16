@@ -154,4 +154,6 @@ $(document).ready(function() {
   
   // Show something meaningful while pins are loaded
   fancyPinPreloading('ul.pins');
+  
+  highlightCommentFromURL();
 });
