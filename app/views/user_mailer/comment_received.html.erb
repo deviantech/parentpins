@@ -1,0 +1,22 @@
+<tr>
+  <td valign="top" class="bodyContent">
+    <div mc:edit="std_content00">
+      <p>Hello <%= @user.name %>!</p>
+      <p>
+        Another ParentPins user has commented on your <%= @what %>.        
+        To view and respond to the comment, click the link below:
+      </p>
+      
+      <%= link_to 'View Comment', url_for_comment(@comment), :class => 'button' %>
+      
+      <p>
+        If you have any questions, please don't hesitate to <%= mail_to 'info@parentpins.com', 'contact us' %>.
+      </p>
+      
+      <p>
+        Happy pinning!<br>
+        <em>The ParentPins Team</em>
+      </p>
+    </div>
+  </td>
+</tr>

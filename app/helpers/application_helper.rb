@@ -1,5 +1,5 @@
 module ApplicationHelper
-
+  
   def pin_image_preloader(pin)
     inlineBase = "width: 222px;"
     preload = if pin.image_average_color && pin.image_v222_height && pin.image_v222_width

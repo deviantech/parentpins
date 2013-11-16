@@ -23,6 +23,16 @@ if ALLOW_MAIL_PREVIEW
     def featured_notice
       UserMailer.featured_notice( User.first.try(:id) )
     end
+    
+    def comment_received_on_pin
+      c = Comment.where(:commentable_type => 'Board').detect {|c| c.user_id != c.commentable.user_id}
+      UserMailer.comment_received( c.id )
+    end
+    
+    def comment_received_on_board
+      c = Comment.where(:commentable_type => 'Pin').detect {|c| c.user_id != c.commentable.user_id}
+      UserMailer.comment_received( c.id )
+    end
   
   end
 
