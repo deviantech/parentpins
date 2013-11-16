@@ -175,12 +175,21 @@ h4, .h4{
 * @tip Set the styling for your email's main content text. Choose a size and color that is easy to read.
 * @theme main
 */
-.bodyContent div{
+.bodyContent div {
 	/*@editable*/ color:#505050;
 	/*@editable*/ font-family:Arial;
 	/*@editable*/ font-size:14px;
 	/*@editable*/ line-height:150%;
 	/*@editable*/ text-align:left;
+}
+
+.bodyContent.footer {
+  font-style: italic;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.bodyContent.footer div {
+  font-size: 0.8em;
 }
 
 /**

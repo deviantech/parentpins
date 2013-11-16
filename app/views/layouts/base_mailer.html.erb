@@ -39,7 +39,31 @@
                                         <td valign="top">
                                           <!-- // Begin Module: Standard Content \\ -->
                                           <table border="0" cellpadding="20" cellspacing="0" width="100%">
-                                	          <%= yield %>
+                                            <tr>
+                                              <td valign="top" class="bodyContent">
+                                                <div mc:edit="std_content00">
+                                	                <%= yield %>
+                                                  <p>
+                                                    If you have any questions, 
+                                                    please don't hesitate to <%= mail_to 'info@parentpins.com', 'contact us' %>.
+                                                  </p>
+                                                  <p>
+                                                    Happy pinning!<br>
+                                                    <em>The ParentPins Team</em>
+                                                  </p>
+                                                </div>
+                                              </td>
+                                            </tr>
+                                            
+                                            <% if content_for?(:footer) %>
+                                              <tr>
+                                                <td valign="top" class="bodyContent footer">
+                                                  <div><%= yield :footer %></div>
+                                                </td>
+                                              </tr>
+                                            <% end %>
+                                            
+                                            
                                           </table>
                                           <!-- // End Module: Standard Content \\ -->
                                         </td>

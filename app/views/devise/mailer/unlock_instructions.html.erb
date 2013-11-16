@@ -1,23 +1,5 @@
-<tr>
-  <td valign="top" class="bodyContent">
-    <div mc:edit="std_content00">
-      <h1 class="h1">Your Account is Locked</h1>
-      <p><strong>Hello <%= @resource.name %>!</strong></p>
-      <p>Your account has been locked due to an excessive amount of unsuccessful sign in attempts.</p>
-      <p>Click the link below to unlock your account:</p>
-    </div>
-  </td>
-</tr>
-<tr>
-  <td align="center" valign="top" style="padding-top:0;">
-    <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
-      <tr>
-        <td valign="middle" class="templateButtonContent">
-          <div mc:edit="std_content01">
-            <%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @token), :style => "color:#fff;text-decoration:none;" %>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </td>
-</tr>
+<h1 class="h1">Your Account is Locked</h1>
+<p><strong>Hello <%= @resource.name %>!</strong></p>
+<p>Your account has been locked due to an excessive amount of unsuccessful sign in attempts.</p>
+<p>Click the link below to unlock your account:</p>
+<%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @token), :class => "button" %>
