@@ -7,6 +7,10 @@ if ALLOW_MAIL_PREVIEW
       AdminMailer.new_feedback( Feedback.first.try(:id) )
     end
     
+    def new_user
+      AdminMailer.new_user( User.first.try(:id) )
+    end
+    
     # Add new methods here... method name doesn't matter, but be sure to return a Mail object
   
   end

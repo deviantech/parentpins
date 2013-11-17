@@ -1,0 +1,33 @@
+<h1>New ParentPins User</h1>
+
+<% if @user.avatar?%>
+  <div style="text-align: center;">
+    <%= image_tag @user.avatar.main.url, :style => 'border: 2px solid #333' %>
+  </div>
+<% end %>
+
+<p>
+  <strong>Name</strong>: <%= link_to @user.name, profile_url(@user) %>
+</p>
+<p>
+  <strong>Email</strong>: <%= @user.email %>
+</p>
+<p>
+  <strong>Created At</strong>: <%= @user.created_at.to_s(:long) %>
+</p>
+<p>
+  <strong>Kids</strong>: <%= @user.kids %>
+</p>
+<% if @user.teacher %>
+<p>
+  <strong>Teacher</strong>: <%= "Grade #{@user.teacher_grade}" if @user.teacher_grade %> <%= @user.teacher_subject %>
+</p>
+<% end %>
+<p>
+  <strong>Website</strong>: <%= @user.website %>
+</p>
+
+
+<p>
+  <strong>Bio</strong>:  <blockquote><%= @user.bio %></blockquote>
+</p>

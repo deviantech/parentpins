@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
   validate :valid_username, :valid_social_media_links
   before_save :track_media_changes
   before_destroy :clean_redis
-  after_create :prepopulate_following_users
+  after_create :prepopulate_following_users, :notify_admins
 
   # Used by searchable
   scope :newest_first,  -> { order('id DESC') }
@@ -364,6 +364,10 @@ class User < ActiveRecord::Base
     User.get_featured(2).each do |f|
       follow_user(f)
     end
+  end
+  
+  def notify_admins # TODO: do a daily batch email, so user has time to add bio information, etc.
+    AdminMailer.new_user(self.id).deliver
   end
   
   def valid_social_media_links
