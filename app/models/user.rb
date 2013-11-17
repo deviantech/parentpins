@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
   mount_uploader :avatar,       AvatarUploader
   mount_uploader :cover_image,  CoverImageUploader
   
+  # Users with lower IDs are test users, and can be messed with as much as desired
+  HIGHEST_TEST_USER_ID = 19
   
   # Setup accessible (or protected) attributes for your model
   attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :remove_cover_image, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h, :remove_avatar, :avatar_x, :avatar_y, :avatar_w, :avatar_h, :email_on_comment_received
@@ -39,6 +41,10 @@ class User < ActiveRecord::Base
   # Used by searchable
   scope :newest_first,  -> { order('id DESC') }
   scope :featured,      -> { where(:featured => true) }
+
+  def self.test_users
+    User.where("id <= #{HIGHEST_TEST_USER_ID}")
+  end
 
   def name
     username.to_s

@@ -89,23 +89,40 @@ namespace :pins do
       rand * (to - from) + from
     end
 
-    Board.includes(:pins).find_each do |b|
-      puts "Updating #{b.pins.count} pins for board #{b.id}"
-      oldest = Time.now - b.created_at
-      b.pins.to_a.shuffle.each_with_index do |p, i|
-        offset = rand_in_range(0, oldest / (i+1))
-        date = Time.now - offset
-        # Not mass-assigning
-        p.created_at = date
-        p.updated_at = date
-        p.save!
-        puts "#{p.id} has #{p.comments.count}, some of which are older than the new date. Fixing." if p.comments.where('created_at < ?', date).count > 0
-        p.comments.where('created_at < ?', date).each_with_index do |c, i|
-          newdate = date + (i * 10).minutes
-          c.created_at = newdate
-          c.updated_at = newdate
+    User.test_users.includes(:boards).each do |user|
+      user.boards.includes(:pins).find_each do |b|
+        puts "Updating #{user.name}'s board #{b.id} (#{b.pins.count} pins)"
+        if b.created_at < 6.months.ago
+          b.created_at = b.updated_at = b.created_at + (((Time.now - b.created_at) / 3600 / 24 / 30) - 1).to_i.months
+        end
+        
+        oldest = Time.now - b.created_at
+        b.pins.to_a.shuffle.each_with_index do |p, i|
+          offset = rand_in_range(0, oldest / (i+1))
+          date = Time.now - offset
+          # Not mass-assigning
+          p.created_at = date
+          p.updated_at = date
+          p.save!
+          puts "\tPin #{p.id} has #{p.comments.where('created_at < ?', date).count} comments which are older than the new minimum date. Fixing." if p.comments.where('created_at < ?', date).count > 0
+          p.comments.where('created_at < ?', date).each_with_index do |c, i|
+            newdate = date + (i * 10).minutes
+            c.created_at = newdate
+            c.updated_at = newdate
+            c.save!
+          end
+        end
+        
+        earliest_comment_date = (b.pins.sort_by(&:created_at).first || b).created_at
+        b.comments.each do |c|
+          next unless c.created_at < earliest_comment_date
+          puts "\tFixing an old board comment for #{b.id}"
+          date = earliest_comment_date + ((Time.now - earliest_comment_date) / 3600 / 24).to_i.days
+          c.updated_at = date
+          c.created_at = date
           c.save!
         end
+        
       end
     end
   end
