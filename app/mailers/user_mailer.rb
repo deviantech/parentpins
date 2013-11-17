@@ -16,7 +16,8 @@ class UserMailer < BaseMailer
     else 'post'
     end
     
-    unless @comment.user == @user # If doesn't run mail(), will automatically return a ActionMailer::Base::NullMail instance
+    # If doesn't run mail(), will automatically return a ActionMailer::Base::NullMail instance
+    if @user.email_on_comment_received? && @user != @comment.user
       mail(:to => @user.email, :subject => "[ParentPins] #{@comment.user.name} commented on your #{@what}")
     end
   end

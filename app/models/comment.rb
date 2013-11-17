@@ -7,4 +7,12 @@ class Comment < ActiveRecord::Base
   
   validates_presence_of :commentable, :user
   validates_length_of :body, :minimum => 1
+  
+  after_create :send_notification
+  
+  protected
+  
+  def send_notification
+    UserMailer.comment_received(self.id)
+  end
 end

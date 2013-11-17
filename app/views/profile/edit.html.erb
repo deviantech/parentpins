@@ -92,6 +92,14 @@
       </div>
     </div>
     
+    <div class="section stacked">
+      <h3>Email Settings</h3>
+      <div class="field field-full checkbox">
+        <%= f.check_box :email_on_comment_received %>
+        <%= f.label :email_on_comment_received, 'Email me when someone comments on a pin or board' %>
+      </div>
+    </div>
+    
     
 
     <% if f.object.featured? %>
