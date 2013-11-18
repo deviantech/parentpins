@@ -6,7 +6,7 @@ require "bundler/capistrano"
 # require 'thinking_sphinx/deploy/capistrano'
 
 
-IN_VAGRANT = false
+IN_VAGRANT = ENV['VAGRANT']
 
 if IN_VAGRANT
   require 'capistrano-unicorn'
@@ -23,8 +23,8 @@ else
 end
 
 set :whenever_command,     "bundle exec whenever"
-set :whenever_environment, { stage }
-set :whenever_identifier,  { "#{application}_#{stage}" }
+set :whenever_environment, defer { stage }
+set :whenever_identifier,  defer { "#{application}_#{stage}" }
 require "whenever/capistrano"
 
 # Stages

@@ -31,6 +31,7 @@ gem 'protected_attributes'
 gem 'whenever', :require => false
 gem 'awesome_print', :require => 'ap'
 gem 'unicorn', :require => false
+gem 'subexec' # Used to manually run minimagick commands in store_average_color
   
 group :development do
   gem 'thin'
