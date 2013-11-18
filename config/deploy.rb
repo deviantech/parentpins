@@ -2,8 +2,8 @@
 
 require "capistrano-conditional"
 require 'capistrano/ext/multistage'
-# require 'thinking_sphinx/deploy/capistrano'
 require "bundler/capistrano"
+# require 'thinking_sphinx/deploy/capistrano'
 
 
 IN_VAGRANT = false
@@ -22,9 +22,9 @@ else
   set :site_ip, '54.204.12.77'
 end
 
-set :whenever_command, "bundle exec whenever"
-set :whenever_environment, defer { stage }
-set :whenever_identifier, defer { "#{application}_#{stage}" }
+set :whenever_command,     "bundle exec whenever"
+set :whenever_environment, { stage }
+set :whenever_identifier,  { "#{application}_#{stage}" }
 require "whenever/capistrano"
 
 # Stages

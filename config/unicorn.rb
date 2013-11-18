@@ -1,90 +1,105 @@
-# unicorn_rails -c /data/github/current/config/unicorn.rb -E production -D
-# TODO: restyle from http://crosbymichael.com/setup-ruby-on-rails-with-nginx-and-unicorn.html
-# TODO: http://ariejan.net/2011/09/14/lighting-fast-zero-downtime-deployments-with-git-capistrano-nginx-and-unicorn/
-# TODO: consider puma - http://blog.wiemann.name/rails-server
+# unicorn -c /data/github/current/config/unicorn.rb -E production -D
+@env          = ENV['RACK_ENV'] || ENV['RAILS_ENV'] || 'production'
+@app_root     = "/var/www/pins/#{@env}"
+@app_current  = "#{@app_root}/current"
+@app_shared   = "#{@app_root}/shared"
 
-# Set your full path to application.
-rails_env = ENV['RAILS_ENV'] || 'production'
+# See http://unicorn.bogomips.org/Unicorn/Configurator.html for complete
+# documentation.
 
-app_path = "/var/www/pins/#{rails_env}/current"
-shared_path = "/var/www/pins/#{rails_env}/shared"
- 
-worker_processes (rails_env == 'production' ? 2 : 1)
-preload_app true
+# Use at least one worker per core if you're on a dedicated server,
+# more will usually help for _short_ waits on databases/caches.
+worker_processes 2
+
+# nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 60
- 
-# Listen on a Unix data socket
-listen "#{shared_path}/sockets/unicorn.sock", :backlog => 2048
-pid "#{shared_path}/pids/unicorn.pid"
 
-# Log everything to one file
-stderr_path "log/unicorn.log"
-stdout_path "log/unicorn.log"
+# Since Unicorn is never exposed to outside clients, it does not need to
+# run on the standard HTTP port (80), there is no reason to start Unicorn
+# as root unless it's from system init scripts.
+# If running the master process as root and the workers as an unprivileged
+# user, do this to switch euid/egid in the workers (also chowns logs):
+user "ubuntu", "ubuntu"
 
+# Help ensure your application will always spawn in the symlinked
+# "current" directory that Capistrano sets up.
+working_directory @app_current # available in 0.94.0+
 
+# listen on both a Unix domain socket and a TCP port,
+# we use a shorter backlog for quicker failover when busy
+listen "#{@app_shared}/sockets/unicorn.sock", :backlog => 2048
 
+# feel free to point this anywhere accessible on the filesystem
+pid "#{@app_shared}/pids/unicorn.pid"
 
-working_directory app_path
+# By default, the Unicorn logger will write to stderr.
+# Additionally, some applications/frameworks log to stderr or stdout,
+# so prevent them from going to /dev/null when daemonized here:
+stderr_path "#{@app_shared}/log/unicorn.stderr.log"
+stdout_path "#{@app_shared}/log/unicorn.stdout.log"
 
- 
- 
-GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
+# combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
+# http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
+preload_app true
+GC.respond_to?(:copy_on_write_friendly=) and
+  GC.copy_on_write_friendly = true
 
-# http://kavassalis.com/2013/04/unicorn-hot-restarts-my-definitive-guide/ 
+# Enable this flag to have unicorn test client connections by writing the
+# beginning of the HTTP headers before calling the application.  This
+# prevents calling the application for connections that have disconnected
+# while queued.  This is only guaranteed to detect clients on the same
+# host unicorn runs on, and unlikely to detect disconnects even on a
+# fast LAN.
+check_client_connection false
+
+# http://kavassalis.com/2013/04/unicorn-hot-restarts-my-definitive-guide/
 before_exec do |server|
-   ENV['BUNDLE_GEMFILE'] = "#{app_path}/Gemfile"
+  ENV['BUNDLE_GEMFILE'] = "#{@app_current}/Gemfile"
 end
 
 before_fork do |server, worker|
-  defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
-  
-  
-  ##
-  # When sent a USR2, Unicorn will suffix its pidfile with .oldbin and
-  # immediately start loading up a new version of itself (loaded with a new
-  # version of our app). When this new Unicorn is completely loaded
-  # it will begin spawning workers. The first worker spawned will check to
-  # see if an .oldbin pidfile exists. If so, this means we've just booted up
-  # a new Unicorn and need to tell the old one that it can now die. To do so
-  # we send it a QUIT.
+  # the following is highly recomended for Rails + "preload_app true"
+  # as there's no need for the master process to hold a connection
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.connection.disconnect!
+
+  # The following is only recommended for memory/DB-constrained
+  # installations.  It is not needed if your system can house
+  # twice as many worker_processes as you have configured.
   #
-  # Using this method we get 0 downtime deploys.
- 
-  old_pid = RAILS_ROOT + '/tmp/pids/unicorn.pid.oldbin'
-  if File.exists?(old_pid) && server.pid != old_pid
+  # This allows a new master process to incrementally
+  # phase out the old master process with SIGTTOU to avoid a
+  # thundering herd (especially in the "preload_app false" case)
+  # when doing a transparent upgrade.  The last worker spawned
+  # will then kill off the old master process with a SIGQUIT.
+  old_pid = "#{server.config[:pid]}.oldbin"
+  if old_pid != server.pid
     begin
-      Process.kill("QUIT", File.read(old_pid).to_i)
+      sig = (worker.nr + 1) >= server.worker_processes ? :QUIT : :TTOU
+      Process.kill(sig, File.read(old_pid).to_i)
     rescue Errno::ENOENT, Errno::ESRCH
-      # someone else did our job for us
     end
   end
-end
- 
- 
-after_fork do |server, worker|
   
-  defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection 
- 
-  ##
-  # Unicorn master is started as root, which is fine, but let's
-  # drop the workers to ubuntu:ubuntu
- 
-  begin
-    uid, gid = Process.euid, Process.egid
-    user, group = 'ubuntu', 'ubuntu'
-    target_uid = Etc.getpwnam(user).uid
-    target_gid = Etc.getgrnam(group).gid
-    worker.tmp.chown(target_uid, target_gid)
-    if uid != target_uid || gid != target_gid
-      Process.initgroups(user, target_gid)
-      Process::GID.change_privilege(target_gid)
-      Process::UID.change_privilege(target_uid)
-    end
-  rescue => e
-    if RAILS_ENV == 'development'
-      STDERR.puts "couldn't change user, oh well"
-    else
-      raise e
-    end
-  end
+  # Throttle the master from forking too quickly by sleeping.  Due
+  # to the implementation of standard Unix signal handlers, this
+  # helps (but does not completely) prevent identical, repeated signals
+  # from being lost when the receiving process is busy.
+  sleep 1
+end
+
+after_fork do |server, worker|
+  # per-process listener ports for debugging/admin/migrations
+  # addr = "127.0.0.1:#{9293 + worker.nr}"
+  # server.listen(addr, :tries => -1, :delay => 5, :tcp_nopush => true)
+
+  # the following is *required* for Rails + "preload_app true",
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.establish_connection
+
+  # if preload_app is true, then you may also want to check and
+  # restart any other shared sockets/descriptors such as Memcached,
+  # and Redis.  TokyoCabinet file handles are safe to reuse
+  # between any number of forked children (assuming your kernel
+  # correctly implements pread()/pwrite() system calls)
 end
