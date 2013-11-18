@@ -14,7 +14,7 @@ class AddImportDescriptions < ActiveRecord::Migration
     }
     
     groups.each do |name, desc|
-      g = AgeGroup.find_or_create_by_name(name)
+      g = AgeGroup.find_or_create_by(:name => name)
       g.update_attribute :description, desc
     end
   end

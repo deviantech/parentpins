@@ -1,5 +1,4 @@
-# unicorn -c /data/github/current/config/unicorn.rb -E production -D
-@env          = ENV['RACK_ENV'] || ENV['RAILS_ENV'] || 'production'
+@env          = ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'production'
 @app_root     = "/var/www/pins/#{@env}"
 @app_current  = "#{@app_root}/current"
 @app_shared   = "#{@app_root}/shared"

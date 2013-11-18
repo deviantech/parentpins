@@ -63,5 +63,8 @@ module ParentPins
     config.to_prepare do
       Devise::Mailer.layout "base_mailer"
     end
+    
+    # Allow using asset pipeline for 404/500 pages - http://blog.plataformatec.com.br/2012/01/my-five-favorite-hidden-features-in-rails-3-2
+    # config.exceptions_app = self.routes
   end
 end
