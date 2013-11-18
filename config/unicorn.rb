@@ -18,7 +18,9 @@ timeout 60
 # as root unless it's from system init scripts.
 # If running the master process as root and the workers as an unprivileged
 # user, do this to switch euid/egid in the workers (also chowns logs):
-user "ubuntu", "ubuntu"
+if `whoami` =~ /root/
+  user "ubuntu", "ubuntu"
+end
 
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
