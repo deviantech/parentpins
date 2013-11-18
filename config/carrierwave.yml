@@ -1,6 +1,6 @@
 production:
   bucket: parentpins
-production:
+staging:
   bucket: parentpins-staging
 development:
   bucket: parentpins-development
