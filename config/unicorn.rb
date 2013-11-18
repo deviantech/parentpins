@@ -28,10 +28,13 @@ working_directory @app_current # available in 0.94.0+
 
 # listen on both a Unix domain socket and a TCP port,
 # we use a shorter backlog for quicker failover when busy
-listen "#{@app_shared}/sockets/unicorn.sock", :backlog => 2048
+# listen "#{@app_shared}/sockets/unicorn.sock", :backlog => 2048
 
 # feel free to point this anywhere accessible on the filesystem
-pid "#{@app_shared}/pids/unicorn.pid"
+# pid "#{@app_shared}/pids/unicorn.pid"
+
+listen "/var/www/pins/staging/shared/sockets/unicorn.sock", :backlog => 2048
+pid "/var/www/pins/staging/shared/pidss/unicorn.pid"
 
 # By default, the Unicorn logger will write to stderr.
 # Additionally, some applications/frameworks log to stderr or stdout,
