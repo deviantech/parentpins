@@ -65,6 +65,7 @@ module ParentPins
     end
     
     # Allow using asset pipeline for 404/500 pages - http://blog.plataformatec.com.br/2012/01/my-five-favorite-hidden-features-in-rails-3-2
+    # This may help? - https://gist.github.com/somebox/2029709
     # config.exceptions_app = self.routes
   end
 end
