@@ -34,7 +34,7 @@ working_directory @app_current # available in 0.94.0+
 # pid "#{@app_shared}/pids/unicorn.pid"
 
 listen "/var/www/pins/staging/shared/sockets/unicorn.sock", :backlog => 2048
-pid "/var/www/pins/staging/shared/pidss/unicorn.pid"
+pid "/var/www/pins/staging/shared/pids/unicorn.pid"
 
 # By default, the Unicorn logger will write to stderr.
 # Additionally, some applications/frameworks log to stderr or stdout,
