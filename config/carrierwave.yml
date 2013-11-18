@@ -1,5 +1,7 @@
 production:
   bucket: parentpins
+production:
+  bucket: parentpins-staging
 development:
   bucket: parentpins-development
 test:

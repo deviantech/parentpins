@@ -2,6 +2,10 @@ production:
   facebook:
     key: ***REMOVED***
     secret: ***REMOVED***
+staging:
+  facebook:
+    key: ***REMOVED***
+    secret: ***REMOVED***
 development:
   facebook:
     key: ***REMOVED***
