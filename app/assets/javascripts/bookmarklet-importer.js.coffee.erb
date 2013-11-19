@@ -19,10 +19,10 @@ goGoGadgetImporter = () ->
     else
       message("""You'll need to <a href="#{window.ppBookmarklet.host}/users/sign_in" target="_blank" id="ppDoLoginLink">log into your ParentPins account</a> before continuing.""")
       if window.ppBookmarklet
-        ppBookmarklet.contentBase.on 'click', '#ppDoLoginLink', () ->
+        ppBookmarklet.contentBase.one 'click', '#ppDoLoginLink', () ->
           ppBookmarklet.contentBase.find('#progressDisplay').append("""<br><br><a href="#" id="ppCheckLoginLink">Click to try again</a>.""")
 
-        ppBookmarklet.contentBase.on 'click', '#ppCheckLoginLink', () ->
+        ppBookmarklet.contentBase.one 'click', '#ppCheckLoginLink', () ->
           goGoGadgetImporter();
           return false;
           
