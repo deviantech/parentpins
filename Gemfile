@@ -32,7 +32,8 @@ gem 'whenever', :require => false
 gem 'awesome_print', :require => 'ap'
 gem 'unicorn', :require => false
 gem 'subexec' # Used to manually run minimagick commands in store_average_color
-  
+gem 'rack-cors', :require => 'rack/cors'
+
 group :development do
   gem 'thin'
   gem 'git'

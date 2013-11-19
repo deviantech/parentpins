@@ -1,5 +1,4 @@
 class ImportController < ApplicationController
-  before_action :enable_cors
   after_action :allow_external_iframing, :only => [:step_1]
   skip_before_filter :verify_authenticity_token, :only => [:step_1, :login_check] # Coming from JS, no way for bookmarklet to know proper CSRF token
   before_filter :authenticate_user!,  :except => [:login_check, :external_embedded]
@@ -14,6 +13,9 @@ class ImportController < ApplicationController
     redirect_to '/'
   end
   
+  # Note: using jsonp for this, which should make it work cross domain... but new browsers won't send cross domain ajax
+  # as-is without CORS. CORS supports only newer browsers, so HOPEFULLY by using both side by side we can support old and new...
+  # http://leopard.in.ua/2012/07/08/using-cors-with-rails/
   def login_check
     render :json => {:logged_in => current_user.try(:id)}, :callback => params[:callback]
   end
@@ -114,18 +116,6 @@ class ImportController < ApplicationController
   def get_profile_info
     @profile = current_user
     get_profile_counters
-  end
-  
-  # http://leopard.in.ua/2012/07/08/using-cors-with-rails/
-  def enable_cors
-    if request.headers["HTTP_ORIGIN"]
-      headers['Access-Control-Allow-Origin'] = request.headers["HTTP_ORIGIN"]
-      headers['Access-Control-Expose-Headers'] = 'ETag'
-      headers['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD'
-      headers['Access-Control-Allow-Headers'] = '*,x-requested-with,Content-Type,If-Modified-Since,If-None-Match,Auth-User-Token'
-      headers['Access-Control-Max-Age'] = '86400'
-      headers['Access-Control-Allow-Credentials'] = 'true'
-    end
   end
 
 end

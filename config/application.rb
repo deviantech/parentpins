@@ -67,5 +67,15 @@ module ParentPins
     # Allow using asset pipeline for 404/500 pages - http://blog.plataformatec.com.br/2012/01/my-five-favorite-hidden-features-in-rails-3-2
     # This may help? - https://gist.github.com/somebox/2029709
     # config.exceptions_app = self.routes
+    
+    # https://github.com/cyu/rack-cors#configuration Allow cross domain login check
+    config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+      allow do
+        origins '*'
+        resource '/import/login_check',   :headers => :any, :methods => [:get, :post, :put, :options]
+        resource '/widgets/*',            :headers => :any, :methods => [:get, :post, :put, :options]
+      end
+    end
+    
   end
 end
