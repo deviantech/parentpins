@@ -4,11 +4,15 @@ module Searchable
   def search(query)
     base_scope = self.newest_first
     unless query.blank?
-      field_name = if column_names.include?('name') then 'name'
-      elsif column_names.include?('username')       then 'username'
-      else 'description'
+      fields = case self.name
+      when "Board"  then %w(name description)
+      when "User"   then %w(username bio)
+      when "Pin"    then %w(description)
+      else []
       end
-      base_scope = base_scope.where("#{field_name} LIKE ?", "%#{query}%")
+      
+      str = fields.map {|f| "(#{f} LIKE :query)"}.join(' OR ')
+      base_scope = base_scope.where(str, {:query => "%#{query}%"})
     end
     
     # TODO - make more efficient (sphinx? - currently returns count for each, which isn't needed) and/or eventually remove once have more pins in play.
@@ -19,5 +23,5 @@ module Searchable
     
     base_scope
   end
-  
+
 end
