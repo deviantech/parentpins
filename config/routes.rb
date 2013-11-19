@@ -90,7 +90,7 @@ ParentPins::Application.routes.draw do
   match '/import/step_3' => "import#step_3",                :as => :pin_import_step_3,        :via => [:get, :post]
   match '/import/step_4' => "import#step_4",                :as => :pin_import_step_4,        :via => [:get, :post]
   match '/import/step_5' => "import#step_5",                :as => :pin_import_step_5,        :via => [:get, :post]
-  match '/import/login_check' => "import#login_check",      :as => :pin_import_login_check,   :via => [:get, :post]
+  match '/import/login_check' => "import#login_check",      :as => :pin_import_login_check,   :via => [:get, :post, :options]
   
   # Externally-published API
   get '/widgets/bookmarklet' => 'import#external_embedded', :as => :bookmarklet_embed
