@@ -75,6 +75,19 @@ end
 #   after "deploy:update_code", "sphinx:copy_config"
 # end
 
+ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['app/assets', 'Gemfile.lock'] do
+  # TODO: test this. If ConditionalDeploy doesn't work this way yet, add it (or at least ability to remove specified task from before/after callback chain)
+  namespace :deploy do
+    namespace :assets do
+      task :precompile do
+        logger.info "Skipping asset precompilation"
+      end
+    end
+  end
+  
+end
+
+
 # ===================================
 # = Currently deployed on passenger =
 # ===================================
@@ -93,29 +106,6 @@ else
       desc "#{t} task is a no-op with mod_rails"
       task t, :roles => :app do ; end
     end
-  end
-end
-
-
-namespace :deploy do
-  namespace :assets do
-
-    def not_first_deploy?
-      'true' ==  capture("if [ -e #{current_path}/REVISION ]; then echo 'true'; fi").strip
-    end
-
-    desc "Run the asset precompilation rake task only if there are changes."
-    task :precompile, :roles => :web, :except => { :no_release => true } do
-      if not_first_deploy?
-        from = source.next_revision(current_revision)
-        if capture("cd #{latest_release} && #{source.local.log(from)} vendor/assets/ app/assets/ Gemfile.lock | wc -l").to_i > 0
-          run %Q{cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile}
-        else
-          logger.info "Skipping asset pre-compilation because there were no asset changes"
-        end
-      end
-    end
-    
   end
 end
 
