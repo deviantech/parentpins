@@ -69,7 +69,7 @@ module ParentPins
     # config.exceptions_app = self.routes
     
     # https://github.com/cyu/rack-cors#configuration Allow cross domain login check
-    config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+    config.middleware.insert_after ActionDispatch::Static, Rack::Cors do
       allow do
         origins '*'
         resource '/import/login_check',   :headers => :any, :methods => [:get, :post, :put, :options]
