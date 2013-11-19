@@ -32,7 +32,14 @@ goGoGadgetImporter = () ->
   
   checkLoggedIn = () ->
     ppBookmarklet.contentBase.off 'click'
-    $.getJSON("#{loggedInURL}?callback=?").done(onSuccess).fail(onFailure)
+    $.ajax({
+      url: "#{loggedInURL}?callback=?",
+      dataType: "json",
+      crossDomain: true,
+      xhrFields: {
+        withCredentials: true
+      }
+    }).done(onSuccess).fail(onFailure)
     
   checkLoggedIn()
   

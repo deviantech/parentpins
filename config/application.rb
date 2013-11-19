@@ -73,7 +73,7 @@ module ParentPins
       allow do
         origins '*'
         resource '/import/login_check',   :headers => :any, :methods => [:get, :post, :put, :options]
-        resource '/widgets/*',            :headers => :any, :methods => [:get, :post, :put, :options]
+        # resource '/widgets/*',            :headers => :any, :methods => [:get, :post, :put, :options]
       end
     end
     
