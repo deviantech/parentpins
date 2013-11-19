@@ -15,3 +15,10 @@ if ($(window).width() >= 770){
 	spybar.affix({offset: {top: wrapper.offset().top - 10, bottom: 200}});
   $(window).resize(rebindWidth);
 }
+
+$(document).ready(function() {
+  $('a.link-to-section').on('click touchend', function(e) {
+    e.preventDefault();
+    $.scrollTo('#' + $(this).data('section'));
+  });
+});
