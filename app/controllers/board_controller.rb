@@ -113,8 +113,7 @@ class BoardController < ApplicationController
   def get_user
     try_getting_user
     return true if @profile
-    flash[:error] = "Unable to find profile"
-    redirect_to '/'
+    redirect_to '/', :error => "Unable to find profile"
   end
 
   def set_layout

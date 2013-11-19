@@ -9,8 +9,7 @@ class ImportController < ApplicationController
   
   
   def external_embedded
-    flash[:error] = "Unable to initiate ParentPin process -- it appears javascript wasn't enabled on the referring page."
-    redirect_to '/'
+    redirect_to '/', :error => "Unable to initiate ParentPin process -- it appears javascript wasn't enabled on the referring page."
   end
   
   # Note: using jsonp for this, which should make it work cross domain... but new browsers won't send cross domain ajax
@@ -68,12 +67,10 @@ class ImportController < ApplicationController
 
     if @pins_to_import.empty? && @imported.empty?
       session.delete(:import_id)
-      flash[:error] = "You successfully completed your import, but had no pins selected to save."
-      redirect_to profile_path(current_user)
+      redirect_to profile_path(current_user), :error => "You successfully completed your import, but had no pins selected to save."
     elsif @pins_to_import.empty?
       session.delete(:import_id)
-      flash[:success] = "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
-      redirect_to profile_import_path(current_user, @import, :just_completed => true)
+      redirect_to profile_import_path(current_user, @import, :just_completed => true), :success => "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
     else
       if @imported.empty?
         flash.now[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    
@@ -92,8 +89,7 @@ class ImportController < ApplicationController
     if @import = current_user.imports.find(params[:id])
       paginate_pins @import.pins
     else
-      flash[:error] = "Unable to locate specified import"
-      redirect_to profile_path(current_user)
+      redirect_to profile_path(current_user), :error => "Unable to locate specified import."
     end
   end
 

@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  add_flash_types :error, :success
   before_filter :consider_ajax_layout
   helper_method :host, :bookmarklet_link_target_js
   before_filter :configure_permitted_parameters, if: :devise_controller?

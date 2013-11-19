@@ -7,8 +7,7 @@ class FeedbacksController < ApplicationController
   
   def create
     if @feedback.save
-      flash[:success] = "Thanks for the feedback!"
-      redirect_to '/'
+      redirect_to '/', :success => "Thanks for the feedback!"
     else
       flash.now[:error] = "Unable to save feedback"
       render new
