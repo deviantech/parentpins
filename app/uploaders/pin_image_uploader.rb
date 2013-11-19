@@ -22,7 +22,7 @@ class PinImageUploader < BaseUploader
   def store_average_color
     cache! unless File.exists?(current_path) # Allows use with remote, previously-uploaded files (e.g. collecting meta on existing files)
     
-    cmd = %{convert "#{current_path}" -colorspace rgb -scale 1x1 -format "%[pixel:p{0,0}]" info:}
+    cmd = %{convert "#{current_path.shellescape}" -colorspace rgb -scale 1x1 -format "%[pixel:p{0,0}]" info:}
     sub = Subexec.run(cmd, :timeout => 15) # Using subexec because minimagick commands sometimes stall without returning control
     
     return true unless sub.exitstatus == 0 && matched = sub.output.match(/\((.+?)\)/)
@@ -31,3 +31,7 @@ class PinImageUploader < BaseUploader
   end
   
 end
+
+__END__
+# To get an instance to work with:
+img = ::MiniMagick::Image.open(current_path)

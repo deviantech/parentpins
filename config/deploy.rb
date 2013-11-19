@@ -75,6 +75,28 @@ end
 #   after "deploy:update_code", "sphinx:copy_config"
 # end
 
+
+# TODO: something like this?
+# callback = callbacks[:after].find{|c| c.source == "deploy:assets:precompile" }
+# callbacks[:after].delete(callback)
+# after 'deploy:update_code', 'deploy:assets:precompile' unless fetch(:skip_assets, false)
+
+# TODO: something like this...
+# namespace :deploy do
+#   desc "Deploy and migrate the database - this will cause downtime during migrations"
+#   task :migrations do
+#     transaction do
+#       update_code
+#       web:disable
+#       migrate
+#       web:enable
+#     end
+#     restart
+#   end
+# end
+
+
+
 # ===================================
 # = Currently deployed on passenger =
 # ===================================

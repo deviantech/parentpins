@@ -1,16 +1,15 @@
 # encoding: utf-8
 
-require 'carrierwave/processing/mime_types'
-
 class BaseUploader < CarrierWave::Uploader::Base  
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::Vips
   include CarrierWave::MiniMagick
-  include CarrierWave::MimeTypes
+  include CarrierWave::MimetypeFu
+  
   include Piet::CarrierWaveExtension
-  process :set_content_type
-  process :fix_exif_rotation
+
+  process :set_mimetype_fu_content_type => true
   process :strip
   
   # TODO: run piet gem's optimizations via resque eventually - https://github.com/albertbellonch/piet
@@ -32,25 +31,20 @@ class BaseUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  # Provide a default URL as a default if there hasn't been a file uploaded:
+  # Provide a default URL in case there hasn't been a file uploaded
   def default_url
     ActionController::Base.helpers.asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
   end
   
-  
-  
-  # Rotates the image based on the EXIF Orientation (not defined in Vips)
-  def fix_exif_rotation
-    manipulate! do |img|
-      img.auto_orient if img.respond_to?(:auto_orient)
-      img = yield(img) if block_given?
-      img
-    end
-  end
+  # With this defined, start getting v222_v222_FILENAME names
+  # def filename
+    # filename_with_mimetype_fu_ext if original_filename.present?
+  # end  
 
-  # Strips out all embedded information from the image
+  # Rotates based on the EXIF Orientation, then strips out all embedded information
   def strip
     manipulate! do |img|
+      img.auto_orient if img.respond_to?(:auto_orient)
       img.strip
       img = yield(img) if block_given?
       img
