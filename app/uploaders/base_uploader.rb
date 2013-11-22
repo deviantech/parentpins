@@ -36,8 +36,12 @@ class BaseUploader < CarrierWave::Uploader::Base
   def default_url
     ActionController::Base.helpers.asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
   end
-  
-  
+
+  # Only use HTTPS for remote image assets if the current page has been requested with HTTPS as well
+  def url_with_conditional_ssl
+    url_without_conditional_ssl.sub(/\Ahttps?:/, '')
+  end
+  alias_method_chain :url, :conditional_ssl
   
   # Rotates the image based on the EXIF Orientation (not defined in Vips)
   def fix_exif_rotation
