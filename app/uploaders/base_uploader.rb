@@ -38,8 +38,8 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
 
   # Only use HTTPS for remote image assets if the current page has been requested with HTTPS as well
-  def url_with_conditional_ssl
-    url_without_conditional_ssl.sub(/\Ahttps?:/, '')
+  def url_with_conditional_ssl(*args)
+    url_without_conditional_ssl(*args).sub(/\Ahttps?:/, '')
   end
   alias_method_chain :url, :conditional_ssl
   
