@@ -2,5 +2,5 @@ window.ppAds_Apply = function() {
   window['skimlinks'] && skimlinks();
 };
   
-<%# Pretty proud of this. Read the current skimlinks file on every asset precompile. It doesn't appear to change very often, and this saves us a network connection on every pageload (originally attempted to make async, but cross domain issues squashed that). %>
-<%= open('http://s.skimresources.com/js/59265X1374391.skimlinks.js').read if Rails.env.production? || Rails.env.staging? || true %>
+<%# Read the current skimlinks file on every asset precompile. It doesn't appear to change very often, and this saves us a network connection on every pageload. TODO: Note that by rewriting r.skimlinkresource.com to a custom vhost we may be able to work around adblock. %>
+<%= open('http://s.skimresources.com/js/59265X1374391.skimlinks.js').read if Rails.env.production? || Rails.env.staging? %>
