@@ -75,6 +75,7 @@ end
 #   after "deploy:update_code", "sphinx:copy_config"
 # end
 
+
 ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['app/assets', 'Gemfile.lock'] do
   # TODO: test this. If ConditionalDeploy doesn't work this way yet, add it (or at least ability to remove specified task from before/after callback chain)
   namespace :deploy do
@@ -104,11 +105,11 @@ if IN_VAGRANT
     end
     
     desc 'Select the appropriate unicorn restart strategy (rolling unless migrating)'
-    task "gogo_gadget_unicorn", :roles => app, :except => {:no_release => true} do
+    task "gogo_gadget_unicorn", :roles => :app, :except => {:no_release => true} do
       # after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
       # after 'deploy:restart', 'unicorn:restart'   # app preloaded
       # after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
-      @migrating ? unicorn.duplicate : unicorn.restart
+      @migrating ? unicorn.restart : unicorn.duplicate
     end
   end
   

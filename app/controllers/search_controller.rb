@@ -6,6 +6,8 @@ class SearchController < ApplicationController
   end
   
   def index
+    redirect_to(root_path, :error => 'You forgot to enter a search query.') and return if params[:q].blank?
+
     klass = @kind.capitalize.singularize.constantize
     @results = klass.search(params[:q]).page(params[:page])
     support_ajax_pagination
