@@ -83,7 +83,10 @@ ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['app/asse
         logger.info "Skipping asset precompilation"
       end
       task :update_asset_mtimes do
-        # noop
+        # nop
+      end
+      task :clean_expired do
+        # nop
       end
     end
   end
