@@ -1,0 +1,10 @@
+window.ppAds_Apply = () ->
+  window['skimlinks'] && skimlinks()
+  
+  
+<% if Rails.env.production? || Rails.env.staging? %>
+ppAds_Init = () ->
+  $.externalScript("http://s.skimresources.com/js/59265X1374391.skimlinks.js").done () ->
+    setTimeout(ppAds_Apply, 10)
+setTimeout(ppAds_Init, 10)
+<% end %>
