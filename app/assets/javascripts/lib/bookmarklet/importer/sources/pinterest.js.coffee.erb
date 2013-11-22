@@ -49,7 +49,7 @@ class window.ppImporterClasses.Sources.Pinterest
     setTimeout timeoutIfRequred, opts.timeout_after
   
   # TODO: shared with interactivity... also, why needed when updating div contents?
-  toggleWindowRepaint = () ->
+  triggerWindowRepaint = () ->
     body = $('body').first()
     curHeight = body.height()
     body.height(curHeight - 1).height(curHeight)
@@ -81,7 +81,7 @@ class window.ppImporterClasses.Sources.Pinterest
     
     showError = (msg) ->
       progressDiv.addClass('red').html(msg)
-      toggleWindowRepaint()
+      triggerWindowRepaint()
       seemsLegit = false
     
 
@@ -182,7 +182,7 @@ class window.ppImporterClasses.Sources.Pinterest
       if next.color == 'red' # TODO: add ability to set color
         progressDiv.addClass('red') 
         progressSpinner.hide()
-      toggleWindowRepaint()
+      triggerWindowRepaint()
       
       nextStep = () =>
         @canUpdateProgress = true
