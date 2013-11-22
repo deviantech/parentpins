@@ -1,5 +1,5 @@
-<h1 class="h1">Your Account is Locked</h1>
-<p><strong>Hello <%= @resource.name %>!</strong></p>
+<% @headline = "Your Account is Locked" %>
+
 <p>Your account has been locked due to an excessive amount of unsuccessful sign in attempts.</p>
 <p>Click the link below to unlock your account:</p>
 <%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @token), :class => "button" %>
