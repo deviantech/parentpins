@@ -79,7 +79,7 @@ ParentPins::Application.routes.draw do
   get '/legal' => 'front#legal'
   get '/privacy' => 'front#privacy'
   get '/copyright' => 'front#copyright'
-  get '/bookmarklet' => 'front#bookmarklet'
+  get '/get/bookmarklet' => 'front#bookmarklet', :as => 'get_bookmarklet'
   
   match '/search/:kind' => 'search#index',      :via => [:get, :post]
   match '/search' => 'search#redirect_by_kind', :via => [:get, :post]

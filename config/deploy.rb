@@ -91,17 +91,38 @@ ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['app/asse
 end
 
 
-before  "deploy:migrations", "deploy:web:disable"
-after   "deploy:migrations", "deploy:web:enable"
 
-# ===================================
-# = Currently deployed on passenger =
-# ===================================
 if IN_VAGRANT
-  # after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
-  # after 'deploy:restart', 'unicorn:restart'   # app preloaded
-  after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
+  
+  namespace :app do
+    desc "Note that we're migrating"
+    task "note_migrating", :roles => :db do
+      @migrating = true
+    end
+    
+    desc 'Select the appropriate unicorn restart strategy (rolling unless migrating)'
+    task "gogo_gadget_unicorn", :roles => app, :except => {:no_release => true} do
+      # after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
+      # after 'deploy:restart', 'unicorn:restart'   # app preloaded
+      # after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
+      @migrating ? unicorn.duplicate : unicorn.restart
+    end
+  end
+  
+  before "deploy:migrations", "app:note_migrating"
+  after 'deploy:restart', 'app:gogo_gadget_unicorn'
+  
+  before  "deploy:migrations", "deploy:web:disable"
+  after   "app:gogo_gadget_unicorn", "deploy:web:enable"
+  
 else
+  before  "deploy:migrations", "deploy:web:disable"
+  after   "deploy:migrations", "deploy:web:enable"
+  
+  # ===================================
+  # = Currently deployed on passenger =
+  # ===================================
+  
   namespace :deploy do
     desc "Restarting passenger with restart.txt"
     task :restart, :roles => :app, :except => { :no_release => true } do
