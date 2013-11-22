@@ -91,6 +91,9 @@ ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['app/asse
 end
 
 
+before  "deploy:migrations", "deploy:web:disable"
+after   "deploy:migrations", "deploy:web:enable"
+
 # ===================================
 # = Currently deployed on passenger =
 # ===================================

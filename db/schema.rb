@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131117102601) do
+ActiveRecord::Schema.define(version: 20131122023356) do
 
   create_table "age_groups", force: true do |t|
     t.string   "name"
@@ -94,29 +94,30 @@ ActiveRecord::Schema.define(version: 20131117102601) do
   create_table "pins", force: true do |t|
     t.string   "kind"
     t.string   "url"
-    t.decimal  "price",                            precision: 10, scale: 2
+    t.decimal  "price",                                precision: 10, scale: 2
     t.integer  "user_id"
     t.integer  "board_id"
     t.integer  "category_id"
     t.integer  "age_group_id"
     t.integer  "via_id"
-    t.datetime "created_at",                                                            null: false
-    t.datetime "updated_at",                                                            null: false
-    t.string   "description",         limit: 1024
+    t.datetime "created_at",                                                                null: false
+    t.datetime "updated_at",                                                                null: false
+    t.string   "description",             limit: 1024
     t.string   "image"
     t.integer  "original_poster_id"
-    t.integer  "comments_count",                                            default: 0
+    t.integer  "comments_count",                                                default: 0
     t.string   "domain"
     t.string   "via_url"
     t.integer  "repinned_from_id"
-    t.integer  "repins_count",                                              default: 0
-    t.string   "uuid",                limit: 36
-    t.integer  "trend_position",                                            default: 0
+    t.integer  "repins_count",                                                  default: 0
+    t.string   "uuid",                    limit: 36
+    t.integer  "trend_position",                                                default: 0
     t.integer  "import_id"
     t.string   "source_url"
     t.integer  "image_v222_height"
     t.integer  "image_v222_width"
     t.string   "image_average_color"
+    t.string   "image_v222_content_type"
   end
 
   add_index "pins", ["age_group_id"], name: "index_pins_on_age_group_id", using: :btree
@@ -171,6 +172,7 @@ ActiveRecord::Schema.define(version: 20131117102601) do
     t.integer  "avatar_w"
     t.integer  "avatar_h"
     t.boolean  "email_on_comment_received", default: true
+    t.boolean  "email_on_new_follower",     default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -1,0 +1,8 @@
+<p>
+  <%= link_to @follower.name, profile_url(@follower) %> has started following
+  <% if @board %>
+    your board <%= link_to @board.name, profile_board_url(@user, @board) %>.
+  <% else %>
+    you.
+  <% end %>
+</p>
