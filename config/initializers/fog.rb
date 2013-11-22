@@ -5,5 +5,5 @@ CarrierWave.configure do |config|
     :aws_secret_access_key  => AMAZON[:secret],
   }
   config.fog_directory  = CARRIERWAVE[:bucket]
-  config.fog_attributes = {'Cache-Control' => 'max-age=315576000'}  # optional, defaults to {}
+  config.fog_attributes = {'Cache-Control' => 'public, max-age=315576000'}
 end
