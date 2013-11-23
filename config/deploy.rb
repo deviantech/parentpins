@@ -99,17 +99,6 @@ end
 if IN_VAGRANT
   
   namespace :app do
-    desc 'Generate unicorn configs'
-    task 'make_unicorn_config', :roles => :app, :except => {:no_release => true} do
-      conf_path = "#{release_path}/config/unicorn/#{rails_env}.rb"
-      on_rollback { run "rm -f #{conf_path}" }
-
-      require 'erb'
-      conf = ERB.new(File.read("./config/unicorn/conf.template.erb")).result(binding)
-
-      put conf, conf_path, :mode => 0644
-    end
-    
     desc "Note that we're migrating"
     task "note_migrating", :roles => :db do
       @migrating = true
@@ -123,7 +112,6 @@ if IN_VAGRANT
       @migrating ? unicorn.restart : unicorn.duplicate
     end
   end
-  after   'deploy:update_code', 'app:make_unicorn_config'
   
   before  "deploy:migrations", "app:note_migrating"
   after   'deploy:restart', 'app:gogo_gadget_unicorn'
