@@ -101,11 +101,11 @@ if IN_VAGRANT
   namespace :app do
     desc 'Generate unicorn configs'
     task 'make_unicorn_config', :roles => :app, :except => {:no_release => true} do
-      conf_path = "#{release_path}/config/unicorn.rb"
-      on_rollback { rm conf_path }
+      conf_path = "#{release_path}/config/unicorn/#{rails_env}.rb"
+      on_rollback { run "rm -f #{conf_path}" }
 
       require 'erb'
-      conf = ERB.new(File.read("./app/views/layouts/maintenance.html.erb")).result(binding)
+      conf = ERB.new(File.read("./config/unicorn/conf.template.erb")).result(binding)
 
       put conf, conf_path, :mode => 0644
     end
@@ -173,7 +173,7 @@ namespace :deploy do
       # invoke with
       # UNTIL="16:00 MST" REASON="a database upgrade" cap deploy:web:disable
 
-      on_rollback { rm "#{shared_path}/system/maintenance.html" }
+      on_rollback { run "rm -f #{shared_path}/system/maintenance.html" }
 
       require 'erb'
       deadline, reason, explanation = ENV['UNTIL'], ENV['REASON'], ENV['EXPLANATION']
