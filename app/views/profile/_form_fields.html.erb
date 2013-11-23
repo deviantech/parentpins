@@ -5,7 +5,7 @@
 
 <div class="field">
   <p>How many kids do you have?</p>
-  <%= f.text_field :kids, :placeholder => "1, 2, more?", :type => 'number' %>
+  <%= f.text_field :kids, :placeholder => "1, 2, more?", :type => 'number', :min => 0, :max => 24 %>
 </div>
 
 <div class="field checkbox teacher">
