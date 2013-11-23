@@ -113,16 +113,16 @@ if IN_VAGRANT
     end
   end
   
-  before  "deploy:migrations", "app:note_migrating"
+  before  "deploy:migrate", "app:note_migrating"
   after   'deploy:restart', 'app:gogo_gadget_unicorn'
   
-  before  "deploy:migrations", "deploy:web:disable"
+  before  "deploy:migrate", "deploy:web:disable"
   after   "app:gogo_gadget_unicorn", "deploy:web:enable"
 
   after   'deploy:start', 'unicorn:restart'
 else
-  before  "deploy:migrations", "deploy:web:disable"
-  after   "deploy:migrations", "deploy:web:enable"
+  before  "deploy:migrate", "deploy:web:disable"
+  after   "deploy:migrate", "deploy:web:enable"
   
   # ===================================
   # = Currently deployed on passenger =
