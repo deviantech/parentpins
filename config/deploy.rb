@@ -109,7 +109,12 @@ if IN_VAGRANT
       # after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
       # after 'deploy:restart', 'unicorn:restart'   # app preloaded
       # after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
-      @migrating ? (unicorn.stop && unicorn.start) : unicorn.duplicate
+      if @migrating 
+        unicorn.stop
+        unicorn.start
+      else
+        unicorn.duplicate
+      end
     end
   end
   
