@@ -1,21 +1,25 @@
 module ApplicationHelper
-  
+      
   def pin_image_preloader(pin)
+    def styleFor(h, color)
+      "width: 222px; height: #{h}px; background: ##{color}; color: ##{contrast_color_for(color)}"
+    end  
+    
     inlineBase = "width: 222px;"
+    color         = pin.image_average_color || '555555'
+    scaledHeight  = pin.image? ? pin.image_v222_width : 294
+            
     preload = if pin.image_average_color && pin.image_v222_height && pin.image_v222_width
       
       # For images less then 222px wide, scale up
-      h = (222 / pin.image_v222_width.to_f) * pin.image_v222_height
-      inline = "#{inlineBase} height: #{h}px; background: ##{pin.image_average_color}; color: ##{contrast_color_for(pin.image_average_color)}"
-      
-      content_tag(:div, :class => 'img-preload-holder', :style => inline) do
+      scaledHeight = (222 / pin.image_v222_width.to_f) * pin.image_v222_height
+      content_tag(:div, :class => 'img-preload-holder', :style => styleFor(scaledHeight, color)) do
         content_tag(:span, pin.domain)
       end
     end
     
     # Prefill default image placeholder sizes too
-    imgStyle = pin.image? ? inlineBase : "#{inlineBase} height: 294px"
-    image_tag(pin.image.v222.url, :class => 'pin_image', :alt => '', :style => imgStyle) + preload
+    image_tag(pin.image.v222.url, :class => 'pin_image', :alt => '', :style => styleFor(scaledHeight, color)) + preload
   end
 
   # Choose white or black for contrasting txt.
