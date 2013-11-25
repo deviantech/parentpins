@@ -1,6 +1,6 @@
 class FeedbacksController < ApplicationController
-  before_filter :authenticate_user!
-  before_filter :make_feedback
+  before_action :authenticate_user!
+  before_action :make_feedback
   
   def new
   end

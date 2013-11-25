@@ -1,8 +1,8 @@
 class ProfileController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_generic, :generic_crop]
-  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_generic, :generic_crop]
-  before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
-  before_filter :set_filters,         :only => [:pins, :likes, :activity]
+  before_action :authenticate_user!,  :only => [:edit, :update, :activity, :remove_generic, :generic_crop]
+  before_action :get_profile,         :except => [:got_bookmarklet, :remove_generic, :generic_crop]
+  before_action :get_profile_owner,   :only => [:edit, :update, :activity]
+  before_action :set_filters,         :only => [:pins, :likes, :activity]
   
   def show
     flash.keep

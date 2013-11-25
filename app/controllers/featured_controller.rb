@@ -1,6 +1,6 @@
 class FeaturedController < ApplicationController
-  before_filter :authenticate_user!,    :only => [:create, :destroy]
-  before_filter :ensure_profile_owner,  :only => [:set_pin]
+  before_action :authenticate_user!,    :only => [:create, :destroy]
+  before_action :ensure_profile_owner,  :only => [:set_pin]
   
   def index
   end

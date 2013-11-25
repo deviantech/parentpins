@@ -1,5 +1,5 @@
 class SearchController < ApplicationController
-  before_filter :set_kind_from_params
+  before_action :set_kind_from_params
 
   def redirect_by_kind
     redirect_to "/search/#{@kind}?q=#{params[:q]}"
