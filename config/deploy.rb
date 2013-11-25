@@ -119,11 +119,11 @@ if IN_VAGRANT
   end
   
   before  "deploy:migrate", "app:note_migrating"
-  after   'deploy:restart', 'app:gogo_gadget_unicorn'
-  
   before  "deploy:migrate", "deploy:web:disable"
-  after   "app:gogo_gadget_unicorn", "deploy:web:enable"
+  after   'deploy:restart', 'app:gogo_gadget_unicorn'
+  after   "app:gogo_gadget_unicorn", "deploy:web:enable"  
 
+  # Handle deploy:cold
   after   'deploy:start', 'unicorn:restart'
 else
   before  "deploy:migrate", "deploy:web:disable"
