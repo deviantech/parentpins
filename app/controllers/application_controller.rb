@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   # TODO: remove this line once done testing media responsiveness
   before_filter :allow_external_iframing
+
   
   private
   

@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '4.0.1'
+# Note: under rails 4.0.1, Comment.new, User.new, etc. raises a "undefined method `[]' for nil:NilClass" error
+gem 'rails', '4.0.0'
 
 gem 'mysql2'
 gem 'redis'
@@ -29,13 +30,13 @@ gem 'capybara-user_agent', :require => false
 gem 'protected_attributes'
 
 gem 'whenever', :require => false
-gem 'awesome_print', :require => 'ap'
 gem 'unicorn', :require => false
 gem 'subexec' # Used to manually run minimagick commands in store_average_color
 gem 'rack-cors', :require => 'rack/cors'
 
 group :development do
   gem 'thin'
+  gem 'pry-rails'
   gem 'git'
   gem 'capistrano', '~> 2.15.5', :require => false
   gem 'capistrano-unicorn', :require => false
