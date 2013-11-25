@@ -123,6 +123,7 @@ if IN_VAGRANT
 
   # Handle deploy:cold
   after   'deploy:start', 'unicorn:restart'
+  after   'deploy:start', 'deploy:web:enable'
 else
   before  "deploy:migrate", "deploy:web:disable"
   after   "deploy:migrate", "deploy:web:enable"

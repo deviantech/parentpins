@@ -23,7 +23,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   # end
   
   # Choose what kind of storage to use for this uploader:
-  storage Rails.env.production? ? :fog : :file
+  storage Rails.env.production? || Rails.env.staging? ? :fog : :file
   
   
   # Override the directory where uploaded files will be stored.
