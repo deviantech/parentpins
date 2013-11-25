@@ -106,14 +106,12 @@ if IN_VAGRANT
     
     desc 'Select the appropriate unicorn restart strategy (rolling unless migrating)'
     task "gogo_gadget_unicorn", :roles => :app, :except => {:no_release => true} do
-      # after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
-      # after 'deploy:restart', 'unicorn:restart'   # app preloaded
-      # after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
-      if @migrating 
+      if @migrating
         unicorn.stop
+        sleep 3 # Wait for PID files to be written properly
         unicorn.start
       else
-        unicorn.duplicate
+        unicorn.duplicate # before_fork hook implemented (zero downtime deployments)
       end
     end
   end
