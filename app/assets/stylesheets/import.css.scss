@@ -826,8 +826,13 @@ body.importing.step_1 {
             }
           }
           label {
-            padding:12px 6px 6px;
-            display:block; }
+            padding:12px 6px 0px;
+            display:block;
+            input[type=checkbox] {
+              position: relative;
+              bottom: 3px;
+            }
+          }
         }
         ul.importing_pins {
           display: block;
@@ -888,6 +893,13 @@ body.importing.step_1 {
                 label {
                   margin-right:12px;
                 }
+                label.radio_opt {
+                  display: inline-block;
+                  input[type=radio] {
+                    position: relative;
+                    bottom: 4px;
+                  }
+                }
                 input[type=text], textarea {
                   border:1px solid #ddd;
                   font-size:13px;
@@ -914,7 +926,13 @@ body.importing.step_1 {
                 line-height: 18px;
                 margin: 6px 0 0 12px;
               }
-              .mass_edit {text-align:right;}
+              .mass_edit {
+                text-align:right;
+                input[type=checkbox] {
+                  position: relative;
+                  bottom: 3px;
+                }
+              }
             }
             &.complete {
               background: #EFE;
