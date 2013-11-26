@@ -92,3 +92,4 @@ gem 'aws-ses', '~> 0.5.0', :require => 'aws/ses'
 
 # No longer needed on modern Ruby
 gem 'system_timer', :platform => :ruby_18
+gem 'aws-sdk', :require => false # Only used in rake tasks manually

@@ -19,3 +19,4 @@ factory_girl
 .DS_Store
 public/uploads
 public/assets
+nohup.out

@@ -61,6 +61,10 @@ GEM
     addressable (2.3.5)
     arel (4.0.1)
     atomic (1.1.14)
+    aws-sdk (1.28.1)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
+      uuidtools (~> 2.1)
     aws-ses (0.5.0)
       builder
       mail (> 2.2.5)
@@ -310,6 +314,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-sdk
   aws-ses (~> 0.5.0)
   capistrano (~> 2.15.5)
   capistrano-conditional!
