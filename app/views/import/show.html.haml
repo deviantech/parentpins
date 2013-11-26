@@ -1,4 +1,4 @@
-= render 'progress', :step => 5, :title => params[:just_completed] ? "You've just imported #{pluralize @pins.length, 'pin', 'pins'}!" : "You imported #{pluralize @pins.length, 'pin', 'pins'} on #{@import.created_at.strftime("%B %e, %Y")}"
+- @profile_header = "You imported #{pluralize @pins.length, 'pin', 'pins'} on #{@import.created_at.strftime("%B %e, %Y")}"
 
 = render 'pins/pins'
 
