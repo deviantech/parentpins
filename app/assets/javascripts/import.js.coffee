@@ -2,7 +2,6 @@
 //= require jquery.ui.draggable
 //= require jquery.ui.droppable
 //= require contrib/jquery.ui.touch-punch
-//= require contrib/bootstrap
 //= require lib/jquery.helpers
 //= require lib/import/shared
 //= require lib/import/step_1
