@@ -27,8 +27,7 @@ $(document).on 'keyup', (e) ->
 # Add ajax target to body
 $ajax = $('#ajax-modal-target').length || $('<div id="ajax-modal-target"></div>').appendTo($('body'))
 
-# Catch clicks on ajax links
-$(document).on 'click', 'a.ajax', (e) ->
+$(document).on 'click touchend', 'a.ajax', (e) ->
   if e.metaKey || e.ctrlKey
     return
 

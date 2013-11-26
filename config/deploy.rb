@@ -29,7 +29,7 @@ require "whenever/capistrano"
 
 # Stages
 set :stages, %w(staging production)
-set :default_stage, "production"
+set :default_stage, IN_VAGRANT ? 'staging' : 'production'
 
 # SCM info
 set :scm, :git

@@ -35,12 +35,14 @@ module ApplicationHelper
   end
 
   def meta_description
-    return nil if 'import' == params[:controller]
-    
-    if @pin         then "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
-    elsif @board    then "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
-    elsif @profile  then "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
-    else                 "ParentPins: kid and parenting-related resources curated from around the web by parents and educators like you."
+    if @pin && !@pin.new_record?
+      "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
+    elsif @board && !@board.new_record?
+      "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
+    elsif @profile && !@profile.new_record?
+      "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
+    else
+      "ParentPins: kid and parenting-related resources curated from around the web by parents and educators like you."
     end
   end
 
@@ -50,7 +52,7 @@ module ApplicationHelper
     tags << meta_tag( 'og:site_name',   'ParentPins')
     tags << meta_tag( 'twitter:site',   '@ParentPins')
     
-    title, desc, url, img = if @pin
+    title, desc, url, img = if @pin && !@pin.new_record?
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
       desc  = @pin.description || ''
       url   = pin_url(@pin)
@@ -74,7 +76,7 @@ module ApplicationHelper
 
       
       [title, desc, url, img]
-    elsif @board
+    elsif @board && !@board.new_record?
       title = "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
       desc  = @board.description || ''
       url   = profile_board_url(@board.user, @board)
@@ -87,7 +89,7 @@ module ApplicationHelper
       end
       
       [title, desc, url, img]
-    elsif @profile
+    elsif @profile && !@profile.new_record?
       title = "#{@profile.name}'s ParentPins Profile"
       url   = profile_boards_url(@profile)
       img   = absolute_url @profile.avatar.main.url
