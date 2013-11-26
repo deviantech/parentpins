@@ -35,6 +35,8 @@ module ApplicationHelper
   end
 
   def meta_description
+    return nil if 'import' == params[:controller]
+    
     if @pin         then "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
     elsif @board    then "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
     elsif @profile  then "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
