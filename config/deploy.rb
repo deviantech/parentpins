@@ -11,7 +11,7 @@ IN_VAGRANT = ENV['VAGRANT']
 if IN_VAGRANT
   require 'capistrano-unicorn'
   set :application, "pins"
-  set :site_ip, '33.33.33.10'
+  set :site_ip, 'staging.parentpins.com'
   set :default_environment, {
     'PATH' => "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
   }

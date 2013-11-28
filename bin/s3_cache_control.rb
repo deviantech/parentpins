@@ -25,6 +25,6 @@ __END__
 
 # EXPORT AWS KEYS
 source ~/.ec2/parentpins/set-aws
-ruby bin/s3_cache_control.rb parentpins
+nohup ruby bin/s3_cache_control.rb parentpins &
 
 # started run at 1:23
