@@ -36,6 +36,8 @@ gem 'rack-cors', :require => 'rack/cors'
 
 group :development do
   gem 'thin'
+  gem 'ruby-debug', :platform => :ruby_18
+  gem 'debugger', :platform => [:ruby_19, :ruby_20]
   gem 'pry-rails'
   gem 'git'
   gem 'capistrano', '~> 2.15.5', :require => false
@@ -61,9 +63,6 @@ gem 'roadie'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
-
-gem 'ruby-debug', :platform => :ruby_18
-gem 'debugger', :platform => [:ruby_19, :ruby_20]
 
 gem 'haml'
 gem 'rails_autolink'
