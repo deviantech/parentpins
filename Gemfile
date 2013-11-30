@@ -80,6 +80,7 @@ gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install 
 gem 'jcrop-rails-v2', "~> 0.9.12.2"
 
 gem 'fog', "~> 1.18.0"
+gem 'unf' # Optional dependency of fog, requiring gets rid of a warning in the logs
 
 gem 'friendly_id', '~> 5.0.0'
 gem 'aws-ses', '~> 0.5.0', :require => 'aws/ses'
