@@ -42,7 +42,6 @@ group :development do
   gem 'git'
   gem 'capistrano', '~> 2.15.5', :require => false
   gem 'capistrano-unicorn', :require => false
-  gem 'rvm-capistrano', :require => false
   gem 'capistrano-ext', :require => false
   gem 'capistrano_colors', :require => false
   gem 'capistrano-conditional', :git => 'git://github.com/deviantech/capistrano-conditional.git', :require => false
