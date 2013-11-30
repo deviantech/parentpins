@@ -21,5 +21,15 @@ class UserMailer < BaseMailer
       mail(:to => @user.email, :subject => "[ParentPins] #{@comment.user.name} commented on your #{@what}")
     end
   end
+
+  def followed(uid, follower_id, board_id = nil)
+    @user = User.find(uid)
+    @follower = User.find(follower_id)
+    @board = board_id ? @user.boards.find(board_id) : nil
+
+    if @user.email_on_new_follower? && @user != @follower
+      mail(:to => @user.email, :subject => "[ParentPins] You have a new follower")
+    end
+  end
   
 end

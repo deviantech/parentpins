@@ -1,4 +1,4 @@
-<h1 class="h1">You're In with the Pins</h1>
-<p><strong>Welcome <%= @resource.name %>!</strong></p>
+<% @headline = "You're In with the Pins" %>
+
 <p>Please confirm your account email through the link below:</p>
 <%= link_to 'Confirm my account', confirmation_url(@resource, :confirmation_token => @token), :class => "button" %>

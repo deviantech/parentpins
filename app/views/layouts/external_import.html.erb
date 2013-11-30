@@ -22,8 +22,7 @@
     <![endif]-->
     <div class="importing"><%= content_for?(:content) ? yield(:content) : yield %></div>
     <div class="clearfix"></div>
-    <%# Note: application.js loads masonry, which throws errors even before called if loaded in iframe. Until that's fixed (new version?) loading jquery separately instead %>
-    <%= javascript_include_tag false ? 'application' : 'jquery' %>
+    <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag "import.js" %>
     <%= yield :footer_js %>
 </body>

@@ -22,7 +22,7 @@ class BaseUploader < CarrierWave::Uploader::Base
   # end
   
   # Choose what kind of storage to use for this uploader:
-  storage Rails.env.production? ? :fog : :file
+  storage Rails.env.production? || Rails.env.staging? ? :fog : :file
   
   
   # Override the directory where uploaded files will be stored.
@@ -35,6 +35,12 @@ class BaseUploader < CarrierWave::Uploader::Base
   def default_url
     ActionController::Base.helpers.asset_path("fallback/#{model.class.to_s.underscore}_#{mounted_as}/" + [version_name, "default.jpg"].compact.join('_'))
   end
+
+  # Only use HTTPS for remote image assets if the current page has been requested with HTTPS as well
+  def url_with_conditional_ssl(*args)
+    url_without_conditional_ssl(*args).sub(/\Ahttps?:/, '')
+  end
+  alias_method_chain :url, :conditional_ssl
   
   # With this defined, start getting v222_v222_FILENAME names
   # def filename

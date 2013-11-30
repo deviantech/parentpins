@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+# Note: under rails 4.0.1, Comment.new, User.new, etc. raises a "undefined method `[]' for nil:NilClass" error
 gem 'rails', '4.0.0'
 
 gem 'mysql2'
@@ -29,16 +30,18 @@ gem 'capybara-user_agent', :require => false
 gem 'protected_attributes'
 
 gem 'whenever', :require => false
-gem 'awesome_print', :require => 'ap'
 gem 'unicorn', :require => false
 gem 'subexec' # Used to manually run minimagick commands in store_average_color
-  
+gem 'rack-cors', :require => 'rack/cors'
+
 group :development do
   gem 'thin'
+  gem 'ruby-debug', :platform => :ruby_18
+  gem 'debugger', :platform => [:ruby_19, :ruby_20]
+  gem 'pry-rails'
   gem 'git'
   gem 'capistrano', '~> 2.15.5', :require => false
   gem 'capistrano-unicorn', :require => false
-  gem 'rvm-capistrano', :require => false
   gem 'capistrano-ext', :require => false
   gem 'capistrano_colors', :require => false
   gem 'capistrano-conditional', :git => 'git://github.com/deviantech/capistrano-conditional.git', :require => false
@@ -60,9 +63,6 @@ gem 'roadie'
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
-gem 'ruby-debug', :platform => :ruby_18
-gem 'debugger', :platform => [:ruby_19, :ruby_20]
-
 gem 'haml'
 gem 'rails_autolink'
 
@@ -79,10 +79,8 @@ gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
 gem 'jcrop-rails-v2', "~> 0.9.12.2"
 
-# TODO: back to normal non-git usage after gem is updated. Currently (Oct 21, 2013) avoiding https://github.com/fog/fog/issues/2284
-gem 'fog', :git => 'https://github.com/fog/fog.git'
-
-
+gem 'fog', "~> 1.18.0"
+gem 'unf' # Optional dependency of fog, requiring gets rid of a warning in the logs
 
 gem 'friendly_id', '~> 5.0.0'
 gem 'aws-ses', '~> 0.5.0', :require => 'aws/ses'
@@ -91,3 +89,4 @@ gem 'aws-ses', '~> 0.5.0', :require => 'aws/ses'
 
 # No longer needed on modern Ruby
 gem 'system_timer', :platform => :ruby_18
+gem 'aws-sdk', :require => false # Only used in rake tasks manually

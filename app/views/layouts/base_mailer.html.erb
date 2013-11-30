@@ -42,6 +42,12 @@
                                             <tr>
                                               <td valign="top" class="bodyContent">
                                                 <div mc:edit="std_content00">
+                                                  <% if @headline %>
+                                                    <h1 class="h1"><%= @headline %></h1>
+                                                  <% end %>
+                                                  <% if @user || (@resource && @resource.respond_to?(:name)) %>
+                                                    <p>Hello <%= @user ? @user.name : @resource.name %>!</p>
+                                                  <% end %>
                                 	                <%= yield %>
                                                   <p>
                                                     If you have any questions, 

@@ -34,6 +34,14 @@ if ALLOW_MAIL_PREVIEW
       UserMailer.comment_received( c.id )
     end
   
+    def new_follower_for_user
+      UserMailer.followed(User.first.id, User.last.id)
+    end
+    
+    def new_follower_for_board
+      UserMailer.followed(User.first.id, User.last.id, User.first.boards.first.id)
+    end
+  
   end
 
 end

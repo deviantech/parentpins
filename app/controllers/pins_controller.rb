@@ -1,8 +1,8 @@
 class PinsController < ApplicationController
-  before_filter :authenticate_user!,      :except => [:index, :show]
-  before_filter :find_current_users_pin,  :only => [:edit, :update, :destroy, :success]
-  before_filter :find_any_pin,            :only => [:like, :unlike]
-  before_filter :set_filters,             :only => [:index]
+  before_action :authenticate_user!,      :except => [:index, :show]
+  before_action :find_current_users_pin,  :only => [:edit, :update, :destroy, :success]
+  before_action :find_any_pin,            :only => [:like, :unlike]
+  before_action :set_filters,             :only => [:index]
   respond_to :html, :js
   
   def index

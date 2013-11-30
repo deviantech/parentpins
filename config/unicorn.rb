@@ -1,14 +1,13 @@
-@env          = ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'production'
+@env          = (defined?(rails_env) && rails_env) || ENV['RAILS_ENV'] || ENV['RACK_ENV'] || 'production'
 @app_root     = "/var/www/pins/#{@env}"
 @app_current  = "#{@app_root}/current"
 @app_shared   = "#{@app_root}/shared"
-
 # See http://unicorn.bogomips.org/Unicorn/Configurator.html for complete
 # documentation.
 
 # Use at least one worker per core if you're on a dedicated server,
 # more will usually help for _short_ waits on databases/caches.
-worker_processes 2
+worker_processes @env == 'production' ? 2 : 1
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 60
@@ -33,8 +32,8 @@ working_directory @app_current # available in 0.94.0+
 # feel free to point this anywhere accessible on the filesystem
 # pid "#{@app_shared}/pids/unicorn.pid"
 
-listen "/var/www/pins/staging/shared/sockets/unicorn.sock", :backlog => 2048
-pid "/var/www/pins/staging/shared/pids/unicorn.pid"
+listen "#{@app_shared}/sockets/unicorn.sock", :backlog => 2048
+pid "#{@app_shared}/pids/unicorn.pid"
 
 # By default, the Unicorn logger will write to stderr.
 # Additionally, some applications/frameworks log to stderr or stdout,
@@ -42,11 +41,10 @@ pid "/var/www/pins/staging/shared/pids/unicorn.pid"
 stderr_path "#{@app_shared}/log/unicorn.stderr.log"
 stdout_path "#{@app_shared}/log/unicorn.stdout.log"
 
-# combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
+# combine Ruby 2.0.0 or REE with "preload_app true" for memory savings
 # http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
 preload_app true
-GC.respond_to?(:copy_on_write_friendly=) and
-  GC.copy_on_write_friendly = true
+GC.respond_to?(:copy_on_write_friendly=) and GC.copy_on_write_friendly = true
 
 # Enable this flag to have unicorn test client connections by writing the
 # beginning of the HTTP headers before calling the application.  This

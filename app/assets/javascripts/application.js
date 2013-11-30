@@ -20,6 +20,8 @@
 //= require contrib/jquery-sortable
 //= require contrib/jquery-naturalwidth-min
 //= require lib/helpers
+//= require lib/jquery.helpers
+//= require lib/ads
 //= require lib/flash
 //= require lib/modal
 //= require lib/scrollToTop

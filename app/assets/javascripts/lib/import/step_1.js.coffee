@@ -237,11 +237,23 @@ updateBoardPendingPinsCounters = () ->
     if allEmpty then firstBoard.addClass('empty') else firstBoard.removeClass('empty')
 
 
+
+
 $(document).ready () ->
   wrapper = $('body.importing.step_1')
   if wrapper.length
     sendMessage("step1:loaded")
     updateBoardPendingPinsCounters()
+    
+    # Force window repaint on load -- pinterest section was appearing blank randomly in chrome
+    redraw = () ->
+      $('#pinterest_section h2').redraw()
+
+    for delay in [500..5000] by 500
+      setTimeout(redraw, delay)
+    
+    
+    
 
     initial = $('.importing_pins.previously_imported').data('initial')
     if typeof(initial) == 'string' then initial = $.parseJSON(raw)

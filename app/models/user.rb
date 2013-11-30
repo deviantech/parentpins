@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   HIGHEST_TEST_USER_ID = 19
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :remove_cover_image, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h, :remove_avatar, :avatar_x, :avatar_y, :avatar_w, :avatar_h, :email_on_comment_received
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :remove_cover_image, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h, :remove_avatar, :avatar_x, :avatar_y, :avatar_w, :avatar_h, :email_on_comment_received, :email_on_new_follower
   
   attr_accessor :cover_image_was_changed, :avatar_was_changed
   
@@ -254,22 +254,25 @@ class User < ActiveRecord::Base
     
     case obj
     when User then follow_user(obj)
-    when Board then follow_board(obj)
+    when Board then follow_board(obj, true)
     else nil
     end
   end
     
   def follow_user(obj)
-    Rails.redis.sadd(redis_name__following_users, obj.id)
-    Rails.redis.sadd(obj.redis_name__followed_by,  self.id)
+    Rails.redis.sadd(redis_name__following_users,   obj.id)
+    Rails.redis.sadd(obj.redis_name__followed_by,   self.id)
     obj.boards.each do |board|
       follow_board(board)
     end
+    UserMailer.followed(obj.id, self.id).deliver
   end
   
-  def follow_board(obj)
-    Rails.redis.sadd(redis_name__following_boards,  obj.id)
+  def follow_board(obj, only_board = nil)
+    Rails.redis.sadd(redis_name__following_boards,    obj.id)
     Rails.redis.sadd(obj.redis_name__followed_by,     self.id)
+    UserMailer.followed(obj.user_id, self.id, obj.id).deliver if only_board
+    true
   end
 
   def unfollow(obj)

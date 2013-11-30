@@ -1,26 +1,15 @@
 # TODO: http://www.capistranorb.com/documentation/upgrading/
-
 require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 require "bundler/capistrano"
 # require 'thinking_sphinx/deploy/capistrano'
+require 'capistrano-unicorn'
 
-
-IN_VAGRANT = ENV['VAGRANT']
-
-if IN_VAGRANT
-  require 'capistrano-unicorn'
-  set :application, "pins"
-  set :site_ip, '33.33.33.10'
-  set :default_environment, {
-    'PATH' => "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
-  }
-else
-  require "rvm/capistrano"
-  set :application, "parentpins"
-  set :rvm_type, :system
-  set :site_ip, '54.204.12.77'
-end
+set :application, "pins"
+set :site_ip, 'parentpins.com'
+set :default_environment, {
+  'PATH' => "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
+}
 
 set :whenever_command,     "bundle exec whenever"
 set :whenever_environment, defer { stage }
@@ -29,7 +18,7 @@ require "whenever/capistrano"
 
 # Stages
 set :stages, %w(staging production)
-set :default_stage, "production"
+set :default_stage, 'production'
 
 # SCM info
 set :scm, :git
@@ -76,47 +65,52 @@ end
 # end
 
 
-# TODO: something like this?
-# callback = callbacks[:after].find{|c| c.source == "deploy:assets:precompile" }
-# callbacks[:after].delete(callback)
-# after 'deploy:update_code', 'deploy:assets:precompile' unless fetch(:skip_assets, false)
-
-# TODO: something like this...
-# namespace :deploy do
-#   desc "Deploy and migrate the database - this will cause downtime during migrations"
-#   task :migrations do
-#     transaction do
-#       update_code
-#       web:disable
-#       migrate
-#       web:enable
-#     end
-#     restart
-#   end
-# end
-
-
-
-# ===================================
-# = Currently deployed on passenger =
-# ===================================
-if IN_VAGRANT
-  # after 'deploy:restart', 'unicorn:reload'    # app IS NOT preloaded
-  # after 'deploy:restart', 'unicorn:restart'   # app preloaded
-  after 'deploy:restart', 'unicorn:duplicate' # before_fork hook implemented (zero downtime deployments)
-else
+ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['/assets', 'Gemfile.lock'] do
+  # TODO: test this. If ConditionalDeploy doesn't work this way yet, add it (or at least ability to remove specified task from before/after callback chain)
   namespace :deploy do
-    desc "Restarting passenger with restart.txt"
-    task :restart, :roles => :app, :except => { :no_release => true } do
-      run "touch #{current_path}/tmp/restart.txt"
+    namespace :assets do
+      task :precompile do
+        logger.info "Skipping asset precompilation"
+      end
+      task :update_asset_mtimes do
+        # nop
+      end
+      task :clean_expired do
+        # nop
+      end
     end
+  end
+  
+end
 
-    [:start, :stop].each do |t|
-      desc "#{t} task is a no-op with mod_rails"
-      task t, :roles => :app do ; end
+
+
+namespace :app do
+  desc "Note that we're migrating"
+  task "note_migrating", :roles => :db do
+    @migrating = true
+  end
+  
+  desc 'Select the appropriate unicorn restart strategy (rolling unless migrating)'
+  task "gogo_gadget_unicorn", :roles => :app, :except => {:no_release => true} do
+    if @migrating
+      unicorn.stop
+      sleep 3 # Wait for PID files to be written properly
+      unicorn.start
+    else
+      unicorn.duplicate # before_fork hook implemented (zero downtime deployments)
     end
   end
 end
+
+before  "deploy:migrate", "app:note_migrating"
+before  "deploy:migrate", "deploy:web:disable"
+after   'deploy:restart', 'app:gogo_gadget_unicorn'
+after   "app:gogo_gadget_unicorn", "deploy:web:enable"  
+
+# Handle deploy:cold
+after   'deploy:start', 'unicorn:restart'
+after   'deploy:start', 'deploy:web:enable'
 
 
 # =====================================
@@ -125,7 +119,7 @@ end
 namespace :deploy do
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
-    run ". /etc/profile.d/rvm.sh && cd #{current_path} && whenever --update-crontab #{application}_#{stage} --set environment=#{rails_env}"
+    run "cd #{current_path} && bundle exec whenever --update-crontab #{application}_#{stage} --set environment=#{rails_env}"
   end
 end
 
@@ -138,7 +132,7 @@ namespace :deploy do
       # invoke with
       # UNTIL="16:00 MST" REASON="a database upgrade" cap deploy:web:disable
 
-      on_rollback { rm "#{shared_path}/system/maintenance.html" }
+      on_rollback { run "rm -f #{shared_path}/system/maintenance.html" }
 
       require 'erb'
       deadline, reason, explanation = ENV['UNTIL'], ENV['REASON'], ENV['EXPLANATION']

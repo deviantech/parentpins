@@ -6,7 +6,9 @@ require "capybara"
 require "capybara/dsl"
 require "capybara-webkit"
 require "capybara/user_agent"
-require 'debugger'
+
+# Only in development
+# require 'debugger'
 
 
 

@@ -1,6 +1,6 @@
 class FeaturedController < ApplicationController
-  before_filter :authenticate_user!,    :only => [:create, :destroy]
-  before_filter :ensure_profile_owner,  :only => [:set_pin]
+  before_action :authenticate_user!,    :only => [:create, :destroy]
+  before_action :ensure_profile_owner,  :only => [:set_pin]
   
   def index
   end
@@ -23,8 +23,7 @@ class FeaturedController < ApplicationController
   
   def set_pin
     @profile.update_attribute(:featured_pin_id, @profile.pins.find(params[:id]).id)
-    flash[:success] = "Updated featured pin."
-    redirect_to edit_profile_path(@profile)
+    redirect_to edit_profile_path(@profile), :success => "Updated featured pin."
   end
   
   protected
@@ -32,8 +31,7 @@ class FeaturedController < ApplicationController
   def ensure_profile_owner
     @profile = User.find(params[:profile_id])
     unless user_signed_in? && @profile == current_user
-      flash[:error] = "You don't own this profile."
-      redirect_to(profile_path(@profile)) and return
+      redirect_to(profile_path(@profile), :error => "You don't own this profile.") and return
     end
   end
   

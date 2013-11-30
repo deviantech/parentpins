@@ -15,8 +15,7 @@ class FrontController < ApplicationController
       redirect_to from
     else
       session[:user_return_to] = from
-      flash[:error] = "Please log in to continue."
-      redirect_to new_user_session_path
+      redirect_to new_user_session_path, :error => "Please log in to continue."
     end
   end
   

@@ -94,9 +94,14 @@
     
     <div class="section stacked">
       <h3>Email Settings</h3>
+      
       <div class="field field-full checkbox">
         <%= f.check_box :email_on_comment_received %>
         <%= f.label :email_on_comment_received, 'Email me when someone comments on a pin or board' %>
+      </div>
+      <div class="field field-full checkbox">
+        <%= f.check_box :email_on_new_follower %>
+        <%= f.label :email_on_new_follower, 'Email me when someone starts follows me' %>
       </div>
     </div>
     

@@ -1,6 +1,6 @@
 class PopupController < ApplicationController
   protect_from_forgery :except => [:pin]
-  before_filter :clean_params, :only => [:pin]
+  before_action :clean_params, :only => [:pin]
   
   def pin
     unless user_signed_in?

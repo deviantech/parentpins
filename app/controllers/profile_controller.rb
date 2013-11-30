@@ -1,8 +1,8 @@
 class ProfileController < ApplicationController
-  before_filter :authenticate_user!,  :only => [:edit, :update, :activity, :remove_generic, :generic_crop]
-  before_filter :get_profile,         :except => [:got_bookmarklet, :remove_generic, :generic_crop]
-  before_filter :get_profile_owner,   :only => [:edit, :update, :activity]
-  before_filter :set_filters,         :only => [:pins, :likes, :activity]
+  before_action :authenticate_user!,  :only => [:edit, :update, :activity, :remove_generic, :generic_crop]
+  before_action :get_profile,         :except => [:got_bookmarklet, :remove_generic, :generic_crop]
+  before_action :get_profile_owner,   :only => [:edit, :update, :activity]
+  before_action :set_filters,         :only => [:pins, :likes, :activity]
   
   def show
     flash.keep
@@ -37,8 +37,9 @@ class ProfileController < ApplicationController
   def update
     if params[:from] == 'step_2' ? @profile.update_attributes(params[:user]) : @profile.update_maybe_with_password(params[:user])
       sign_in(@profile, :bypass => true)
-      flash[:success] = params[:from] == 'step_2' ? "We've started you out automatically following two of our featured users. Their pins will appear here on your Activity tab." : "Your profile changes have been saved."
-      redirect_to @profile.cover_image_was_changed ? crop_cover_image_path : (@profile.avatar_was_changed ? crop_avatar_path : activity_profile_path(@profile))
+      msg = params[:from] == 'step_2' ? "We've started you out automatically following two of our featured users. Their pins will appear here on your Activity tab." : "Your profile changes have been saved."
+      new_path = @profile.cover_image_was_changed ? crop_cover_image_path : (@profile.avatar_was_changed ? crop_avatar_path : activity_profile_path(@profile))
+      redirect_to new_path, :success => msg
     else
       render 'edit'
     end
@@ -49,8 +50,7 @@ class ProfileController < ApplicationController
     get_profile_counters
 
     unless current_user.send("#{params[:which]}?")
-      flash[:error] = "You must upload an image before trying to crop it."
-      redirect_to edit_profile_path(current_user) and return
+      redirect_to(edit_profile_path(current_user), :error => "You must upload an image before trying to crop it.") and return
     end
 
     @dimensions = case params[:which]
@@ -96,14 +96,12 @@ class ProfileController < ApplicationController
     @profile ||= User.find(params[:id])
     get_profile_counters
   rescue ActiveRecord::RecordNotFound => e
-    flash[:error] = "Unable to find the specified profile."
-    redirect_to(root_path)
+    redirect_to root_path, :error => "Unable to find the specified profile."
   end
   
   def get_profile_owner
     unless @profile == current_user
-      flash[:error] = "You don't own this profile."
-      redirect_to(profile_path(@profile)) and return
+      redirect_to(profile_path(@profile), :error => "You don't own this profile.") and return
     end
   end
 

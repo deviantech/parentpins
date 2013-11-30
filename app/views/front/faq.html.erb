@@ -40,9 +40,9 @@
         <p>Pins are coded with one of seven age groups, a pin type (idea, product, or article), and one of many kid-specific categories.  This advanced filtering system helps users more effectively find relevant content.</p>
       </dd>
 
-      <dt id="bookmarklet">How do I add pin things?</dt>
+      <dt id="bookmarklet">How do I pin things?</dt>
       <dd>
-        <p>The ParentPin Bookmarklet allows you to pin from any site on the web.  To add the bookmarklet to your browser, simply drag the following link to your bookmarks/favorites bar: <%= bookmarklet_link %></p>
+        <p>The ParentPin Bookmarklet allows you to pin from any site on the web.  It's easy to add the bookmarklet to your browser -- just go to <%= link_to 'this page', get_bookmarklet_path %> and follow the simple instructions.</p>
       </dd>
 
 
@@ -51,13 +51,13 @@
         <p>
           Fortunately, yes! To import pins from Pinterest, follow these simple steps:
           <ul>
-            <li>1. Add the <a href="#bookmarklet" class="internal_nav">ParentPins Bookmarklet</a> to your bookmarks bar. </li>
+            <li>1. Add the <%= link_to 'ParentPins Bookmarklet', get_bookmarklet_path %> to your bookmarks bar. </li>
             <li>2. Log into your Pinterest account.  </li>
             <li>3. Click the ParentPins bookmarklet while you are on your Pinterest page.</li>
           </ul>
           This will start the importing process.
         </p>
-        <p>As part of the import you'll have a chance to create new ParentPin boards as you go.  You'll also get to specify category, pin type, and age group for each of the pins you import.  Depending on how many pins you're importing it might take a few minutes to complete, but we've made the process as quick and painless as possible. 
+        <p>As part of the import you'll have a chance to create new ParentPins boards as you go.  You'll also get to specify category, pin type, and age group for each of the pins you import.  Depending on how many pins you're importing it might take a few minutes to complete, but we've made the process as quick and painless as possible. 
         </p>
       </dd>      
 

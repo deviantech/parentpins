@@ -47,7 +47,8 @@ window.multiDragOpts = {
       $(this).css('opacity', 1.0)
       $('body').css('cursor', 'auto')
   }
-  
+
+
 $(document).ready () ->
   form = $('#import_form')
   $('.import_progress a.previous').on 'click', (e) ->

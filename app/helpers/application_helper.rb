@@ -1,21 +1,25 @@
 module ApplicationHelper
-  
+      
   def pin_image_preloader(pin)
+    def styleFor(h, color)
+      "width: 222px; height: #{h}px; background: ##{color}; color: ##{contrast_color_for(color)}"
+    end  
+    
     inlineBase = "width: 222px;"
+    color         = pin.image_average_color || '555555'
+    scaledHeight  = pin.image? ? pin.image_v222_width : 294
+            
     preload = if pin.image_average_color && pin.image_v222_height && pin.image_v222_width
       
       # For images less then 222px wide, scale up
-      h = (222 / pin.image_v222_width.to_f) * pin.image_v222_height
-      inline = "#{inlineBase} height: #{h}px; background: ##{pin.image_average_color}; color: ##{contrast_color_for(pin.image_average_color)}"
-      
-      content_tag(:div, :class => 'img-preload-holder', :style => inline) do
+      scaledHeight = (222 / pin.image_v222_width.to_f) * pin.image_v222_height
+      content_tag(:div, :class => 'img-preload-holder', :style => styleFor(scaledHeight, color)) do
         content_tag(:span, pin.domain)
       end
     end
     
     # Prefill default image placeholder sizes too
-    imgStyle = pin.image? ? inlineBase : "#{inlineBase} height: 294px"
-    image_tag(pin.image.v222.url, :class => 'pin_image', :alt => '', :style => imgStyle) + preload
+    image_tag(pin.image.v222.url, :class => 'pin_image', :alt => '', :style => styleFor(scaledHeight, color), :height => scaledHeight, :width => 222) + preload
   end
 
   # Choose white or black for contrasting txt.
@@ -31,10 +35,14 @@ module ApplicationHelper
   end
 
   def meta_description
-    if @pin         then "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
-    elsif @board    then "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
-    elsif @profile  then "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
-    else                 "ParentPins: kid and parenting-related resources curated from around the web by parents and educators like you."
+    if @pin && !@pin.new_record?
+      "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
+    elsif @board && !@board.new_record?
+      "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
+    elsif @profile && !@profile.new_record?
+      "#{@profile.name}'s curated collection of kid and parenting-related resources from around the web."
+    else
+      "ParentPins: kid and parenting-related resources curated from around the web by parents and educators like you."
     end
   end
 
@@ -44,7 +52,7 @@ module ApplicationHelper
     tags << meta_tag( 'og:site_name',   'ParentPins')
     tags << meta_tag( 'twitter:site',   '@ParentPins')
     
-    title, desc, url, img = if @pin
+    title, desc, url, img = if @pin && !@pin.new_record?
       title = "#{@pin.user.name}'s pinned #{@pin.kind} on ParentPins (#{@pin.board.category.name} | #{@pin.age_group.name})"
       desc  = @pin.description || ''
       url   = pin_url(@pin)
@@ -68,7 +76,7 @@ module ApplicationHelper
 
       
       [title, desc, url, img]
-    elsif @board
+    elsif @board && !@board.new_record?
       title = "#{@board.user.name}'s ParentPins board: #{@board.name} (#{@board.category.name})"
       desc  = @board.description || ''
       url   = profile_board_url(@board.user, @board)
@@ -81,7 +89,7 @@ module ApplicationHelper
       end
       
       [title, desc, url, img]
-    elsif @profile
+    elsif @profile && !@profile.new_record?
       title = "#{@profile.name}'s ParentPins Profile"
       url   = profile_boards_url(@profile)
       img   = absolute_url @profile.avatar.main.url

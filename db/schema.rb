@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20131118181818) do
+=======
+ActiveRecord::Schema.define(version: 20131122023356) do
+>>>>>>> master
 
   create_table "age_groups", force: true do |t|
     t.string   "name"
@@ -172,6 +176,7 @@ ActiveRecord::Schema.define(version: 20131118181818) do
     t.integer  "avatar_w"
     t.integer  "avatar_h"
     t.boolean  "email_on_comment_received", default: true
+    t.boolean  "email_on_new_follower",     default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

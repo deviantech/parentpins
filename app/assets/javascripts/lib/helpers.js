@@ -120,7 +120,7 @@ function applyTruncationTo(selector, length) {
   });
 }
 
-// http://railsapps.github.com/rails-javascript-include-external.html
+// http://railsapps.github.com/rails-javascript-include-external.html -- like getScript, except checks browser's cache first
 jQuery.externalScript = function(url, options) {
   // allow user to set any option except for dataType, cache, and url
   options = $.extend(options || {}, {

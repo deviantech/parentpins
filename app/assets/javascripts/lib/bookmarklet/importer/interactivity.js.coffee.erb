@@ -25,7 +25,7 @@ class window.ppImporterClasses.Interactivity
   # ==================================================================
   
   # Odd timing issue with loading of bookmarklet SCSS, need to repaint window after step1 loaded
-  toggleWindowRepaint = () ->
+  triggerWindowRepaint = () ->
     body = $('body').first()
     curHeight = body.height()
     body.height(curHeight - 1).height(curHeight)
@@ -48,7 +48,7 @@ class window.ppImporterClasses.Interactivity
     else
       outputDiv.find('#progressDisplay').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
       @bookmarkletClosing()
-    toggleWindowRepaint()
+    triggerWindowRepaint()
 
   bookmarkletClosing: () ->
     $(window).off 'message', @handleAnyPostedMessage
@@ -117,7 +117,7 @@ class window.ppImporterClasses.Interactivity
             if @stepOneFrame && @stepOneFrame[0]
               step1 = @parent.getIframeWindow(@stepOneFrame[0])
               step1.postMessage "imported:#{extra}", '*'
-              toggleWindowRepaint()
+              triggerWindowRepaint()
   
 
 
@@ -136,7 +136,7 @@ class window.ppImporterClasses.Interactivity
       if doc
         doc.open()
         doc.write( JST['templates/bookmarklet/importer/iframe_loader']({host: host, data_string: @paramsForStepOne(), url: stepOneURL}) )
-        toggleWindowRepaint()
+        triggerWindowRepaint()
       else
         alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
 
