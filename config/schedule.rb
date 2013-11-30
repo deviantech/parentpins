@@ -22,7 +22,7 @@ every 1.day do
   current :bx_rake, "trends:update"
 end
 
-every :day do
-  current :current_command, "test/external/pinterest.rb"
-end
+# every :day do
+#   current :current_command, "test/external/pinterest.rb"
+# end
 
