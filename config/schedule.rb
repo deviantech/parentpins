@@ -23,6 +23,6 @@ every 1.day do
 end
 
 every :day do
-  current :command, "test/external/pinterest.rb"
+  current :current_command, "test/external/pinterest.rb"
 end
 
