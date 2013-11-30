@@ -1,12 +1,12 @@
 namespace :servers do
   
-  # 0. bring up new server with no data
+  # 0. bring up new server with no data (cd ~/code/kitchen/servers/pins && v up --provider=aws)
   # 1. run cap deploy:web:disable on the old server (to prevent changes to DB while migrating)
-  # RUN THIS SCRIPT TO SET UP NEW SERVER: 
+  # RUN THIS SCRIPT TO SET UP NEW SERVER (using gasmask to point staging.parentpins.com to new IP): 
   #     To test:  bx rake servers:move_data OLD=parentpins.com NEW=staging.parentpins.com DB_OLD=pins DB_NEW=pins_staging
   #     For prod: bx rake servers:move_data OLD=parentpins.com NEW=staging.parentpins.com DB_OLD=pins
   # 2. change DNS to point to new server (leave old in migration mode to prevent serving from old accidentally, or set ip redirect)
-  # 3. profit
+  # 3. profit?
   
   desc 'Move data to new server'
   task :move_data do

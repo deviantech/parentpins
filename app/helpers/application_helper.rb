@@ -19,7 +19,7 @@ module ApplicationHelper
     end
     
     # Prefill default image placeholder sizes too
-    image_tag(pin.image.v222.url, :class => 'pin_image', :alt => '', :style => styleFor(scaledHeight, color)) + preload
+    image_tag(pin.image.v222.url, :class => 'pin_image', :alt => '', :style => styleFor(scaledHeight, color), :height => scaledHeight, :width => 222) + preload
   end
 
   # Choose white or black for contrasting txt.
