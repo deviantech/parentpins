@@ -2,10 +2,13 @@
 
 
 # Runs like normal, but uses the current symlink so we don't have to update whenever on every deploy
-def current(cmd_type, cmd_str)
+def get_paths
   @full_path ||= File.expand_path( File.dirname(__FILE__) ).gsub(/\/config/, '')
-  @curr_path ||= @full_path['/releases/'] ? @full_path.gsub(/releases\/\d+/, 'current') : @full_path
-  
+  @curr_path ||= @full_path['/releases/'] ? @full_path.gsub(/releases\/\d+/, 'current') : @full_path  
+end
+
+def current(cmd_type, cmd_str)
+  get_paths
   send(cmd_type, cmd_str, :path => @curr_path)
 end
 
@@ -22,6 +25,6 @@ every 1.day do
 end
 
 every :day do
-  current :command, "test/external/pinterest.rb"
+  current :command, "#{get_paths}/test/external/pinterest.rb"
 end
 
