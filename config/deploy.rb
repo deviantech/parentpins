@@ -3,8 +3,8 @@ require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 require "bundler/capistrano"
 # require 'thinking_sphinx/deploy/capistrano'
-
 require 'capistrano-unicorn'
+
 set :application, "pins"
 set :site_ip, 'parentpins.com'
 set :default_environment, {
@@ -119,7 +119,7 @@ after   'deploy:start', 'deploy:web:enable'
 namespace :deploy do
   desc "Update the crontab file"
   task :update_crontab, :roles => :db do
-    run ". /etc/profile.d/rvm.sh && cd #{current_path} && whenever --update-crontab #{application}_#{stage} --set environment=#{rails_env}"
+    run "cd #{current_path} && bundle exec whenever --update-crontab #{application}_#{stage} --set environment=#{rails_env}"
   end
 end
 
