@@ -1,26 +1,15 @@
 # TODO: http://www.capistranorb.com/documentation/upgrading/
-
 require "capistrano-conditional"
 require 'capistrano/ext/multistage'
 require "bundler/capistrano"
 # require 'thinking_sphinx/deploy/capistrano'
 
-
-IN_VAGRANT = ENV['VAGRANT']
-
-if IN_VAGRANT
-  require 'capistrano-unicorn'
-  set :application, "pins"
-  set :site_ip, 'staging.parentpins.com'
-  set :default_environment, {
-    'PATH' => "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
-  }
-else
-  require "rvm/capistrano"
-  set :application, "parentpins"
-  set :rvm_type, :system
-  set :site_ip, '54.204.12.77'
-end
+require 'capistrano-unicorn'
+set :application, "pins"
+set :site_ip, 'parentpins.com'
+set :default_environment, {
+  'PATH' => "/usr/local/rbenv/shims:/usr/local/rbenv/bin:$PATH"
+}
 
 set :whenever_command,     "bundle exec whenever"
 set :whenever_environment, defer { stage }
@@ -96,54 +85,32 @@ end
 
 
 
-if IN_VAGRANT
-  
-  namespace :app do
-    desc "Note that we're migrating"
-    task "note_migrating", :roles => :db do
-      @migrating = true
-    end
-    
-    desc 'Select the appropriate unicorn restart strategy (rolling unless migrating)'
-    task "gogo_gadget_unicorn", :roles => :app, :except => {:no_release => true} do
-      if @migrating
-        unicorn.stop
-        sleep 3 # Wait for PID files to be written properly
-        unicorn.start
-      else
-        unicorn.duplicate # before_fork hook implemented (zero downtime deployments)
-      end
-    end
+namespace :app do
+  desc "Note that we're migrating"
+  task "note_migrating", :roles => :db do
+    @migrating = true
   end
   
-  before  "deploy:migrate", "app:note_migrating"
-  before  "deploy:migrate", "deploy:web:disable"
-  after   'deploy:restart', 'app:gogo_gadget_unicorn'
-  after   "app:gogo_gadget_unicorn", "deploy:web:enable"  
-
-  # Handle deploy:cold
-  after   'deploy:start', 'unicorn:restart'
-  after   'deploy:start', 'deploy:web:enable'
-else
-  before  "deploy:migrate", "deploy:web:disable"
-  after   "deploy:migrate", "deploy:web:enable"
-  
-  # ===================================
-  # = Currently deployed on passenger =
-  # ===================================
-  
-  namespace :deploy do
-    desc "Restarting passenger with restart.txt"
-    task :restart, :roles => :app, :except => { :no_release => true } do
-      run "touch #{current_path}/tmp/restart.txt"
-    end
-
-    [:start, :stop].each do |t|
-      desc "#{t} task is a no-op with mod_rails"
-      task t, :roles => :app do ; end
+  desc 'Select the appropriate unicorn restart strategy (rolling unless migrating)'
+  task "gogo_gadget_unicorn", :roles => :app, :except => {:no_release => true} do
+    if @migrating
+      unicorn.stop
+      sleep 3 # Wait for PID files to be written properly
+      unicorn.start
+    else
+      unicorn.duplicate # before_fork hook implemented (zero downtime deployments)
     end
   end
 end
+
+before  "deploy:migrate", "app:note_migrating"
+before  "deploy:migrate", "deploy:web:disable"
+after   'deploy:restart', 'app:gogo_gadget_unicorn'
+after   "app:gogo_gadget_unicorn", "deploy:web:enable"  
+
+# Handle deploy:cold
+after   'deploy:start', 'unicorn:restart'
+after   'deploy:start', 'deploy:web:enable'
 
 
 # =====================================
