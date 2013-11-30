@@ -73,6 +73,7 @@
             <h1><%= @profile_header %></h1>
           </div>
         <% end %>
+        <%= yield :pre_profile_content %>
         <%= render 'shared/flash', :flash => flash %>
         <%= content_for?(:profile_content) ? yield(:profile_content) : yield %>
       </div>

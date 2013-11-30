@@ -1,3 +1,4 @@
+<% content_for :pre_profile_content do %>
 <div class="board_description">
   <h1>
     <%= @board.name %>
@@ -24,12 +25,7 @@
   </div>
   <p class="description"><%= @board.description %></p>
 </div>
-
-
-
-
-
-
+<% end %>
 
 <%= render 'comments' %>
 
