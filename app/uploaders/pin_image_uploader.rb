@@ -10,7 +10,7 @@ class PinImageUploader < BaseUploader
     process :store_meta
     process :store_average_color
   end
-
+  
   # Used for board thumbs
   version :v55, :from_version => :v222 do
     process :resize_to_fill => [55, 55]

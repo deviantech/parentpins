@@ -22,8 +22,10 @@ class BaseUploader < CarrierWave::Uploader::Base
   # end
   
   # Choose what kind of storage to use for this uploader:
-  storage Rails.env.production? || Rails.env.staging? ? :fog : :file
   
+  # TODO: reenable once completed MimetypeFu and Fog testing
+  # storage Rails.env.production? || Rails.env.staging? ? :fog : :file
+  storage :fog
   
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -43,9 +45,11 @@ class BaseUploader < CarrierWave::Uploader::Base
   alias_method_chain :url, :conditional_ssl
   
   # With this defined, start getting v222_v222_FILENAME names
-  # def filename
-    # filename_with_mimetype_fu_ext if original_filename.present?
-  # end  
+  def filename
+    return unless original_filename.present?
+    Rails.logger.fatal "[base_uploader] was #{original_filename}, renaming to #{filename_with_mimetype_fu_ext}"
+    filename_with_mimetype_fu_ext
+  end  
 
   # Rotates based on the EXIF Orientation, then strips out all embedded information
   def strip
