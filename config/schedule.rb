@@ -2,17 +2,15 @@
 
 
 # Runs like normal, but uses the current symlink so we don't have to update whenever on every deploy
-def get_paths
+def current(cmd_type, cmd_str)
   @full_path ||= File.expand_path( File.dirname(__FILE__) ).gsub(/\/config/, '')
   @curr_path ||= @full_path['/releases/'] ? @full_path.gsub(/releases\/\d+/, 'current') : @full_path  
-end
-
-def current(cmd_type, cmd_str)
-  get_paths
+  
   send(cmd_type, cmd_str, :path => @curr_path)
 end
 
 # Bundle exec rake TASK 
+job_type :current_command, "cd :path && :task :output"
 job_type :bx_rake, "cd :path && bundle exec rake :task --silent :output RAILS_ENV=:environment"
 
 
@@ -25,6 +23,6 @@ every 1.day do
 end
 
 every :day do
-  current :command, "#{get_paths}/test/external/pinterest.rb"
+  current :command, "test/external/pinterest.rb"
 end
 
