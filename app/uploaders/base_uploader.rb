@@ -9,23 +9,18 @@ class BaseUploader < CarrierWave::Uploader::Base
   
   include Piet::CarrierWaveExtension
 
-  process :set_mimetype_fu_content_type => true
   process :strip
   
   # TODO: run piet gem's optimizations via resque eventually - https://github.com/albertbellonch/piet
   # process :optimize
 
-  # Add a white list of extensions which are allowed to be uploaded.
-  # For images you might use something like this:
-  # def extension_white_list
-  #   %w(jpg jpeg gif png)
-  # end
+  # Add a white list of extensions which are allowed to be uploaded. Processed after CarrierWave::MimetypeFu does it's magic, so extension actually matches real filetype.
+  def extension_white_list
+    %w(jpg jpeg gif png)
+  end
   
-  # Choose what kind of storage to use for this uploader:
-  
-  # TODO: reenable once completed MimetypeFu and Fog testing
-  # storage Rails.env.production? || Rails.env.staging? ? :fog : :file
-  storage :fog
+  # Choose what kind of storage to use for this uploader:  
+  storage Rails.env.production? || Rails.env.staging? ? :fog : :file
   
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -44,12 +39,12 @@ class BaseUploader < CarrierWave::Uploader::Base
   end
   alias_method_chain :url, :conditional_ssl
   
-  # With this defined, start getting v222_v222_FILENAME names
-  def filename
-    return unless original_filename.present?
-    Rails.logger.fatal "[base_uploader] was #{original_filename}, renaming to #{filename_with_mimetype_fu_ext}"
-    filename_with_mimetype_fu_ext
-  end  
+  # # With this defined, start getting v222_v222_FILENAME names
+  # def filename
+  #   return unless original_filename.present?
+  #   Rails.logger.fatal "[base_uploader] was #{original_filename}, renaming to #{filename_with_mimetype_fu_ext}"
+  #   filename_with_mimetype_fu_ext
+  # end  
 
   # Rotates based on the EXIF Orientation, then strips out all embedded information
   def strip

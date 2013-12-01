@@ -15,13 +15,6 @@ GIT
       activesupport (>= 3.1.0)
       rack
 
-PATH
-  remote: /Users/kali/code/gems/carrierwave-mimetype-fu
-  specs:
-    carrierwave-mimetype-fu (0.0.1)
-      carrierwave
-      mimetype-fu
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -93,6 +86,9 @@ GEM
       activesupport (>= 3.0)
       carrierwave (>= 0.5.7)
       mime-types
+    carrierwave-mimetype-fu (0.0.1)
+      carrierwave
+      mimetype-fu
     chronic (0.10.2)
     coderay (1.1.0)
     coffee-rails (4.0.1)
@@ -328,7 +324,7 @@ DEPENDENCIES
   capybara-webkit
   carrierwave
   carrierwave-meta
-  carrierwave-mimetype-fu!
+  carrierwave-mimetype-fu
   coffee-rails (~> 4.0.0)
   debugger
   devise (~> 3.1.1)

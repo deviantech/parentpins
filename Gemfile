@@ -73,7 +73,7 @@ gem 'omniauth-twitter'
 
 gem 'carrierwave'
 gem 'carrierwave-meta'
-gem 'carrierwave-mimetype-fu', :path => '/Users/kali/code/gems/carrierwave-mimetype-fu'
+gem 'carrierwave-mimetype-fu'
 gem 'mini_magick'
 gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
