@@ -6,36 +6,42 @@
   <% elsif !(pin.new_record? || params[:action] == 'edit') %>
     <%= render 'pins/actions', :pin => pin, :skip_comments => (defined?(skip_comments) && skip_comments) %>
   <% end %>
-  
-  <%= link_to pin, :class => 'ajax image_link update-history' do %>
-    <%= pin_image_preloader(pin) %>
-  <% end %>
 
-  <p class="description">
-    <a href="<%= url_for(pin) %>" class="ajax update-history">
-      <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
-      <span class="bind-description truncate-me"><%= pin.description %></span>
-    </a>
-  </p>
+  <% cache ['image', pin] do %>
+  
+    <%= link_to pin, :class => 'ajax image_link update-history' do %>
+      <%= pin_image_preloader(pin) %>
+    <% end %>
+
+    <p class="description">
+      <a href="<%= url_for(pin) %>" class="ajax update-history">
+        <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
+        <span class="bind-description truncate-me"><%= pin.description %></span>
+      </a>
+    </p>
+  <% end %>
+    
   <%= render 'pins/stats', :pin => pin %>
   
-  <div class="attribution">
-    <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name, :class=> 'image_link' %>
-    <p class="details">
-      <%= link_to pin.user.name, profile_path(pin.user) %>
-      <% if pin.via %>
-        via
-        <%= link_to pin.via.name, profile_path(pin.via) %>
-      <% end %>
+  <% cache ['attribution', pin] do %>
+    <div class="attribution">
+      <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name, :class=> 'image_link' %>
+      <p class="details">
+        <%= link_to pin.user.name, profile_path(pin.user) %>
+        <% if pin.via %>
+          via
+          <%= link_to pin.via.name, profile_path(pin.via) %>
+        <% end %>
 
-      <span class="bind-board_id">
-        onto
-        <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
-      </span>
-      <br/>
-      Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
-    </p>
-  </div>
+        <span class="bind-board_id">
+          onto
+          <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
+        </span>
+        <br/>
+        Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
+      </p>
+    </div>
+  <% end %>
   
   <% unless defined?(skip_comments) && skip_comments %>
     <div class="comments">
