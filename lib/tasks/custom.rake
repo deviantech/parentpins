@@ -137,17 +137,19 @@ namespace :uploads do
     User.where.not(:avatar => nil).find_each do |model|
       old_base = Digest::MD5.hexdigest("#{model.class.name}.#{model.id}")
       bucket.objects.with_prefix("uploads/user/avatar/#{model.id}/").each do |obj|
-        if obj.key =~ /#{old_base}/
-          new_name = obj.key.gsub(/#{old_base}/, model.avatar_token)
-          if new_name =~ /main_/
-            new_name = new_name.sub(/main_/, '').sub(/#{model.avatar_token}/, "#{model.avatar_token}_cropped_#{model.avatar.send(:crop_args).join('_')}")
-          end
+        new_name = obj.key.sub(/[\da-zA-Z]{16}/, model.avatar_token)
+        # if obj.key =~ /#{old_base}/
+        #   new_name = obj.key.gsub(/#{old_base}/, model.avatar_token)
+        #   if new_name =~ /main_/
+        #     new_name = new_name.sub(/main_/, '').sub(/#{model.avatar_token}/, "#{model.avatar_token}_cropped_#{model.avatar.send(:crop_args).join('_')}")
+        #   end
           puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
           obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
-        else
-          puts "[#{model.id}] Deleting #{obj.key} (doesn't match #{old_base})"
-          obj.delete
-        end
+        # else
+        #   puts "[#{model.id}] Deleting #{obj.key} (doesn't match #{old_base})"
+        #   obj.delete
+        # end
+        model.save
       end
     end
     
@@ -164,19 +166,22 @@ namespace :uploads do
         new_name = "#{cover_image_prefix}#{new_name}.#{ext}"
         puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
         obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+        model.save
       end
     end
     
-    puts "\n\nUpdating pins"
-    Pin.where.not(:image => nil).find_each do |model|
-      image_prefix = "uploads/pin/image/#{model.id}/"
-      bucket.objects.with_prefix(image_prefix).each do |obj|
-        ext = obj.key.split('.').last
-        new_name = "#{image_prefix}#{model.image_token}.#{ext}"
-        puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
-        obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
-      end
-    end
+    # puts "\n\nUpdating pins"
+    # Pin.where.not(:image => nil).find_each do |model|
+    #   image_prefix = "uploads/pin/image/#{model.id}/"
+    #   bucket.objects.with_prefix(image_prefix).each do |obj|
+    #     ext = obj.key.split('.').last
+    #     new_name = "#{image_prefix}#{model.image_token}.#{ext}"
+    #     puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
+    #     obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+    #   end
+    #   model.save
+    # end
+    
     puts "\n\nDone processing."
   end
   
