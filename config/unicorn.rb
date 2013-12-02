@@ -9,7 +9,8 @@
 # more will usually help for _short_ waits on databases/caches.
 worker_processes @env == 'production' ? 4 : 1
 
-timeout 600
+# This thing should NOT time out
+timeout 1800
 
 # Since Unicorn is never exposed to outside clients, it does not need to
 # run on the standard HTTP port (80), there is no reason to start Unicorn
