@@ -7,10 +7,9 @@
 
 # Use at least one worker per core if you're on a dedicated server,
 # more will usually help for _short_ waits on databases/caches.
-worker_processes @env == 'production' ? 2 : 1
+worker_processes @env == 'production' ? 4 : 1
 
-# nuke workers after 30 seconds instead of 60 seconds (the default)
-timeout 60
+timeout 600
 
 # Since Unicorn is never exposed to outside clients, it does not need to
 # run on the standard HTTP port (80), there is no reason to start Unicorn
