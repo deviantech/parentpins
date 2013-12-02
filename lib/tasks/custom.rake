@@ -209,3 +209,77 @@ namespace :uploads do
   end
   
 end
+
+__END__
+
+# =============================================================================================================================================
+# = Manually-ish attempting to fix broken images (done, but here for posterity if need refresher writing similar rename script in the future) =
+# =============================================================================================================================================
+
+require 'aws-sdk'
+s3 = AWS.s3
+bucket = s3.buckets[CARRIERWAVE[:bucket]]
+
+
+def tryfix(pin)
+  begin
+    pin.image.v222.send(:get_dimensions) && pin.save
+  rescue StandardError => e
+    puts e
+  end
+end
+
+Pin.where('image_average_color IS NULL').where.not('image IS NULL').count
+
+Pin.where('image_average_color IS NULL').where.not('image IS NULL').each do |pin|
+  image_prefix = "uploads/pin/image/#{pin.id}/"
+  begin
+    pin.image.cache!
+  rescue StandardError => e
+    puts "Trouble caching"
+  end
+  begin
+    real_content_type = File.mime_type?( File.open(pin.image.current_path) ).split(';').first
+    valid_extensions  = Array(MIME::Types[real_content_type].try(:first).try(:extensions))
+  rescue StandardError => e
+    puts "Skipping #{pin.id} - no cached file"
+    next
+  end
+  
+  new_file  = pin.image.file
+  new_file.content_type = real_content_type
+  base, ext = new_file.send(:split_extension, new_file.original_filename)
+  ext = valid_extensions.first unless valid_extensions.include?(ext)
+  new_file_name = [base, ext].join('.')
+  
+  if new_file_name == new_file.original_filename
+    puts "[#{pin.id}] Doesn't appear to have incorrect extension - skippping (#{new_file_name})"
+  else
+    last_ext = nil
+    bucket.objects.with_prefix(image_prefix).each do |obj|
+      new_name = if obj.key =~ /\/(v\d{2,3}_)/
+        "#{image_prefix}#{$1}#{pin.image_token}.#{ext}"
+      else
+        "#{image_prefix}#{pin.image_token}.#{ext}"
+      end
+    
+      puts "\t[#{pin.id}] Moving #{obj.key} to #{new_name}"
+      obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => real_content_type
+      last_ext = ext
+    end
+    pin.save
+    pin = Pin.find(pin.id)
+    pin['image'] = "#{pin.image_token}.#{last_ext}"
+    pin.save
+    
+    old_ext = new_file.original_filename.split('.').last
+    bucket.objects.with_prefix(image_prefix).each do |obj|
+      if obj.key =~ /#{old_ext}$/
+        puts "Deleting old extension: #{obj.key}"
+        obj.delete
+      end
+    end
+  end
+  
+  tryfix(pin)
+end
