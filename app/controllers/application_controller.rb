@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
   end
 
   def paginate_pins(base_scope)
-    @results = @pins = base_scope.includes(:age_group).by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page]).per_page(30)
+    @results = @pins = base_scope.includes(:age_group).by_kind(@kind).in_category(@category).in_age_group(@age_group).page(params[:page])
     support_ajax_pagination
   end
 
