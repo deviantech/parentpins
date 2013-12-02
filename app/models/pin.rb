@@ -42,7 +42,7 @@ class Pin < ActiveRecord::Base
   before_save     :filter_url_before_save
   before_update   :update_board_images_on_change
   before_create   :uuid # Set the UUID before creating
-  after_create    :update_board_add_image, :track_board_last_pinned_to
+  after_create    :update_board_add_image, :track_board_last_pinned_to, :touch_repin_source
   before_destroy  :update_board_remove_image
   before_destroy  :clean_redis
   
@@ -231,6 +231,11 @@ class Pin < ActiveRecord::Base
     tempfile.write( Base64.decode64( string.gsub(/.*base64,?/, '') ) )
     fname = SecureRandom.hex(16)
     self.image = ActionDispatch::Http::UploadedFile.new(:tempfile => tempfile, :filename => fname, :original_filename => fname)
+  end
+  
+  def touch_repin_source
+    repinned_from.try(:touch)
+    true
   end
   
   def copy_board_settings

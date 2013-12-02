@@ -336,6 +336,7 @@ class User < ActiveRecord::Base
     
     Rails.redis.sadd(redis_name__likes, pin.id)
     Rails.redis.sadd(pin.redis_name__liked_by, self.id)
+    pin.touch
   end
   
   def unlike(pin)
@@ -343,6 +344,7 @@ class User < ActiveRecord::Base
 
     Rails.redis.srem(redis_name__likes, pin.id)
     Rails.redis.srem(pin.redis_name__liked_by, self.id)    
+    pin.touch
   end
   
   # ======================
