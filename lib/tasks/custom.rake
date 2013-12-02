@@ -168,20 +168,32 @@ namespace :uploads do
         model.save
       end
     end
-    
-    # puts "\n\nUpdating pins"
-    # Pin.where.not(:image => nil).find_each do |model|
-    #   image_prefix = "uploads/pin/image/#{model.id}/"
-    #   bucket.objects.with_prefix(image_prefix).each do |obj|
-    #     ext = obj.key.split('.').last
-    #     new_name = "#{image_prefix}#{model.image_token}.#{ext}"
-    #     puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
-    #     obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
-    #   end
-    #   model.save
-    # end
-    
+      
     puts "\n\nDone processing."
+  end
+  
+  desc 'Run ONCE to update pin filenames'
+  task :update_pins => :environment do
+    require 'aws-sdk'
+    s3 = AWS.s3
+    bucket = s3.buckets[CARRIERWAVE[:bucket]]
+    
+    
+    puts "\n\nUpdating pins"
+    Pin.where.not(:image => nil).find_each do |model|
+      image_prefix = "uploads/pin/image/#{model.id}/"
+      last_ext = nil
+      bucket.objects.with_prefix(image_prefix).each do |obj|
+        ext = obj.key.split('.').last
+        new_name = "#{image_prefix}#{model.image_token}.#{ext}"
+        puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
+        # obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+        last_ext = ext
+      end
+      model['image'] = "#{model.image_token}.#{last_ext}"
+      model.save
+    end
+    puts "Done"
   end
   
 end
