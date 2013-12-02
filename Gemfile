@@ -28,6 +28,7 @@ gem 'capybara-user_agent', :require => false
 
 # Avoid having to use strong params
 gem 'protected_attributes'
+gem 'dalli'
 
 gem 'whenever', :require => false
 gem 'unicorn', :require => false
