@@ -184,10 +184,11 @@ namespace :uploads do
       image_prefix = "uploads/pin/image/#{model.id}/"
       last_ext = nil
       bucket.objects.with_prefix(image_prefix).each do |obj|
+        next if obj.key =~ /#{model.image_token}/
         ext = obj.key.split('.').last
         new_name = "#{image_prefix}#{model.image_token}.#{ext}"
         puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
-        # obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+        obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
         last_ext = ext
       end
       model['image'] = "#{model.image_token}.#{last_ext}"
