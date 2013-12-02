@@ -105,11 +105,6 @@
         <p>But the simplest solution? Get the ball rolling and follow someone first!</p>
       </dd>
       
-
-<<<<<<< HEAD
-
-=======
->>>>>>> master
       <dt id="featured">What is the Featured page?  How can I get featured?</dt>
       <dd>
         <p>The Featured page highlights some of our community's most active contributors. This is the place to learn more about popular ParentPinners, discover new resources in the online parenting community, and find new users to follow.</p>
@@ -127,8 +122,8 @@
           <pre><code><%= %q{<meta name="pinning" content="nopin" description="Sorry, we don't allow pinning!" />} %></code></pre>
         </p>
         <p>
-          To disable pinning a specific image, add a "nopin" attribute:
-          <pre><code><%= %q{<img src="foo.jpg" nopin="nopin" />} %></code></pre>
+          To disable pinning a specific image, add a data attribute as follows:
+          <pre><code><%= %q{<img src="foo.jpg" data-pinning="none" />} %></code></pre>
         </p>
       </dd>
 

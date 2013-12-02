@@ -135,7 +135,7 @@ class Bookmarklet
       do (img) =>
         $img = $(img)
         src = $img.attr('src') || $img.data('src')
-        if src && !$img.attr('nopin') # Some google images results don't have a src set, allow blocking pins on specific images
+        if src && $img.data('pinning') != 'none' # Some google images results don't have a src set, + allow blocking pins on specific images
           imgExt = src.match(/\.\w{1,4}$/)
           link = $img.parents('a').first().attr('href')
     
