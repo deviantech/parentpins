@@ -163,14 +163,19 @@ class Bookmarklet
     # What would height be if width was imgDisplayWidth?
     scaledHeight = if width == 0 then 0 else (imgDisplayWidth / width) * height
   
-    return {
-      src:    $img.attr('src') || $img.data('src'),
-      link:   $img.parents('a').first().attr('href'),
+    imgData = {
+      src:    $.trim( $img.attr('src') || $img.data('src') ),
+      link:   $.trim( $img.parents('a').first().attr('href') ),
       height: height,
       width:  width,
       area:   area,
       scaledHeight: scaledHeight
     }
+    
+    # Don't report javascript links or in-page anchors
+    imgData.link = '' if imgData.link && imgData.link[0] == '#' || imgData.link.match(/javascript/i)
+    
+    return imgData
 
   switchToPinView: (e) ->
     e.preventDefault()
