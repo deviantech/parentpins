@@ -1,6 +1,8 @@
 module ApplicationHelper
       
   def pin_image_preloader(pin)
+    pin = @source if pin.new_record? && @source
+    
     def styleFor(h, color)
       "width: 222px; height: #{h}px; background: ##{color}; color: ##{contrast_color_for(color)}"
     end  
