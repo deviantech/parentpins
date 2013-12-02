@@ -125,3 +125,59 @@ namespace :pins do
     end
   end
 end
+
+namespace :uploads do
+  desc 'Run ONCE after moving to [uploader]_token naming system'
+  task :update_names => :environment do
+    require 'aws-sdk'
+    s3 = AWS.s3
+    bucket = s3.buckets[CARRIERWAVE[:bucket]]
+    
+    puts "Updating avatars"
+    User.where.not(:avatar => nil).find_each do |model|
+      old_base = Digest::MD5.hexdigest("#{model.class.name}.#{model.id}")
+      bucket.objects.with_prefix("uploads/user/avatar/#{model.id}/").each do |obj|
+        if obj.key =~ /#{old_base}/
+          new_name = obj.key.gsub(/#{old_base}/, model.avatar_token)
+          if new_name =~ /main_/
+            new_name = new_name.sub(/main_/, '').sub(/#{model.avatar_token}/, "#{model.avatar_token}_cropped_#{model.avatar.send(:crop_args).join('_')}")
+          end
+          puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
+          obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+        else
+          puts "[#{model.id}] Deleting #{obj.key} (doesn't match #{old_base})"
+          obj.delete
+        end
+      end
+    end
+    
+    puts "\n\nUpdating cover images"
+    User.where.not(:cover_image => nil).find_each do |model|
+      cover_image_prefix = "uploads/user/cover_image/#{model.id}/"
+      bucket.objects.with_prefix(cover_image_prefix).each do |obj|
+        ext = obj.key.split('.').last
+        new_name = if obj.key =~ /\/cropped_/
+          "#{model.cover_image_token}_cropped_#{model.cover_image.send(:crop_args).join('_')}"
+        else
+          model.cover_image_token
+        end
+        new_name = "#{cover_image_prefix}#{new_name}.#{ext}"
+        puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
+        obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+      end
+    end
+    
+    puts "\n\nUpdating pins"
+    Pin.where.not(:image => nil).find_each do |model|
+      image_prefix = "uploads/pin/image/#{model.id}/"
+      bucket.objects.with_prefix(image_prefix).each do |obj|
+        ext = obj.key.split('.').last
+        new_name = "#{image_prefix}#{model.image_token}.#{ext}"
+        puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
+        obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+      end
+    end
+    puts "\n\nDone processing."
+  end
+  
+end

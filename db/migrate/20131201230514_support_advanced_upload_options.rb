@@ -7,6 +7,8 @@ class SupportAdvancedUploadOptions < ActiveRecord::Migration
     rename_column :pins, :source_url, :source_image_url
 
     Pin.reset_column_information
+    
+    puts "Storing original_filename for all existing pin images"
     Pin.find_each do |p|
       p.update_attribute :image_original_filename, p['image']
     end
