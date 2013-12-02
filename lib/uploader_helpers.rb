@@ -4,10 +4,11 @@ module UploaderHelpers
   included do
     before_save :set_uploader_tokens
 
-    uploaders.each do |name, klass|
-      validates_integrity_of  name
-      validates_processing_of name
-    end
+    # No longer appear to be necessary - results in duplicate error messages
+    # uploaders.each do |name, klass|
+    #   validates_integrity_of  name
+    #   validates_processing_of name
+    # end
     
     # Important to have it created when viewed, because otherwise returns nil when used in an uploader's filename method
     uploaders.each do |name, klass|
