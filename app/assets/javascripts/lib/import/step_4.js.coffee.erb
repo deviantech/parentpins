@@ -103,15 +103,102 @@ handleHideShowPriceField = (input) ->
 $(document).ready () ->
   return unless $('.context.step_4').length
   
+  # Preload loading image
+  img = new Image()
+  img.src = "<%= asset_path('ui/ball-loader.gif') %>"
+  
   # For wide monitors, allow viewing side by side without weird float clearing for long images
   applyMasonry('ul.importing_pins')
   
   form = $('#import_form')
     
-  form.on 'submit', () ->
+  form.on 'submit', (e) ->
     if form.find('li.importing_pin.complete').length == 0 && !form.data('go-back')
       alert('You need to fill in all required fields for each pin before we can complete the import.')
-      return false;
+      return false
+
+    # Once ready to submit, only process one pin at a time (to avoid server timing out + give user better UX)
+    # TOOD: update UI to show uploading
+    data = form.serializeObject()
+    disableForm(form)
+    e.preventDefault()
+    
+    # Collate data broken down by pin (along with HTMl references so we can update the UI)
+    sortedData = []
+    for boardLI in form.find('li.importing_board')
+      for pinLI in $(boardLI).find('li.importing_pin')
+        pinID = "pins[[#{$(boardLI).data('board-id')}.#{$(pinLI).data('pin-id')}]]"
+        pinData = {board: boardLI, pin: pinLI, data: {}}
+        pinData['data'][key] = value for key, value of data when key.indexOf(pinID) > -1
+        sortedData.push(pinData)
+    
+    totalPinsToUpload = sortedData.length
+    
+    handleBeforeAnySubmitted = () ->
+      $('.progress_wrapper').append """
+        <div id="progressDisplayWrapper">
+          <div id="progressDisplay">Processing pins...</div>
+        </div>
+      """
+      updateProgressBar()
+    
+    updateProgressBar = () ->
+      maxProgressBarWidth = 424
+      remaining = sortedData.length
+      completed = totalPinsToUpload - remaining
+      width = if totalPinsToUpload > 0 then maxProgressBarWidth * (completed / totalPinsToUpload) else maxProgressBarWidth
+      bar = "<div class='progress_bar'><div class='progress' style='width:#{width}px'></div></div>"
+      msg = if completed == totalPinsToUpload
+          "Finished uploading pins!"
+        else
+          "Uploading #{completed + 1} of #{totalPinsToUpload}"
+      $('#progressDisplayWrapper').html "#{bar} #{msg}"
+    
+    
+    handleBeforeOneSubmitted = (which) ->
+      info = $(which.pin).addClass('ui-importing').children('.pin_info')
+      info.data('original-content', info.html())
+      info.html("<img src='<%= asset_path('ui/ball-loader.gif') %>' alt='submitting...'/>").css({textAlign: 'center'})
+    
+    # How handle success/failure
+    handleSuccess = (which, resp) ->
+      li = $(which.pin).removeClass('ui-importing').addClass('ui-imported')
+      li.children(':not(.pin_photo)').remove()
+      li.children('.pin_photo').wrapInner("<a href='#{resp}' target='_blank'></a>")
+      li.animate {width: 80, height: 90}, () ->
+        $('ul.importing_pins').masonry('layout')
+
+    handleFailure = (which, resp) ->
+      li = $(which.pin).removeClass('ui-importing').addClass('ui-import-failed')
+      info = li.find('.pin_info')
+      info.html( info.data('original-content') )
+      errors = if li.find('.pin_errors').length then li.find('.pin_errors') else $('<div class="pin_errors"></div>').prependTo(li)
+      errors.html(resp.responseText)
+      $('ul.importing_pins').masonry('layout')
+    
+    handleAnyResponse = (which) ->
+      # Handle progress bar UI
+      updateProgressBar()
+      
+      # And try another one
+      processOnePin()
+      
+    
+    # Now go to work
+    processOnePin = () ->
+      if pin = sortedData.shift()
+        handleBeforeOneSubmitted(pin)
+        ajax = $.post "#{form.attr('action')}_incremental", pin.data
+        ajax.always ()   -> handleAnyResponse(pin)
+        ajax.done (resp) -> handleSuccess(pin, resp)
+        ajax.fail (resp) -> handleFailure(pin, resp)
+          
+    handleBeforeAnySubmitted()
+    processOnePin()
+        
+
+    
+
   
   form.find('li.importing_pin').each () ->
     updateOtherStatus( $(this).find('.other_input') )

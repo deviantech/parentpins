@@ -5,6 +5,7 @@ class ImportController < ApplicationController
   before_action :parse_params,        :except => [:login_check, :external_embedded, :show]
   before_action :get_profile_info,    :except => [:login_check, :external_embedded, :step_1]
   before_action :set_filters,         :only =>   [:show]
+  before_action :step_5_pins,         :only =>   [:step_5, :step_5_incremental]
 
   
   
@@ -49,35 +50,42 @@ class ImportController < ApplicationController
     craft_intermediate_pins
   end
 
+
+  # Like step 5, but importing one at a time via ajax (to avoid overwhelming server/timing out on the user)
+  def step_5_incremental
+    @pin = @step_5_pins.first
+        
+    if @pin.save
+      @import && @import.increment(:completed, 1)
+      render :text => pin_url(@pin)
+    else
+      render :text => @pin.errors.full_messages.to_sentence, :status => 500, :layout => false
+    end
+  end
+
   def step_5
-    @imported = []
-    @pins_to_import = []
-    @import = session[:import_id] && current_user.imports.find(session[:import_id])
-    
-    (@data[:pins] || []).collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }.each do |pin|
-      pin.user = current_user
-      pin.import = @import
-      
+    @step_5_pins.each do |pin|      
       if pin.save then @imported << pin
       else @pins_to_import << pin
       end
     end
+    
     @import && @import.increment(:completed, @imported.length)
 
-
-    if @pins_to_import.empty? && @imported.empty?
+    if @pins_to_import.empty?
       session.delete(:import_id)
-      redirect_to profile_path(current_user), :error => "You successfully completed your import, but had no pins selected to save."
-    elsif @pins_to_import.empty?
-      session.delete(:import_id)
-      redirect_to profile_import_path(current_user, @import, :just_completed => true), :success => "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
+      if @imported.empty?
+        redirect_to profile_path(current_user), :error => "You successfully completed your import, but had no pins selected to save."
+      else
+        redirect_to profile_import_path(current_user, @import, :just_completed => true), :success => "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
+      end
     else
       if @imported.empty?
         flash.now[:error] = "Unable to save any pins -- please fill in the missing fields and try again"    
       else
         flash.now[:success] = "Imported #{@imported.length} pin#{'s' unless @imported.length == 1}! #{@pins_to_import.length} still need#{'s' if @pins_to_import.length == 1} tweaking, though."
       end
-    
+  
       @boards = @pins_to_import.map(&:board).uniq
       @context = :step_4
       render 'step_4'
@@ -112,6 +120,19 @@ class ImportController < ApplicationController
   def get_profile_info
     @profile = current_user
     get_profile_counters
+  end
+
+  def step_5_pins
+    @imported = []
+    @pins_to_import = []
+    @import = session[:import_id] && current_user.imports.find(session[:import_id])
+
+    @step_5_pins = (@data[:pins] || []).collect do |idx, attribs| 
+      pin = Pin.new(attribs, :without_protection => true) 
+      pin.user = current_user
+      pin.import = @import
+      pin
+    end
   end
 
 end

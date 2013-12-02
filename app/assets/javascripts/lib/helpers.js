@@ -354,3 +354,10 @@ function fancyPinPreloading(selector) {
     $(image.img).show().parent().find('.img-preload-holder').fadeOut(600);
   });
 }
+
+function disableForm(selector) {
+  $(selector).find('input, select, textarea').attr("disabled", "disabled");
+}
+function enableForm(selector) {
+  $(selector).find('input, select, textarea').attr("disabled", null);
+}

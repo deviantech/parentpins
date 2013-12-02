@@ -5,7 +5,7 @@
 = form_for :pins, :url => pin_import_step_5_path, :html => {:id => 'import_form'} do |f|
   %ul.importing_boards
     - @boards.each do |board|
-      %li.importing_board
+      %li.importing_board{:data => {:board_id => board.id}}
         .board_info
           %h3 
             %span
@@ -19,7 +19,7 @@
         %ul.importing_pins
           - @pins_to_import.select{|p| p.board_id == board.id}.each_with_index do |pin, idx|
             = f.fields_for "[#{board.id}.#{idx}]", pin do |p|
-              %li.importing_pin{:class => cycle('even', 'odd'), :id => "board_#{board.id}_pin_#{idx}"}
+              %li.importing_pin{:class => cycle('even', 'odd'), :data => {:pin_id => idx}}
                 - if pin.errors.count > 0
                   .pin_errors= pin.errors.full_messages.uniq.map(&:downcase).to_sentence.capitalize
                 .pin_photo
@@ -31,7 +31,7 @@
                   
                   
                   
-                .pin_info{:id => "board_#{board.id}_pin_#{idx}_pin_info"}
+                .pin_info
                   .status_boxes
                     .status_box.otherStatus √
                     .status_box.ageGroupStatus √

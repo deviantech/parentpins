@@ -735,6 +735,19 @@ body.importing.step_1 {
     padding: 5px;
     min-width: 755px;
     font-family:"Helvetica Neue", Helvetica, sans-serif;
+    li.importing_pin {
+      &.ui-importing {
+        border-color: yellow !important;
+      }
+      &.ui-import-failed {
+        border-color: red !important;
+      }
+      &.ui-imported {
+        overflow: hidden !important;
+      }
+      
+    }
+    
     .review_pins {
       text-align:center;
       font-weight:normal;
@@ -997,3 +1010,33 @@ body.importing.step_1 {
   background-color:#f8f8f8 !important;
   border:1px solid #ddd !important;
   text-shadow:none !important;}  
+  
+#progressDisplayWrapper {
+  margin: 24px auto;
+  font-size: 20px;
+  line-height:24px;
+  text-align: center;
+  margin-top: 100px;
+  background: #FFF;
+  width: 400px;
+  padding: 24px 12px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.36);
+  .progressSpinner {
+    margin-top: 20px;
+  }
+  .progress_bar {
+    display: block;
+    width: 424px;
+    height: 18px;
+    background: #E2E2E2;
+    margin: 0 -12px 24px;
+    border-top: 1px solid #CECECE;
+    border-bottom: 1px solid #CECECE;
+    .progress {
+      width: 200px;
+      height: 18px;
+      background: #61BEFC; } }
+}
