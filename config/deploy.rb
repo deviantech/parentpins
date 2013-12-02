@@ -65,7 +65,7 @@ end
 # end
 
 
-ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['/assets', 'Gemfile.lock'] do
+ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['/assets', 'Gemfile.lock', 'config/'] do
   # TODO: test this. If ConditionalDeploy doesn't work this way yet, add it (or at least ability to remove specified task from before/after callback chain)
   namespace :deploy do
     namespace :assets do
