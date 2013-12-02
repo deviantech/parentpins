@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20131118181818) do
-=======
-ActiveRecord::Schema.define(version: 20131122023356) do
->>>>>>> master
+ActiveRecord::Schema.define(version: 20131201230514) do
 
   create_table "age_groups", force: true do |t|
     t.string   "name"
@@ -117,11 +113,13 @@ ActiveRecord::Schema.define(version: 20131122023356) do
     t.string   "uuid",                    limit: 36
     t.integer  "trend_position",                                                default: 0
     t.integer  "import_id"
-    t.string   "source_url"
+    t.string   "source_image_url"
     t.integer  "image_v222_height"
     t.integer  "image_v222_width"
     t.string   "image_average_color"
     t.string   "image_v222_content_type"
+    t.string   "image_token"
+    t.string   "image_original_filename"
   end
 
   add_index "pins", ["age_group_id"], name: "index_pins_on_age_group_id", using: :btree
@@ -177,6 +175,8 @@ ActiveRecord::Schema.define(version: 20131122023356) do
     t.integer  "avatar_h"
     t.boolean  "email_on_comment_received", default: true
     t.boolean  "email_on_new_follower",     default: true
+    t.string   "avatar_token"
+    t.string   "cover_image_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

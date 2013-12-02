@@ -12,7 +12,8 @@
       .croppable_container{:class => params[:which], :data => {:height => @dimensions[0], :width => @dimensions[1], :croppable => params[:which], :boxheight => 500, :boxwidth => 1020}}
         = form_for current_user, :url => self.send("crop_#{params[:which]}_path"), :html => {:class => "form very-wide crop-form", :method => :post} do |f|
           - for attribute in %w(x y w h) do
-            = f.hidden_field "#{params[:which]}_#{attribute}", :id => "#{params[:which]}_#{attribute}"
+            - key = "#{params[:which]}_#{attribute}"
+            = f.hidden_field key, :value => current_user.send(key).to_i, :id => key
         
           %h1 Customize #{params[:which].to_s.titleize} Cropping
           %p Your image will be resized and/or cropped to #{@dimensions[1]}x#{@dimensions[0]} pixels. This page allows you to customize how this is done.

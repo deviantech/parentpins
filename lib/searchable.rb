@@ -16,8 +16,8 @@ module Searchable
     end
     
     # TODO - make more efficient (sphinx? - currently returns count for each, which isn't needed) and/or eventually remove once have more pins in play.
-    if self.respond_to?(:uniq_source_url)
-      base_scope = base_scope.uniq_source_url
+    if self.respond_to?(:uniq_source_image_url)
+      base_scope = base_scope.uniq_source_image_url
     end
       
     

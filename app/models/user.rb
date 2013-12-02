@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
 
   mount_uploader :avatar,       AvatarUploader
   mount_uploader :cover_image,  CoverImageUploader
+  include UploaderHelpers # Goes after uploaders mounted
+
   
   # Users with lower IDs are test users, and can be messed with as much as desired
   HIGHEST_TEST_USER_ID = 19

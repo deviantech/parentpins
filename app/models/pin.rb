@@ -10,9 +10,10 @@ class Pin < ActiveRecord::Base
     'article' => 'that come from blogs, writers, news sources, etc.'
   }
   VALID_TYPES = VALID_TYPE_DESCRIPTIONS.keys
-  REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image source_url)
+  REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image source_image_url)
 
   mount_uploader :image, PinImageUploader
+  include UploaderHelpers # Goes after uploaders mounted
 
   extend FriendlyId
   friendly_id :uuid
@@ -55,16 +56,17 @@ class Pin < ActiveRecord::Base
     groups.blank? ? where('1=1') : where({:age_group_id => Array(groups).map(&:id)})
   }
   scope :repinned,        -> { where('repinned_from_id IS NOT NULL') }
-  scope :uniq_source_url, -> { group(:source_url) }  
   scope :with_image,      -> { where('image <> ""') }
   scope :newest_first,    -> { order('id DESC') }
   scope :not_ids, lambda {|ids| where(['id NOT IN (?)', Array(ids)]) }
+  scope :uniq_source_image_url, -> { group(:source_image_url) }  
   
   default_scope {newest_first}
 
+  # We track previously-imported (for pinterest imports) based on the URL the pins is referencing and the name of the original image (source_image_url)
   def self.json_for_pins(pins)
     Array(pins).each_with_object({}) {|p, result|
-      result[p.url] ||= []; result[p.url] << p.source_url
+      result[p.url] ||= []; result[p.url] << p.source_image_url
     }.to_json
   end
   
@@ -123,7 +125,7 @@ class Pin < ActiveRecord::Base
   end
   
   def remote_image_url=(str)
-    self.source_url = str
+    self.source_image_url = str
     apply_base64_image(str) || super
   end
   
