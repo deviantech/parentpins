@@ -185,13 +185,24 @@ namespace :uploads do
       last_ext = nil
       bucket.objects.with_prefix(image_prefix).each do |obj|
         next if obj.key =~ /#{model.image_token}/
+        if obj.key =~ /v222_v222_/
+          obj.delete
+          next
+        end
         ext = obj.key.split('.').last
-        new_name = "#{image_prefix}#{model.image_token}.#{ext}"
+        
+        
+        new_name = if obj.key =~ /\/(v\d{2,3}_)/
+          "#{image_prefix}#{$1}#{model.image_token}.#{ext}"
+        else
+          "#{image_prefix}#{model.image_token}.#{ext}"
+        end
+        
         puts "\t[#{model.id}] Moving #{obj.key} to #{new_name}"
-        obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
+        # obj.move_to new_name, :acl => :public_read, :cache_control => 'public, max-age=315576000', :content_type => obj.content_type
         last_ext = ext
       end
-      model['image'] = "#{model.image_token}.#{last_ext}"
+      # model['image'] = "#{model.image_token}.#{last_ext}"
       model.save
     end
     puts "Done"
