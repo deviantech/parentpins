@@ -9,10 +9,6 @@ Global.closeModal = ->
     $(this).removeClass('update-history').empty().show();
   
 
-Global.updateModalContents = (html) ->
-  $('#ajax-modal-target:visible .modal_overlay').html(html)
-  postModalJS()
-
 # Only close overlay if click was ON overlay (or various other wrapper elements), not just bubbled up to it.
 $(document).on 'click touchend', '.modal_overlay', (e) ->
   if $(e.target).hasClass('modal_overlay') || $(e.target).hasClass('wrapper') || $(e.target).hasClass('content')
@@ -26,6 +22,17 @@ $(document).on 'keyup', (e) ->
 
 # Add ajax target to body
 $ajax = $('#ajax-modal-target').length || $('<div id="ajax-modal-target"></div>').appendTo($('body'))
+
+Global.updateModalContents = (html) ->
+  $('#ajax-modal-target:visible .modal_overlay').html(html)
+  postModalJS()
+
+Global.renderHTMLinModal = (html) ->
+  overlay = if $ajax.find('.modal_overlay').length then $ajax.find('.modal_overlay') else $("<div class='modal_overlay'/>").appendTo($ajax)
+  overlay.addClass('transparent')
+  overlay.html("<div class='wrapper'><div class='content explicit'>#{html}</div></div>")
+  postModalJS()
+
 
 $(document).on 'click touchend', 'a.ajax', (e) ->
   if e.metaKey || e.ctrlKey

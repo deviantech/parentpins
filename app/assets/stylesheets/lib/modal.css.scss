@@ -22,7 +22,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
 
 .modal_overlay {
   padding: 0;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.8);
   display: block;
   height: 100%;
   left: 0;
@@ -31,6 +31,9 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   width: 100%;
   overflow-y:scroll;
   z-index:3;
+  &.transparent {
+    background: rgba(255,255,255,0.6);
+  }
   .board_wide {
     padding-top:20px; }
   .profile.wrapper {
@@ -44,6 +47,12 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
   .content.board.board_wide {
     width:790px !important;
     margin:0 auto;
+  }
+  .content.explicit {
+    width: 500px !important;
+    margin:0 auto;
+    margin-top:100px;
+    text-align: center;
   }
 }
 

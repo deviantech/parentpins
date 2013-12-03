@@ -5,7 +5,7 @@ class ImportController < ApplicationController
   before_action :parse_params,        :except => [:login_check, :external_embedded, :show]
   before_action :get_profile_info,    :except => [:login_check, :external_embedded, :step_1]
   before_action :set_filters,         :only =>   [:show]
-  before_action :step_5_pins,         :only =>   [:step_5, :step_5_incremental]
+  before_action :step_5_pins,         :only =>   [:step_5, :step_5_incremental, :step_5_incremental_completed]
 
   
   
@@ -47,6 +47,11 @@ class ImportController < ApplicationController
   # Collect info & save new pins
   def step_4
     @context = :step_4
+    
+    if params[:incrementally_completed]
+      msg = "These pins failed to import"
+      flash[:error] = params[:incrementally_completed].to_i.zero? ? msg : "#{msg} (#{params[:incrementally_completed]} imported successfully)"
+    end
     craft_intermediate_pins
   end
 
@@ -54,12 +59,21 @@ class ImportController < ApplicationController
   # Like step 5, but importing one at a time via ajax (to avoid overwhelming server/timing out on the user)
   def step_5_incremental
     @pin = @step_5_pins.first
-        
+    
     if @pin.save
       @import && @import.increment(:completed, 1)
       render :text => pin_url(@pin)
     else
       render :text => @pin.errors.full_messages.to_sentence, :status => 500, :layout => false
+    end
+  end
+  
+  def step_5_incremental_completed
+    if @import
+      n = @import.pins.count
+      redirect_to profile_import_path(current_user, @import, :just_completed => true), :success => "Congrats! You've just imported #{n} pin#{'s' unless n == 1}!"
+    else # Weird edge case
+      redirect_to profile_path(current_user, :success => "Import completed!")
     end
   end
 
@@ -73,7 +87,6 @@ class ImportController < ApplicationController
     @import && @import.increment(:completed, @imported.length)
 
     if @pins_to_import.empty?
-      session.delete(:import_id)
       if @imported.empty?
         redirect_to profile_path(current_user), :error => "You successfully completed your import, but had no pins selected to save."
       else
@@ -93,6 +106,7 @@ class ImportController < ApplicationController
   end
   
   def show
+    session.delete(:import_id) if params[:just_completed]
     @context = :apply_normal_pin_styling
     if @import = current_user.imports.find(params[:id])
       paginate_pins @import.pins
