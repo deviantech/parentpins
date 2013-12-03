@@ -154,7 +154,7 @@ $(document).ready () ->
       msg = if completed == totalPinsToUpload
           if uploadsCompleted.failed == 0 then "Finished uploading pins!" else "Uploading completed with some errors."
         else
-          "Uploading #{completed + 1} of #{totalPinsToUpload}"
+          "Uploading #{completed + 1} of #{totalPinsToUpload}<br><img src='<%= asset_path('ui/ball-loader.gif') %>' alt='submitting...'/>"
       $('#progressDisplayWrapper').html "#{bar} #{msg}"
     
     
