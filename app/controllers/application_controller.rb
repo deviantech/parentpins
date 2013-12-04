@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
     
   # Note: not using asset-path, because that uses a URL with a digest of the asset contents
   def bookmarklet_link_target_js
-    %Q{javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src',"//#{host}/assets/bookmarklet.js?r="+Math.random()*999);b.body.appendChild(s);setTimeout(function(){if (!window.ppBookmarklet){alert("It seems we were unable to connect to the server. Please try again shortly.")}},4000);})(document))}
+    %Q{javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src',"//#{host}/assets/bookmarklet.js?r="+Math.random()*999);b.body.appendChild(s);setTimeout(function(){if (!window.ppBookmarklet){alert("It seems we were unable to connect to the server. Please try again shortly.")}},5000);})(document))}
   end
   
   def get_profile_counters

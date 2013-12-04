@@ -8,7 +8,8 @@ class Bookmarklet
 
   # Class Config
   obeyMetaRestrictions  = <%= Rails.env.development? ? 'false' : 'true' %> # Only set to false when testing in development
-  host                  = '//<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
+  rawHost               = '<%= ActionMailer::Base.default_url_options[:host] + (ActionMailer::Base.default_url_options[:port] == 80 ? '' : ":#{ActionMailer::Base.default_url_options[:port]}") %>'
+  host                  = "//#{rawHost}"
   popupName             = 'ParentPinBookmarklet'
   cssUrl                = host + "<%= asset_path('bookmarklet.css') %>"
   importerScriptURL     = host + "<%= asset_path('bookmarklet-importer.js') %>"
@@ -207,7 +208,9 @@ class Bookmarklet
     return false
 
   beginIfAllowed: ->
-    if obeyMetaRestrictions && ($('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length)
+    if window.location.host == rawHost
+      alert("Great -- now press that button again while you're on a website with images you want to pin to ParentPins!")
+    else if obeyMetaRestrictions && ($('meta[name="pinning"][content="nopin"]').length || $('meta[name="pinterest"][content="nopin"]').length)
       msg = $('meta[name="pinning"][content="nopin"]').first().attr('description') || $('meta[name="pinterest"][content="nopin"]').first().attr('description')
       msg = msg || "This site doesn't allow pinning to external websites. Please contact the owner with any questions."
       alert(msg)
