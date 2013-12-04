@@ -1,66 +1,74 @@
-<li class="pin pin-context <%= dom_id(pin) %>" id="<%= dom_id(pin) %>">
-  <div class="bind-price price<%= ' hidden' unless pin.price %>"><%= number_to_currency pin.price %></div>
+<% 
+  pin_cacheable = !pin.new_record? && params[:context] != 'select-featured' && params[:action] != 'edit' && !(defined?(skip_comments) && skip_comments)
+  cache_method = pin_cacheable ? :cache : :dummy_block
+  cache_objects = ['pin_li', pin, current_user].compact
+  cache_opts = user_signed_in? ? {:expires_in => 30.minutes} : {} # Allow caching for users for shorter period of time
+%>
+<% self.send(cache_method, cache_objects, cache_opts) do %>
+  <li class="pin pin-context <%= dom_id(pin) %>" id="<%= dom_id(pin) %>">
+    <div class="bind-price price<%= ' hidden' unless pin.price %>"><%= number_to_currency pin.price %></div>
 
-  <% if params[:context] == 'select-featured' %>
-    <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
-  <% elsif !(pin.new_record? || params[:action] == 'edit') %>
-    <%= render 'pins/actions', :pin => pin, :skip_comments => (defined?(skip_comments) && skip_comments) %>
-  <% end %>
-
-  <% cache ['li', pin] do %>
-  
-    <%= link_to pin, :class => 'ajax image_link update-history' do %>
-      <%= pin_image_preloader(pin) %>
+    <% if params[:context] == 'select-featured' %>
+      <%= link_to 'Pick Me', set_pin_profile_featured_path(pin.user, pin), :class => "select-featured-pin", 'data-method' => 'POST' %>
+    <% elsif !(pin.new_record? || params[:action] == 'edit') %>
+      <%= render 'pins/actions', :pin => pin, :skip_comments => (defined?(skip_comments) && skip_comments) %>
     <% end %>
 
-    <p class="description">
-      <a href="<%= url_for(pin) %>" class="ajax update-history">
-        <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
-        <span class="bind-description truncate-me"><%= pin.description %></span>
-      </a>
-    </p>
-    
-    <%# All stats changes should update pin.updated_at to invalidate cache %>
-    <%= render 'pins/stats', :pin => pin %>
+    <% cache ['li', pin] do %>
   
-    <div class="attribution">
-      <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name, :class=> 'image_link' %>
-      <p class="details">
-        <%= link_to pin.user.name, profile_path(pin.user) %>
-        <% if pin.via %>
-          via
-          <%= link_to pin.via.name, profile_path(pin.via) %>
-        <% end %>
-
-        <span class="bind-board_id">
-          onto
-          <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
-        </span>
-        <br/>
-        Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
-      </p>
-    </div>
-  <% end %>
-  
-  <% unless defined?(skip_comments) && skip_comments %>
-    <div class="comments">
-      <% if user_signed_in? && !pin.new_record? %>
-        <div class="comment_form">
-          <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
-        </div>
+      <%= link_to pin, :class => 'ajax image_link update-history' do %>
+        <%= pin_image_preloader(pin) %>
       <% end %>
-      <% if pin.comments_count > 0 %>
-        <% cache ['comments_sm', pin] do %>
-          <% pin.comments.each_with_index do |comment, idx| %>
-            <% if idx == 3 %>
-              <div class="comment load-more">
-                <%= link_to_function "View #{pluralize pin.comments_count - 3, 'More Comment', 'More Comments'}", "viewAllComments(this)" %>
-              </div>
+
+      <p class="description">
+        <a href="<%= url_for(pin) %>" class="ajax update-history">
+          <strong class="bind-kind kind <%= pin.kind %>"><%= pin.kind.to_s.titleize %>:</strong>
+          <span class="bind-description truncate-me"><%= pin.description %></span>
+        </a>
+      </p>
+    
+      <%# All stats changes should update pin.updated_at to invalidate cache %>
+      <%= render 'pins/stats', :pin => pin %>
+  
+      <div class="attribution">
+        <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name, :class=> 'image_link' %>
+        <p class="details">
+          <%= link_to pin.user.name, profile_path(pin.user) %>
+          <% if pin.via %>
+            via
+            <%= link_to pin.via.name, profile_path(pin.via) %>
+          <% end %>
+
+          <span class="bind-board_id">
+            onto
+            <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
+          </span>
+          <br/>
+          Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>
+        </p>
+      </div>
+    <% end %>
+  
+    <% unless defined?(skip_comments) && skip_comments %>
+      <div class="comments">
+        <% if user_signed_in? && !pin.new_record? %>
+          <div class="comment_form">
+            <%= render 'comments/form', :commentable => pin, :small_avatar => true %>
+          </div>
+        <% end %>
+        <% if pin.comments_count > 0 %>
+          <% cache ['comments_sm', pin] do %>
+            <% pin.comments.each_with_index do |comment, idx| %>
+              <% if idx == 3 %>
+                <div class="comment load-more">
+                  <%= link_to_function "View #{pluralize pin.comments_count - 3, 'More Comment', 'More Comments'}", "viewAllComments(this)" %>
+                </div>
+              <% end %>
+              <%= render '/pins/comment', :comment => comment, :idx => idx, :small_avatar => true %>
             <% end %>
-            <%= render '/pins/comment', :comment => comment, :idx => idx, :small_avatar => true %>
           <% end %>
         <% end %>
-      <% end %>
-    </div>
-  <% end %>
-</li>
+      </div>
+    <% end %>
+  </li>
+<% end %>

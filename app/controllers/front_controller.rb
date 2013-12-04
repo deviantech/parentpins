@@ -9,7 +9,7 @@ class FrontController < ApplicationController
   end
   
   def login_first
-    from = request.env["HTTP_REFERER"] ? :back : '/'
+    from = request.env["HTTP_REFERER"] || '/'
 
     if user_signed_in?
       redirect_to from

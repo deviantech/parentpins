@@ -1,5 +1,9 @@
 module ApplicationHelper
-      
+
+  def dummy_block(*args)
+    yield
+  end
+        
   def pin_image_preloader(pin)
     pin = @source if pin.new_record? && @source
     
