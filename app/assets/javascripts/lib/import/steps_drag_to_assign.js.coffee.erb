@@ -116,7 +116,8 @@ drop = {
       else if helper.hasClass('board')
         dragSection.find('li.pin.board_'+helper.data('board-id'))
       
-      toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
+      # callingn draggable before draggable('destroy') to avoid edge case where it's not a draggable yet (not sure how to test, but calling with no arguments doesn't seem to override anything)
+      toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable().draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
       checkIfAnyDraggableLeft()
       applyDroppableMasonry()
     deactivate: (event, ui) ->
@@ -129,7 +130,7 @@ drop = {
     tolerance: 'pointer',
     drop: (event, ui) ->
       target = $(this).find('ul.pins')
-      $(ui.draggable).removeClass('from-drop-target').data('from-drop-target', null).draggable('destroy').draggable(drag.pinsToDroppable).appendTo(target)
+      $(ui.draggable).removeClass('from-drop-target').data('from-drop-target', null).draggable().draggable('destroy').draggable(drag.pinsToDroppable).appendTo(target)
       hideShowPinsForSelectedBoard()
   }
 }
