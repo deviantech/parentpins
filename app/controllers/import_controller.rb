@@ -48,8 +48,9 @@ class ImportController < ApplicationController
   def step_4
     @context = :step_4
     craft_intermediate_pins
-        
+
     if params[:incrementally_completed]
+      redirect_to(profile_path(current_user), :success => 'Import completed') and return if @pins_to_import.length == 0
       msg = @pins_to_import.length == 1 ? 'This pin failed to import' : "These pins failed to import"
       flash[:error] = params[:incrementally_completed].to_i.zero? ? msg : "#{msg} (#{params[:incrementally_completed]} imported successfully)"
       @pins_to_import.map {|a| a.valid?}
@@ -70,7 +71,7 @@ class ImportController < ApplicationController
   end
   
   def step_5_incremental_completed
-    if @import
+    if @import && @import.pins.count > 0
       n = @import.pins.count
       redirect_to profile_import_path(current_user, @import, :just_completed => true), :success => "Congrats! You've just imported #{n} pin#{'s' unless n == 1}!"
     else # Weird edge case
