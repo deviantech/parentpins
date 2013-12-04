@@ -37,7 +37,8 @@ class Pin < ActiveRecord::Base
   validates :user, :description, :board, :category, :age_group, :kind, :presence => true
   validates :kind,          :inclusion => {:in => VALID_TYPES, :message => "must be one of the supported types", :allow_blank => true}
   validates :description,   :length => {:maximum => 1024, :allow_blank => true}
-  validate :validate_url_format, :not_previously_pinned, :valid_board, :on => :create
+  validates :url,           :length => {:maximum => 1024, :allow_blank => true}
+  validate  :validate_url_format, :not_previously_pinned, :valid_board, :on => :create
   
   before_save     :filter_url_before_save
   before_update   :update_board_images_on_change

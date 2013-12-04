@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131201230514) do
+ActiveRecord::Schema.define(version: 20131204210234) do
 
   create_table "age_groups", force: true do |t|
     t.string   "name"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 20131201230514) do
 
   create_table "pins", force: true do |t|
     t.string   "kind"
-    t.string   "url"
+    t.string   "url",                     limit: 1024
     t.decimal  "price",                                precision: 10, scale: 2
     t.integer  "user_id"
     t.integer  "board_id"
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 20131201230514) do
   add_index "pins", ["board_id"], name: "index_pins_on_board_id", using: :btree
   add_index "pins", ["category_id"], name: "index_pins_on_category_id", using: :btree
   add_index "pins", ["trend_position"], name: "index_pins_on_trend_position", using: :btree
-  add_index "pins", ["url"], name: "index_pins_on_url", using: :btree
+  add_index "pins", ["url"], name: "index_pins_on_url", length: {"url"=>255}, using: :btree
   add_index "pins", ["user_id"], name: "index_pins_on_user_id", using: :btree
   add_index "pins", ["uuid"], name: "index_pins_on_uuid", unique: true, using: :btree
   add_index "pins", ["via_id"], name: "index_pins_on_via_id", using: :btree
