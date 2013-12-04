@@ -47,12 +47,13 @@ class ImportController < ApplicationController
   # Collect info & save new pins
   def step_4
     @context = :step_4
-    
-    if params[:incrementally_completed]
-      msg = "These pins failed to import"
-      flash[:error] = params[:incrementally_completed].to_i.zero? ? msg : "#{msg} (#{params[:incrementally_completed]} imported successfully)"
-    end
     craft_intermediate_pins
+        
+    if params[:incrementally_completed]
+      msg = @pins_to_import.length == 1 ? 'This pin failed to import' : "These pins failed to import"
+      flash[:error] = params[:incrementally_completed].to_i.zero? ? msg : "#{msg} (#{params[:incrementally_completed]} imported successfully)"
+      @pins_to_import.map {|a| a.valid?}
+    end
   end
 
 
@@ -117,9 +118,18 @@ class ImportController < ApplicationController
 
   protected
   
+  def pins_from_params
+    (@data[:pins] || []).collect do |idx, attribs| 
+      pin = Pin.new(attribs, :without_protection => true) 
+      pin.user = current_user
+      pin.import = @import
+      pin
+    end
+  end
+  
   def craft_intermediate_pins
     # Allow mass assignment, since we'll sanity check before saving the final version
-    @pins_to_import = @data[:pins].collect { |idx, attribs| Pin.new(attribs, :without_protection => true) }
+    @pins_to_import = pins_from_params
     @boards = @pins_to_import.map(&:board).uniq
   end
   
@@ -140,13 +150,7 @@ class ImportController < ApplicationController
     @imported = []
     @pins_to_import = []
     @import = session[:import_id] && current_user.imports.find(session[:import_id])
-
-    @step_5_pins = (@data[:pins] || []).collect do |idx, attribs| 
-      pin = Pin.new(attribs, :without_protection => true) 
-      pin.user = current_user
-      pin.import = @import
-      pin
-    end
+    @step_5_pins = pins_from_params
   end
 
 end
