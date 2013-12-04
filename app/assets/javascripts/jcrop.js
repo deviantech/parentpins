@@ -24,15 +24,18 @@ $(document).ready(function() {
     previewWrap.css({height: desiredHeight+'px', width: desiredWidth+'px'});
     
     function showPreview(coords) {
-    	var rx = desiredWidth / coords.w;
-    	var ry = desiredHeight / coords.h;
-    
-    	previewImg.css({
-    		width: Math.round(rx * actualWidth) + 'px',
-    		height: Math.round(ry * actualHeight) + 'px',
-    		marginLeft: '-' + Math.round(rx * coords.x) + 'px',
-    		marginTop: '-' + Math.round(ry * coords.y) + 'px'
-    	});
+      // TODO: THIS LOGIC IS ALL WRONG (maybe because the boxWidth/boxHeight?)
+      // Removed previewImg from UI for now, but would be better with it available
+      // 
+      // var rx = desiredWidth / coords.w;
+      // var ry = desiredHeight / coords.h;
+      //     
+      // previewImg.css({
+      //   width: Math.round(rx * actualWidth) + 'px',
+      //   height: Math.round(ry * actualHeight) + 'px',
+      //   marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+      //   marginTop: '-' + Math.round(ry * coords.y) + 'px'
+      // });
       
       $('#'+croppableName+'_x').val(coords.x);
       $('#'+croppableName+'_y').val(coords.y);
