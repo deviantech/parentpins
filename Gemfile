@@ -50,6 +50,8 @@ end
 
 # TODO: when ALLOW_MAIL_PREVIEW it removed in favor of development only, put this in the development group
 gem 'mail_view'
+gem 'newrelic_rpm'
+
 
 group :test do
   gem 'factory_girl_rails', :platform => [:ruby_19, :ruby_20]
