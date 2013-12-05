@@ -49,7 +49,7 @@
                     = p.text_area :description, :class => 'other_input'
                   .line
                     %strong Age Group
-                    = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all), {}, :class => 'age_group_id'
+                    = p.select :age_group_id, [['Select an Age Group', '']] + select_options(AgeGroup.all_cached), {}, :class => 'age_group_id'
                   .line
                     %strong Pin Type
                     - Pin::VALID_TYPES.each do |kind|
@@ -96,7 +96,7 @@
             = kind.titleize
       .field
         %strong Pin Age Group:
-        = select_tag :age_group_id, options_for_select([['Select an Age Group', '']] + select_options(AgeGroup.all))
+        = select_tag :age_group_id, options_for_select([['Select an Age Group', '']] + select_options(AgeGroup.all_cached))
   .clearfix    
     
 .clearfix

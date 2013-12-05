@@ -16,7 +16,7 @@
 
 <div class="field">
   <%= f.label :age_group_id, "Select an Age Group" %>
-  <%= f.select :age_group_id, select_options(AgeGroup.all) %>
+  <%= f.select :age_group_id, select_options(AgeGroup.all_cached) %>
 </div>
 
 <div class="field">

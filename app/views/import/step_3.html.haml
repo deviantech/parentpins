@@ -12,4 +12,4 @@
   Please drag each pin to a box to assign age groups#{', or drag the board name to add all contained pins' if @boards.length > 1}.
   
 = render 'drag_section', :attribute_to_set => :age_group_id  
-= render 'drop_section', :attribute_to_set => :age_group_id, :droppables => AgeGroup.all.collect{|a| [a.name, a.id, a.description]}
+= render 'drop_section', :attribute_to_set => :age_group_id, :droppables => AgeGroup.all_cached.collect{|a| [a.name, a.id, a.description]}

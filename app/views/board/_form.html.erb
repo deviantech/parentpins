@@ -5,7 +5,7 @@
 
 <div class="field">
   <%= f.label :category_id, "Select a Category" %>
-  <%= f.select :category_id, select_options(Category.all) %>
+  <%= f.select :category_id, select_options(Category.all_cached) %>
 </div>
 
 <div class="field">
