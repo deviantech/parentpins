@@ -27,6 +27,11 @@ $(document).ready(function() {
       // TODO: THIS LOGIC IS ALL WRONG (maybe because the boxWidth/boxHeight?)
       // Removed previewImg from UI for now, but would be better with it available
       // 
+      // 
+      // var displayedImg = $('.jcrop-holder img.jcrop_full_image');
+      // var displayedHeight = displayedImg.height();
+      // var displayedWidth  = displayedImg.width();
+      // 
       // var rx = desiredWidth / coords.w;
       // var ry = desiredHeight / coords.h;
       //     
@@ -48,9 +53,10 @@ $(document).ready(function() {
     	onSelect: showPreview,
     	aspectRatio: desiredWidth / desiredHeight,
       boxWidth: boxWidth,
-      boxHeight: boxHeight
+      boxHeight: boxHeight,
+      trueSize: [actualWidth, actualHeight]
     };
-  
+      
     // Initialize preview to match existing thumbnail
     var initCoords = {};
     $.each('x y w h'.split(' '), function() {
