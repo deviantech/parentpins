@@ -22,11 +22,10 @@
           .field.croppable_wrapper
             = image_tag current_user.send(params[:which]).url, :class => 'jcrop_full_image'
           
-          - if false # TODO: fix the preview logic to properly resize/position the image via CSS
-            %h3 Preview
-            .field.croppable_preview
-              .crop_preview_wrapper
-                = image_tag current_user.send(params[:which]).url, :class => 'crop_preview'
+          %h3 Preview
+          .field.croppable_preview
+            .crop_preview_wrapper
+              = image_tag current_user.send(params[:which]).url, :class => 'crop_preview'
           .field
             .submit
               = f.submit 'Crop Image', :class => 'btn tertiary_action'
