@@ -7,9 +7,15 @@ class ApplicationController < ActionController::Base
 
   # TODO: remove this line once done testing media responsiveness
   before_action :allow_external_iframing
-
+  before_bugsnag_notify :add_user_info_to_bugsnag
   
   private
+  
+  def add_user_info_to_bugsnag(notif)
+    notif.add_tab(:user_info, {
+      name: current_user.try(:name)
+    })
+  end
   
   def host
     port = ActionMailer::Base.default_url_options[:port]
