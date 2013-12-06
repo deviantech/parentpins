@@ -17,7 +17,7 @@ class Board < ActiveRecord::Base
   validates_length_of :name, :minimum => 2
   validates_uniqueness_of :name, :scope => :user_id
   
-  after_save :update_pin_settings
+  after_save :update_pin_settings, :touch_pins_if_necessary
   before_destroy :clean_redis
   after_create :apply_followers_from_user
   
@@ -89,6 +89,11 @@ class Board < ActiveRecord::Base
       pin.send(:copy_board_settings)
       pin.save
     end
+  end
+  
+  def touch_pins_if_necessary
+    return true unless %w(name category_id user_id).any? {|attrib| changes[attrib]}
+    pins.map(&:touch)
   end
 
   def apply_followers_from_user

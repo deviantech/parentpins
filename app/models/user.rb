@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
   validates_length_of       :featured_bio,  :maximum => 400
   validate :valid_username, :valid_social_media_links
   before_save :track_media_changes
+  after_save :touch_pins_if_necessary
   before_destroy :clean_redis
   after_create :prepopulate_following_users, :notify_admins
 
@@ -291,7 +292,7 @@ class User < ActiveRecord::Base
   
   def unfollow_user(obj)
     Rails.redis.srem(redis_name__following_users, obj.id)
-    Rails.redis.srem(obj.redis_name__followed_by,   self.id)
+    Rails.redis.srem(obj.redis_name__followed_by, self.id)
     obj.boards.each do |board|
       unfollow_board(board)
     end
@@ -299,7 +300,7 @@ class User < ActiveRecord::Base
 
   def unfollow_board(obj)
     Rails.redis.srem(redis_name__following_boards,  obj.id)
-    Rails.redis.srem(obj.redis_name__followed_by,     self.id)
+    Rails.redis.srem(obj.redis_name__followed_by,   self.id)
   end
 
   # counters
@@ -370,7 +371,16 @@ class User < ActiveRecord::Base
     "u:#{self.id}:last_board"
   end
 
-  protected
+  protected  
+  
+  # Touch pins to reset cache on changes to avatar
+  def touch_pins_if_necessary
+    return true unless %w(avatar avatar_x avatar_y avatar_w avatar_h username).any? {|attrib| changes[attrib]}
+    pins.map(&:touch)
+  end
+
+  
+  
   
   # New users should start by following two random featured users, so their activity area isn't blank to start with
   def prepopulate_following_users
