@@ -81,6 +81,7 @@ class BaseUploader < CarrierWave::Uploader::Base
     file = CarrierWave::SanitizedFile.new(file) if file.is_a?(String)
     base_name = model.respond_to?("#{mounted_as}_token") ? model.send("#{mounted_as}_token") : file.basename
     base_name = "#{base_name}_cropped_#{crop_args.join('_')}" if croppable? && opts[:cropping]
+    base_name = [opts[:version], base_name].compact.join('_')
     [base_name, file.extension].join('.')
   end
   
