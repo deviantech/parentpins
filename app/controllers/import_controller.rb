@@ -75,7 +75,7 @@ class ImportController < ApplicationController
       n = @import.pins.count
       redirect_to profile_import_path(current_user, @import, :just_completed => true), :success => "Congrats! You've just imported #{n} pin#{'s' unless n == 1}!"
     else # Weird edge case
-      redirect_to profile_path(current_user, :success => "Import completed!")
+      redirect_to pins_profile_path(current_user, :success => "Import completed!")
     end
   end
 
@@ -90,7 +90,7 @@ class ImportController < ApplicationController
 
     if @pins_to_import.empty?
       if @imported.empty?
-        redirect_to profile_path(current_user), :error => "You successfully completed your import, but had no pins selected to save."
+        redirect_to pins_profile_path(current_user), :error => "You successfully completed your import, but had no pins selected to save."
       else
         redirect_to profile_import_path(current_user, @import, :just_completed => true), :success => "Congrats! You've just imported #{@imported.length} pin#{'s' unless @imported.length == 1}!"
       end
