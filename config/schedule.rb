@@ -10,15 +10,15 @@ def current(cmd_type, cmd_str)
 end
 
 # Bundle exec rake TASK 
-job_type :current_command, "cd :path && :task :output"
-job_type :bx_rake, "cd :path && bundle exec rake :task --silent :output RAILS_ENV=:environment"
+job_type :current_command, "cd :path && :task :output RAILS_ENV=:environment PATH=$PATH:/usr/local/bin"
+job_type :bx_rake, "cd :path && bundle exec rake :task --silent :output RAILS_ENV=:environment PATH=$PATH:/usr/local/bin"
 
 
 set :output, File.join(File.expand_path( File.dirname(__FILE__) ).gsub(/releases\/\d+/, 'current'), '..', 'log', 'cron_log.log')
 
 
 
-every 1.day do
+every 10.hours do
   current :bx_rake, "trends:update"
 end
 

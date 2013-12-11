@@ -353,7 +353,7 @@ function characterCounter(holder, target, max) {
 
 function fancyPinPreloading(selector) {
   $(selector).imagesLoaded().progress(function(instance, image) {
-    $(image.img).show().parent().find('.img-preload-holder').fadeOut(600);
+    $(image.img).show().parent().find('.img-preload-holder').fadeOut(200);
   });
   
   handleProcessingPins(selector);
