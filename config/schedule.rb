@@ -10,7 +10,7 @@ def current(cmd_type, cmd_str)
 end
 
 # Bundle exec rake TASK 
-job_type :current_command, "cd :path && :task :output"
+job_type :current_command, "cd :path && :task :output RAILS_ENV=:environment PATH=$PATH:/usr/local/bin"
 job_type :bx_rake, "cd :path && bundle exec rake :task --silent :output RAILS_ENV=:environment PATH=$PATH:/usr/local/bin"
 
 
