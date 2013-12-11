@@ -47,6 +47,12 @@ after "deploy", "deploy:cleanup"
 # = Tasks =
 # =========
 
+namespace :rbenv do
+  task :rehash do
+    run 'rbenv rehash'
+  end
+end
+after "bundle:install", "rbenv:rehash"
 
 ConditionalDeploy.monitor_migrations(self)
 
