@@ -13,7 +13,12 @@ class Pin < ActiveRecord::Base
   REPIN_ATTRIBUTES = %w(kind description price url age_group_id category_id image source_image_url)
 
   mount_uploader :image, PinImageUploader
+  store_in_background :image
   include UploaderHelpers # Goes after uploaders mounted
+  
+  def image_processing?
+    !image_tmp.blank?
+  end
 
   extend FriendlyId
   friendly_id :uuid

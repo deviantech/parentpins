@@ -4,6 +4,18 @@ module ApplicationHelper
     yield
   end
         
+  def show_pin_image(pin)
+    if pin.image_processing?
+      image_tag(pin.image.url, :class => 'pin-processing') + content_tag(:div, :class => 'pin-processing') do
+        content_tag(:span) do 
+          image_tag('ui/spinner.gif')
+        end
+      end
+    else
+      image_tag pin.image.url
+    end
+  end
+  
   def pin_image_preloader(pin)
     pin = @source if pin.new_record? && @source
     
@@ -11,11 +23,17 @@ module ApplicationHelper
       "width: 222px; height: #{h}px; background: ##{color}; color: ##{contrast_color_for(color)}"
     end  
     
-    inlineBase = "width: 222px;"
+    inlineBase    = "width: 222px;"
     color         = pin.image_average_color || '555555'
     scaledHeight  = pin.image? ? pin.image_v222_width : 294
             
-    preload = if pin.image_average_color && pin.image_v222_height && pin.image_v222_width
+    preload = if pin.image_processing?
+      content_tag(:div, :class => 'pin-processing') do
+        content_tag(:span) do 
+          image_tag('ui/spinner.gif')
+        end
+      end
+    elsif pin.image? && pin.image_average_color && pin.image_v222_height && pin.image_v222_width
       
       # For images less then 222px wide, scale up
       scaledHeight = (222 / pin.image_v222_width.to_f) * pin.image_v222_height

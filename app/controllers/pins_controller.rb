@@ -1,9 +1,13 @@
 class PinsController < ApplicationController
-  before_action :authenticate_user!,      :except => [:index, :show]
+  before_action :authenticate_user!,      :except => [:index, :show, :processed]
   before_action :find_current_users_pin,  :only => [:edit, :update, :destroy, :success]
-  before_action :find_any_pin,            :only => [:like, :unlike]
+  before_action :find_any_pin,            :only => [:like, :unlike, :processed]
   before_action :set_filters,             :only => [:index]
   respond_to :html, :js
+
+  def processed
+    render :text => @pin.image_processing? ? '' : @pin.image.url(:v222)
+  end
   
   def index
     paginate_pins Pin.includes(:user).trending

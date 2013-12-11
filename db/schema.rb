@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131204210234) do
+ActiveRecord::Schema.define(version: 20131211032747) do
 
   create_table "age_groups", force: true do |t|
     t.string   "name"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20131204210234) do
     t.string   "image_v222_content_type"
     t.string   "image_token"
     t.string   "image_original_filename"
+    t.string   "image_tmp"
   end
 
   add_index "pins", ["age_group_id"], name: "index_pins_on_age_group_id", using: :btree

@@ -10,6 +10,7 @@ ParentPins::Application.routes.draw do
       post 'like'
       post 'unlike'
       get  'success'
+      get  'processed'
     end
   end
 

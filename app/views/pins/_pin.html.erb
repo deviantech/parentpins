@@ -1,11 +1,12 @@
 <% 
-  pin_cacheable = !pin.new_record? && params[:context] != 'select-featured' && params[:action] != 'edit' && !(defined?(skip_comments) && skip_comments)
+  pin_cacheable = !pin.new_record? && !pin.image_processing? && params[:context] != 'select-featured' && params[:action] != 'edit' && !(defined?(skip_comments) && skip_comments)
   cache_method = pin_cacheable ? :cache : :dummy_block
   cache_objects = ['pin_li', pin, current_user].compact
   cache_opts = user_signed_in? ? {:expires_in => 30.minutes} : {} # Allow caching for users for shorter period of time
 %>
+
 <% self.send(cache_method, cache_objects, cache_opts) do %>
-  <li class="pin pin-context <%= dom_id(pin) %>" id="<%= dom_id(pin) %>">
+  <li class="pin pin-context <%= dom_id(pin) %>" id="<%= dom_id(pin) %>" data-pin-id="<%= pin.id %>">
     <div class="bind-price price<%= ' hidden' unless pin.price %>"><%= number_to_currency pin.price %></div>
 
     <% if params[:context] == 'select-featured' %>

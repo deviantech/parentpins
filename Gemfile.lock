@@ -92,6 +92,8 @@ GEM
     carrierwave-mimetype-fu (0.0.2)
       carrierwave
       mimetype-fu
+    carrierwave_backgrounder (0.3.0)
+      carrierwave (~> 0.5)
     chronic (0.10.2)
     coderay (1.1.0)
     coffee-rails (4.0.1)
@@ -335,6 +337,7 @@ DEPENDENCIES
   carrierwave
   carrierwave-meta
   carrierwave-mimetype-fu (~> 0.0.2)
+  carrierwave_backgrounder
   coffee-rails (~> 4.0.0)
   dalli
   debugger

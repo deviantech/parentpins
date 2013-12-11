@@ -30,7 +30,7 @@
       <% if @pin.price %>
       <div class="price"><%= number_to_currency @pin.price %></div>
       <% end %>
-      <%= image_tag @pin.image.url %>
+      <%= show_pin_image(@pin) %>
       <% end %>
       <p class="description"><%= @pin.description %></p>
 

@@ -1,3 +1,5 @@
+//= require lib/jshelpers
+
 window.Global = window.Global || {};
 
 // Avoid `console` errors in browsers that lack a console.
@@ -353,6 +355,8 @@ function fancyPinPreloading(selector) {
   $(selector).imagesLoaded().progress(function(instance, image) {
     $(image.img).show().parent().find('.img-preload-holder').fadeOut(600);
   });
+  
+  handleProcessingPins(selector);
 }
 
 function disableForm(selector) {

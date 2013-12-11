@@ -2,6 +2,7 @@
 
 class PinImageUploader < BaseUploader
   include CarrierWave::Meta
+  include ::CarrierWave::Backgrounder::Delay
   
   process :resize_to_limit => [520, 99999]
 

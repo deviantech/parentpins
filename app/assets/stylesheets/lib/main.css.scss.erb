@@ -283,16 +283,26 @@ a {
 li.pin .image_link {
   position: relative;
   .img-preload-holder {
+    overflow: hidden;
+  }
+  .img-preload-holder, .pin-processing {
     text-align: center;
     position: absolute;
     top: 0px;
     left: 0px;
-    overflow: hidden;
     font-family: "Helvetica Neue", 'sans-serif';
     span {
       display:block;
       position: relative;
       top: 45%;
+    }
+  }
+  .pin-processing {
+    width: 100%;
+    span {
+      top: 135px;
+      font-size: 1.2em;
+      color: #333;
     }
   }
 }
@@ -1354,6 +1364,9 @@ li.pin-context {
   overflow: hidden;
   .modal_only {
     display:none; }
+  .actions.processing a {
+    display: none;
+  }
   .actions {
     display: block;
     background: none repeat scroll 0 0 rgba(255, 255, 255, 0.5);
@@ -1364,7 +1377,11 @@ li.pin-context {
     top: -158px;
     left: 0;
     z-index: 2;
-    @include transition(all, 0.5s, ease 0s); }
+    @include transition(all, 0.5s, ease 0s); 
+    .processing-note {
+      text-align: center;
+    }
+  }
   &:hover .actions {
     top: 0; }
   .image_link {
