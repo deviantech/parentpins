@@ -6,7 +6,8 @@ class PinsController < ApplicationController
   respond_to :html, :js
 
   def processed
-    render :text => @pin.image_processing? ? '' : @pin.image.url(:v222)
+    version = params[:context] == 'show' ? nil : :v222
+    render :text => @pin.image_processing? ? '' : @pin.image.url(version)
   end
   
   def index

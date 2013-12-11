@@ -3,14 +3,18 @@ module ApplicationHelper
   def dummy_block(*args)
     yield
   end
+
+  def pin_spinner(pin)
+    content_tag(:div, :class => 'pin-processing', :data => {'pin-id' => pin.id}) do
+      content_tag(:span) do 
+        image_tag('ui/spinner.gif')
+      end
+    end
+  end
         
   def show_pin_image(pin)
     if pin.image_processing?
-      image_tag(pin.image.url, :class => 'pin-processing') + content_tag(:div, :class => 'pin-processing') do
-        content_tag(:span) do 
-          image_tag('ui/spinner.gif')
-        end
-      end
+      image_tag(pin.image.url, :class => 'pin-processing') + pin_spinner(pin)
     else
       image_tag pin.image.url
     end
@@ -28,11 +32,7 @@ module ApplicationHelper
     scaledHeight  = pin.image? ? pin.image_v222_width : 294
             
     preload = if pin.image_processing?
-      content_tag(:div, :class => 'pin-processing') do
-        content_tag(:span) do 
-          image_tag('ui/spinner.gif')
-        end
-      end
+      pin_spinner(pin)
     elsif pin.image? && pin.image_average_color && pin.image_v222_height && pin.image_v222_width
       
       # For images less then 222px wide, scale up

@@ -85,6 +85,8 @@ gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
 gem 'jcrop-rails-v2', "~> 0.9.12.2"
 
+gem 'sucker_punch', '~> 1.0'
+
 gem 'fog', "~> 1.18.0"
 gem 'unf' # Optional dependency of fog, requiring gets rid of a warning in the logs
 

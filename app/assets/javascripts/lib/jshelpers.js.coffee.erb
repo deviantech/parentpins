@@ -1,13 +1,15 @@
 window.handleProcessingPins = (selector) ->
   $(selector).find('.pin-processing').each () ->
-    handleSingleProcessingPin( $(this).parents('.pin').first() )
+    handleSingleProcessingPin( $(this).parents('.pin-context').first(), $(this).data('pin-id') )
 
-handleSingleProcessingPin = (pin) ->
-  url = '<%= Rails.application.routes.url_helpers.processed_pin_path('PIN_ID') %>'.replace('PIN_ID', pin.data('pin-id'))
+handleSingleProcessingPin = (pin, pinID) ->
+  url = '<%= Rails.application.routes.url_helpers.processed_pin_path('PIN_ID') %>'.replace('PIN_ID', pinID) + '?context=' + (if pin.hasClass('pin') then 'li' else 'show')
   
   $.get url, (imgURL) ->
     if (imgURL.length == 0)
-      setTimeout (() -> handleSingleProcessingPin(pin)), 1000 + (Math.random * 100)
+      # Prevent thundering herd issue, and don't both retrying if pin was opened in modal but is no longer visible
+      unless pin.parents('.modal_overlay').length && !pin.is(':visible')
+        setTimeout (() -> handleSingleProcessingPin(pin)), 1000 + (Math.random * 100)
     else
       pin.find('.pin-processing').remove()
       pin.find('a.ajax.image_link img').attr('src', imgURL).attr('height', 'auto').attr('width', 'auto').css({width: 'auto', height: 'auto'})
