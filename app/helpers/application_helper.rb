@@ -13,11 +13,8 @@ module ApplicationHelper
   end
         
   def show_pin_image(pin)
-    if pin.image_processing?
-      image_tag(pin.image.url, :class => 'pin-processing') + pin_spinner(pin)
-    else
-      image_tag pin.image.url
-    end
+    extra = pin.image_processing? ? pin_spinner(pin) : ''
+    image_tag(pin.image.url, :alt => "Image for pin from #{pin.domain}", :class => 'pin_image') + extra
   end
   
   def pin_image_preloader(pin)

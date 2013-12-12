@@ -2,16 +2,22 @@ window.handleProcessingPins = (selector) ->
   $(selector).find('.pin-processing').each () ->
     handleSingleProcessingPin( $(this).parents('.pin-context').first(), $(this).data('pin-id') )
 
+failCounts = {};
+
 handleSingleProcessingPin = (pin, pinID) ->
   url = '<%= Rails.application.routes.url_helpers.processed_pin_path('PIN_ID') %>'.replace('PIN_ID', pinID) + '?context=' + (if pin.hasClass('pin') then 'li' else 'show')
+  failCounts[pinID] ||= 0
   
   $.get url, (imgURL) ->
     if (imgURL.length == 0)
-      # Prevent thundering herd issue, and don't both retrying if pin was opened in modal but is no longer visible
+      # Mitigate thundering herd issue, and don't both retrying if pin was opened in modal but is no longer visible
+      delay = 1000 + Math.round(Math.random() * 500)
+      delay += 4000 if failCounts[pinID] > 5
       unless pin.parents('.modal_overlay').length && !pin.is(':visible')
-        setTimeout (() -> handleSingleProcessingPin(pin)), 1000 + (Math.random * 100)
+        failCounts[pinID] += 1
+        setTimeout (() -> handleSingleProcessingPin(pin, pinID)), delay
     else
       pin.find('.pin-processing').remove()
-      pin.find('a.ajax.image_link img').attr('src', imgURL).attr('height', 'auto').attr('width', 'auto').css({width: 'auto', height: 'auto'})
+      pin.find('img.pin_image').attr('src', imgURL).attr('height', 'auto').attr('width', 'auto').css({width: 'auto', height: 'auto'})
       pin.find('.actions').removeClass('processing').find('.processing-note').remove()
       pin.parents('.masonry').masonry('layout')

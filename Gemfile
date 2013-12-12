@@ -79,7 +79,7 @@ gem 'omniauth-twitter'
 gem 'carrierwave'
 gem 'carrierwave-meta'
 gem 'carrierwave-mimetype-fu', '~> 0.0.2' #:path => "~/code/gems/carrierwave-mimetype-fu"
-gem 'carrierwave_backgrounder'
+gem 'carrierwave_backgrounder', git: 'https://github.com/glhewett/carrierwave_backgrounder.git' # Switch back to mainline when https://github.com/lardawge/carrierwave_backgrounder/issues/167 is resolved
 gem 'mini_magick'
 gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"

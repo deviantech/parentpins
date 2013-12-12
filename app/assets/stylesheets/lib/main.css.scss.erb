@@ -280,7 +280,7 @@ a {
   margin: 0 auto; }
 
 
-li.pin .image_link {
+li.pin .image_link, .pin-context .image_link {
   position: relative;
   .img-preload-holder {
     overflow: hidden;
@@ -1356,7 +1356,20 @@ li.pin-context {
 
 
 
-
+.pin-context:not(.pin) {
+  .processing-note {
+    display: none;
+  }
+  .actions.processing a {
+    display: none;
+  }
+  .image_link {
+    .pin-processing {
+      top: 105px !important;
+      left: 10px;
+    }
+  }
+}
 .pin {
   font-size:12px;
   color: #000;

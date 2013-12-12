@@ -17,7 +17,6 @@ class PinImageUploader < BaseUploader
     process :resize_to_fill => [55, 55]
   end
   
-  
   protected
 
   def store_average_color
