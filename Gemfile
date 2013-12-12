@@ -79,13 +79,13 @@ gem 'omniauth-twitter'
 gem 'carrierwave'
 gem 'carrierwave-meta'
 gem 'carrierwave-mimetype-fu', '~> 0.0.2' #:path => "~/code/gems/carrierwave-mimetype-fu"
-gem 'carrierwave_backgrounder', git: 'https://github.com/glhewett/carrierwave_backgrounder.git' # Switch back to mainline when https://github.com/lardawge/carrierwave_backgrounder/issues/167 is resolved
+gem 'carrierwave_backgrounder', git: 'https://github.com/glhewett/carrierwave_backgrounder.git' # TODO: Switch back to mainline when https://github.com/lardawge/carrierwave_backgrounder/issues/167 is resolved, or when swap out sucker_punch for resque/sidekiq
+gem 'sucker_punch', '~> 1.0'
+
 gem 'mini_magick'
 gem 'mime-types'
 gem 'piet' # Requires "sudo apt-get install optipng jpegoptim" or "brew install optipng; brew install jpegoptim"
 gem 'jcrop-rails-v2', "~> 0.9.12.2"
-
-gem 'sucker_punch', '~> 1.0'
 
 gem 'fog', "~> 1.18.0"
 gem 'unf' # Optional dependency of fog, requiring gets rid of a warning in the logs
