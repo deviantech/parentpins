@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require contrib/imagesloaded
-//= require contrib/masonry.min
+//= require contrib/masonry
 //= require contrib/jquery.scrollTo
 //= require contrib/jquery.history
 //= require contrib/modernizr
