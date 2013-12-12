@@ -18,9 +18,11 @@ class window.ppImporterClasses.Sources.Pinterest
   boardSelector = '.boardLinkWrapper'
   pinSelector   = '.pinWrapper'
 
-  debug = (str) ->
+  debug = (str, args...) ->
     if debugMode
-      console.log("Bookmarklet: #{str}")
+      console.log("Bookmarklet: #{str}", )
+      for arg in args
+        console.log(arg)
 
   # Because sometimes pinterest uses meta name, and sometimes meta property. Why? Good question.
   getMeta = (title, scope) ->
@@ -235,7 +237,7 @@ class window.ppImporterClasses.Sources.Pinterest
 
       pinRequest.fail (response) =>
         # Noticed once a 200 return code failing. If so, debug here.
-        debug "*** jQuery says ajax FAILED: #{thisURL} -- #{response}"
+        debug "*** jQuery says ajax FAILED: #{thisURL}:", response
         @pinURLsToProcess[thisURL] = false
 
       pinRequest.always () =>

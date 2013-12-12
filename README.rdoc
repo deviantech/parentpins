@@ -1,8 +1,8 @@
 == ParentPins
 
 Requirements:
-  Ruby 1.9.3
+  Ruby 2,0,0
   Mysql 5.0.3+ (pins.description longer than 255)
-  
+
 Workarounds:
   If jquery-ujs appears included twice in development (e.g. data-confirm actions are being called twice), clear out public/assets/*
