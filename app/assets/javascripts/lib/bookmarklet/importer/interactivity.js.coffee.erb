@@ -44,15 +44,11 @@ class window.ppImporterClasses.Interactivity
     @externalBoardData = data.boards
     if @externalPinData.length == 0
       progressDisplay.html('No importable pins found.').addClass('red')
-    else if window['postMessage']
-      @transitionToStepOne()
     else
-      progressDisplay.html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
-      @bookmarkletClosing()
+      @transitionToStepOne()
     triggerWindowRepaint()
 
   bookmarkletClosing: () ->
-    $(window).off 'message', @handleAnyPostedMessage
     @iframeWrapper.find('iframe').remove() if @iframeWrapper
   
   # Note we define all methods under constructor to keep them private
@@ -70,13 +66,6 @@ class window.ppImporterClasses.Interactivity
     # Preload loader img
     loader = new Image()
     loader.src = loaderImageURL
-
-    $(window).on 'message', (evt) =>
-      # Only process this message if it was meant for the current instance (e.g. if bookmarklet opened multiple times)
-      # TODO: Why aren't we properly removing ourselves / our listeners on bookmarklet close? (This works, but hackish)
-      if this == window.ppImporter?.Interactivity
-        @handleAnyPostedMessage(evt)
-      
     
     # =================================
     # = Implementation helper methods =
@@ -96,31 +85,6 @@ class window.ppImporterClasses.Interactivity
     
     @ensureFrameWrapper = () ->
       @iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
-
-    @handleAnyPostedMessage = (event) ->
-      if event.originalEvent.origin.replace(/^https?:/, '') != host
-        console.log('Ignoring message from mismatchted source: ' + event.originalEvent.origin)
-      else
-        @handlePostedMessage(event.originalEvent)
-
-    @handlePostedMessage = (event) ->
-      [step, command, extra...] = event.data.split(':')
-      extra = extra.join(':')
-      if step == 'step1'
-        switch command
-          when 'loaded' then @handleFrameOneLoaded()
-          when 'setHeight' then @stepOneFrame?.height( extra )
-      else if step == 'step4'
-        switch command
-          when 'done'
-            @setHeader "Successfully imported pins!"
-          when 'imported'
-            if @stepOneFrame && @stepOneFrame[0]
-              step1 = @parent.getIframeWindow(@stepOneFrame[0])
-              step1.postMessage "imported:#{extra}", '*'
-              triggerWindowRepaint()
-  
-
 
     # =================================================================
     # = Step One - choose pins to import and assign to desired boards =
@@ -148,12 +112,3 @@ class window.ppImporterClasses.Interactivity
           alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
 
 
-    @handleFrameOneLoaded = () ->
-      progressDivWrapper = outputDiv.find('#progressDisplayWrapper')
-      progressDiv = progressDivWrapper.find('#progressDisplay')
-      if progressDivWrapper.is(':visible')
-        progressDiv.addClass('no-auto-updates').text("Processed all pins. Beginning Import!")
-        setTimeout (=> 
-          progressDivWrapper.slideUp()
-          @stepOneFrame.fadeIn()
-        ), 700
