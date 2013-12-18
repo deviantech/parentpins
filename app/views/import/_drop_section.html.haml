@@ -1,11 +1,13 @@
 .drop_section_wrapper.clearfix{:data => {:extra_key => attribute_to_set}}
   %ul.drop_sections
     - droppables.each do |key, value, description|
-      %li.drop-target{:data => {attribute_to_set => value, 'target-id' => value}}
-        .drop-target-inner-wrapper
-          %h3
-            %span.help{tooltip("Drag here pins #{description}", :placement => 'top')}
-              ?
-            = key
-          %ul.collection
-            = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set) == value }, :locals => {:extra_class => 'from-drop-target'}
+      = render 'drop_section_li', :key => key, :value => value, :description => description, :attribute_to_set => attribute_to_set
+
+  - if attribute_to_set == :board_id
+    - if droppables.blank?
+      .boards-needed
+        %h2 You'll need to create a ParentPins board first
+        %p You're importing pins from Pinterest -- we need to know where you want to put them.
+
+    .board-actions
+      = link_to 'Add Board', new_profile_board_path(current_user), :class => 'ajax btn btn-success'

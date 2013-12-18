@@ -177,6 +177,13 @@ applyDroppableMasonry = () ->
     dropUL.masonry({itemSelector: 'li.drop-target'})
   
 
+# Used when boards added via ajax
+window.stepOneAddDroppableBoard = (board) ->
+  dropSection.find('.boards-needed').hide()
+  built = $(board).droppable(drop.onDroppable).show()
+  dropSection.find('.drop_sections').append( built ).masonry('appended', built)
+
+
 $(document).ready () ->
   wrapper = $('.context.step_drag_to_assign')
   return unless wrapper.length

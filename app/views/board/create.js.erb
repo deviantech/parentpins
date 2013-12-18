@@ -3,5 +3,5 @@
   $('#ajax-modal-target').find('form.form .errorWrapper').html("<%= escape_javascript(error_messages_for(@board)) %>");
 <% else %>
   Global.closeModal();
-  stepOneAddDroppableBoard("<%= escape_javascript(render('/import/our_board', :board => @board)) %>");
+  stepOneAddDroppableBoard("<%= escape_javascript(render('/import/drop_section_li', :key => @board.name, :value => @board.id, :description => 'to add to this board', :attribute_to_set => :board_id)) %>");
 <% end %>

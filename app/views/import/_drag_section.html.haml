@@ -12,6 +12,6 @@
     - if @boards.first.is_a?(Struct) # Importing external pinterest boards
       = render :partial => 'external_pin', :collection => @boards.map(&:pins).flatten, :as => :pin
     - else
-      = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set).blank? }
+      = render :partial => 'pin', :collection => (@pins_to_import || []).select{|p| p.send(attribute_to_set).blank? }
 
     = yield :import_step_submit_form

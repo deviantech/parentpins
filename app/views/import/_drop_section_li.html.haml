@@ -1,0 +1,9 @@
+%li.drop-target{:data => {attribute_to_set => value, 'target-id' => value}}
+  .drop-target-inner-wrapper
+    %h3
+      %span.help{tooltip("Drag here pins #{description}", :placement => 'top')}
+        ?
+      = key
+    %ul.collection
+      - unless @pins_to_import.blank?
+        = render :partial => 'pin', :collection => @pins_to_import.select{|p| p.send(attribute_to_set) == value }, :locals => {:extra_class => 'from-drop-target'}
