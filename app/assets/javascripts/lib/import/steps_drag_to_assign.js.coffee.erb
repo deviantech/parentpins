@@ -75,7 +75,7 @@ checkIfAnyDraggableLeft = () ->
   setTimeout soon, 10 # Let drag complete first
   
 # DATA -- assign kind or age group to handle both steps
-collectPinDataFrom = (selector, extraKey) ->
+collectPinDataFrom = (selector, extraKey) ->  
   data = []
   selector.each () ->
     extraVal = extraKey && $(this).data(extraKey.replace(/_/g, '-'))
@@ -84,17 +84,18 @@ collectPinDataFrom = (selector, extraKey) ->
       attribs = $(this).data('attributes')
       toSet = {}
       toSet[extraKey] = extraVal
+      
       if extraVal then $.extend(attribs, toSet)
       data.push(attribs)
       
   return data
 
 handleSubmission = (form) ->
-  if $('.drag_section_wrapper li.pin').length && !form.data('go-back')
-    if form.data('only') == 'any'
-      alert("Please drag at least one pin down to the boxes first.")
-    else
-      alert("Please drag ALL pins down to the boxes first.")
+  if form.data('only') == 'any' && $('.drop_section_wrapper li.pin').length == 0
+    alert("Please drag at least one pin down to the boxes first.")
+    return false
+  else if form.data('only') != 'any' && $('.drag_section_wrapper li.pin').length && !form.data('go-back')
+    alert("Please drag ALL pins down to the boxes first.")
     return false
   else
     data = if form.data('go-back')

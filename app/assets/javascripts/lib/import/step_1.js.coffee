@@ -20,36 +20,30 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
       $(this).appendTo(not_yet_imported)
 
 
+prevImportedShown = true
+
 togglePrevImported = () ->
-  console.log('clicked')
+
+  for pin in $('.drag_section_wrapper li.pin')
+    data = $(pin).data()
+    images = prevImported[ data['pin-url'] ]
+    if images
+      console.log(images)
+
+  prevImportedShown = !prevImportedShown    
 
 $(document).ready () ->
   if $('.context.import.step_1').length
-    $('.js-togglePrevImported').on 'click touchend', (e) ->
-      e.preventDefault()
-      togglePrevImported()
     
-    initial = $('.importing_pins.previously_imported').data('initial')
-    if typeof(initial) == 'string' then initial = $.parseJSON(raw)
-    handlePreviouslyImportedData(initial)
-
-    # Handle Reset Button
-    $('#ppResetDragDropLink').on 'click', (e) =>
-      e.preventDefault();
-      handlePreviouslyImportedData(null, true)
+    window.prevImported = $('#import_form').data('previously-imported')
+    if typeof(prevImported) == 'string' then window.prevImported = $.parseJSON(prevImported)
     
-    # Handle show/hide previous
-    $('#ppTogglePreviouslyImportedPins').on 'click', (e) =>
-      e.preventDefault();
-      imported = $('.importing_pins.previously_imported')
-      ul = imported.find('ul.collection')
-      link = $(e.currentTarget)
-      if ul.is(':visible')
-        link.text('(show)')
-        ul.slideUp () ->
-          checkIfAnyDraggableLeft()
-      else
-        imported.find('.no-more').remove()
-        link.text('(hide)')
-        ul.slideDown () ->
-          checkIfAnyDraggableLeft()
+    togglePrevImported()
+        
+    if Object.keys(prevImported).length == 0
+      $('.js-togglePrevImported').hide()
+    else
+      $('.js-togglePrevImported').on 'click touchend', (e) ->
+        e.preventDefault()
+        togglePrevImported()
+      
