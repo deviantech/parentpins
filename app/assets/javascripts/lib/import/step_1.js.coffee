@@ -1,16 +1,9 @@
-prevImportedPins = []
+window.prevImportedPins = []
 
-togglePrevImported = () ->
-  if window.prevImportedShown 
-    for pin in prevImportedPins
-      $(pin).hide()
-  else
-    $('.drag_section_wrapper li.pin').show()
-
+window.togglePrevImported = () ->
   window.prevImportedShown = !window.prevImportedShown
+  afterVisiblePinsChanged()
   $('.js-togglePrevImported').text(if window.prevImportedShown then 'Hide Previously Imported' else 'Show Previously Imported')
-  checkIfAnyDraggableLeft()
-  updateBoardPendingPinsCounters()
 
 $(document).ready () ->
   if $('.context.import.step_1').length
@@ -22,11 +15,13 @@ $(document).ready () ->
       $pin = $(pin)
       if images = prevImportedData[ $pin.data('pin-url') ]
         if images.indexOf( $pin.data('pin-image') ) > -1
-          prevImportedPins.push($pin)
-    
-    
-    if prevImportedPins.length
+          $pin.addClass('prev-imported')
+          window.prevImportedPins.push($pin)
+        
+    if window.prevImportedPins.length
       $('.js-togglePrevImported').css('display', 'inline-block')
+
+      window.prevImportedShown = true
       togglePrevImported()
       $('.js-togglePrevImported').on 'click touchend', (e) ->
         e.preventDefault()

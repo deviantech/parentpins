@@ -12,7 +12,9 @@ window.updateBoardPendingPinsCounters = () ->
     board = $(this)
     counter = board.find('.counter')
     if counter.length
-      count = dragSection.find("li.pin.board-#{board.data('board-id')}:visible").length
+      count = if window.prevImportedShown then dragSection.find("li.pin.board-#{board.data('board-id')}").length
+      else dragSection.find("li.pin.board-#{board.data('board-id')}:not(.prev-imported)").length
+        
       counter.html("(#{count})")
       allEmpty = false unless count == 0
       if count == 0 then board.addClass('empty') else board.removeClass('empty')
@@ -20,13 +22,27 @@ window.updateBoardPendingPinsCounters = () ->
   firstBoard = dragSection.find('ul.boards li').first()
   if allEmpty then firstBoard.addClass('empty') else firstBoard.removeClass('empty')
 
-hideShowPinsForSelectedBoard = () ->
+
+
+window.afterVisiblePinsChanged = () ->
   id = dragSection.find('ul.boards li.selected').data('board-id')
   soon = () =>
+    dragSection.find('li.pin').show()
+    console.log "baseline: showing #{dragSection.find('li.pin').length}"
+    
     if boardsAreShown && id
       dragSection.find('li.pin').hide().removeClass('ui-selected')
       dragSection.find("li.pin.board-#{id}").show()
+    
+    console.log "after per-board: showing #{dragSection.find('li.pin:visible').length}"
+    
+    if window.prevImportedPins && !window.prevImportedShown
+      $(pin).hide() for pin in window.prevImportedPins when dragSection.find($(pin)).length
+      
+    console.log "after prevImported (#{window.prevImportedShown}): showing #{dragSection.find('li.pin:visible').length}"
+    
     checkIfAnyDraggableLeft()
+    updateBoardPendingPinsCounters()
 
   # Give JS time to reset to having dropped pin (not sure why, but required)
   setTimeout soon, 1
@@ -146,7 +162,7 @@ drop = {
     drop: (event, ui) ->
       target = $(this).find('ul.pins')
       $(ui.draggable).removeClass('from-drop-target').data('from-drop-target', null).draggable().draggable('destroy').draggable(drag.pinsToDroppable).appendTo(target)
-      hideShowPinsForSelectedBoard()
+      afterVisiblePinsChanged()
   }
 }
 
@@ -206,7 +222,7 @@ $(document).ready () ->
   
   dragSection.on 'mousedown', 'li.board', (e) ->
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
-    hideShowPinsForSelectedBoard()
+    afterVisiblePinsChanged()
     
   $('#import_form').on 'submit', (e) ->
     handleSubmission( $(this) )
