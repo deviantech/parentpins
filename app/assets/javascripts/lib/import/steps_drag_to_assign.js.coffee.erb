@@ -28,18 +28,13 @@ window.afterVisiblePinsChanged = () ->
   id = dragSection.find('ul.boards li.selected').data('board-id')
   soon = () =>
     dragSection.find('li.pin').show()
-    console.log "baseline: showing #{dragSection.find('li.pin').length}"
     
     if boardsAreShown && id
       dragSection.find('li.pin').hide().removeClass('ui-selected')
       dragSection.find("li.pin.board-#{id}").show()
     
-    console.log "after per-board: showing #{dragSection.find('li.pin:visible').length}"
-    
     if window.prevImportedPins && !window.prevImportedShown
       $(pin).hide() for pin in window.prevImportedPins when dragSection.find($(pin)).length
-      
-    console.log "after prevImported (#{window.prevImportedShown}): showing #{dragSection.find('li.pin:visible').length}"
     
     checkIfAnyDraggableLeft()
     updateBoardPendingPinsCounters()
@@ -145,7 +140,7 @@ drop = {
       else if helper.hasClass('multi-drag-helper')
         helper.data('origElements')
       else if helper.hasClass('board')
-        dragSection.find('li.pin.board-'+helper.data('board-id'))
+        dragSection.find('li.pin.board-'+helper.data('board-id')+':visible')
       
       # callingn draggable before draggable('destroy') to avoid edge case where it's not a draggable yet (not sure how to test, but calling with no arguments doesn't seem to override anything)
       toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable().draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
