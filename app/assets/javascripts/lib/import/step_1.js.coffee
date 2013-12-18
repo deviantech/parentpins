@@ -20,8 +20,15 @@ handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
       $(this).appendTo(not_yet_imported)
 
 
+togglePrevImported = () ->
+  console.log('clicked')
+
 $(document).ready () ->
-  if $('context.import.step_1').length
+  if $('.context.import.step_1').length
+    $('.js-togglePrevImported').on 'click touchend', (e) ->
+      e.preventDefault()
+      togglePrevImported()
+    
     initial = $('.importing_pins.previously_imported').data('initial')
     if typeof(initial) == 'string' then initial = $.parseJSON(raw)
     handlePreviouslyImportedData(initial)

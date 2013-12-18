@@ -6,8 +6,3 @@ Requirements:
 
 Workarounds:
   If jquery-ujs appears included twice in development (e.g. data-confirm actions are being called twice), clear out public/assets/*
-  
-
-=== Bootstrap Components
-  This is not a comprehensive list, but when using new components adding here to track which are in use:
-  * Added btn components (Dec 18, 2013)
