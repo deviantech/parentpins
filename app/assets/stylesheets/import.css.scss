@@ -573,8 +573,8 @@ body.importing.step_1 {
             font-size:20px;
             position:relative;
             border-top: 1px solid #ECECEC;
-            span {
-              display: block;
+            span.help {
+              display: none;
               position: absolute;
               top: 0;
               right: -12px;
@@ -585,8 +585,12 @@ body.importing.step_1 {
               font-size: 15px;
               line-height: 18px;
               &:hover {
-                cursor:pointer;}
+                cursor:pointer;
+              }
             }
+          }
+          &:hover h3 span.help {
+            display: block;
           }
           &.ui-droppable-active {
             background: #DDFFE2;

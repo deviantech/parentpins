@@ -12,7 +12,7 @@ updateBoardPendingPinsCounters = () ->
     board = $(this)
     counter = board.find('.counter')
     if counter.length
-      count = dragSection.find("li.pin.board_#{board.data('board-id')}").length
+      count = dragSection.find("li.pin.board-#{board.data('board-id')}").length
       counter.html("(#{count})")
       allEmpty = false unless count == 0
       if count == 0 then board.addClass('empty') else board.removeClass('empty')
@@ -25,7 +25,7 @@ hideShowPinsForSelectedBoard = () ->
   soon = () =>
     if boardsAreShown && id
       dragSection.find('li.pin').hide().removeClass('ui-selected')
-      dragSection.find("li.pin.board_#{id}").show()
+      dragSection.find("li.pin.board-#{id}").show()
     checkIfAnyDraggableLeft()
 
   # Give JS time to reset to having dropped pin (not sure why, but required)
@@ -114,7 +114,7 @@ drop = {
       else if helper.hasClass('multi-drag-helper')
         helper.data('origElements')
       else if helper.hasClass('board')
-        dragSection.find('li.pin.board_'+helper.data('board-id'))
+        dragSection.find('li.pin.board-'+helper.data('board-id'))
       
       # callingn draggable before draggable('destroy') to avoid edge case where it's not a draggable yet (not sure how to test, but calling with no arguments doesn't seem to override anything)
       toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable().draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
