@@ -14,7 +14,11 @@ $(document).ready () ->
     for pin in $('.drag_section_wrapper li.pin')
       $pin = $(pin)
       if images = prevImportedData[ $pin.data('pin-url') ]
-        if images.indexOf( $pin.data('pin-image') ) > -1
+        
+        # Strip out protocol and possible CDN subdomains (matches logic in user#previously_imported_json)
+        testImgUrl = $pin.data('pin-image').replace(/^https?:\/\//i, '//').replace(/\/\/.*?\.pinimg/, '//*.pinimg')
+        
+        if images.indexOf( testImgUrl ) > -1
           $pin.addClass('prev-imported')
           window.prevImportedPins.push($pin)
         

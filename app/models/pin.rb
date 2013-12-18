@@ -68,13 +68,6 @@ class Pin < ActiveRecord::Base
   scope :uniq_source_image_url, -> { group(:source_image_url) }  
   
   default_scope {newest_first}
-
-  # We track previously-imported (for pinterest imports) based on the URL the pins is referencing and the name of the original image (source_image_url)
-  def self.json_for_pins(pins)
-    Array(pins).each_with_object({}) {|p, result|
-      result[p.url] ||= []; result[p.url] << p.source_image_url
-    }.to_json
-  end
   
   def import_json
     # Awkward wrapper, but just trying to DRY up to_json options

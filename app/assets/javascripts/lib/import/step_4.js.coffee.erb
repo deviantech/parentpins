@@ -1,17 +1,3 @@
-sendMessage = (msg, explanation) ->
-  if (!window.opener)
-    console.log("Sorry, browser doesn't appear to support connecting to the parent window.")
-  else if (!window.opener.postMessage)
-    console.log("Sorry, your browser appears too old to support modern web standards.")
-  else
-    window.opener.postMessage(msg, '*')
-
-window.importedPins = (pins_as_string) ->
-  sendMessage("step4:imported:#{pins_as_string}")
-
-window.importCompleted = () ->
-  sendMessage("step4:done")
-
 updateOtherStatus = (fields) ->
   updateStatusField fields, '.otherStatus'
 

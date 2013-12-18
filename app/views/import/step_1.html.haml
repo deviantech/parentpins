@@ -4,7 +4,7 @@
 
 = render 'drag_section', :attribute_to_set => :board_id
 
-= form_tag pin_import_step_2_path, :id => 'import_form', :class => 'hide_until_any_assigned', :data => {:only => 'any', :previously_imported => Pin.json_for_pins(user_signed_in? ? current_user.pins : [])} do
+= form_tag pin_import_step_2_path, :id => 'import_form', :class => 'hide_until_any_assigned', :data => {:only => 'any', :previously_imported => current_user.try(:previously_imported_json) || {}} do
   = hidden_field_tag :data_string
   = hidden_field_tag :source, @data[:source]
   .done.unwrapped

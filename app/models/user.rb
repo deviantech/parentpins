@@ -158,6 +158,17 @@ class User < ActiveRecord::Base
   def facebook_account_url
     facebook_account.blank? ? nil : "https://www.facebook.com/#{facebook_account}"
   end
+  
+  # We track previously-imported (for pinterest imports) based on the URL the pins is referencing and the name of the original image (source_image_url)
+  # Before returning, though, extract the CDN subdomain from the image URL (javascript takes this into account in step_1.js.coffee)
+  def previously_imported_json
+    Array(pins).each_with_object({}) {|p, result|
+      next if p.source_image_url.blank? || !p.source_image_url.match(/\.pinimg.com/)
+      result[p.url] ||= []
+      result[p.url] << p.source_image_url.sub(/\Ahttps?:\/\//i, '//').sub(/\/\/.*?\.pinimg/i, '//*.pinimg')
+    }.to_json
+  end
+  
 
   # ===============================
   # = REDIS: last board pinned to =
