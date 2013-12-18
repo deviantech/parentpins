@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
   end
 
   def featured_pin
-    @featured_pin ||= (featured_pin_id.blank? || !pins.exists?(featured_pin_id)) ? pins.first : pins.find(featured_pin_id)
+    @featured_pin ||= (featured_pin_id.blank? || !pins.exists?(featured_pin_id)) ? pins.last : pins.find(featured_pin_id)
   end
   
 
