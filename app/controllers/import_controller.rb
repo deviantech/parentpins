@@ -22,7 +22,7 @@ class ImportController < ApplicationController
 
   # Assign pins to boards
   def step_1
-    @context = :step_drag_to_assign
+    @context = 'step_drag_to_assign step_1'
     
     xBoard = Struct.new(:id, :name, :pins)
     @boards = []

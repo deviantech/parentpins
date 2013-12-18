@@ -13,19 +13,3 @@
 
 
 = render 'drop_section', :attribute_to_set => :board_id, :droppables => current_user.boards.collect {|b| [b.name, b.id, "to add to this board"]}
-
-- if false # TODO FINISH ME
-  %ul.boards
-    - if user_signed_in? && current_user.boards.empty?
-      .no-pp-boards
-        You'll need to 
-        = link_to 'add at least one ParentPins board', new_profile_board_path(current_user), :class => 'ajax'
-        before importing pins.
-
-  .buttons_section
-    = link_to 'Add new board', new_profile_board_path(current_user), :class => 'ajax'
-    = link_to "Reset Drag/Drop", '#', :id => 'ppResetDragDropLink'
-
-
-    = form_tag pin_import_step_2_path, :target => "_blank", :id => 'ppSubmitBoardsSortedForm' do
-      = submit_tag 'Import These Pins', :id => 'ppSubmitBoardsSortedLink', :class => 'btn tertiary_action'
