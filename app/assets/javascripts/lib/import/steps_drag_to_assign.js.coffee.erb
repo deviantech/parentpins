@@ -42,11 +42,13 @@ window.checkIfAnyDraggableLeft = () ->
     hideBoards = false
     if boardsAreShown && section.find('li.pin').length == 0 then hideBoards = true
     
-    section.find('.no-more').remove()
+    dragSection.find('.no-more').remove()
     unless section.find('li.pin:visible').length
-      console.log !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
       if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
         hideBoards = true
+
+      if dragSection.find('li.pin').length == 0
+        section.append("<div class='no-more'>You've already assigned all pins.</div>")
       else
         section.append("<div class='no-more'>You've already assigned all pins in this board.</div>")
 
