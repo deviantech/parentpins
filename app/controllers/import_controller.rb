@@ -3,7 +3,7 @@ class ImportController < ApplicationController
   skip_before_action :verify_authenticity_token, :only => [:step_1, :login_check] # Coming from JS, no way for bookmarklet to know proper CSRF token
   before_action :authenticate_user!,  :except => [:login_check, :external_embedded]
   before_action :parse_params,        :except => [:login_check, :external_embedded, :show]
-  before_action :get_profile_info,    :except => [:login_check, :external_embedded, :step_1]
+  before_action :get_profile_info,    :except => [:login_check, :external_embedded]
   before_action :set_filters,         :only =>   [:show]
   before_action :step_5_pins,         :only =>   [:step_5, :step_5_incremental, :step_5_incremental_completed]
 
@@ -22,15 +22,16 @@ class ImportController < ApplicationController
 
   # Assign pins to boards
   def step_1
+    @context = 'step_drag_to_assign step_1'
+    
     xBoard = Struct.new(:id, :name, :pins)
-    @external_boards = []
+    @boards = []
     @data[:import][:boards].each do |board_id, board_info|
       board = xBoard.new(board_id, board_info[:name], board_info[:pins])
       board.pins = (board_info[:pins] || []).collect {|idx, p| Pin.from_pinterest(current_user, nil, p) }
-      @external_boards << board
+      board.pins.map{|p| p.board_id = board_id}
+      @boards << board
     end
-
-    render :layout => 'external_import'
   end
 
   def step_2

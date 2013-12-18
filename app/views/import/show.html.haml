@@ -1,9 +1,3 @@
 - @profile_header = "You imported #{pluralize @pins.length, 'pin', 'pins'} on #{@import.created_at.strftime("%B %e, %Y")}"
 
 = render 'pins/pins'
-
-- if params[:just_completed]
-  - content_for :footer_js do
-    :javascript
-      importedPins("#{escape_javascript Pin.json_for_pins(@pins)}");
-      importCompleted();

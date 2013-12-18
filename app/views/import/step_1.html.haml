@@ -1,71 +1,15 @@
-#pp_pinterest_import_wrapper{:data => {'all-pins' => Pin.step_one_json(@external_boards.map(&:pins).flatten)}}
+= render 'progress', :step => 1
+.instructions
+  Below you have all #{@boards.length > 1 ? 'your Pinterest pins' : 'the pins from this Pinterest board'}. Choose which you'd like to import by dragging them down to one of your ParentPins boards, below.
 
-  #pinterest_section
-    - if @external_boards.length > 1
-      .importing_boards
-        %p 
-          Your Pinterest Boards
-          %span.tip{tooltip('Drag pins from these Pinterest boards onto the boards below. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :placement => 'left', :style => 'float:right;')} ?
-        %ul
-          %li.board.board-all.selected{:data => {:class => 'board-all'}} Show All Pinterest Pins
-          - @external_boards.each do |board|
-            %li.board{:data => {:class => "board-#{board.id}"}}
-              %span.board_name= board.name
-              %span.counter
-        .clear
-      
+= render 'drag_section', :attribute_to_set => :board_id
 
-    .pin_lists{:class => @external_boards.length > 1 ? '' : 'no-boards'}
-      %h2 Drag Your Pinterest Pins to Your ParentPins Boards Below
-      .importing_pins.previously_imported{'data-initial' => "#{Pin.json_for_pins(user_signed_in? ? current_user.pins : [])}"}
-        %h3 
-          Pinterest pins previously imported
-          = link_to '(hide)', '#', :id => 'ppTogglePreviouslyImportedPins'
-          %span.tip{tooltip('If in the future you decide to import more pins, the ones you have already imported will be saved here so you can easily go through the importer process again.', :placement => 'bottom')} ?
-        %ul.collection.clearfix
-    
-      .importing_pins.not_yet_imported
-        %h3
-          Pinterest pins not yet imported
-        %ul.collection.clearfix
-          - @external_boards.each do |board|
-            - board.pins.each do |pin|
-              %li.pin.board-all{:class => "board-#{board.id}", :data => {'pin-external-id' => pin.external_id, 'pin-url' => pin.url, 'pin-image' => pin.cached_remote_image_url}}
-                .thumb= image_tag (pin.cached_remote_small_image_url.blank? ? pin.cached_remote_image_url : pin.cached_remote_small_image_url) || pin.image.url, :alt => "Pin Image"
-                .hover_info
-                  .hover_content= pin.description
-                .clearfix
+= form_tag pin_import_step_2_path, :id => 'import_form', :class => 'hide_until_any_assigned', :data => {:only => 'any', :previously_imported => current_user.try(:previously_imported_json) || {}} do
+  = hidden_field_tag :data_string
+  = hidden_field_tag :source, @data[:source]
+  .done.unwrapped
+    When you've moved all the pins you want to import...
+    = submit_tag "Import These Pins &rarr;".html_safe, :class => 'btn primary'
 
-      .clear
-    .clear
-  .clear
 
-  #our_section
-    %h2
-      Your ParentPins Boards
-      %span.tip{tooltip('Drag your Pinterest pins from above onto these boards. You can drag an entire Pinterest board, an individual pin, or select multiple pins to drag at once.', :placement => 'left')} ?
-    %ul.boards
-      - if user_signed_in? && current_user.boards.empty?
-        .no-pp-boards
-          You'll need to 
-          = link_to 'add at least one ParentPins board', new_profile_board_path(current_user), :class => 'ajax'
-          before importing pins.
-      - (user_signed_in? ? current_user.boards : []).each do |board|
-        = render 'our_board', :board => board
-    .clearfix
-
-  .buttons_section
-    .left
-      = link_to 'Add new board', new_profile_board_path(current_user), :class => 'ajax'
-
-      = link_to "Reset Drag/Drop", '#', :id => 'ppResetDragDropLink'
-      
-    
-    .right
-      = form_tag pin_import_step_2_path, :target => "_blank", :id => 'ppSubmitBoardsSortedForm' do
-        = hidden_field_tag :data_string
-        = hidden_field_tag :source, @data[:source]
-        = submit_tag 'Import These Pins', :id => 'ppSubmitBoardsSortedLink', :class => 'btn tertiary_action'
-      
-    .clearfix
-  .clearfix
+= render 'drop_section', :attribute_to_set => :board_id, :droppables => current_user.boards.collect {|b| [b.name, b.id, "to add to this board"]}

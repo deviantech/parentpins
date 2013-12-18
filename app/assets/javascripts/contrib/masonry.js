@@ -1,272 +1,146 @@
 /*!
- * Masonry PACKAGED v3.1.2
+ * Masonry PACKAGED v3.1.3
  * Cascading grid layout library
  * http://masonry.desandro.com
  * MIT License
  * by David DeSandro
  */
 
-/*!
- * getStyleProperty by kangax
- * http://perfectionkills.com/feature-testing-css-properties/
- */
 
-/*jshint browser: true, strict: true, undef: true */
-/*globals define: false */
+/**
+ * Bridget makes jQuery widgets
+ * v1.0.1
+ */
 
 ( function( window ) {
 
-'use strict';
 
-var prefixes = 'Webkit Moz ms Ms O'.split(' ');
-var docElemStyle = document.documentElement.style;
 
-function getStyleProperty( propName ) {
-  if ( !propName ) {
+// -------------------------- utils -------------------------- //
+
+var slice = Array.prototype.slice;
+
+function noop() {}
+
+// -------------------------- definition -------------------------- //
+
+function defineBridget( $ ) {
+
+// bail if no jQuery
+if ( !$ ) {
+  return;
+}
+
+// -------------------------- addOptionMethod -------------------------- //
+
+/**
+ * adds option method -> $().plugin('option', {...})
+ * @param {Function} PluginClass - constructor class
+ */
+function addOptionMethod( PluginClass ) {
+  // don't overwrite original option method
+  if ( PluginClass.prototype.option ) {
     return;
   }
 
-  // test standard property first
-  if ( typeof docElemStyle[ propName ] === 'string' ) {
-    return propName;
-  }
-
-  // capitalize
-  propName = propName.charAt(0).toUpperCase() + propName.slice(1);
-
-  // test vendor specific properties
-  var prefixed;
-  for ( var i=0, len = prefixes.length; i < len; i++ ) {
-    prefixed = prefixes[i] + propName;
-    if ( typeof docElemStyle[ prefixed ] === 'string' ) {
-      return prefixed;
+  // option setter
+  PluginClass.prototype.option = function( opts ) {
+    // bail out if not an object
+    if ( !$.isPlainObject( opts ) ){
+      return;
     }
-  }
+    this.options = $.extend( true, this.options, opts );
+  };
 }
 
-// transport
-if ( typeof define === 'function' && define.amd ) {
-  // AMD
-  define( function() {
-    return getStyleProperty;
-  });
-} else {
-  // browser global
-  window.getStyleProperty = getStyleProperty;
-}
 
-})( window );
+// -------------------------- plugin bridge -------------------------- //
 
-/**
- * getSize v1.1.5
- * measure size of elements
- */
-
-/*jshint browser: true, strict: true, undef: true, unused: true */
-/*global define: false */
-
-( function( window, undefined ) {
-
-'use strict';
-
-// -------------------------- helpers -------------------------- //
-
-var defView = document.defaultView;
-var isComputedStyle = defView && defView.getComputedStyle;
-
-var getStyle = isComputedStyle ?
-  function( elem ) {
-    return defView.getComputedStyle( elem, null );
-  } :
-  function( elem ) {
-    return elem.currentStyle;
+// helper function for logging errors
+// $.error breaks jQuery chaining
+var logError = typeof console === 'undefined' ? noop :
+  function( message ) {
+    console.error( message );
   };
 
-// get a number from a string, not a percentage
-function getStyleSize( value ) {
-  var num = parseFloat( value );
-  // not a percent like '100%', and a number
-  var isValid = value.indexOf('%') === -1 && !isNaN( num );
-  return isValid && num;
-}
+/**
+ * jQuery plugin bridge, access methods like $elem.plugin('method')
+ * @param {String} namespace - plugin name
+ * @param {Function} PluginClass - constructor class
+ */
+function bridge( namespace, PluginClass ) {
+  // add to jQuery fn namespace
+  $.fn[ namespace ] = function( options ) {
+    if ( typeof options === 'string' ) {
+      // call plugin method when first argument is a string
+      // get arguments for method
+      var args = slice.call( arguments, 1 );
 
-// -------------------------- measurements -------------------------- //
+      for ( var i=0, len = this.length; i < len; i++ ) {
+        var elem = this[i];
+        var instance = $.data( elem, namespace );
+        if ( !instance ) {
+          logError( "cannot call methods on " + namespace + " prior to initialization; " +
+            "attempted to call '" + options + "'" );
+          continue;
+        }
+        if ( !$.isFunction( instance[options] ) || options.charAt(0) === '_' ) {
+          logError( "no such method '" + options + "' for " + namespace + " instance" );
+          continue;
+        }
 
-var measurements = [
-  'paddingLeft',
-  'paddingRight',
-  'paddingTop',
-  'paddingBottom',
-  'marginLeft',
-  'marginRight',
-  'marginTop',
-  'marginBottom',
-  'borderLeftWidth',
-  'borderRightWidth',
-  'borderTopWidth',
-  'borderBottomWidth'
-];
+        // trigger method with arguments
+        var returnValue = instance[ options ].apply( instance, args );
 
-function getZeroSize() {
-  var size = {
-    width: 0,
-    height: 0,
-    innerWidth: 0,
-    innerHeight: 0,
-    outerWidth: 0,
-    outerHeight: 0
+        // break look and return first value if provided
+        if ( returnValue !== undefined ) {
+          return returnValue;
+        }
+      }
+      // return this if no return value
+      return this;
+    } else {
+      return this.each( function() {
+        var instance = $.data( this, namespace );
+        if ( instance ) {
+          // apply options & init
+          instance.option( options );
+          instance._init();
+        } else {
+          // initialize new instance
+          instance = new PluginClass( this, options );
+          $.data( this, namespace, instance );
+        }
+      });
+    }
   };
-  for ( var i=0, len = measurements.length; i < len; i++ ) {
-    var measurement = measurements[i];
-    size[ measurement ] = 0;
-  }
-  return size;
+
 }
 
-
-
-function defineGetSize( getStyleProperty ) {
-
-// -------------------------- box sizing -------------------------- //
-
-var boxSizingProp = getStyleProperty('boxSizing');
-var isBoxSizeOuter;
+// -------------------------- bridget -------------------------- //
 
 /**
- * WebKit measures the outer-width on style.width on border-box elems
- * IE & Firefox measures the inner-width
+ * converts a Prototypical class into a proper jQuery plugin
+ *   the class must have a ._init method
+ * @param {String} namespace - plugin name, used in $().pluginName
+ * @param {Function} PluginClass - constructor class
  */
-( function() {
-  if ( !boxSizingProp ) {
-    return;
-  }
+$.bridget = function( namespace, PluginClass ) {
+  addOptionMethod( PluginClass );
+  bridge( namespace, PluginClass );
+};
 
-  var div = document.createElement('div');
-  div.style.width = '200px';
-  div.style.padding = '1px 2px 3px 4px';
-  div.style.borderStyle = 'solid';
-  div.style.borderWidth = '1px 2px 3px 4px';
-  div.style[ boxSizingProp ] = 'border-box';
-
-  var body = document.body || document.documentElement;
-  body.appendChild( div );
-  var style = getStyle( div );
-
-  isBoxSizeOuter = getStyleSize( style.width ) === 200;
-  body.removeChild( div );
-})();
-
-
-// -------------------------- getSize -------------------------- //
-
-function getSize( elem ) {
-  // use querySeletor if elem is string
-  if ( typeof elem === 'string' ) {
-    elem = document.querySelector( elem );
-  }
-
-  // do not proceed on non-objects
-  if ( !elem || typeof elem !== 'object' || !elem.nodeType ) {
-    return;
-  }
-
-  var style = getStyle( elem );
-
-  // if hidden, everything is 0
-  if ( style.display === 'none' ) {
-    return getZeroSize();
-  }
-
-  var size = {};
-  size.width = elem.offsetWidth;
-  size.height = elem.offsetHeight;
-
-  var isBorderBox = size.isBorderBox = !!( boxSizingProp &&
-    style[ boxSizingProp ] && style[ boxSizingProp ] === 'border-box' );
-
-  // get all measurements
-  for ( var i=0, len = measurements.length; i < len; i++ ) {
-    var measurement = measurements[i];
-    var value = style[ measurement ];
-    value = mungeNonPixel( elem, value );
-    var num = parseFloat( value );
-    // any 'auto', 'medium' value will be 0
-    size[ measurement ] = !isNaN( num ) ? num : 0;
-  }
-
-  var paddingWidth = size.paddingLeft + size.paddingRight;
-  var paddingHeight = size.paddingTop + size.paddingBottom;
-  var marginWidth = size.marginLeft + size.marginRight;
-  var marginHeight = size.marginTop + size.marginBottom;
-  var borderWidth = size.borderLeftWidth + size.borderRightWidth;
-  var borderHeight = size.borderTopWidth + size.borderBottomWidth;
-
-  var isBorderBoxSizeOuter = isBorderBox && isBoxSizeOuter;
-
-  // overwrite width and height if we can get it from style
-  var styleWidth = getStyleSize( style.width );
-  if ( styleWidth !== false ) {
-    size.width = styleWidth +
-      // add padding and border unless it's already including it
-      ( isBorderBoxSizeOuter ? 0 : paddingWidth + borderWidth );
-  }
-
-  var styleHeight = getStyleSize( style.height );
-  if ( styleHeight !== false ) {
-    size.height = styleHeight +
-      // add padding and border unless it's already including it
-      ( isBorderBoxSizeOuter ? 0 : paddingHeight + borderHeight );
-  }
-
-  size.innerWidth = size.width - ( paddingWidth + borderWidth );
-  size.innerHeight = size.height - ( paddingHeight + borderHeight );
-
-  size.outerWidth = size.width + marginWidth;
-  size.outerHeight = size.height + marginHeight;
-
-  return size;
-}
-
-// IE8 returns percent values, not pixels
-// taken from jQuery's curCSS
-function mungeNonPixel( elem, value ) {
-  // IE8 and has percent value
-  if ( isComputedStyle || value.indexOf('%') === -1 ) {
-    return value;
-  }
-  var style = elem.style;
-	// Remember the original values
-	var left = style.left;
-	var rs = elem.runtimeStyle;
-	var rsLeft = rs && rs.left;
-
-	// Put in the new values to get a computed value out
-	if ( rsLeft ) {
-		rs.left = elem.currentStyle.left;
-	}
-	style.left = value;
-	value = style.pixelLeft;
-
-	// Revert the changed values
-	style.left = left;
-	if ( rsLeft ) {
-		rs.left = rsLeft;
-	}
-
-  return value;
-}
-
-return getSize;
+return $.bridget;
 
 }
 
 // transport
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( [ 'get-style-property/get-style-property' ], defineGetSize );
+  define( 'jquery-bridget/jquery.bridget',[ 'jquery' ], defineBridget );
 } else {
-  // browser global
-  window.getSize = defineGetSize( window.getStyleProperty );
+  // get jquery from browser global
+  defineBridget( window.jQuery );
 }
 
 })( window );
@@ -283,7 +157,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 ( function( window ) {
 
-'use strict';
+
 
 var docElem = document.documentElement;
 
@@ -338,7 +212,7 @@ var eventie = {
 // transport
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( eventie );
+  define( 'eventie/eventie',eventie );
 } else {
   // browser global
   window.eventie = eventie;
@@ -356,7 +230,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 ( function( window ) {
 
-'use strict';
+
 
 var document = window.document;
 // collection of functions to be triggered on ready
@@ -408,7 +282,7 @@ if ( typeof define === 'function' && define.amd ) {
   // AMD
   // if RequireJS, then doc is already ready
   docReady.isReady = typeof requirejs === 'function';
-  define( [ 'eventie/eventie' ], defineDocReady );
+  define( 'doc-ready/doc-ready',[ 'eventie/eventie' ], defineDocReady );
 } else {
   // browser global
   window.docReady = defineDocReady( window.eventie );
@@ -424,7 +298,7 @@ if ( typeof define === 'function' && define.amd ) {
  */
 
 (function () {
-	'use strict';
+	
 
 	/**
 	 * Class for managing events.
@@ -867,7 +741,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 	// Expose the class either via AMD, CommonJS or the global object
 	if (typeof define === 'function' && define.amd) {
-		define(function () {
+		define('eventEmitter/EventEmitter',[],function () {
 			return EventEmitter;
 		});
 	}
@@ -879,138 +753,267 @@ if ( typeof define === 'function' && define.amd ) {
 	}
 }.call(this));
 
-/**
- * Bridget makes jQuery widgets
- * v1.0.0
+/*!
+ * getStyleProperty by kangax
+ * http://perfectionkills.com/feature-testing-css-properties/
  */
+
+/*jshint browser: true, strict: true, undef: true */
+/*globals define: false */
 
 ( function( window ) {
 
-'use strict';
 
-// -------------------------- utils -------------------------- //
 
-var slice = Array.prototype.slice;
+var prefixes = 'Webkit Moz ms Ms O'.split(' ');
+var docElemStyle = document.documentElement.style;
 
-function noop() {}
-
-// -------------------------- definition -------------------------- //
-
-function defineBridget( $ ) {
-
-// bail if no jQuery
-if ( !$ ) {
-  return;
-}
-
-// -------------------------- addOptionMethod -------------------------- //
-
-/**
- * adds option method -> $().plugin('option', {...})
- * @param {Function} PluginClass - constructor class
- */
-function addOptionMethod( PluginClass ) {
-  // don't overwrite original option method
-  if ( PluginClass.prototype.option ) {
+function getStyleProperty( propName ) {
+  if ( !propName ) {
     return;
   }
 
-  // option setter
-  PluginClass.prototype.option = function( opts ) {
-    // bail out if not an object
-    if ( !$.isPlainObject( opts ) ){
-      return;
+  // test standard property first
+  if ( typeof docElemStyle[ propName ] === 'string' ) {
+    return propName;
+  }
+
+  // capitalize
+  propName = propName.charAt(0).toUpperCase() + propName.slice(1);
+
+  // test vendor specific properties
+  var prefixed;
+  for ( var i=0, len = prefixes.length; i < len; i++ ) {
+    prefixed = prefixes[i] + propName;
+    if ( typeof docElemStyle[ prefixed ] === 'string' ) {
+      return prefixed;
     }
-    this.options = $.extend( true, this.options, opts );
+  }
+}
+
+// transport
+if ( typeof define === 'function' && define.amd ) {
+  // AMD
+  define( 'get-style-property/get-style-property',[],function() {
+    return getStyleProperty;
+  });
+} else {
+  // browser global
+  window.getStyleProperty = getStyleProperty;
+}
+
+})( window );
+
+/**
+ * getSize v1.1.5
+ * measure size of elements
+ */
+
+/*jshint browser: true, strict: true, undef: true, unused: true */
+/*global define: false */
+
+( function( window, undefined ) {
+
+
+
+// -------------------------- helpers -------------------------- //
+
+var defView = document.defaultView;
+var isComputedStyle = defView && defView.getComputedStyle;
+
+var getStyle = isComputedStyle ?
+  function( elem ) {
+    return defView.getComputedStyle( elem, null );
+  } :
+  function( elem ) {
+    return elem.currentStyle;
   };
+
+// get a number from a string, not a percentage
+function getStyleSize( value ) {
+  var num = parseFloat( value );
+  // not a percent like '100%', and a number
+  var isValid = value.indexOf('%') === -1 && !isNaN( num );
+  return isValid && num;
+}
+
+// -------------------------- measurements -------------------------- //
+
+var measurements = [
+  'paddingLeft',
+  'paddingRight',
+  'paddingTop',
+  'paddingBottom',
+  'marginLeft',
+  'marginRight',
+  'marginTop',
+  'marginBottom',
+  'borderLeftWidth',
+  'borderRightWidth',
+  'borderTopWidth',
+  'borderBottomWidth'
+];
+
+function getZeroSize() {
+  var size = {
+    width: 0,
+    height: 0,
+    innerWidth: 0,
+    innerHeight: 0,
+    outerWidth: 0,
+    outerHeight: 0
+  };
+  for ( var i=0, len = measurements.length; i < len; i++ ) {
+    var measurement = measurements[i];
+    size[ measurement ] = 0;
+  }
+  return size;
 }
 
 
-// -------------------------- plugin bridge -------------------------- //
 
-// helper function for logging errors
-// $.error breaks jQuery chaining
-var logError = typeof console === 'undefined' ? noop :
-  function( message ) {
-    console.error( message );
-  };
+function defineGetSize( getStyleProperty ) {
+
+// -------------------------- box sizing -------------------------- //
+
+var boxSizingProp = getStyleProperty('boxSizing');
+var isBoxSizeOuter;
 
 /**
- * jQuery plugin bridge, access methods like $elem.plugin('method')
- * @param {String} namespace - plugin name
- * @param {Function} PluginClass - constructor class
+ * WebKit measures the outer-width on style.width on border-box elems
+ * IE & Firefox measures the inner-width
  */
-function bridge( namespace, PluginClass ) {
-  // add to jQuery fn namespace
-  $.fn[ namespace ] = function( options ) {
-    if ( typeof options === 'string' ) {
-      // call plugin method when first argument is a string
-      // get arguments for method
-      var args = slice.call( arguments, 1 );
+( function() {
+  if ( !boxSizingProp ) {
+    return;
+  }
 
-      for ( var i=0, len = this.length; i < len; i++ ) {
-        var elem = this[i];
-        var instance = $.data( elem, namespace );
-        if ( !instance ) {
-          logError( "cannot call methods on " + namespace + " prior to initialization; " +
-            "attempted to call '" + options + "'" );
-          continue;
-        }
-        if ( !$.isFunction( instance[options] ) || options.charAt(0) === '_' ) {
-          logError( "no such method '" + options + "' for " + namespace + " instance" );
-          continue;
-        }
+  var div = document.createElement('div');
+  div.style.width = '200px';
+  div.style.padding = '1px 2px 3px 4px';
+  div.style.borderStyle = 'solid';
+  div.style.borderWidth = '1px 2px 3px 4px';
+  div.style[ boxSizingProp ] = 'border-box';
 
-        // trigger method with arguments
-        var returnValue = instance[ options ].apply( instance, args );
+  var body = document.body || document.documentElement;
+  body.appendChild( div );
+  var style = getStyle( div );
 
-        // break look and return first value if provided
-        if ( returnValue !== undefined ) {
-          return returnValue;
-        }
-      }
-      // return this if no return value
-      return this;
-    } else {
-      return this.each( function() {
-        var instance = $.data( this, namespace );
-        if ( instance ) {
-          // apply options & init
-          instance.option( options );
-          instance._init();
-        } else {
-          // initialize new instance
-          instance = new PluginClass( this, options );
-          $.data( this, namespace, instance );
-        }
-      });
-    }
-  };
+  isBoxSizeOuter = getStyleSize( style.width ) === 200;
+  body.removeChild( div );
+})();
 
+
+// -------------------------- getSize -------------------------- //
+
+function getSize( elem ) {
+  // use querySeletor if elem is string
+  if ( typeof elem === 'string' ) {
+    elem = document.querySelector( elem );
+  }
+
+  // do not proceed on non-objects
+  if ( !elem || typeof elem !== 'object' || !elem.nodeType ) {
+    return;
+  }
+
+  var style = getStyle( elem );
+
+  // if hidden, everything is 0
+  if ( style.display === 'none' ) {
+    return getZeroSize();
+  }
+
+  var size = {};
+  size.width = elem.offsetWidth;
+  size.height = elem.offsetHeight;
+
+  var isBorderBox = size.isBorderBox = !!( boxSizingProp &&
+    style[ boxSizingProp ] && style[ boxSizingProp ] === 'border-box' );
+
+  // get all measurements
+  for ( var i=0, len = measurements.length; i < len; i++ ) {
+    var measurement = measurements[i];
+    var value = style[ measurement ];
+    value = mungeNonPixel( elem, value );
+    var num = parseFloat( value );
+    // any 'auto', 'medium' value will be 0
+    size[ measurement ] = !isNaN( num ) ? num : 0;
+  }
+
+  var paddingWidth = size.paddingLeft + size.paddingRight;
+  var paddingHeight = size.paddingTop + size.paddingBottom;
+  var marginWidth = size.marginLeft + size.marginRight;
+  var marginHeight = size.marginTop + size.marginBottom;
+  var borderWidth = size.borderLeftWidth + size.borderRightWidth;
+  var borderHeight = size.borderTopWidth + size.borderBottomWidth;
+
+  var isBorderBoxSizeOuter = isBorderBox && isBoxSizeOuter;
+
+  // overwrite width and height if we can get it from style
+  var styleWidth = getStyleSize( style.width );
+  if ( styleWidth !== false ) {
+    size.width = styleWidth +
+      // add padding and border unless it's already including it
+      ( isBorderBoxSizeOuter ? 0 : paddingWidth + borderWidth );
+  }
+
+  var styleHeight = getStyleSize( style.height );
+  if ( styleHeight !== false ) {
+    size.height = styleHeight +
+      // add padding and border unless it's already including it
+      ( isBorderBoxSizeOuter ? 0 : paddingHeight + borderHeight );
+  }
+
+  size.innerWidth = size.width - ( paddingWidth + borderWidth );
+  size.innerHeight = size.height - ( paddingHeight + borderHeight );
+
+  size.outerWidth = size.width + marginWidth;
+  size.outerHeight = size.height + marginHeight;
+
+  return size;
 }
 
-// -------------------------- bridget -------------------------- //
+// IE8 returns percent values, not pixels
+// taken from jQuery's curCSS
+function mungeNonPixel( elem, value ) {
+  // IE8 and has percent value
+  if ( isComputedStyle || value.indexOf('%') === -1 ) {
+    return value;
+  }
+  var style = elem.style;
+	// Remember the original values
+	var left = style.left;
+	var rs = elem.runtimeStyle;
+	var rsLeft = rs && rs.left;
 
-/**
- * converts a Prototypical class into a proper jQuery plugin
- *   the class must have a ._init method
- * @param {String} namespace - plugin name, used in $().pluginName
- * @param {Function} PluginClass - constructor class
- */
-$.bridget = function( namespace, PluginClass ) {
-  addOptionMethod( PluginClass );
-  bridge( namespace, PluginClass );
-};
+	// Put in the new values to get a computed value out
+	if ( rsLeft ) {
+		rs.left = elem.currentStyle.left;
+	}
+	style.left = value;
+	value = style.pixelLeft;
+
+	// Revert the changed values
+	style.left = left;
+	if ( rsLeft ) {
+		rs.left = rsLeft;
+	}
+
+  return value;
+}
+
+return getSize;
 
 }
 
 // transport
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( [ 'jquery' ], defineBridget );
+  define( 'get-size/get-size',[ 'get-style-property/get-style-property' ], defineGetSize );
 } else {
-  // get jquery from browser global
-  defineBridget( window.jQuery );
+  // browser global
+  window.getSize = defineGetSize( window.getStyleProperty );
 }
 
 })( window );
@@ -1028,7 +1031,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 ( function( global, ElemProto ) {
 
-  'use strict';
+  
 
   var matchesMethod = ( function() {
     // check un-prefixed
@@ -1108,7 +1111,7 @@ if ( typeof define === 'function' && define.amd ) {
   // transport
   if ( typeof define === 'function' && define.amd ) {
     // AMD
-    define( function() {
+    define( 'matches-selector/matches-selector',[],function() {
       return matchesSelector;
     });
   } else {
@@ -1124,7 +1127,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 ( function( window ) {
 
-'use strict';
+
 
 // ----- get style ----- //
 
@@ -1595,7 +1598,11 @@ Item.prototype.hide = function() {
     isCleaning: true,
     onTransitionEnd: {
       opacity: function() {
-        this.css({ display: 'none' });
+        // check if still hidden
+        // during transition, item may have been un-hidden
+        if ( this.isHidden ) {
+          this.css({ display: 'none' });
+        }
       }
     }
   });
@@ -1621,7 +1628,7 @@ return Item;
 
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( [
+  define( 'outlayer/item',[
       'eventEmitter/EventEmitter',
       'get-size/get-size',
       'get-style-property/get-style-property'
@@ -1640,13 +1647,13 @@ if ( typeof define === 'function' && define.amd ) {
 })( window );
 
 /*!
- * Outlayer v1.1.8
+ * Outlayer v1.1.9
  * the brains and guts of a layout library
  */
 
 ( function( window ) {
 
-'use strict';
+
 
 // ----- vars ----- //
 
@@ -2604,7 +2611,7 @@ return Outlayer;
 
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( [
+  define( 'outlayer/outlayer',[
       'eventie/eventie',
       'doc-ready/doc-ready',
       'eventEmitter/EventEmitter',
@@ -2628,7 +2635,7 @@ if ( typeof define === 'function' && define.amd ) {
 })( window );
 
 /*!
- * Masonry v3.1.2
+ * Masonry v3.1.3
  * Cascading grid layout library
  * http://masonry.desandro.com
  * MIT License
@@ -2637,7 +2644,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 ( function( window ) {
 
-'use strict';
+
 
 // -------------------------- helpers -------------------------- //
 
@@ -2708,7 +2715,10 @@ function masonryDefinition( Outlayer, getSize ) {
   Masonry.prototype._getItemLayoutPosition = function( item ) {
     item.getSize();
     // how many columns does this brick span
-    var colSpan = Math.ceil( item.size.outerWidth / this.columnWidth );
+    var remainder = item.size.outerWidth % this.columnWidth;
+    var mathMethod = remainder && remainder < 1 ? 'round' : 'ceil';
+    // round if off by 1 pixel, otherwise use ceil
+    var colSpan = Math[ mathMethod ]( item.size.outerWidth / this.columnWidth );
     colSpan = Math.min( colSpan, this.cols );
 
     var colGroup = this._getColGroup( colSpan );

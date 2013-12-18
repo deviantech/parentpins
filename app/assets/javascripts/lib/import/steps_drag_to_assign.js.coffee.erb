@@ -4,7 +4,7 @@ selectTarget = null
 form = null
 boardsAreShown = dragSection.find('ul.boards').length > 0
 
-updateBoardPendingPinsCounters = () ->
+window.updateBoardPendingPinsCounters = () ->
   if !boardsAreShown then return
   
   allEmpty = true
@@ -12,7 +12,9 @@ updateBoardPendingPinsCounters = () ->
     board = $(this)
     counter = board.find('.counter')
     if counter.length
-      count = dragSection.find("li.pin.board_#{board.data('board-id')}").length
+      count = if window.prevImportedShown then dragSection.find("li.pin.board-#{board.data('board-id')}").length
+      else dragSection.find("li.pin.board-#{board.data('board-id')}:not(.prev-imported)").length
+        
       counter.html("(#{count})")
       allEmpty = false unless count == 0
       if count == 0 then board.addClass('empty') else board.removeClass('empty')
@@ -20,13 +22,22 @@ updateBoardPendingPinsCounters = () ->
   firstBoard = dragSection.find('ul.boards li').first()
   if allEmpty then firstBoard.addClass('empty') else firstBoard.removeClass('empty')
 
-hideShowPinsForSelectedBoard = () ->
+
+
+window.afterVisiblePinsChanged = () ->
   id = dragSection.find('ul.boards li.selected').data('board-id')
   soon = () =>
+    dragSection.find('li.pin').show()
+    
     if boardsAreShown && id
       dragSection.find('li.pin').hide().removeClass('ui-selected')
-      dragSection.find("li.pin.board_#{id}").show()
+      dragSection.find("li.pin.board-#{id}").show()
+    
+    if window.prevImportedPins && !window.prevImportedShown
+      $(pin).hide() for pin in window.prevImportedPins when dragSection.find($(pin)).length
+    
     checkIfAnyDraggableLeft()
+    updateBoardPendingPinsCounters()
 
   # Give JS time to reset to having dropped pin (not sure why, but required)
   setTimeout soon, 1
@@ -35,38 +46,49 @@ submitOnEnter = (e) ->
   if e.which == 13 # Enter pressed
     form.submit()
 
-checkIfAnyDraggableLeft = () ->
+window.checkIfAnyDraggableLeft = () ->
   soon = () ->
     updateBoardPendingPinsCounters()
     section = dragSection.find('ul.pins')
     hideBoards = false
     if boardsAreShown && section.find('li.pin').length == 0 then hideBoards = true
     
-    section.find('.no-more').remove()
+    dragSection.find('.no-more').remove()
     unless section.find('li.pin:visible').length
       if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
         hideBoards = true
-      else
-        section.append("<div class='no-more'>You've already assigned all pins in this board.</div>")
+      
+      importedMsg = if window.prevImportedShown then '' else ' not-previously-imported'
+      boardMsg    = if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all' then '' else ' on this board'
+      section.append "<div class='no-more'>You've already assigned all #{importedMsg} pins#{boardMsg}.</div>"
 
     theBoards = $('.drag_section_wrapper ul.boards')
     if hideBoards then theBoards.hide() else theBoards.show() 
-        
-    if section.find('li.pin').length
-      dragSection.find('.hide_until_complete').hide()
-      dragSection.find('ul.pins').removeClass('short-bottom')
-      $(window).off 'keypress', submitOnEnter
-    else
-      section.find('.no-more').remove() 
-      dragSection.find('.hide_until_complete').show()
-      dragSection.find('ul.pins').addClass('short-bottom')
-      $(window).on 'keypress', submitOnEnter
+    
+    showWhenComplete = dragSection.find('.hide_until_complete')
+    if showWhenComplete.length
+      if section.find('li.pin').length
+        showWhenComplete.hide()
+        dragSection.find('ul.pins').removeClass('short-bottom')
+        $(window).off 'keypress.for-submit', submitOnEnter
+      else
+        section.find('.no-more').remove() 
+        showWhenComplete.show()
+        dragSection.find('ul.pins').addClass('short-bottom')
+        $(window).on 'keypress.for-submit', submitOnEnter
+
+    showWhenAssigned = $('.hide_until_any_assigned')
+    if showWhenAssigned.length
+      if dropSection.find('li.pin').length
+        showWhenAssigned.slideDown()
+      else
+        showWhenAssigned.slideUp()
       
 
   setTimeout soon, 10 # Let drag complete first
   
 # DATA -- assign kind or age group to handle both steps
-collectPinDataFrom = (selector, extraKey) ->
+collectPinDataFrom = (selector, extraKey) ->  
   data = []
   selector.each () ->
     extraVal = extraKey && $(this).data(extraKey.replace(/_/g, '-'))
@@ -75,14 +97,18 @@ collectPinDataFrom = (selector, extraKey) ->
       attribs = $(this).data('attributes')
       toSet = {}
       toSet[extraKey] = extraVal
+      
       if extraVal then $.extend(attribs, toSet)
       data.push(attribs)
       
   return data
 
 handleSubmission = (form) ->
-  if $('.drag_section_wrapper li.pin').length && !form.data('go-back')
-    alert("Please drag ALL pins to one of the boxes on top first.")
+  if form.data('only') == 'any' && $('.drop_section_wrapper li.pin').length == 0
+    alert("Please drag at least one pin down to the boxes first.")
+    return false
+  else if form.data('only') != 'any' && $('.drag_section_wrapper li.pin').length && !form.data('go-back')
+    alert("Please drag ALL pins down to the boxes first.")
     return false
   else
     data = if form.data('go-back')
@@ -114,7 +140,7 @@ drop = {
       else if helper.hasClass('multi-drag-helper')
         helper.data('origElements')
       else if helper.hasClass('board')
-        dragSection.find('li.pin.board_'+helper.data('board-id'))
+        dragSection.find('li.pin.board-'+helper.data('board-id')+':visible')
       
       # callingn draggable before draggable('destroy') to avoid edge case where it's not a draggable yet (not sure how to test, but calling with no arguments doesn't seem to override anything)
       toAdd.css({left: 0, top: 0, opacity: 1.0}).removeClass('ui-selected').addClass('from-drop-target').draggable().draggable('destroy').draggable(drag.pinsFromDroppable).appendTo(target)
@@ -131,7 +157,7 @@ drop = {
     drop: (event, ui) ->
       target = $(this).find('ul.pins')
       $(ui.draggable).removeClass('from-drop-target').data('from-drop-target', null).draggable().draggable('destroy').draggable(drag.pinsToDroppable).appendTo(target)
-      hideShowPinsForSelectedBoard()
+      afterVisiblePinsChanged()
   }
 }
 
@@ -165,6 +191,13 @@ applyDroppableMasonry = () ->
     dropUL.masonry({itemSelector: 'li.drop-target'})
   
 
+# Used when boards added via ajax
+window.stepOneAddDroppableBoard = (board) ->
+  dropSection.find('.boards-needed').hide()
+  built = $(board).droppable(drop.onDroppable).show()
+  dropSection.find('.drop_sections').append( built ).masonry('appended', built)
+
+
 $(document).ready () ->
   wrapper = $('.context.step_drag_to_assign')
   return unless wrapper.length
@@ -184,7 +217,7 @@ $(document).ready () ->
   
   dragSection.on 'mousedown', 'li.board', (e) ->
     $(e.currentTarget).addClass('selected').siblings().removeClass('selected')
-    hideShowPinsForSelectedBoard()
+    afterVisiblePinsChanged()
     
   $('#import_form').on 'submit', (e) ->
     handleSubmission( $(this) )

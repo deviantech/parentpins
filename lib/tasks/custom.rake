@@ -20,7 +20,7 @@ namespace :trends do
         records.each_with_index do |record, idx|
           base_position = (batch_size * iterations) + idx
           modifier = if record.is_a?(Pin)
-            record.likes_count + record.repins_count + trend_points_for_creation_date(record)
+            record.likes_count + record.repins_count + trend_points_for_creation_date(record) + (record.user_id * 2) # TODO: this (newer users get boost) should only be temporary!
           else
             record.direct_followers_count + record.comments_count - (record.pins_count > 0 ? 0 : 200) # boards with pins first
           end
@@ -37,9 +37,9 @@ end
 
 # Last week = 6 points, last month = 3 points, etc.
 def trend_points_for_creation_date(obj)
-  if    obj.created_at > 1.day.ago    then 20
-  elsif obj.created_at > 1.week.ago   then 10
-  elsif obj.created_at > 2.weeks.ago  then  5
+  if    obj.created_at > 1.day.ago    then 50
+  elsif obj.created_at > 1.week.ago   then 25
+  elsif obj.created_at > 2.weeks.ago  then 10
   elsif obj.created_at > 3.weeks.ago  then  3
   else  0
   end
