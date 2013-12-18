@@ -3,16 +3,16 @@
   Below you have all #{@boards.length > 1 ? 'your Pinterest pins' : 'the pins from this Pinterest board'}. Choose which you'd like to import by dragging them down to one of your ParentPins boards, below.
 
 = render 'drag_section', :attribute_to_set => :board_id
+
+= form_tag pin_import_step_2_path, :id => 'import_form', :class => 'hide_until_any_assigned', :data => {:only => 'any'} do
+  = hidden_field_tag :data_string
+  = hidden_field_tag :source, @data[:source]
+  .done.unwrapped
+    When you've moved all the pins you want to import...
+    = submit_tag "Import These Pins &rarr;".html_safe, :class => 'btn primary'
+
+
 = render 'drop_section', :attribute_to_set => :board_id, :droppables => current_user.boards.collect {|b| [b.name, b.id, "to add to this board"]}
-
-- content_for :import_step_submit_form do
-  = form_tag pin_import_step_2_path, :id => 'import_form', :class => 'hide_until_complete' do
-    = hidden_field_tag :data_string
-    = hidden_field_tag :source, @data[:source]
-    .done
-      When you've moved all the pins you want to import...
-      = submit_tag "Import These Pins &rarr;".html_safe, :class => 'btn primary'
-
 
 - if false # TODO FINISH ME
   %ul.boards

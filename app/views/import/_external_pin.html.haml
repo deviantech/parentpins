@@ -1,0 +1,5 @@
+%li.pin.board-all{:class => "board-#{pin.board_id}", :data => {'pin-external-id' => pin.external_id, 'pin-url' => pin.url, 'pin-image' => pin.cached_remote_image_url}}
+  .thumb= image_tag (pin.cached_remote_small_image_url.blank? ? pin.cached_remote_image_url : pin.cached_remote_small_image_url) || pin.image.url, :alt => "Pin Image"
+  .hover_info
+    .hover_content= pin.description
+  .clearfix

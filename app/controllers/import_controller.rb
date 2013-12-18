@@ -23,16 +23,16 @@ class ImportController < ApplicationController
   # Assign pins to boards
   def step_1
     @context = :step_drag_to_assign
+    
     xBoard = Struct.new(:id, :name, :pins)
     @boards = []
     @pins_to_import = []
     @data[:import][:boards].each do |board_id, board_info|
       board = xBoard.new(board_id, board_info[:name], board_info[:pins])
       board.pins = (board_info[:pins] || []).collect {|idx, p| Pin.from_pinterest(current_user, nil, p) }
+      board.pins.map{|p| p.board_id = board_id}
       @boards << board
     end
-
-    render(:layout => 'external_import') if params[:external]
   end
 
   def step_2

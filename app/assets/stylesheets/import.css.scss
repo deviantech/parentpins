@@ -471,21 +471,18 @@ body.importing.step_1 {
     margin-top: 12px;
     text-align: center;
   }
-  .drag_section_wrapper {
-    ul.pins.short-bottom {
-      padding-bottom: 0 !important;
-      border: none !important;
-    }
-    .done {
-      margin: -10px;
-      text-align: center;
-      font-size: 1.2em;
-      color: #000;
-      padding: 18px;
-      background: #FEFFE7;
-    }
-    .hide_until_complete {
-      display: none;
+  .hide_until_any_assigned {
+    display: none;
+  }
+  .done {
+    text-align: center;
+    font-size: 1.2em;
+    color: #000;
+    padding: 18px;
+    background: #FEFFE7;
+    &.unwrapped {
+      margin: 10px 40px;
+      border: 1px solid #DDDDDD;
     }
     input[type=submit] {
       float: right;
@@ -495,6 +492,18 @@ body.importing.step_1 {
     }
     .btn.previous {
       float: left;
+    }
+  }
+  .drag_section_wrapper {
+    ul.pins.short-bottom {
+      padding-bottom: 0 !important;
+      border: none !important;
+    }
+    .done {
+      margin: -10px;
+    }
+    .hide_until_complete {
+      display: none;
     }
   }
   #mass-edit-controls {

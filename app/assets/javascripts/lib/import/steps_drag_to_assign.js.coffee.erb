@@ -51,16 +51,25 @@ checkIfAnyDraggableLeft = () ->
 
     theBoards = $('.drag_section_wrapper ul.boards')
     if hideBoards then theBoards.hide() else theBoards.show() 
-        
-    if section.find('li.pin').length
-      dragSection.find('.hide_until_complete').hide()
-      dragSection.find('ul.pins').removeClass('short-bottom')
-      $(window).off 'keypress', submitOnEnter
-    else
-      section.find('.no-more').remove() 
-      dragSection.find('.hide_until_complete').show()
-      dragSection.find('ul.pins').addClass('short-bottom')
-      $(window).on 'keypress', submitOnEnter
+    
+    showWhenComplete = dragSection.find('.hide_until_complete')
+    if showWhenComplete.length
+      if section.find('li.pin').length
+        showWhenComplete.hide()
+        dragSection.find('ul.pins').removeClass('short-bottom')
+        $(window).off 'keypress.for-submit', submitOnEnter
+      else
+        section.find('.no-more').remove() 
+        showWhenComplete.show()
+        dragSection.find('ul.pins').addClass('short-bottom')
+        $(window).on 'keypress.for-submit', submitOnEnter
+
+    showWhenAssigned = $('.hide_until_any_assigned')
+    if showWhenAssigned.length
+      if dropSection.find('li.pin').length
+        showWhenAssigned.slideDown()
+      else
+        showWhenAssigned.slideUp()
       
 
   setTimeout soon, 10 # Let drag complete first
@@ -82,7 +91,10 @@ collectPinDataFrom = (selector, extraKey) ->
 
 handleSubmission = (form) ->
   if $('.drag_section_wrapper li.pin').length && !form.data('go-back')
-    alert("Please drag ALL pins to one of the boxes on top first.")
+    if form.data('only') == 'any'
+      alert("Please drag at least one pin down to the boxes first.")
+    else
+      alert("Please drag ALL pins down to the boxes first.")
     return false
   else
     data = if form.data('go-back')
