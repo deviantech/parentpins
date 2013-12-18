@@ -1,3 +1,5 @@
+window.prevImportedShown = true
+
 window.multiDragOpts = {
     revertDuration: 0,
     cursorAt: null,

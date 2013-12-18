@@ -4,7 +4,7 @@ selectTarget = null
 form = null
 boardsAreShown = dragSection.find('ul.boards').length > 0
 
-updateBoardPendingPinsCounters = () ->
+window.updateBoardPendingPinsCounters = () ->
   if !boardsAreShown then return
   
   allEmpty = true
@@ -12,7 +12,7 @@ updateBoardPendingPinsCounters = () ->
     board = $(this)
     counter = board.find('.counter')
     if counter.length
-      count = dragSection.find("li.pin.board-#{board.data('board-id')}").length
+      count = dragSection.find("li.pin.board-#{board.data('board-id')}:visible").length
       counter.html("(#{count})")
       allEmpty = false unless count == 0
       if count == 0 then board.addClass('empty') else board.removeClass('empty')
@@ -46,11 +46,10 @@ window.checkIfAnyDraggableLeft = () ->
     unless section.find('li.pin:visible').length
       if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
         hideBoards = true
-
-      if dragSection.find('li.pin').length == 0
-        section.append("<div class='no-more'>You've already assigned all pins.</div>")
-      else
-        section.append("<div class='no-more'>You've already assigned all pins in this board.</div>")
+      
+      importedMsg = if window.prevImportedShown then '' else ' not-previously-imported'
+      boardMsg    = if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all' then '' else ' on this board'
+      section.append "<div class='no-more'>You've already assigned all #{importedMsg} pins#{boardMsg}.</div>"
 
     theBoards = $('.drag_section_wrapper ul.boards')
     if hideBoards then theBoards.hide() else theBoards.show() 

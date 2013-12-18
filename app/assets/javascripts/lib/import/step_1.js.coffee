@@ -1,17 +1,16 @@
-prevImportedShown = true
 prevImportedPins = []
 
-
 togglePrevImported = () ->
-  if prevImportedShown 
+  if window.prevImportedShown 
     for pin in prevImportedPins
       $(pin).hide()
   else
     $('.drag_section_wrapper li.pin').show()
 
-  prevImportedShown = !prevImportedShown
-  $('.js-togglePrevImported').text(if prevImportedShown then 'Hide Previously Imported' else 'Show Previously Imported')
+  window.prevImportedShown = !window.prevImportedShown
+  $('.js-togglePrevImported').text(if window.prevImportedShown then 'Hide Previously Imported' else 'Show Previously Imported')
   checkIfAnyDraggableLeft()
+  updateBoardPendingPinsCounters()
 
 $(document).ready () ->
   if $('.context.import.step_1').length
