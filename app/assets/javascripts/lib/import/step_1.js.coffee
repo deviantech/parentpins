@@ -1,48 +1,34 @@
-handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
-  if prevImported # If already have some, append to the imported list
-    if data
-      # Just add the URLs given to the ones we already know
-      for url of data
-        if prevImported[url]
-          for imgURL in (data[url] || [])
-            prevImported[url].push(imgURL)
-        else
-          prevImported[url] = data[url]
-  else
-    prevImported = data
-  
-  not_yet_imported = $('.importing_pins.not_yet_imported ul')
-  imported = $('.importing_pins.previously_imported ul')
-
-  # In case any already assigned a board, move back to main section
-  if resetAllAlreadyMovedPins
-    $('#our_section ul.ourBoardPins li').each () ->
-      $(this).appendTo(not_yet_imported)
-
-
 prevImportedShown = true
+prevImportedPins = []
+
 
 togglePrevImported = () ->
+  if prevImportedShown 
+    for pin in prevImportedPins
+      $(pin).hide()
+  else
+    $('.drag_section_wrapper li.pin').show()
 
-  for pin in $('.drag_section_wrapper li.pin')
-    data = $(pin).data()
-    images = prevImported[ data['pin-url'] ]
-    if images
-      console.log(images)
-
-  prevImportedShown = !prevImportedShown    
+  prevImportedShown = !prevImportedShown
+  $('.js-togglePrevImported').text(if prevImportedShown then 'Hide Previously Imported' else 'Show Previously Imported')
+  checkIfAnyDraggableLeft()
 
 $(document).ready () ->
   if $('.context.import.step_1').length
     
-    window.prevImported = $('#import_form').data('previously-imported')
-    if typeof(prevImported) == 'string' then window.prevImported = $.parseJSON(prevImported)
+    prevImportedData = $('#import_form').data('previously-imported')
+    if typeof(prevImportedData) == 'string' then prevImportedData = $.parseJSON(prevImportedData)
     
-    togglePrevImported()
-        
-    if Object.keys(prevImported).length == 0
-      $('.js-togglePrevImported').hide()
-    else
+    for pin in $('.drag_section_wrapper li.pin')
+      $pin = $(pin)
+      if images = prevImportedData[ $pin.data('pin-url') ]
+        if images.indexOf( $pin.data('pin-image') ) > -1
+          prevImportedPins.push($pin)
+    
+    
+    if prevImportedPins.length
+      $('.js-togglePrevImported').css('display', 'inline-block')
+      togglePrevImported()
       $('.js-togglePrevImported').on 'click touchend', (e) ->
         e.preventDefault()
         togglePrevImported()

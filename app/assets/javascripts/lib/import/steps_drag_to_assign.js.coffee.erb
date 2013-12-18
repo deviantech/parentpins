@@ -35,7 +35,7 @@ submitOnEnter = (e) ->
   if e.which == 13 # Enter pressed
     form.submit()
 
-checkIfAnyDraggableLeft = () ->
+window.checkIfAnyDraggableLeft = () ->
   soon = () ->
     updateBoardPendingPinsCounters()
     section = dragSection.find('ul.pins')
@@ -44,6 +44,7 @@ checkIfAnyDraggableLeft = () ->
     
     section.find('.no-more').remove()
     unless section.find('li.pin:visible').length
+      console.log !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
       if !boardsAreShown || dragSection.find('ul.boards li.selected').data('board-id') == 'all'
         hideBoards = true
       else

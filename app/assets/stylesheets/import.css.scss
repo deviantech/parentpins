@@ -41,9 +41,11 @@ $highlight: #ffffe0;
 .multi-drag-helper-inner-wrapper {
   position: relative;
 }
+.js-togglePrevImported {
+  display: none;
+}
 
-
-// Steps 2+
+// Steps 1+
 .context.import {
   .ui-draggable {
     cursor: move;
@@ -169,7 +171,6 @@ $highlight: #ffffe0;
   }
   .board-actions {
     margin: 10px 40px;
-    clear: both;
   }
   .boards-needed {
     margin: 10px 40px;
