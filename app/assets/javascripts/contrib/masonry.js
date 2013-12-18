@@ -823,14 +823,9 @@ var isComputedStyle = defView && defView.getComputedStyle;
 
 var getStyle = isComputedStyle ?
   function( elem ) {
-    console.log("Style for elem: ", defView.getComputedStyle( elem, null ));
-    
-    console.log(elem, defView)
-    
     return defView.getComputedStyle( elem, null );
   } :
   function( elem ) {
-    console.log("Style for elem (currentStyle): ", elem.currentStyle);
     return elem.currentStyle;
   };
 

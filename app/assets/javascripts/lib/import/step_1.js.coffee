@@ -31,12 +31,6 @@ dataToSubmit = () ->
   else
     null
 
-tellParentOurHeight = () ->
-  if $('body').is(':visible')
-    if $('#pp_pinterest_import_wrapper').length
-      height = $('#pp_pinterest_import_wrapper').height() + $('#pp_pinterest_import_wrapper').offset().top + 15
-      sendMessage("step1:setHeight:#{height}")    
-
 handlePreviouslyImportedData = (data, resetAllAlreadyMovedPins) ->
   if prevImported # If already have some, append to the imported list
     if data
@@ -107,7 +101,6 @@ checkIfAnyDraggableLeft = () ->
       section.find('ul').append("<div class='no-more'>List of "+kind+" pins "+board_label+" is empty.</div>")
     else
       section.find('.no-more').remove()
-  tellParentOurHeight()
 
 updateDroppedPinCounts = () ->
   wrappedUpdateFn = () ->
@@ -198,7 +191,7 @@ initDragDrop = () ->
         considerScrollingDroppableContainer(event.pageY)
     }
   }
-  drag.externalBoards = $.extend({}, drag.general, {stack: '.importing_boards li'})
+  drag.externalBoards =              $.extend({}, drag.general, {stack: '.importing_boards li'})
   drag.pinsFromOurBoards =           $.extend({}, drag.general, {stack: '#our_section li.board'})
   drag.pinsFromPinterest =           $.extend({}, drag.general, {stack: '#our_section li.board'}, window.multiDragOpts)
   
@@ -214,8 +207,7 @@ initDragDrop = () ->
   # Used when boards added via ajax
   window.stepOneAddDroppableBoard = (board) ->
     target = $('#our_section ul.boards')
-    $(board).droppable(drop.overOurBoards).hide().appendTo( target ).fadeIn () ->
-      tellParentOurHeight()
+    $(board).droppable(drop.overOurBoards).hide().appendTo( target ).fadeIn()
     target.find('.no-pp-boards').hide()
 
 
@@ -259,9 +251,6 @@ $(document).ready () ->
     if typeof(initial) == 'string' then initial = $.parseJSON(raw)
     handlePreviouslyImportedData(initial)
     initDragDrop()
-
-    # Tell parent how tall we are
-    tellParentOurHeight()
 
     # Handle Submit Button
     $('#ppSubmitBoardsSortedForm').on 'submit', (e) =>
@@ -311,4 +300,3 @@ $(document).ready () ->
           handlePreviouslyImportedData(pins)
           setTimeout(checkIfAnyDraggableLeft, 1) # Doesn't seem like it should be necessary... but is, or else sections leave the 'empty' div in place while showing pins
 
-    $(window).on 'resize', tellParentOurHeight

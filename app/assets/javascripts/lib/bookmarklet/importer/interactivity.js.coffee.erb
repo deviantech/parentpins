@@ -11,6 +11,7 @@ class window.ppImporterClasses.Interactivity
 
   outputDiv           = window.ppBookmarklet.contentBase
   outputDivWrapper    = outputDiv.parents('#ppBookmarkletContentWrapper')
+  progressDisplay     = outputDiv.find('#progressDisplay')
   
 
   # When viewing an image directly, the browser creates minimal surrounding HTML that doesn't include a HEAD section
@@ -42,11 +43,11 @@ class window.ppImporterClasses.Interactivity
     @externalPinData = data.pins
     @externalBoardData = data.boards
     if @externalPinData.length == 0
-      outputDiv.find('#progressDisplay').html('No importable pins found.').addClass('red')
+      progressDisplay.html('No importable pins found.').addClass('red')
     else if window['postMessage']
       @transitionToStepOne()
     else
-      outputDiv.find('#progressDisplay').html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
+      progressDisplay.html('You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="blank">upgrade your browser</a> to enable importing pins.').addClass('red')
       @bookmarkletClosing()
     triggerWindowRepaint()
 
@@ -126,19 +127,25 @@ class window.ppImporterClasses.Interactivity
     # =================================================================
 
     @transitionToStepOne = () ->
-      @ensureFrameWrapper()
-      hideInitially = !@stepOneFrame?.length
-      @stepOneFrame ?= $('<iframe class="ppParentPinsImporter stepOne">').appendTo( @iframeWrapper )
-      @stepOneFrame.height( outputDivWrapper.height() - frameWrapperMargin )
-      if hideInitially then @stepOneFrame.hide() else @stepOneFrame.show()
-
-      doc = @stepOneFrame.contents()[0]
-      if doc
-        doc.open()
-        doc.write( JST['templates/bookmarklet/importer/iframe_loader']({host: host, data_string: @paramsForStepOne(), url: stepOneURL}) )
-        triggerWindowRepaint()
+      if navigator.userAgent.toLowerCase().indexOf('firefox') > -1
+        # For firefox, masonry's defView.getComputedStyle fails in a framed context, even though that was supposedly fixed in version 4...
+        progressDisplay.addClass('no-auto-updates').html( JST['templates/bookmarklet/importer/iframe_loader']({host: host, data_string: @paramsForStepOne(), url: stepOneURL}) )
+        # TODO: do we want to open in a new window (requires an extra click), or take over this window?
+        
       else
-        alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
+        @ensureFrameWrapper()
+        hideInitially = !@stepOneFrame?.length
+        @stepOneFrame ?= $('<iframe class="ppParentPinsImporter stepOne">').appendTo( @iframeWrapper )
+        @stepOneFrame.height( outputDivWrapper.height() - frameWrapperMargin )
+        if hideInitially then @stepOneFrame.hide() else @stepOneFrame.show()
+
+        doc = @stepOneFrame.contents()[0]
+        if doc
+          doc.open()
+          doc.write( JST['templates/bookmarklet/importer/iframe_loader']({host: host, data_string: @paramsForStepOne(), url: stepOneURL + '?external=true'}) )
+          triggerWindowRepaint()
+        else
+          alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
 
 
     @handleFrameOneLoaded = () ->
