@@ -1,4 +1,10 @@
 <div class="field">
+  <%= f.label :name, 'Display name' %>
+  <%= f.text_field :name, :value => f.object.name %>
+</div>
+
+
+<div class="field">
   <label>Write something about yourself... <span class="character_counter" data-max="400" data-target="user_bio"></span></label>
   <%= f.text_area :bio, :placeholder => "Ex: I'm always checking out ParentPins for great ideas on healthy, kid-friendly recipes..." %>
 </div>

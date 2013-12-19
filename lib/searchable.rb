@@ -6,7 +6,7 @@ module Searchable
     unless query.blank?
       fields = case self.name
       when "Board"  then %w(name description)
-      when "User"   then %w(username bio)
+      when "User"   then %w(username name bio)
       when "Pin"    then %w(description)
       else []
       end

@@ -2,7 +2,7 @@
   <% if current_user == to_follow %>
     <% unless @profile && @profile == current_user # Don't show "this is you" if you're on your own profile page -- obvious %>
       <span class="following-action-for-profile" data-profile-id="<%= to_follow.id %>">
-        <span>This is you</span>
+        <span>(this is you)</span>
       </span>
       <% end %>
   <% else %>

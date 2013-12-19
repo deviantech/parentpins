@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   HIGHEST_TEST_USER_ID = 19
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :remove_cover_image, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h, :remove_avatar, :avatar_x, :avatar_y, :avatar_w, :avatar_h, :email_on_comment_received, :email_on_new_follower
+  attr_accessible :username, :email, :password, :password_confirmation, :remember_me, :provider, :uid, :avatar, :kids, :bio, :avatar_cache, :cover_image, :cover_image_cache, :current_password, :teacher, :teacher_grade, :teacher_subject, :website, :featured_bio, :twitter_account, :facebook_account, :remove_cover_image, :cover_image_x, :cover_image_y, :cover_image_w, :cover_image_h, :remove_avatar, :avatar_x, :avatar_y, :avatar_w, :avatar_h, :email_on_comment_received, :email_on_new_follower, :name
   
   attr_accessor :cover_image_was_changed, :avatar_was_changed
   
@@ -32,7 +32,8 @@ class User < ActiveRecord::Base
   
   validates_uniqueness_of   :username,      :allow_blank => false
   validates_format_of       :username,      :with => /\A[a-z0-9\.\-\_]+\z/i
-  validates_length_of       :username,      :minimum => 3, :maximum => 255
+  validates_length_of       :username,      :minimum => 3, :maximum => 40
+  validates_length_of       :name,          :maximum => 40
   validates_length_of       :email,         :maximum => 255
   validates_numericality_of :kids,          :allow_blank => true, :message => 'must be a number'
   validates_format_of       :website,       :allow_blank => true, :with => URI::regexp(%w(http https))
@@ -54,7 +55,7 @@ class User < ActiveRecord::Base
   end
 
   def name
-    username.to_s
+    self['name'].blank? ? username.to_s : self['name']
   end
   
   # If password required for update, try. Otherwise just to update. Not the cleanest combination of forms...

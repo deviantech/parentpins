@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131219005001) do
+ActiveRecord::Schema.define(version: 20131219013400) do
 
   create_table "age_groups", force: true do |t|
     t.string   "name"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20131219005001) do
   add_index "pins", ["via_id"], name: "index_pins_on_via_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "username",                              default: "",    null: false
+    t.string   "username",                  limit: 40,  default: "",    null: false
     t.string   "email",                                 default: "",    null: false
     t.string   "encrypted_password",                    default: "",    null: false
     t.string   "reset_password_token"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 20131219005001) do
     t.boolean  "email_on_new_follower",                 default: true
     t.string   "avatar_token"
     t.string   "cover_image_token"
+    t.string   "name",                      limit: 40
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
