@@ -40,7 +40,7 @@
       
       <% if @pin.original_poster && @pin.original_poster != @pin.via %>
       <p>
-        Originally posted by <%= link_to @pin.original_poster.name, profile_path(@pin.original_poster) %>
+        Originally posted by <%= link_to truncated(@pin.original_poster.name), profile_path(@pin.original_poster) %>
         <%= render 'profile/follow_buttons', :to_follow => @pin.original_poster %>
       </p>
       <% end %>
