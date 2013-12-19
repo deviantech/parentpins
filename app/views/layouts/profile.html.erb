@@ -17,7 +17,7 @@
     <div class="info">
 
       <%= link_to image_tag(@profile.avatar.main.url, :alt => "#{@profile.name}'s avatar"), profile_path(@profile), :class => 'avatar' %>
-      <h2><%= @profile.name %></h2>
+      <h2><%= truncated @profile.name, 12 %></h2>
       <%= render 'profile/follow_buttons', :to_follow => @profile %>      
       <%= render 'profile/feature_buttons', :user => @profile %>
       

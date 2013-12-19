@@ -34,15 +34,15 @@
       <div class="attribution">
         <%= link_to image_tag(pin.user.avatar.v30.url, :alt => "#{pin.user.name}'s avatar"), profile_path(pin.user), :title => pin.user.name, :class=> 'image_link' %>
         <p class="details">
-          <%= link_to pin.user.name, profile_path(pin.user) %>
+          <%= link_to truncated(pin.user.name), profile_path(pin.user) %>
           <% if pin.via %>
             via
-            <%= link_to pin.via.name, profile_path(pin.via) %>
+            <%= link_to truncated(pin.via.name), profile_path(pin.via) %>
           <% end %>
 
           <span class="bind-board_id">
             onto
-            <%= (pin.board && !pin.board.new_record?) ? link_to(pin.board.name, profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
+            <%= (pin.board && !pin.board.new_record?) ? link_to(truncated(pin.board.name, 30), profile_board_path(pin.user, pin.board)) : 'Unknown Board' %>
           </span>
           <br/>
           Age Group: <strong class="bind-age_group_id"><%= pin.age_group ? pin.age_group.name : 'Not Specified' %></strong>

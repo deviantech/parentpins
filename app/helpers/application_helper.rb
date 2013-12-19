@@ -163,17 +163,22 @@ module ApplicationHelper
         
     title ? popover(title, content, opts) : {}
   end
-
+  
+  def truncated(txt, maxlength = 20)
+    opts = tooltip(txt, :placement => 'top') if txt.to_s.length > maxlength
+    content_tag(:span, truncate(txt, :length => maxlength), opts || {}).html_safe
+  end
+  
   def display_teacher_info(user)
     return 'Not a teacher' unless user.teacher?
-    base = [content_tag(:strong, "#{h user.name} is a teacher")]
+    base = ["<strong>#{truncated(h(user.name))} is a teacher</strong>".html_safe]
 
     unless user.teacher_subject.blank?
-      base << "Subject: #{h user.teacher_subject}"
+      base << "Subject: #{truncated(h(user.teacher_subject), 10)}"
     end
     
     unless user.teacher_grade.blank?
-      base << "Grade: #{h user.teacher_grade}"
+      base << "Grade: #{truncated(h(user.teacher_grade), 14)}"
     end
     
     base.join("<br>").html_safe

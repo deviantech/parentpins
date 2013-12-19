@@ -7,14 +7,14 @@
       <%= share_pin_via_fb_link(@pin) %>
       <div class="attribute_info">
         <p>
-          <%= link_to @pin.user.name, profile_path(@pin.user) %>
+          <%= link_to truncated(@pin.user.name), profile_path(@pin.user) %>
           <%= render 'profile/follow_buttons', :to_follow => @pin.user %>
           <% if @pin.via %>
-            via <%= link_to @pin.via.name, profile_path(@pin.via) %>
+            via <%= link_to truncated(@pin.via.name), profile_path(@pin.via) %>
             <%= render 'profile/follow_buttons', :to_follow => @pin.via %>
           <% end %>
         </p>
-        <p class="time"><%= time_ago_in_words @pin.created_at %> ago on <%= link_to @pin.board.name, profile_board_path(@pin.board.user, @pin.board) %></p>
+        <p class="time"><%= time_ago_in_words @pin.created_at %> ago on <%= link_to truncated(@pin.board.name, 50), profile_board_path(@pin.board.user, @pin.board) %></p>
       </div>
     </div>
 

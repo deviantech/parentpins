@@ -2,7 +2,7 @@
   <%= link_to profile_path(user) do %>
     <%= image_tag user.avatar.v50 %>
     <div class="body">  
-      <div class="user_name"><%= user.name %></div>
+      <div class="user_name"><%= truncated(user.name) %></div>
       <span class="followers"><%= pluralize user.followed_by_even_indirectly_count, 'Follower', 'Followers' %></span>
       <span class="following"><%= user.following_even_indirectly_count %> Following</span>
     </div>

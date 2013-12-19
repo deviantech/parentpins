@@ -2,7 +2,7 @@
   <h2>Success!</h2>
   <p class="message">
     Your pin was pinned to 
-    <span><%= link_to @pin.board.name, profile_board_url(@pin.user, @pin.board), :target => '_blank', :onclick => 'window.close()' %></span>
+    <span><%= link_to truncated(@pin.board.name, 30), profile_board_url(@pin.user, @pin.board), :target => '_blank', :onclick => 'window.close()' %></span>
   </p>
 
   <div class="buttons">

@@ -8,7 +8,7 @@
       <% else %>
         Your pin was pinned to your
       <% end %>
-      <%= link_to @pin.board.name, profile_board_url(@pin.user, @pin.board) %> board.
+      board <%= link_to truncated(@pin.board.name, 30), profile_board_url(@pin.user, @pin.board) %>.
     </p>
 
     <div class="buttons repin">
