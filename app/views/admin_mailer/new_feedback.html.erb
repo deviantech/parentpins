@@ -2,13 +2,13 @@
 <p>
   <strong>From</strong>: 
   <% if @feedback.user %>
-  <%= link_to @feedback.user.name, profile_url(@feedback.user) %>
+    <%= link_to @feedback.user.name, profile_url(@feedback.user) %>
   <% else %>
-  Unknown User
+    Unknown User
   <% end %>
 </p>
 <p>
-  <strong>Email</strong>: <%= @feedback.email %>
+  <strong>Email</strong>: <%= mail_to @feedback.email, @feedback.email %>
 </p>
 <p>
   <strong>User Agent</strong>: <%= @feedback.user_agent %>

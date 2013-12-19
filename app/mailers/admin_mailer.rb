@@ -4,7 +4,7 @@ class AdminMailer < BaseMailer
   
   def new_feedback(fid)
     @feedback = Feedback.find(fid)
-    mail(:subject => "[ParentPins] [#{Rails.env}] New Feedback")
+    mail(:subject => "[ParentPins] [#{Rails.env}] New Feedback", :reply_to => @feedback.email)
   end
 
   def new_user(uid)
