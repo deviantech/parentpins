@@ -225,11 +225,8 @@ class Bookmarklet
       @imageTestbed = $('<div class="imageTestbed"></div>').appendTo(@bookmarkletBase).css({visibility: 'hidden', height: '0px', overflow: 'hidden'})
       
       if window.location.host == 'pinterest.com' || window.location.host.match(/\.pinterest\.com$/)
-        if navigator.userAgent.toLowerCase().indexOf('firefox') > -1
-          @contentBase.find('#progressDisplay').html("""FireFox has a javascript issue that prevents pins from importing properly.<br><br>We're working on a fix, but please <a href="http://browsehappy.com/" target="blank">use another browser</a> in the meantime.""").addClass('red');
-        else
-          @contentBase.find('#progressDisplay').text("Evaluating Pinterest pins...");
-          $.getScript(importerScriptURL)
+        @contentBase.find('#progressDisplay').text("Evaluating Pinterest pins...");
+        $.getScript(importerScriptURL)
       else
         @evaluatePotentialImages()
         
