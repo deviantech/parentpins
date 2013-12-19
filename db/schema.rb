@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131211032747) do
+ActiveRecord::Schema.define(version: 20131219005001) do
 
   create_table "age_groups", force: true do |t|
     t.string   "name"
@@ -133,37 +133,37 @@ ActiveRecord::Schema.define(version: 20131211032747) do
   add_index "pins", ["via_id"], name: "index_pins_on_via_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "username",                  default: "",    null: false
-    t.string   "email",                     default: "",    null: false
-    t.string   "encrypted_password",        default: "",    null: false
+    t.string   "username",                              default: "",    null: false
+    t.string   "email",                                 default: "",    null: false
+    t.string   "encrypted_password",                    default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",             default: 0
+    t.integer  "sign_in_count",                         default: 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
     t.string   "provider"
     t.string   "uid"
     t.string   "avatar"
     t.string   "cover_image"
     t.integer  "kids"
-    t.text     "bio"
-    t.boolean  "teacher",                   default: false
+    t.string   "bio",                       limit: 400
+    t.boolean  "teacher",                               default: false
     t.string   "teacher_grade"
     t.string   "teacher_subject"
-    t.boolean  "got_bookmarklet",           default: false
+    t.boolean  "got_bookmarklet",                       default: false
     t.string   "website"
-    t.boolean  "featured",                  default: false
-    t.text     "featured_bio"
+    t.boolean  "featured",                              default: false
+    t.string   "featured_bio",              limit: 400
     t.string   "facebook_account"
     t.string   "twitter_account"
-    t.boolean  "admin",                     default: false
+    t.boolean  "admin",                                 default: false
     t.integer  "featured_pin_id"
-    t.integer  "failed_attempts",           default: 0
+    t.integer  "failed_attempts",                       default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.integer  "cover_image_x"
@@ -174,8 +174,8 @@ ActiveRecord::Schema.define(version: 20131211032747) do
     t.integer  "avatar_y"
     t.integer  "avatar_w"
     t.integer  "avatar_h"
-    t.boolean  "email_on_comment_received", default: true
-    t.boolean  "email_on_new_follower",     default: true
+    t.boolean  "email_on_comment_received",             default: true
+    t.boolean  "email_on_new_follower",                 default: true
     t.string   "avatar_token"
     t.string   "cover_image_token"
   end

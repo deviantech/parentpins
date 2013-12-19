@@ -36,12 +36,14 @@ class User < ActiveRecord::Base
   validates_length_of       :email,         :maximum => 255
   validates_numericality_of :kids,          :allow_blank => true, :message => 'must be a number'
   validates_format_of       :website,       :allow_blank => true, :with => URI::regexp(%w(http https))
-  validates_length_of       :featured_bio,  :maximum => 400
-  validate :valid_username, :valid_social_media_links
-  before_save :track_media_changes
-  after_save :touch_pins_if_necessary
-  before_destroy :clean_redis
-  after_create :prepopulate_following_users, :notify_admins
+  validates_length_of       :bio,           :maximum => 400
+  validates_length_of       :featured_bio,  :maximum => 400, :if => :featured?
+  
+  validate                  :valid_username, :valid_social_media_links
+  before_save     :track_media_changes
+  after_save      :touch_pins_if_necessary
+  before_destroy  :clean_redis
+  after_create    :prepopulate_following_users, :notify_admins
 
   # Used by searchable
   scope :newest_first,  -> { order('id DESC') }
