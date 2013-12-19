@@ -351,9 +351,18 @@ function characterCounter(holder, target, max) {
   };
 })(jQuery);
 
+
+// Images loaded in first half second should show quickly, others can fade in nicely
+window.ppImageTransitionDuration = 50;
+setTimeout(function() {
+  window.ppImageTransitionDuration = 600;
+}, 500);
+
 function fancyPinPreloading(selector) {
   $(selector).imagesLoaded().progress(function(instance, image) {
-    $(image.img).show().parent().find('.img-preload-holder').fadeOut(200);
+    if (image.isLoaded) {
+      $(image.img).show().parent().find('.img-preload-holder').fadeOut(ppImageTransitionDuration);
+    }
   });
   
   handleProcessingPins(selector);
