@@ -14,7 +14,7 @@ class Board < ActiveRecord::Base
   friendly_id :name, :use => [:slugged, :scoped], :scope => :user
   
   validates_presence_of :user, :category, :slug
-  validates_length_of :name, :minimum => 2
+  validates_length_of :name, :minimum => 2, :maximum => 255
   validates_uniqueness_of :name, :scope => :user_id
   
   after_save :update_pin_settings, :touch_pins_if_necessary

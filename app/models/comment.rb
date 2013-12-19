@@ -6,7 +6,7 @@ class Comment < ActiveRecord::Base
   belongs_to :commentable,  :polymorphic => true, :counter_cache => true, :touch => true
   
   validates_presence_of :commentable, :user
-  validates_length_of :body, :minimum => 1
+  validates_length_of :body, :minimum => 2
   
   after_create :send_notification
   

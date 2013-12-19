@@ -32,6 +32,8 @@ class User < ActiveRecord::Base
   
   validates_uniqueness_of   :username,      :allow_blank => false
   validates_format_of       :username,      :with => /\A[a-z0-9\.\-\_]+\z/i
+  validates_length_of       :username,      :minimum => 3, :maximum => 255
+  validates_length_of       :email,         :maximum => 255
   validates_numericality_of :kids,          :allow_blank => true, :message => 'must be a number'
   validates_format_of       :website,       :allow_blank => true, :with => URI::regexp(%w(http https))
   validates_length_of       :featured_bio,  :maximum => 400
