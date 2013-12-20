@@ -100,6 +100,10 @@ ParentPins::Application.routes.draw do
 
   # Internal ajax API endpoints
   get '/ajax/board/:id' => 'ajax#board'
+
+  namespace :admin do
+    resources :users, :only => [:index]
+  end
   
   if ALLOW_MAIL_PREVIEW
     mount AdminPreview  => '/preview/mail/admin'
