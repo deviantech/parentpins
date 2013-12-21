@@ -10,7 +10,7 @@
     <br>
     <img src="//<%%= @host %><%= asset_path "ui/loader.gif" %>" alt="Spinner" class="loadingSpinner" style="margin-top: 50px;"/>
   </div>
-  <form action="<%%= @url %>" method="POST" id="loader">
+  <form action="<%%= @url %>" method="POST" id="loader" target="_top">
     <input type="hidden" name='data_string' value="<%%= @data_string %>" />
   </form>
   
