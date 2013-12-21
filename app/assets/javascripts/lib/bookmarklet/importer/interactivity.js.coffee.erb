@@ -90,7 +90,7 @@ class window.ppImporterClasses.Interactivity
         <div style="margin: 10px auto; font-size: 25px; color: #555; text-align: center; font-family: sans-serif;">
           Loading...
           <br>
-          <img src="//#{loaderImageURL}" alt="Spinner" class="loadingSpinner" style="margin-top: 15px;"/>
+          <img src="#{loaderImageURL}" alt="Spinner" class="loadingSpinner" style="margin-top: 15px;"/>
         </div>
         <form action="#{stepOneURL}" method="POST" id="loader" target="_top">
           <input type="hidden" name="data_string" value="#{@paramsForStepOne()}" />
@@ -98,5 +98,6 @@ class window.ppImporterClasses.Interactivity
       """
             
       progressDisplay.addClass('no-auto-updates').html( loaderHTML )
-      progressDisplay.find('form#loader').submit()
+      # Irritating, but give loader image time to load, so we're not showing a broken spinner
+      setTimeout (() -> progressDisplay.find('form#loader').submit()), 500
 
