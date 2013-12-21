@@ -31,5 +31,12 @@ class UserMailer < BaseMailer
       mail(:to => @user.email, :subject => "[ParentPins] You have a new follower")
     end
   end
+
+
+  # TODO: Add content. Add settings allowing on/off. Add logic to determine which pins to show. Make it send weekly.
+  def engagement(uid)
+    @user = User.find(uid)
+    mail(:to => @user.email, :subject => "[ParentPins] You have a new follower")
+  end
   
 end
