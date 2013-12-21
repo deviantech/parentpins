@@ -1,5 +1,3 @@
-//= require templates/bookmarklet/importer/iframe_loader
-
 window.ppImporterClasses ?= {}
 class window.ppImporterClasses.Interactivity
   
@@ -83,32 +81,22 @@ class window.ppImporterClasses.Interactivity
 
       return $.param({import: {boards: boards}, source: window.location.href})
     
-    @ensureFrameWrapper = () ->
-      @iframeWrapper ||= $('<div id="ppParentPinsImporterWrapper"></div>').appendTo( outputDiv )  
-
     # =================================================================
     # = Step One - choose pins to import and assign to desired boards =
     # =================================================================
 
     @transitionToStepOne = () ->
-      if navigator.userAgent.toLowerCase().indexOf('firefox') > -1
-        # For firefox, masonry's defView.getComputedStyle fails in a framed context, even though that was supposedly fixed in version 4...
-        progressDisplay.addClass('no-auto-updates').html( JST['templates/bookmarklet/importer/iframe_loader']({host: host, data_string: @paramsForStepOne(), url: stepOneURL}) )
-        # TODO: do we want to open in a new window (requires an extra click), or take over this window?
-        
-      else
-        @ensureFrameWrapper()
-        hideInitially = !@stepOneFrame?.length
-        @stepOneFrame ?= $('<iframe class="ppParentPinsImporter stepOne">').appendTo( @iframeWrapper )
-        @stepOneFrame.height( outputDivWrapper.height() - frameWrapperMargin )
-        if hideInitially then @stepOneFrame.hide() else @stepOneFrame.show()
-
-        doc = @stepOneFrame.contents()[0]
-        if doc
-          doc.open()
-          doc.write( JST['templates/bookmarklet/importer/iframe_loader']({host: host, data_string: @paramsForStepOne(), url: stepOneURL + '?external=true'}) )
-          triggerWindowRepaint()
-        else
-          alert("Unable to access document for @stepOneFrame - maybe cross domain security issue?")
-
+      loaderHTML = """
+        <div style="margin: 10px auto; font-size: 25px; color: #555; text-align: center; font-family: sans-serif;">
+          Loading...
+          <br>
+          <img src="//#{loaderImageURL}" alt="Spinner" class="loadingSpinner" style="margin-top: 15px;"/>
+        </div>
+        <form action="#{stepOneURL}" method="POST" id="loader" target="_top">
+          <input type="hidden" name="data_string" value="#{@paramsForStepOne()}" />
+        </form>
+      """
+            
+      progressDisplay.addClass('no-auto-updates').html( loaderHTML )
+      progressDisplay.find('form#loader').submit()
 
