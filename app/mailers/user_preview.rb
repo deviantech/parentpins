@@ -42,6 +42,10 @@ if ALLOW_MAIL_PREVIEW
       UserMailer.followed(User.first.id, User.last.id, User.first.boards.first.id)
     end
   
+    def engagment_email
+      UserMailer.engagement(User.first.id)
+    end
+  
   end
 
 end

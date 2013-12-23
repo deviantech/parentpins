@@ -1,0 +1,10 @@
+%ul.admin_listing
+  - @users.each do |user|
+    %li
+      .thumb
+        = image_tag user.avatar.v50.url
+      .info_section
+        =link_to user.name, profile_path(user)
+        %br
+        Has acquired #{pluralize user.pins.count, 'pin'} on #{pluralize user.boards.count, 'board'} boards in #{time_ago_in_words user.created_at}
+  

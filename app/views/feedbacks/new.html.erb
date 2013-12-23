@@ -1,22 +1,23 @@
-<div class="wrapper general">
+<div class="<%= modal_class %>">
+  <div class="wrapper general">
 
-  <div class="content">
-    <h1>Contact ParentPins</h1>
+    <div class="content">
 
-    <%= form_for @feedback, :url => '/feedback', :html => {:class => 'form narrow'} do |f| %>
-      <h1>Ask Us Anything. <span>We're an open book.</span></h1>
-      <div class="field">
-        <%= f.email_field :email, :placeholder => 'Your Email' %>
-      </div>
+      <%= form_for @feedback, :url => '/feedback', :html => {:class => 'form narrow'} do |f| %>
+        <h1>Ask Us Anything. <span>We're an open book.</span></h1>
+        <div class="field">
+          <%= f.email_field :email, :placeholder => 'Your Email' %>
+        </div>
     
-      <div class="field">
-        <%= f.text_area :body, :placeholder => 'Enter feedback here...' %>
-      </div>
+        <div class="field">
+          <%= f.text_area :body, :placeholder => 'Enter feedback here...' %>
+        </div>
 
-      <div class="submit">
-        <%= f.submit 'Submit Feedback', :class => 'btn tertiary_action' %>
-      </div>
-    <% end %>
+        <div class="submit">
+          <%= f.submit 'Submit Feedback', :class => 'btn tertiary_action' %>
+        </div>
+      <% end %>
 
-  <div class="clearfix"></div>
+    <div class="clearfix"></div>
+  </div>
 </div>

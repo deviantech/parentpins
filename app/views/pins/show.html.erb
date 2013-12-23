@@ -46,7 +46,7 @@
       <% end %>
 
       <div class="social_buttons clearfix">
-        <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-url="<%= pin_url(@pin) %>" data-via="parentpins">Tweet</a>
         <div class="fb-like" data-href="<%= URI.escape pin_url(@pin) %>" data-send="true" data-width="300" data-show-faces="true"></div>
       </div>
       
