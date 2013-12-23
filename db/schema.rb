@@ -84,16 +84,16 @@ ActiveRecord::Schema.define(version: 20131219013400) do
   create_table "imports", force: true do |t|
     t.integer  "user_id"
     t.string   "source"
-    t.integer  "attempted"
-    t.integer  "completed"
+    t.integer  "attempted",  default: 0
+    t.integer  "completed",  default: 0
     t.string   "user_agent"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "pins", force: true do |t|
     t.string   "kind"
-    t.string   "url",                     limit: 1024
+    t.string   "url"
     t.decimal  "price",                                precision: 10, scale: 2
     t.integer  "user_id"
     t.integer  "board_id"
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 20131219013400) do
   add_index "pins", ["board_id"], name: "index_pins_on_board_id", using: :btree
   add_index "pins", ["category_id"], name: "index_pins_on_category_id", using: :btree
   add_index "pins", ["trend_position"], name: "index_pins_on_trend_position", using: :btree
-  add_index "pins", ["url"], name: "index_pins_on_url", length: {"url"=>255}, using: :btree
+  add_index "pins", ["url"], name: "index_pins_on_url", using: :btree
   add_index "pins", ["user_id"], name: "index_pins_on_user_id", using: :btree
   add_index "pins", ["uuid"], name: "index_pins_on_uuid", unique: true, using: :btree
   add_index "pins", ["via_id"], name: "index_pins_on_via_id", using: :btree

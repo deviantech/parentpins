@@ -219,6 +219,7 @@ $themeCOLORLight: lighten( $themeCOLOR, 36% );
       content:"View pin source in a new tab";
       display:block;
       position:absolute;
+      color:$themeCOLOR;
       bottom:0;
       left:0;
       width:520px;
