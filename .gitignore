@@ -20,3 +20,4 @@ factory_girl
 public/uploads
 public/assets
 nohup.out
+.env

@@ -84,7 +84,7 @@ ConditionalDeploy.register :skip_asset_precompilation, :none_match => ['/assets'
         # nop
       end
     end
-  end  
+  end
 end
 
 
@@ -94,7 +94,7 @@ namespace :app do
   task "note_migrating", :roles => :db do
     @migrating = true
   end
-  
+
   desc 'Select the appropriate unicorn restart strategy (rolling unless migrating)'
   task "gogo_gadget_unicorn", :roles => :app, :except => {:no_release => true} do
     if @migrating
@@ -110,7 +110,7 @@ end
 before  "deploy:migrate", "app:note_migrating"
 before  "deploy:migrate", "deploy:web:disable"
 after   'deploy:restart', 'app:gogo_gadget_unicorn'
-after   "app:gogo_gadget_unicorn", "deploy:web:enable"  
+after   "app:gogo_gadget_unicorn", "deploy:web:enable"
 
 # Handle deploy:cold
 after   'deploy:start', 'unicorn:restart'
@@ -165,14 +165,14 @@ namespace :dev do
         run "mysqldump -u root #{dbname} > #{dbname}.sql"
         puts "Dumped #{stage} DB to file #{dbname}.sql"
       end
-      
+
       download "#{dbname}.sql", "tmp/#{dbname}.sql"
       puts "Downloaded to local computer"
-      
+
       dbconf = YAML.load_file( File.expand_path('./config/database.yml') )
       devdb = dbconf['development']['database']
       puts "Importing into local development DB #{devdb}"
-      
+
       run_locally("mysql -u root #{devdb} < tmp/#{dbname}.sql")
       run_locally("rm tmp/#{dbname}.sql")
       puts "Done!"
@@ -188,5 +188,5 @@ after 'deploy:create_symlink', 'create_app_symlinks'
 
 task :create_app_symlinks do
   # Sphinx configs here?
-  
+
 end

@@ -35,10 +35,13 @@ gem 'unicorn', :require => false
 gem 'subexec' # Used to manually run minimagick commands in store_average_color
 gem 'rack-cors', :require => 'rack/cors'
 
+gem 'dotenv-rails'
+
 group :development do
   gem 'thin'
   gem 'ruby-debug', :platform => :ruby_18
-  gem 'debugger', :platform => [:ruby_19, :ruby_20]
+  gem 'debugger',   :platform => :ruby_19
+  gem 'pry-byebug', :platform => :ruby_20
   gem 'pry-rails'
   gem 'git'
   gem 'capistrano', '~> 2.15.5', :require => false
@@ -79,7 +82,7 @@ gem 'omniauth-twitter'
 gem 'carrierwave'
 gem 'carrierwave-meta'
 gem 'carrierwave-mimetype-fu', '~> 0.0.2' #:path => "~/code/gems/carrierwave-mimetype-fu"
-gem 'carrierwave_backgrounder', git: 'https://github.com/glhewett/carrierwave_backgrounder.git' # TODO: Switch back to mainline when https://github.com/lardawge/carrierwave_backgrounder/issues/167 is resolved, or when swap out sucker_punch for resque/sidekiq
+gem 'carrierwave_backgrounder', '~> 0.4.1'
 gem 'sucker_punch', '~> 1.0'
 
 gem 'mini_magick'
