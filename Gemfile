@@ -48,7 +48,7 @@ group :development do
   gem 'capistrano-conditional', :git => 'git://github.com/deviantech/capistrano-conditional.git', :require => false
 end
 
-# TODO: when ALLOW_MAIL_PREVIEW it removed in favor of development only, put this in the development group
+# TODO: when ALLOW_MAIL_PREVIEW is removed in favor of using in development only, put this in the development group
 gem 'mail_view'
 
 gem 'newrelic_rpm'

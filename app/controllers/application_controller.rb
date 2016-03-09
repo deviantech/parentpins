@@ -8,29 +8,29 @@ class ApplicationController < ActionController::Base
   # TODO: remove this line once done testing media responsiveness
   before_action :allow_external_iframing
   before_bugsnag_notify :add_user_info_to_bugsnag
-  
+
   private
-  
+
   def add_user_info_to_bugsnag(notif)
     notif.add_tab(:user_info, {
       name: current_user.try(:name)
     })
   end
-  
+
   def host
     port = ActionMailer::Base.default_url_options[:port]
     host = ActionMailer::Base.default_url_options[:host]
     port == 80 ? host : "#{host}:#{port}"
   end
-    
+
   # Note: not using asset-path, because that uses a URL with a digest of the asset contents
   def bookmarklet_link_target_js
     %Q{javascript:void((function(b){var s=b.createElement('script');s.setAttribute('charset','UTF-8');s.setAttribute('type','text/javascript');s.setAttribute('src',"//#{host}/assets/bookmarklet.js?r="+Math.random()*999);b.body.appendChild(s);setTimeout(function(){if (!window.ppBookmarklet){alert("It seems we were unable to connect to the server. Please try again shortly.")}},5000);})(document))}
   end
-  
+
   def get_profile_counters
-    return true unless @profile 
-    
+    return true unless @profile
+
     @profile_counters = {
       :pins         => @profile.pins.count,
       :boards       => @profile.boards.count,
@@ -67,19 +67,19 @@ class ApplicationController < ActionController::Base
       format.pagination { render('shared/pagination', :formats => :html, :layout => false) }
     end
   end
-    
+
   def set_filters
     @kind = params[:kind] if Pin::VALID_TYPES.include?(params[:kind])
-    
+
     cat_id = params[:category_id] || params[:category]
     @category = Category.where(:id => cat_id).first unless cat_id.blank?
-    
+
     age_id = params[:age_group_id] || params[:age_group]
     @age_group = AgeGroup.where(:id => age_id).first unless age_id.blank?
-    
+
     @filtered = @kind || @category || @age_group
   end
-  
+
   def consider_ajax_layout
     # Returning false means no layout. Returning nil resets layout, and it will be set as usual by inheritance
     self.class.layout(params[:via] == 'ajax' ? false : nil)
@@ -88,7 +88,7 @@ class ApplicationController < ActionController::Base
   # e.g. pin form has board fields, but even if they have values no new board should be created if user set the pin's board_id
   def conditionally_remove_nested_attributes(parent_model, nested_model)
     params[parent_model] ||= {}
-    params[parent_model]["#{nested_model}_attributes"] ||= {} 
+    params[parent_model]["#{nested_model}_attributes"] ||= {}
 
     # NOTE: if use for other associations, handle that they may not have user_id defined
     params[parent_model]["#{nested_model}_attributes"]['user_id'] = current_user.try(:id)
@@ -99,7 +99,7 @@ class ApplicationController < ActionController::Base
   def allow_external_iframing
     response.headers.except! 'X-Frame-Options'
   end
-  
+
   # https://github.com/plataformatec/devise#strong-parameters
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :email
